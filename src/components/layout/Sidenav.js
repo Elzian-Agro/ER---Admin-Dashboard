@@ -1,6 +1,6 @@
 import { Menu } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/earth-restoration-logo.png";
 
 function Sidenav({ color }) {
   const { pathname } = useLocation();
@@ -151,7 +151,7 @@ function Sidenav({ color }) {
     <>
       <div className="brand">
         <img src={logo} alt="" />
-        <span>Muse Dashboard</span>
+        <span>Earth Restoration</span>
       </div>
       <hr />
       <Menu theme="light" mode="inline">
