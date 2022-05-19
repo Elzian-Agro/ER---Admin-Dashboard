@@ -1389,6 +1389,18 @@ span.ismobile {
   margin-bottom: 25px;
 }
 
+.mb-4 {
+  margin-bottom: 50px;
+}
+
+.mb-6 {
+  margin-bottom: 75px;
+}
+
+.mb-8 {
+  margin-bottom: 100px;
+}
+
 .sidebarnav-color button {
   width: 100%;
   margin-right: 10px;

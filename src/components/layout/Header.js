@@ -308,7 +308,7 @@ function Header({
             visible={visible}
           >
             <div layout="vertical">
-              <div className="header-top">
+              <div className="header-top mb-6 center">
                 <Title level={4}>
                   Configurator
                   <Text className="subtitle">See our dashboard options.</Text>
@@ -317,7 +317,7 @@ function Header({
 
               <div className="sidebar-color">
                 <Title level={5}>Sidebar Color</Title>
-                <div className="theme-color mb-2">
+                <div className="theme-color mb-8">
                   <ButtonContainer>
                     <Button
                       type="primary"
@@ -353,7 +353,7 @@ function Header({
                   </ButtonContainer>
                 </div>
 
-                <div className="sidebarnav-color mb-2">
+                <div className="sidebarnav-color mb-8">
                   <Title level={5}>Sidenav Type</Title>
                   <Text>Choose between 2 different sidenav types.</Text>
                   <ButtonContainer className="trans">
