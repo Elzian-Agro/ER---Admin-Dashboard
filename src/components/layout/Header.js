@@ -308,7 +308,7 @@ function Header({
             visible={visible}
           >
             <div layout="vertical">
-              <div className="header-top mb-6 center">
+              <div className="header-top mb-6">
                 <Title level={4}>
                   Configurator
                   <Text className="subtitle">See our dashboard options.</Text>
