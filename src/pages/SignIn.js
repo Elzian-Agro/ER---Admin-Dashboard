@@ -11,7 +11,7 @@ import {
   Input,
   Switch,
 } from "antd";
-import signinbg from "../assets/images/img-signin.jpg";
+import signinbg from "../assets/logos/LifeForce_LOGO2022.jpeg";
 import {
   DribbbleOutlined,
   TwitterOutlined,
@@ -94,7 +94,7 @@ export default class SignIn extends Component {
 
                   <Form.Item>
                     <Button
-                      type="primary"
+                      type="success"
                       htmlType="submit"
                       style={{ width: "100%" }}
                     >

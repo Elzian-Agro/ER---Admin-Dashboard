@@ -1,6 +1,7 @@
 import React from "react";
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
+import HeaderLogo from "../../assets/logos/ER_LOGO_2.png";
 
 const signup = [
   <svg
@@ -41,7 +42,7 @@ export default function AuthHeader() {
   return (
     <Header>
       <div className="header-col header-brand">
-        <h5>Earth Restoration</h5>
+        <img src={HeaderLogo} width="70px" />
       </div>
       <div className="header-col header-nav">
         <Menu mode="horizontal" defaultSelectedKeys={["1"]}>
