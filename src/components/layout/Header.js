@@ -1,15 +1,3 @@
-/*!
-  =========================================================
-  * Muse Ant Design Dashboard - v1.0.0
-  =========================================================
-  * Product Page: https://www.creative-tim.com/product/muse-ant-design-dashboard
-  * Copyright 2021 Creative Tim (https://www.creative-tim.com)
-  * Licensed under MIT (https://github.com/creativetimofficial/muse-ant-design-dashboard/blob/main/LICENSE.md)
-  * Coded by Creative Tim
-  =========================================================
-  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect } from "react";
 
 import {
@@ -29,9 +17,6 @@ import {
 
 import {
   SearchOutlined,
-  StarOutlined,
-  TwitterOutlined,
-  FacebookFilled,
 } from "@ant-design/icons";
 
 import { NavLink, Link } from "react-router-dom";
@@ -323,7 +308,7 @@ function Header({
             visible={visible}
           >
             <div layout="vertical">
-              <div className="header-top">
+              <div className="header-top mb-6">
                 <Title level={4}>
                   Configurator
                   <Text className="subtitle">See our dashboard options.</Text>
@@ -332,7 +317,7 @@ function Header({
 
               <div className="sidebar-color">
                 <Title level={5}>Sidebar Color</Title>
-                <div className="theme-color mb-2">
+                <div className="theme-color mb-8">
                   <ButtonContainer>
                     <Button
                       type="primary"
@@ -368,7 +353,7 @@ function Header({
                   </ButtonContainer>
                 </div>
 
-                <div className="sidebarnav-color mb-2">
+                <div className="sidebarnav-color mb-8">
                   <Title level={5}>Sidenav Type</Title>
                   <Text>Choose between 2 different sidenav types.</Text>
                   <ButtonContainer className="trans">
@@ -395,28 +380,6 @@ function Header({
                 <div className="fixed-nav mb-2">
                   <Title level={5}>Navbar Fixed </Title>
                   <Switch onChange={(e) => handleFixedNavbar(e)} />
-                </div>
-                <div className="ant-docment">
-                  <ButtonContainer>
-                    <Button type="black" size="large">
-                      FREE DOWNLOAD
-                    </Button>
-                    <Button size="large">VIEW DOCUMENTATION</Button>
-                  </ButtonContainer>
-                </div>
-                <div className="viewstar">
-                  <a href="#pablo">{<StarOutlined />} Star</a>
-                  <a href="#pablo"> 190</a>
-                </div>
-
-                <div className="ant-thank">
-                  <Title level={5} className="mb-2">
-                    Thank you for sharing!
-                  </Title>
-                  <ButtonContainer className="social">
-                    <Button type="black">{<TwitterOutlined />}TWEET</Button>
-                    <Button type="black">{<FacebookFilled />}SHARE</Button>
-                  </ButtonContainer>
                 </div>
               </div>
             </div>
