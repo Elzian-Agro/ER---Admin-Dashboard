@@ -42,7 +42,7 @@ export default function AuthHeader() {
   return (
     <Header>
       <div className="header-col header-brand">
-        <img src={HeaderLogo} width="70px" />
+        <img src={HeaderLogo} width="70px" alt="logo" />
       </div>
       <div className="header-col header-nav">
         <Menu mode="horizontal" defaultSelectedKeys={["1"]}>
