@@ -13,7 +13,6 @@ import Box from '@mui/material/Box';
 import { makeStyles } from '@mui/styles';
 
 import { useState } from "react"
-import { fontSize } from '@mui/system';
 
 const tableData = [{
     "id": 1,
