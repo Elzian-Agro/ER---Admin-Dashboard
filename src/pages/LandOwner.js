@@ -10,8 +10,10 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Box from '@mui/material/Box';
+import { makeStyles } from '@mui/styles';
 
 import { useState } from "react"
+import { fontSize } from '@mui/system';
 
 const tableData = [{
     "id": 1,
@@ -85,10 +87,29 @@ const tableData = [{
     "ip_address": "107.178.239.130"
   }]
   
+const useStyles = makeStyles({
 
+  mainHeading: {
+    fontWeight: "bold",
+    fontSize: 18
+  },
+
+  tableHeading: {
+    fontWeight: "bold"
+  },
+
+  tableContainer: {
+    boxShadow: "0 2px 6px rgb(0 0 0 / 0.25)"
+  },
+
+  editButton: {
+    marginRight: 20
+  },
+});
 
 function LandOwner() {
 
+  const classes = useStyles();
   const [open, setOpen] = useState(false);
 
   function handleChange() {
@@ -106,20 +127,20 @@ function LandOwner() {
           mb={2}
           mt={1}
         >
-          <h1 style={{ fontWeight: "bold" }}>Land Owners</h1>
+          <h1 className={classes.mainHeading}>Land Owners</h1>
           <Button variant="contained" color="primary">
             New
           </Button>
         </Box>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} className={classes.tableContainer}>
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <TableHead>
               <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>First Name</TableCell>
-                  <TableCell>Last Name</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Gender</TableCell>
+                  <TableCell className={classes.tableHeading}>ID</TableCell>
+                  <TableCell className={classes.tableHeading}>First Name</TableCell>
+                  <TableCell className={classes.tableHeading}>Last Name</TableCell>
+                  <TableCell className={classes.tableHeading}>Email</TableCell>
+                  <TableCell className={classes.tableHeading}>Gender</TableCell>
               </TableRow>
               </TableHead>
               <TableBody>
@@ -134,8 +155,8 @@ function LandOwner() {
                       <TableCell>{row.email}</TableCell>
                       <TableCell>{row.gender}</TableCell>
                       <TableCell align='center'>
-                          <Button style={{ backgroundColor: "#0CBCCE", color: "white", marginRight: 20 }} variant="contained" onClick={handleChange}>Edit</Button> 
-                          <Button style={{ backgroundColor: "#E66060", color: "white" }} variant="contained" onClick={() => setOpen(true)}>Delete</Button>
+                          <Button className={classes.editButton} variant="contained" color="primary" onClick={handleChange}>Edit</Button> 
+                          <Button variant="contained" color="error" onClick={() => setOpen(true)}>Delete</Button>
                           <Dialog aria-labelledby='dialog-title' 
                             open={open} 
                             onClose={() => setOpen(false)} 
@@ -149,7 +170,7 @@ function LandOwner() {
                           >
                             <DialogTitle id='dialog-title'>Do you really want to delete?</DialogTitle>
                             <DialogActions>
-                                <Button onClick={() => setOpen(false)}>Cancel</Button>
+                                <Button onClick={() => setOpen(false)} c>Cancel</Button>
                                 <Button onClick={() => setOpen(true)} color="error">Delete</Button>
                             </DialogActions>
                           </Dialog>
