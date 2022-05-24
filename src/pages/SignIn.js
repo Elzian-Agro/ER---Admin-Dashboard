@@ -10,8 +10,10 @@ import {
   Input,
   Switch,
 } from "antd";
+
 import AuthHeader from "../components/layout/Auth-Header";
 import AuthFooter from "../components/layout/Auth-Footer";
+import AuthService from "../services/auth-service";
 import signinbg from "../assets/logos/LifeForce_LOGO2022.jpeg";
 
 function onChange(checked) {
@@ -24,6 +26,7 @@ export default class SignIn extends Component {
   render() {
     const onFinish = (values) => {
       console.log("Success:", values);
+      AuthService.signin(values);
     };
 
     const onFinishFailed = (errorInfo) => {

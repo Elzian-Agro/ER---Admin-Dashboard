@@ -9,6 +9,8 @@ import logo3 from "../assets/images/Google__G__Logo.svg.png";
 import AuthHeader from "../components/layout/Auth-Header";
 import AuthFooter from "../components/layout/Auth-Footer";
 
+import AuthService from "../services/auth-service";
+
 const { Title } = Typography;
 const { Content } = Layout;
 
@@ -16,6 +18,8 @@ export default class SignUp extends Component {
   render() {
     const onFinish = (values) => {
       console.log("Success:", values);
+      // POST method
+      AuthService.signup(values);
     };
 
     const onFinishFailed = (errorInfo) => {
