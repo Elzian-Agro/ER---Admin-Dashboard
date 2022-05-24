@@ -96,7 +96,7 @@ export default class SignUp extends Component {
 
                 <Form.Item>
                   <Button
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", backgroundColor: "green" }}
                     type="primary"
                     htmlType="submit"
                   >
