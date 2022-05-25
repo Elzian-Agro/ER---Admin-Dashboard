@@ -10,6 +10,11 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import { makeStyles } from '@mui/styles';
 
 import { useState } from "react"
@@ -49,41 +54,6 @@ const tableData = [{
     "email": "esoan4@nbcnews.com",
     "gender": "Male",
     "ip_address": "137.153.175.81"
-  }, {
-    "id": 6,
-    "first_name": "Kori",
-    "last_name": "Maudling",
-    "email": "kmaudling5@sfgate.com",
-    "gender": "Female",
-    "ip_address": "19.187.9.115"
-  }, {
-    "id": 7,
-    "first_name": "Jehanna",
-    "last_name": "Minocchi",
-    "email": "jminocchi6@list-manage.com",
-    "gender": "Female",
-    "ip_address": "255.82.232.92"
-  }, {
-    "id": 8,
-    "first_name": "Diego",
-    "last_name": "Bertelet",
-    "email": "dbertelet7@hugedomains.com",
-    "gender": "Male",
-    "ip_address": "229.218.35.59"
-  }, {
-    "id": 9,
-    "first_name": "Lucio",
-    "last_name": "Wickham",
-    "email": "lwickham8@tinyurl.com",
-    "gender": "Male",
-    "ip_address": "148.151.179.24"
-  }, {
-    "id": 10,
-    "first_name": "Shell",
-    "last_name": "Bellinger",
-    "email": "sbellinger9@ebay.com",
-    "gender": "Male",
-    "ip_address": "107.178.239.130"
   }]
   
 const useStyles = makeStyles({
@@ -99,21 +69,37 @@ const useStyles = makeStyles({
 
   tableContainer: {
     boxShadow: "0 2px 6px rgb(0 0 0 / 0.25)"
-  },
-
-  editButton: {
-    marginRight: 20
-  },
+  }
 });
+
+
+
+
+
 
 function LandOwner() {
 
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [landOwner, setLandOwner] = useState(tableData);
 
   function handleChange() {
       alert("Do you really want to Edit!");
   }
+
+  const handleDeleteClick = (landOwnerId) => {
+    const delLandOwner = [...landOwner];
+  
+    const index = landOwner.findIndex((land) => land.id === landOwnerId);
+  
+    delLandOwner.splice(index, 1);
+  
+    setLandOwner(delLandOwner);
+    console.log(delLandOwner);
+    setOpen(false);
+
+    
+  };
 
   return(
     <div>
@@ -135,11 +121,10 @@ function LandOwner() {
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <TableHead>
               <TableRow>
-                  <TableCell className={classes.tableHeading}>ID</TableCell>
-                  <TableCell className={classes.tableHeading}>First Name</TableCell>
-                  <TableCell className={classes.tableHeading}>Last Name</TableCell>
-                  <TableCell className={classes.tableHeading}>Email</TableCell>
-                  <TableCell className={classes.tableHeading}>Gender</TableCell>
+                  <TableCell className={classes.tableHeading}>Land Owner Details</TableCell>
+                  <TableCell className={classes.tableHeading}>Country</TableCell>
+                  <TableCell className={classes.tableHeading}>Region</TableCell>
+                  <TableCell className={classes.tableHeading}>Land Address</TableCell>
               </TableRow>
               </TableHead>
               <TableBody>
@@ -148,14 +133,37 @@ function LandOwner() {
                       key={row.id}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                      <TableCell>{row.id}</TableCell>
-                      <TableCell>{row.first_name}</TableCell>
+                      <TableCell>
+                      <Stack direction="row" alignItems="center" gap={1} mb={1}>
+                        <PersonOutlineIcon />
+                        <Typography variant="body1">{row.first_name}</Typography>
+                      </Stack>
+                      <Stack direction="row" alignItems="center" gap={1} mb={1}>
+                        <CallOutlinedIcon />
+                        <Typography variant="body1">{row.last_name}</Typography>
+                      </Stack>
+                      <Stack direction="row" alignItems="center" gap={1}>
+                        <EmailOutlinedIcon />
+                        <Typography variant="body1">{row.email}</Typography>
+                      </Stack>
+                          {/* <Grid container>
+                            
+                            <Grid item lg={12}>
+                                <PersonOutlineIcon /><Typography className={classes.name}>{row.first_name}</Typography>
+                                <Typography color="textSecondary" variant="body2">{row.last_name}</Typography>
+                                <Typography color="textSecondary" variant="body2">{row.email}</Typography>
+                            </Grid>
+                          </Grid> */}
+                      </TableCell>
                       <TableCell>{row.last_name}</TableCell>
                       <TableCell>{row.email}</TableCell>
                       <TableCell>{row.gender}</TableCell>
                       <TableCell align='center'>
+                        <Stack direction="row" alignItems="center" gap={2}>
+                          <Button variant="contained" color="secondary">Approved</Button> 
                           <Button className={classes.editButton} variant="contained" color="primary" onClick={handleChange}>Edit</Button> 
                           <Button variant="contained" color="error" onClick={() => setOpen(true)}>Delete</Button>
+                        </Stack>
                           <Dialog aria-labelledby='dialog-title' 
                             open={open} 
                             onClose={() => setOpen(false)} 
@@ -169,8 +177,8 @@ function LandOwner() {
                           >
                             <DialogTitle id='dialog-title'>Do you really want to delete?</DialogTitle>
                             <DialogActions>
-                                <Button onClick={() => setOpen(false)} c>Cancel</Button>
-                                <Button onClick={() => setOpen(true)} color="error">Delete</Button>
+                                <Button onClick={() => setOpen(false)}>Cancel</Button>
+                                <Button onClick={() => handleDeleteClick(row.id)} color="error">Delete</Button>
                             </DialogActions>
                           </Dialog>
                       </TableCell>
