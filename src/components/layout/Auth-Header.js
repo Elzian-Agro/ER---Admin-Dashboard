@@ -1,7 +1,10 @@
 import React from "react";
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
-import HeaderLogo from "../../assets/logos/ER_LOGO_2.png";
+
+// logo
+import ERLogo from "../../assets/logos/ER LOGO.png";
+import LifeForceLogo from "../../assets/logos/LifeForce.png";
 
 const signup = [
   <svg
@@ -38,11 +41,16 @@ const signin = [
 
 const { Header } = Layout;
 
-export default function AuthHeader() {
+export default function AuthHeader({ signupBg }) {
   return (
     <Header>
       <div className="header-col header-brand">
-        <img src={HeaderLogo} width="70px" alt="logo" />
+        <img
+          style={signupBg ? { padding: 10 } : {}}
+          src={ERLogo}
+          width={signupBg ? "270px" : "70px"}
+          alt="ER logo"
+        />
       </div>
       <div className="header-col header-nav">
         <Menu mode="horizontal" defaultSelectedKeys={["1"]}>
@@ -59,6 +67,18 @@ export default function AuthHeader() {
             </Link>
           </Menu.Item>
         </Menu>
+      </div>
+      <div className="header-col header-brand">
+        {signupBg ? (
+          <img
+            src={LifeForceLogo}
+            style={signupBg ? { padding: 10 } : {}}
+            width="280px"
+            alt="lifeforce logo"
+          />
+        ) : (
+          ""
+        )}
       </div>
     </Header>
   );
