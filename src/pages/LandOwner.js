@@ -8,6 +8,9 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
 import Stack from '@mui/material/Stack';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
@@ -36,7 +39,7 @@ const useStyles = makeStyles({
 function LandOwner() {
 
   const classes = useStyles();
-
+  const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
   
  useEffect(() => {
@@ -122,9 +125,25 @@ function LandOwner() {
                         <Stack direction="row" alignItems="center" gap={2}>
                           <Button variant="contained" color="secondary">Approved</Button> 
                           <Button className={classes.editButton} variant="contained" color="primary" onClick={()=>{handleChange(row.id)}} >Edit</Button> 
-                          <Button variant="contained" color="error" onClick={() => {handleDeleteClick(row.id)} }>Delete</Button>
+                          <Button variant="contained" color="error" onClick={() => {setOpen(true)} }>Delete</Button>
                         </Stack>
-             
+                        <Dialog aria-labelledby='dialog-title' 
+                            open={open} 
+                            onClose={() => setOpen(false)} 
+                            hideBackdrop 
+                            PaperProps={{
+                              elevation: 0,
+                              sx: {
+                                boxShadow: "0 2px 8px rgb(0 0 0 / 0.1)"
+                              }
+                            }}
+                          >
+                            <DialogTitle id='dialog-title'>Do you really want to delete?</DialogTitle>
+                            <DialogActions>
+                                <Button onClick={() => setOpen(false)}>Cancel</Button>
+                                <Button onClick={() => handleDeleteClick(row.id)} color="error">Delete</Button>
+                            </DialogActions>
+                          </Dialog>
                       </TableCell>
                   </TableRow>
               ))}
