@@ -5,6 +5,7 @@ import {
   TwitterOutlined,
   InstagramOutlined,
   GithubOutlined,
+  HeartFilled,
 } from "@ant-design/icons";
 
 const { Footer } = Layout;
@@ -46,11 +47,13 @@ export default function AuthFooter() {
           <Link to="#">{<GithubOutlined />}</Link>
         </Menu.Item>
       </Menu>
-      <p className="copyright">
-        {" "}
-        Copyright © 2022 by{" "}
-        <a href="https://www.restore.earth">Earth Restoration</a>.{" "}
-      </p>
+      <div className="copyright">
+        © 2022, developed by
+        {<HeartFilled />}
+        <a href="https://agro.elzian.com/" className="font-weight-bold">
+          ELZIAN AGRO
+        </a>
+      </div>
     </Footer>
   );
 }
