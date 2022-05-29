@@ -1,15 +1,3 @@
-/*!
-  =========================================================
-  * Muse Ant Design Dashboard - v1.0.0
-  =========================================================
-  * Product Page: https://www.creative-tim.com/product/muse-ant-design-dashboard
-  * Copyright 2021 Creative Tim (https://www.creative-tim.com)
-  * Licensed under MIT (https://github.com/creativetimofficial/muse-ant-design-dashboard/blob/main/LICENSE.md)
-  * Coded by Creative Tim
-  =========================================================
-  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { Layout, Row, Col } from "antd";
 import { HeartFilled } from "@ant-design/icons";
 
@@ -21,12 +9,11 @@ function Footer() {
       <Row className="just">
         <Col xs={24} md={12} lg={12}>
           <div className="copyright">
-            © 2021, made with
-            {<HeartFilled />} by
-            <a href="#pablo" className="font-weight-bold" target="_blank">
-              Creative Tim
+            © 2022, developed by
+            {<HeartFilled />}
+            <a href="https://agro.elzian.com/" className="font-weight-bold">
+              ELZIAN AGRO
             </a>
-            for a better web.
           </div>
         </Col>
         <Col xs={24} md={12} lg={12}>
@@ -34,29 +21,10 @@ function Footer() {
             <ul>
               <li className="nav-item">
                 <a
-                  href="#pablo"
+                  href="https://www.restore.earth/"
                   className="nav-link text-muted"
-                  target="_blank"
                 >
-                  Creative Tim
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  href="#pablo"
-                  className="nav-link text-muted"
-                  target="_blank"
-                >
-                  About Us
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  href="#pablo"
-                  className="nav-link text-muted"
-                  target="_blank"
-                >
-                  Blog
+                  Earth Restoration
                 </a>
               </li>
               <li className="nav-item">

@@ -23,6 +23,10 @@ import {
   Switch,
   Upload,
   message,
+  Modal,
+  Form, 
+  Input, 
+  InputNumber,
 } from "antd";
 
 import {
@@ -32,16 +36,16 @@ import {
   VerticalAlignTopOutlined,
 } from "@ant-design/icons";
 
-import BgProfile from "../assets/images/bg-profile.jpg";
+import BgProfile from "../assets/images/pexels-richa-sharma-4217311.jpg";
 import profilavatar from "../assets/images/face-1.jpg";
 import convesionImg from "../assets/images/face-3.jpg";
 import convesionImg2 from "../assets/images/face-4.jpg";
 import convesionImg3 from "../assets/images/face-5.jpeg";
 import convesionImg4 from "../assets/images/face-6.jpeg";
 import convesionImg5 from "../assets/images/face-2.jpg";
-import project1 from "../assets/images/home-decor-1.jpeg";
-import project2 from "../assets/images/home-decor-2.jpeg";
-import project3 from "../assets/images/home-decor-3.jpeg";
+import project1 from "../assets/images/qr-code.png";
+import project2 from "../assets/images/qr-code.png";
+import project3 from "../assets/images/qr-code.png";
 
 function Profile() {
   const [imageURL, setImageURL] = useState(false);
@@ -101,7 +105,7 @@ function Profile() {
   const uploadButton = (
     <div className="ant-upload-text font-semibold text-dark">
       {<VerticalAlignTopOutlined style={{ width: 20, color: "#000" }} />}
-      <div>Upload New Project</div>
+      <div>View New Project</div>
     </div>
   );
 
@@ -157,6 +161,44 @@ function Profile() {
     },
   ];
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const layout = {
+    labelCol: {
+      span: 6,
+    },
+    wrapperCol: {
+      span: 16,
+    },
+  };
+
+  const validateMessages = {
+    required: '${label} is required!',
+    types: {
+      email: '${label} is not a valid email!',
+      number: '${label} is not a valid number!',
+    },
+    // number: {
+    //   range: '${label} must be between ${min} and ${max}',
+    // },
+  };
+
+  const onFinish = (values) => {
+    console.log(values);
+  };
+
   return (
     <>
       <div
@@ -188,18 +230,69 @@ function Profile() {
                 justifyContent: "flex-end",
               }}
             >
-              <Radio.Group defaultValue="a">
+              <Button type="primary" onClick={showModal}>
+                Update Profile
+              </Button>
+              <Modal title="Personal Information" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+                  <Form.Item
+                    name={['user', 'name']}
+                    label="Name"
+                    rules={[
+                      {
+                        required: true,
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    name={['user', 'mobileNo']}
+                    label="Mobile No."
+                    rules={[
+                      {
+                        type: 'number',
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    name={['user', 'email']}
+                    label="Email"
+                    rules={[
+                      {
+                        type: 'email',
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name={['user', 'location']} label="Location">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name={['user', 'profileinfo']} label="Profile Information">
+                    <Input.TextArea />
+                  </Form.Item>
+                  <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+                    <Button type="primary" htmlType="submit">
+                      Submit
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </Modal>
+              {/* <Radio.Group defaultValue="a">
                 <Radio.Button value="a">OVERVIEW</Radio.Button>
                 <Radio.Button value="b">TEAMS</Radio.Button>
                 <Radio.Button value="c">PROJECTS</Radio.Button>
-              </Radio.Group>
+              </Radio.Group> */}
             </Col>
           </Row>
         }
       ></Card>
 
       <Row gutter={[24, 0]}>
-        <Col span={24} md={8} className="mb-24 ">
+        {/* <Col span={24} md={8} className="mb-24 ">
           <Card
             bordered={false}
             className="header-solid h-full"
@@ -241,8 +334,8 @@ function Profile() {
               </li>
             </ul>
           </Card>
-        </Col>
-        <Col span={24} md={8} className="mb-24">
+        </Col> */}
+        <Col span={12} offset={6} className="mb-24">
           <Card
             bordered={false}
             title={<h6 className="font-semibold m-0">Profile Information</h6>}
@@ -285,7 +378,7 @@ function Profile() {
             </Descriptions>
           </Card>
         </Col>
-        <Col span={24} md={8} className="mb-24">
+        {/* <Col span={24} md={12} className="mb-24">
           <Card
             bordered={false}
             title={<h6 className="font-semibold m-0">Conversations</h6>}
@@ -310,15 +403,15 @@ function Profile() {
               )}
             />
           </Card>
-        </Col>
+        </Col> */}
       </Row>
       <Card
         bordered={false}
         className="header-solid mb-24"
         title={
           <>
-            <h6 className="font-semibold">Projects</h6>
-            <p>Architects design houses</p>
+            <h6 className="font-semibold">Blockchain Secured C-PES Production Verification System</h6>
+            {/* <p>Architects design houses</p> */}
           </>
         }
       >
@@ -337,14 +430,14 @@ function Profile() {
                   <Col span={12}>
                     <Button type="button">VIEW PROJECT</Button>
                   </Col>
-                  <Col span={12} className="text-right">
+                  {/* <Col span={12} className="text-right">
                     <Avatar.Group className="avatar-chips">
                       <Avatar size="small" src={profilavatar} />
                       <Avatar size="small" src={convesionImg} />
                       <Avatar size="small" src={convesionImg2} />
                       <Avatar size="small" src={convesionImg3} />
                     </Avatar.Group>
-                  </Col>
+                  </Col> */}
                 </Row>
               </Card>
             </Col>

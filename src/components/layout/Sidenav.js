@@ -1,19 +1,6 @@
-/*!
-  =========================================================
-  * Muse Ant Design Dashboard - v1.0.0
-  =========================================================
-  * Product Page: https://www.creative-tim.com/product/muse-ant-design-dashboard
-  * Copyright 2021 Creative Tim (https://www.creative-tim.com)
-  * Licensed under MIT (https://github.com/creativetimofficial/muse-ant-design-dashboard/blob/main/LICENSE.md)
-  * Coded by Creative Tim
-  =========================================================
-  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// import { useState } from "react";
-import { Menu, Button } from "antd";
+import { Menu } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/earth-restoration-logo.png";
 
 function Sidenav({ color }) {
   const { pathname } = useLocation();
@@ -104,6 +91,24 @@ function Sidenav({ color }) {
     </svg>,
   ];
 
+  const landOwner = [
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      key={0}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M3 6C3 4.34315 4.34315 3 6 3H16C16.3788 3 16.725 3.214 16.8944 3.55279C17.0638 3.89157 17.0273 4.29698 16.8 4.6L14.25 8L16.8 11.4C17.0273 11.703 17.0638 12.1084 16.8944 12.4472C16.725 12.786 16.3788 13 16 13H6C5.44772 13 5 13.4477 5 14V17C5 17.5523 4.55228 18 4 18C3.44772 18 3 17.5523 3 17V6Z"
+        fill={color}
+      ></path>
+    </svg>,
+  ];
+
   const profile = [
     <svg
       width="20"
@@ -164,7 +169,7 @@ function Sidenav({ color }) {
     <>
       <div className="brand">
         <img src={logo} alt="" />
-        <span>Muse Dashboard</span>
+        <span>Earth Restoration</span>
       </div>
       <hr />
       <Menu theme="light" mode="inline">
@@ -220,6 +225,19 @@ function Sidenav({ color }) {
             <span className="label">RTL</span>
           </NavLink>
         </Menu.Item>
+        <Menu.Item key="5">
+          <NavLink to="/landOwner">
+            <span
+              className="icon"
+              style={{
+                background: page === "landOwner" ? color : "",
+              }}
+            >
+              {landOwner}
+            </span>
+            <span className="label">Land Owner</span>
+          </NavLink>
+        </Menu.Item>
         <Menu.Item className="menu-item-header" key="5">
           Account Pages
         </Menu.Item>
@@ -249,23 +267,6 @@ function Sidenav({ color }) {
           </NavLink>
         </Menu.Item>
       </Menu>
-      <div className="aside-footer">
-        <div
-          className="footer-box"
-          style={{
-            background: color,
-          }}
-        >
-          <span className="icon" style={{ color }}>
-            {dashboard}
-          </span>
-          <h6>Need Help?</h6>
-          <p>Please check our docs</p>
-          <Button type="primary" className="ant-btn-sm ant-btn-block">
-            DOCUMENTATION
-          </Button>
-        </div>
-      </div>
     </>
   );
 }
