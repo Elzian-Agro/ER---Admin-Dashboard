@@ -23,7 +23,7 @@ function Main({ children }) {
   pathname = pathname.replace("/", "");
 
   useEffect(() => {
-    if (pathname === "rtl") {
+    if (pathname === "feed") {
       setPlacement("left");
     } else {
       setPlacement("right");
@@ -34,7 +34,7 @@ function Main({ children }) {
     <Layout
       className={`layout-dashboard ${
         pathname === "profile" ? "layout-profile" : ""
-      } ${pathname === "rtl" ? "layout-dashboard-rtl" : ""}`}
+      } ${pathname === "feed" ? "layout-dashboard-feed" : ""}`}
     >
       <Drawer
         title={false}
@@ -45,12 +45,12 @@ function Main({ children }) {
         key={placement === "right" ? "left" : "right"}
         width={250}
         className={`drawer-sidebar ${
-          pathname === "rtl" ? "drawer-sidebar-rtl" : ""
+          pathname === "feed" ? "drawer-sidebar-feed" : ""
         } `}
       >
         <Layout
           className={`layout-dashboard ${
-            pathname === "rtl" ? "layout-dashboard-rtl" : ""
+            pathname === "feed" ? "layout-dashboard-feed" : ""
           }`}
         >
           <Sider
