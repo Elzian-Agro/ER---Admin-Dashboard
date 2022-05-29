@@ -12,11 +12,42 @@
 import { useState } from "react";
 import Grid from "@mui/material/Grid";
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Row, Col } from "antd";
-import { Card } from "antd";
+import {
+  Row,
+  Col,
+  Card,
+  Button,
+  List,
+  Descriptions,
+  Avatar,
+  Radio,
+  Switch,
+  Upload,
+  message,
+  Modal,
+  Form, 
+  Input, 
+  InputNumber,
+} from "antd";
 const { Meta } = Card;
 
 function Feed() {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+  const layout = {
+    labelCol: {
+      span: 6,
+    },
+    wrapperCol: {
+      span: 16,
+    },
+  };
   return (
     <>
       <Grid container direction="column" spacing={4}>
@@ -27,9 +58,45 @@ function Feed() {
                 type="dashed"
                 className="ant-full-box"
                 icon={<PlusOutlined />}
+                onClick={showModal}
               >
                 <span className="click">Add Feed</span>
               </Button>
+              <Modal title="Add New Feed" visible={isModalVisible} onCancel={handleCancel}>
+                <Form {...layout}>
+                  <Form.Item
+                    name={['user', 'name']}
+                    label="Title"
+                    rules={[
+                      {
+                        required: true,
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    name={['user', 'mobileNo']}
+                    label="Tag"
+                   
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    name={['user', 'email']}
+                    label="Image"
+                    rules={[
+                      {
+                        type: 'file',
+                      },
+                    ]}
+                  >
+                    <Input type="file" />
+                  </Form.Item>
+                
+                
+                </Form>
+              </Modal>
             </Grid>
           </Grid>
         </Grid>
