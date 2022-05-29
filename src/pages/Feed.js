@@ -10,553 +10,61 @@
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 import { useState } from "react";
+import Grid from "@mui/material/Grid";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, Row, Col } from "antd";
+import { Card } from "antd";
+const { Meta } = Card;
 
-import {
-  Card,
-  Col,
-  Row,
-  Typography,
-  Tooltip,
-  Progress,
-  Upload,
-  message,
-  Button,
-  Timeline,
-  Radio,
-} from "antd";
-import {
-  ToTopOutlined,
-  MenuUnfoldOutlined,
-  RightOutlined,
-} from "@ant-design/icons";
-import Paragraph from "antd/lib/typography/Paragraph";
-
-import Echart from "../components/chart/EChart";
-import LineChart from "../components/chart/LineChart";
-
-import ava1 from "../assets/images/logo-shopify.svg";
-import ava2 from "../assets/images/logo-atlassian.svg";
-import ava3 from "../assets/images/logo-slack.svg";
-import ava4 from "../assets/images/logo-spotify.svg";
-import ava5 from "../assets/images/logo-jira.svg";
-import ava6 from "../assets/images/logo-invision.svg";
-import team1 from "../assets/images/team-1.jpg";
-import team2 from "../assets/images/team-2.jpg";
-import team3 from "../assets/images/team-3.jpg";
-import team4 from "../assets/images/team-4.jpg";
-import card from "../assets/images/info-card-1.jpg";
-
-function Home() {
-  const { Title, Text } = Typography;
-
-  const onChange = (e) => console.log(`radio checked:${e.target.value}`);
-
-  const [reverse, setReverse] = useState(false);
-
-  const dollor = [
-    <svg
-      width="22"
-      height="22"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      key={0}
-    >
-      <path
-        d="M8.43338 7.41784C8.58818 7.31464 8.77939 7.2224 9 7.15101L9.00001 8.84899C8.77939 8.7776 8.58818 8.68536 8.43338 8.58216C8.06927 8.33942 8 8.1139 8 8C8 7.8861 8.06927 7.66058 8.43338 7.41784Z"
-        fill="#fff"
-      ></path>
-      <path
-        d="M11 12.849L11 11.151C11.2206 11.2224 11.4118 11.3146 11.5666 11.4178C11.9308 11.6606 12 11.8861 12 12C12 12.1139 11.9308 12.3394 11.5666 12.5822C11.4118 12.6854 11.2206 12.7776 11 12.849Z"
-        fill="#fff"
-      ></path>
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18ZM11 5C11 4.44772 10.5523 4 10 4C9.44772 4 9 4.44772 9 5V5.09199C8.3784 5.20873 7.80348 5.43407 7.32398 5.75374C6.6023 6.23485 6 7.00933 6 8C6 8.99067 6.6023 9.76515 7.32398 10.2463C7.80348 10.5659 8.37841 10.7913 9.00001 10.908L9.00002 12.8492C8.60902 12.7223 8.31917 12.5319 8.15667 12.3446C7.79471 11.9275 7.16313 11.8827 6.74599 12.2447C6.32885 12.6067 6.28411 13.2382 6.64607 13.6554C7.20855 14.3036 8.05956 14.7308 9 14.9076L9 15C8.99999 15.5523 9.44769 16 9.99998 16C10.5523 16 11 15.5523 11 15L11 14.908C11.6216 14.7913 12.1965 14.5659 12.676 14.2463C13.3977 13.7651 14 12.9907 14 12C14 11.0093 13.3977 10.2348 12.676 9.75373C12.1965 9.43407 11.6216 9.20873 11 9.09199L11 7.15075C11.391 7.27771 11.6808 7.4681 11.8434 7.65538C12.2053 8.07252 12.8369 8.11726 13.254 7.7553C13.6712 7.39335 13.7159 6.76176 13.354 6.34462C12.7915 5.69637 11.9405 5.26915 11 5.09236V5Z"
-        fill="#fff"
-      ></path>
-    </svg>,
-  ];
-  const profile = [
-    <svg
-      width="22"
-      height="22"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      key={0}
-    >
-      <path
-        d="M9 6C9 7.65685 7.65685 9 6 9C4.34315 9 3 7.65685 3 6C3 4.34315 4.34315 3 6 3C7.65685 3 9 4.34315 9 6Z"
-        fill="#fff"
-      ></path>
-      <path
-        d="M17 6C17 7.65685 15.6569 9 14 9C12.3431 9 11 7.65685 11 6C11 4.34315 12.3431 3 14 3C15.6569 3 17 4.34315 17 6Z"
-        fill="#fff"
-      ></path>
-      <path
-        d="M12.9291 17C12.9758 16.6734 13 16.3395 13 16C13 14.3648 12.4393 12.8606 11.4998 11.6691C12.2352 11.2435 13.0892 11 14 11C16.7614 11 19 13.2386 19 16V17H12.9291Z"
-        fill="#fff"
-      ></path>
-      <path
-        d="M6 11C8.76142 11 11 13.2386 11 16V17H1V16C1 13.2386 3.23858 11 6 11Z"
-        fill="#fff"
-      ></path>
-    </svg>,
-  ];
-  const heart = [
-    <svg
-      width="22"
-      height="22"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      key={0}
-    >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M3.17157 5.17157C4.73367 3.60948 7.26633 3.60948 8.82843 5.17157L10 6.34315L11.1716 5.17157C12.7337 3.60948 15.2663 3.60948 16.8284 5.17157C18.3905 6.73367 18.3905 9.26633 16.8284 10.8284L10 17.6569L3.17157 10.8284C1.60948 9.26633 1.60948 6.73367 3.17157 5.17157Z"
-        fill="#fff"
-      ></path>
-    </svg>,
-  ];
-  const cart = [
-    <svg
-      width="22"
-      height="22"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      key={0}
-    >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M10 2C7.79086 2 6 3.79086 6 6V7H5C4.49046 7 4.06239 7.38314 4.00612 7.88957L3.00612 16.8896C2.97471 17.1723 3.06518 17.455 3.25488 17.6669C3.44458 17.8789 3.71556 18 4 18H16C16.2844 18 16.5554 17.8789 16.7451 17.6669C16.9348 17.455 17.0253 17.1723 16.9939 16.8896L15.9939 7.88957C15.9376 7.38314 15.5096 7 15 7H14V6C14 3.79086 12.2091 2 10 2ZM12 7V6C12 4.89543 11.1046 4 10 4C8.89543 4 8 4.89543 8 6V7H12ZM6 10C6 9.44772 6.44772 9 7 9C7.55228 9 8 9.44772 8 10C8 10.5523 7.55228 11 7 11C6.44772 11 6 10.5523 6 10ZM13 9C12.4477 9 12 9.44772 12 10C12 10.5523 12.4477 11 13 11C13.5523 11 14 10.5523 14 10C14 9.44772 13.5523 9 13 9Z"
-        fill="#fff"
-      ></path>
-    </svg>,
-  ];
-  const count = [
-    {
-      today: "Today’s Sales",
-      title: "$53,000",
-      persent: "+30%",
-      icon: dollor,
-      bnb: "bnb2",
-    },
-    {
-      today: "Today’s Users",
-      title: "3,200",
-      persent: "+20%",
-      icon: profile,
-      bnb: "bnb2",
-    },
-    {
-      today: "New Clients",
-      title: "+1,200",
-      persent: "-20%",
-      icon: heart,
-      bnb: "redtext",
-    },
-    {
-      today: "New Orders",
-      title: "$13,200",
-      persent: "10%",
-      icon: cart,
-      bnb: "bnb2",
-    },
-  ];
-
-  const list = [
-    {
-      img: ava1,
-      Title: "Soft UI Shopify Version",
-      bud: "$14,000",
-      progress: <Progress percent={60} size="small" />,
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            <img className="tootip-img" src={team1} alt="" />
-          </Tooltip>
-          <Tooltip placement="bottom" title="Romina Hadid">
-            <img className="tootip-img" src={team2} alt="" />
-          </Tooltip>
-          <Tooltip placement="bottom" title="Alexander Smith">
-            <img className="tootip-img" src={team3} alt="" />
-          </Tooltip>
-          <Tooltip placement="bottom" title="Jessica Doe">
-            <img className="tootip-img" src={team4} alt="" />
-          </Tooltip>
-        </div>
-      ),
-    },
-    {
-      img: ava2,
-      Title: "Progress Track",
-      bud: "$3,000",
-      progress: <Progress percent={10} size="small" />,
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            <img className="tootip-img" src={team1} alt="" />
-          </Tooltip>
-          <Tooltip placement="bottom" title="Romina Hadid">
-            <img className="tootip-img" src={team2} alt="" />
-          </Tooltip>
-        </div>
-      ),
-    },
-    {
-      img: ava3,
-      Title: "Fix Platform Errors",
-      bud: "Not Set",
-      progress: <Progress percent={100} size="small" status="active" />,
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            <img className="tootip-img" src={team1} alt="" />
-          </Tooltip>
-          <Tooltip placement="bottom" title="Romina Hadid">
-            <img className="tootip-img" src={team1} alt="" />
-          </Tooltip>
-          <Tooltip placement="bottom" title="Alexander Smith">
-            <img className="tootip-img" src={team3} alt="" />
-          </Tooltip>
-        </div>
-      ),
-    },
-    {
-      img: ava4,
-      Title: "Launch new Mobile App",
-      bud: "$20,600",
-      progress: <Progress percent={100} size="small" status="active" />,
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            <img className="tootip-img" src={team1} alt="" />
-          </Tooltip>
-          <Tooltip placement="bottom" title="Romina Hadid">
-            <img className="tootip-img" src={team2} alt="" />
-          </Tooltip>
-        </div>
-      ),
-    },
-    {
-      img: ava5,
-      Title: "Add the New Landing Page",
-      bud: "$4,000",
-      progress: <Progress percent={80} size="small" />,
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            <img className="tootip-img" src={team1} alt="" />
-          </Tooltip>
-          <Tooltip placement="bottom" title="Romina Hadid">
-            <img className="tootip-img" src={team2} alt="" />
-          </Tooltip>
-          <Tooltip placement="bottom" title="Alexander Smith">
-            <img className="tootip-img" src={team3} alt="" />
-          </Tooltip>
-          <Tooltip placement="bottom" title="Jessica Doe">
-            <img className="tootip-img" src={team4} alt="" />
-          </Tooltip>
-        </div>
-      ),
-    },
-
-    {
-      img: ava6,
-      Title: "Redesign Online Store",
-      bud: "$2,000",
-      progress: (
-        <Progress
-          percent={100}
-          size="small"
-          status="exception"
-          format={() => "Cancel"}
-        />
-      ),
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            <img className="tootip-img" src={team1} alt="" />
-          </Tooltip>
-          <Tooltip placement="bottom" title="Romina Hadid">
-            <img className="tootip-img" src={team2} alt="" />
-          </Tooltip>
-        </div>
-      ),
-    },
-  ];
-
-  const timelineList = [
-    {
-      title: "$2,400 - Redesign store",
-      time: "09 JUN 7:20 PM",
-      color: "green",
-    },
-    {
-      title: "New order #3654323",
-      time: "08 JUN 12:20 PM",
-      color: "green",
-    },
-    {
-      title: "Company server payments",
-      time: "04 JUN 3:10 PM",
-    },
-    {
-      title: "New card added for order #4826321",
-      time: "02 JUN 2:45 PM",
-    },
-    {
-      title: "Unlock folders for development",
-      time: "18 MAY 1:30 PM",
-    },
-    {
-      title: "New order #46282344",
-      time: "14 MAY 3:30 PM",
-      color: "gray",
-    },
-  ];
-
-  const uploadProps = {
-    name: "file",
-    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-    headers: {
-      authorization: "authorization-text",
-    },
-
-    onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
-
+function Feed() {
   return (
     <>
-      <div className="layout-content">
-        <Row className="rowgap-vbox" gutter={[24, 0]}>
-          {count.map((c, index) => (
-            <Col
-              key={index}
-              xs={24}
-              sm={24}
-              md={12}
-              lg={6}
-              xl={6}
-              className="mb-24"
-            >
-              <Card bordered={false} className="criclebox ">
-                <div className="number">
-                  <Row align="middle" gutter={[24, 0]}>
-                    <Col xs={18}>
-                      <span>{c.today}</span>
-                      <Title level={3}>
-                        {c.title} <small className={c.bnb}>{c.persent}</small>
-                      </Title>
-                    </Col>
-                    <Col xs={6}>
-                      <div className="icon-box">{c.icon}</div>
-                    </Col>
-                  </Row>
-                </div>
+      <Grid container direction="column" spacing={4}>
+        <Grid item>
+          <Grid item container justifyContent="flex-end">
+            <Grid item>
+              <Button
+                type="dashed"
+                className="ant-full-box"
+                icon={<PlusOutlined />}
+              >
+                <span className="click">Add Feed</span>
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid item>
+          <Grid container>
+            <Grid item>
+              <Card
+                hoverable
+                style={{
+                  minWidth: 450,
+                }}
+                cover={
+                  <img
+                    alt="example"
+                    src="data:image/jpeg;base64,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"
+                  />
+                }
+              >
+                <Meta title="Feed" description="Feed Description add here" />
+                <Grid container justifyContent="flex-end" spacing={1}>
+                  <Grid item>
+                    <Button>Update</Button>
+                  </Grid>
+                  <Grid item>
+                    <Button>Delete</Button>
+                  </Grid>
+                </Grid>
               </Card>
-            </Col>
-          ))}
-        </Row>
-
-        <Row gutter={[24, 0]}>
-          <Col xs={24} sm={24} md={12} lg={12} xl={10} className="mb-24">
-            <Card bordered={false} className="criclebox h-full">
-              <Echart />
-            </Card>
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={14} className="mb-24">
-            <Card bordered={false} className="criclebox h-full">
-              <LineChart />
-            </Card>
-          </Col>
-        </Row>
-
-        <Row gutter={[24, 0]}>
-          <Col xs={24} sm={24} md={12} lg={12} xl={16} className="mb-24">
-            <Card bordered={false} className="criclebox cardbody h-full">
-              <div className="project-ant">
-                <div>
-                  <Title level={5}>Projects</Title>
-                  <Paragraph className="lastweek">
-                    done this month<span className="blue">40%</span>
-                  </Paragraph>
-                </div>
-                <div className="ant-filtertabs">
-                  <div className="antd-pro-pages-dashboard-analysis-style-salesExtra">
-                    <Radio.Group onChange={onChange} defaultValue="a">
-                      <Radio.Button value="a">ALL</Radio.Button>
-                      <Radio.Button value="b">ONLINE</Radio.Button>
-                      <Radio.Button value="c">STORES</Radio.Button>
-                    </Radio.Group>
-                  </div>
-                </div>
-              </div>
-              <div className="ant-list-box table-responsive">
-                <table className="width-100">
-                  <thead>
-                    <tr>
-                      <th>COMPANIES</th>
-                      <th>MEMBERS</th>
-                      <th>BUDGET</th>
-                      <th>COMPLETION</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {list.map((d, index) => (
-                      <tr key={index}>
-                        <td>
-                          <h6>
-                            <img
-                              src={d.img}
-                              alt=""
-                              className="avatar-sm mr-10"
-                            />{" "}
-                            {d.Title}
-                          </h6>
-                        </td>
-                        <td>{d.member}</td>
-                        <td>
-                          <span className="text-xs font-weight-bold">
-                            {d.bud}{" "}
-                          </span>
-                        </td>
-                        <td>
-                          <div className="percent-progress">{d.progress}</div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="uploadfile shadow-none">
-                <Upload {...uploadProps}>
-                  <Button
-                    type="dashed"
-                    className="ant-full-box"
-                    icon={<ToTopOutlined />}
-                  >
-                    <span className="click">Click to Upload</span>
-                  </Button>
-                </Upload>
-              </div>
-            </Card>
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={8} className="mb-24">
-            <Card bordered={false} className="criclebox h-full">
-              <div className="timeline-box">
-                <Title level={5}>Orders History</Title>
-                <Paragraph className="lastweek" style={{ marginBottom: 24 }}>
-                  this month <span className="bnb2">20%</span>
-                </Paragraph>
-
-                <Timeline
-                  pending="Recording..."
-                  className="timelinelist"
-                  reverse={reverse}
-                >
-                  {timelineList.map((t, index) => (
-                    <Timeline.Item color={t.color} key={index}>
-                      <Title level={5}>{t.title}</Title>
-                      <Text>{t.time}</Text>
-                    </Timeline.Item>
-                  ))}
-                </Timeline>
-                <Button
-                  type="primary"
-                  className="width-100"
-                  onClick={() => setReverse(!reverse)}
-                >
-                  {<MenuUnfoldOutlined />} REVERSE
-                </Button>
-              </div>
-            </Card>
-          </Col>
-        </Row>
-
-        <Row gutter={[24, 0]}>
-          <Col xs={24} md={12} sm={24} lg={12} xl={14} className="mb-24">
-            <Card bordered={false} className="criclebox h-full">
-              <Row gutter>
-                <Col
-                  xs={24}
-                  md={12}
-                  sm={24}
-                  lg={12}
-                  xl={14}
-                  className="mobile-24"
-                >
-                  <div className="h-full col-content p-20">
-                    <div className="ant-muse">
-                      <Text>Built by developers</Text>
-                      <Title level={5}>Muse Dashboard for Ant Design</Title>
-                      <Paragraph className="lastweek mb-36">
-                        From colors, cards, typography to complex elements, you
-                        will find the full documentation.
-                      </Paragraph>
-                    </div>
-                    <div className="card-footer">
-                      <a className="icon-move-right" href="#pablo">
-                        Read More
-                        {<RightOutlined />}
-                      </a>
-                    </div>
-                  </div>
-                </Col>
-                <Col
-                  xs={24}
-                  md={12}
-                  sm={24}
-                  lg={12}
-                  xl={10}
-                  className="col-img"
-                >
-                  <div className="ant-cret" style={{ textAlign: "left" }}>
-                    <img src={card} alt="" className="border10" />
-                  </div>
-                </Col>
-              </Row>
-            </Card>
-          </Col>
-
-          <Col xs={24} md={12} sm={24} lg={12} xl={10} className="mb-24">
-            <Card bordered={false} className="criclebox card-info-2 h-full">
-              <div className="gradent h-full col-content">
-                <div className="card-content">
-                  <Title level={5}>Work with the best</Title>
-                  <p>
-                    Wealth creation is an evolutionarily recent positive-sum
-                    game. It is all about who take the opportunity first.
-                  </p>
-                </div>
-                <div className="card-footer">
-                  <a className="icon-move-right" href="#pablo">
-                    Read More
-                    <RightOutlined />
-                  </a>
-                </div>
-              </div>
-            </Card>
-          </Col>
-        </Row>
-      </div>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
     </>
   );
 }
 
-export default Home;
+export default Feed;
