@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react"
+import axios from "axios";
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,9 +19,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import { makeStyles } from '@mui/styles';
-import axios from "axios";
-import { useState, useEffect } from "react"
-  
+
 const useStyles = makeStyles({
 
   mainHeading: {
@@ -43,21 +44,48 @@ function Auditor() {
   const [data, setData] = useState([]);
   
  useEffect(() => {
-   axios
-     .get("127.0.0.1:3000/users/")
-     .then((res) => {
-       setData(res.data);
-       console.log("Result:", data);
-     })
-     .catch((error) => {
-       console.log(error);
-     });
- }, []);
- 
+//    axios
+//      .get("127.0.0.1:3000/users/")
+//      .then((res) => {
+//        setData(res.data);
+//        console.log("Result:", data);
+//      })
+//      .catch((error) => {
+//        console.log(error);
+//      });
 
-  function handleChange() {
-      alert("Do you really want to Edit!");
-  }
+// axios.get('https://127.0.0.1:3000/users/', {
+//   headers: {
+//     "x-auth-token": 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0'
+//   }
+// })
+// .then((res) => {
+//     setData(res.data);
+//     console.log(res.data)
+// })
+// .catch((error) => {
+//     console.error(error)
+// })
+
+
+
+const headers = {
+    'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
+    // 'Access-Control-Allow-Credentials':true
+
+  };
+  
+axios.get('http://127.0.0.1:3000/users/', {headers})
+.then((res) => {
+    setData(res.data);
+    console.log(res.data)
+})
+.catch((error) => {
+    console.error(error)
+    console.log('check err')
+})
+
+ }, []);
 
   const handleDeleteClick = (auditorId) => {
     console.log({auditorId})
@@ -124,7 +152,7 @@ function Auditor() {
                       <TableCell align='center'>
                         <Stack direction="row" alignItems="center" gap={2}>
                           <Button variant="contained" color="secondary">Approved</Button> 
-                          <Button className={classes.editButton} variant="contained" color="primary" onClick={()=>{handleChange(row.id)}} >Edit</Button> 
+                          <Button className={classes.editButton} variant="contained" color="primary" >Edit</Button> 
                           <Button variant="contained" color="error" onClick={() => {setOpen(true)} }>Delete</Button>
                         </Stack>
                         <Dialog aria-labelledby='dialog-title' 
