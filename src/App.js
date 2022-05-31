@@ -4,6 +4,7 @@ import Tables from "./pages/Tables";
 import Billing from "./pages/Billing";
 import Rtl from "./pages/Rtl";
 import LandOwner from "./pages/LandOwner";
+import Auditor from "./pages/Auditor";
 import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
@@ -24,6 +25,7 @@ function App() {
           <Route exact path="/billing" component={Billing} />
           <Route exact path="/rtl" component={Rtl} />
           <Route exact path="/landOwner" component={LandOwner} />
+          <Route exact path="/auditor" component={Auditor} />
           <Route exact path="/profile" component={Profile} />
           <Redirect from="*" to="/dashboard" />
         </Main>
