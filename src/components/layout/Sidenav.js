@@ -73,7 +73,7 @@ function Sidenav({ color }) {
     </svg>,
   ];
 
-  const rtl = [
+  const feed = [
     <svg
       width="20"
       height="20"
@@ -231,16 +231,16 @@ function Sidenav({ color }) {
           </NavLink>
         </Menu.Item>
         <Menu.Item key="4">
-          <NavLink to="/rtl">
+          <NavLink to="/feed">
             <span
               className="icon"
               style={{
-                background: page === "rtl" ? color : "",
+                background: page === "feed" ? color : "",
               }}
             >
-              {rtl}
+              {feed}
             </span>
-            <span className="label">RTL</span>
+            <span className="label">Feed</span>
           </NavLink>
         </Menu.Item>
         <Menu.Item key="5">

@@ -11,11 +11,12 @@ const { Title } = Typography;
 const { Content } = Layout;
 
 export default function SignUp() {
+  const { AuthSignup } = AuthService();
+
   // function when validation is success
   const onFinish = (values) => {
     console.log("Success:", values);
-    // signup function from AuthService component
-    AuthService.signup(values);
+    AuthSignup(values);
   };
 
   // function when validation is unsuccess
@@ -72,7 +73,7 @@ export default function SignUp() {
                   { required: true, message: "Please input your password!" },
                 ]}
               >
-                <Input placeholder="Passwoed" />
+                <Input type="password" placeholder="Password" />
               </Form.Item>
 
               <Form.Item name="remember" valuePropName="checked">
