@@ -1,8 +1,7 @@
 import axios from "axios";
 
 export default axios.create({
-  // REST API's url
-  baseURL: "http://localhost:4000/admin",
+  baseURL: "http://localhost:3000/admin",
   headers: {
     "Content-type": "application/json",
   },
