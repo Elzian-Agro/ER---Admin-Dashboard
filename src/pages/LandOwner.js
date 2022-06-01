@@ -32,6 +32,11 @@ const useStyles = makeStyles({
 
   tableContainer: {
     boxShadow: "0 2px 6px rgb(0 0 0 / 0.25)"
+  },
+
+  featuredButton: {
+    fontSize: "12px",
+    padding: "5px"
   }
 });
 
@@ -41,19 +46,25 @@ function LandOwner() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
-  
- useEffect(() => {
-   axios
-     .get("https://jsonplaceholder.typicode.com/users")
-     .then((res) => {
-       setData(res.data);
-       console.log("Result:", data);
-     })
-     .catch((error) => {
-       console.log(error);
-     });
- }, []);
- 
+
+
+  useEffect(() => {
+
+  const headers = {
+    'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk',
+  };
+
+  axios.get('http://127.0.0.1:4000/landOwners/', {headers})
+  .then((res) => {
+    setData(res.data.Result);
+    console.log(res.data.Result)
+  })
+  .catch((error) => {
+    console.error(error)
+    console.log('check err')
+  })
+
+  }, []);
 
   function handleChange() {
       alert("Do you really want to Edit!");
@@ -92,10 +103,11 @@ function LandOwner() {
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <TableHead>
               <TableRow>
-                  <TableCell className={classes.tableHeading}>Land Owner Details</TableCell>
-                  <TableCell className={classes.tableHeading}>Country</TableCell>
-                  <TableCell className={classes.tableHeading}>Region</TableCell>
+                  <TableCell className={classes.tableHeading}>Land Owner Name</TableCell>
+                  <TableCell className={classes.tableHeading}>Contact</TableCell>
                   <TableCell className={classes.tableHeading}>Land Address</TableCell>
+                  <TableCell className={classes.tableHeading}>Region</TableCell>
+                  <TableCell className={classes.tableHeading}>Country</TableCell>
               </TableRow>
               </TableHead>
               <TableBody>
@@ -105,27 +117,29 @@ function LandOwner() {
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                       <TableCell>
-                      <Stack direction="row" alignItems="center" gap={1} mb={1}>
-                        <PersonOutlineIcon />
-                        <Typography variant="body1">{row.name}</Typography>
-                      </Stack>
-                      <Stack direction="row" alignItems="center" gap={1} mb={1}>
-                        <CallOutlinedIcon />
-                        <Typography variant="body1">{row.phone}</Typography>
-                      </Stack>
-                      <Stack direction="row" alignItems="center" gap={1}>
-                        <EmailOutlinedIcon />
-                        <Typography variant="body1">{row.email}</Typography>
-                      </Stack>
+                        <Stack direction="row" alignItems="center" gap={1} mb={1}>
+                          <PersonOutlineIcon />
+                          <Typography variant="body1">{row.landOwnerName}</Typography>
+                        </Stack>
                       </TableCell>
-                      <TableCell>{row.address.city}</TableCell>
-                      <TableCell>{row.address.street}</TableCell>
-                      <TableCell>{row.address.zipcode}</TableCell>
+                      <TableCell>
+                        <Stack direction="row" alignItems="center" gap={1} mb={1}>
+                          <CallOutlinedIcon />
+                          <Typography variant="body1">{row.contactNumber}</Typography>
+                        </Stack>
+                        <Stack direction="row" alignItems="center" gap={1}>
+                          <EmailOutlinedIcon />
+                          <Typography variant="body1">{row.email}</Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell>{row.landAddress}</TableCell>
+                      <TableCell>{row.region}</TableCell>
+                      <TableCell>{row.country}</TableCell>
                       <TableCell align='center'>
                         <Stack direction="row" alignItems="center" gap={2}>
-                          <Button variant="contained" color="secondary">Approved</Button> 
-                          <Button className={classes.editButton} variant="contained" color="primary" onClick={()=>{handleChange(row.id)}} >Edit</Button> 
-                          <Button variant="contained" color="error" onClick={() => {setOpen(true)} }>Delete</Button>
+                          <Button className={classes.featuredButton} variant="contained" color="secondary">Approved</Button> 
+                          <Button className={classes.featuredButton} variant="contained" color="primary" onClick={()=>{handleChange(row.id)}} >Edit</Button> 
+                          <Button className={classes.featuredButton} variant="contained" color="error" onClick={() => {setOpen(true)} }>Delete</Button>
                         </Stack>
                         <Dialog aria-labelledby='dialog-title' 
                             open={open} 
