@@ -1,6 +1,3 @@
-import { useState, useEffect } from "react"
-import axios from "axios";
-
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -19,7 +16,9 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import { makeStyles } from '@mui/styles';
-
+import axios from "axios";
+import { useState, useEffect } from "react"
+  
 const useStyles = makeStyles({
 
   mainHeading: {
@@ -71,8 +70,7 @@ function Auditor() {
 
 const headers = {
     'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
-    // 'Access-Control-Allow-Credentials':true
-
+    // withCredentials: false,
   };
   
 axios.get('http://127.0.0.1:3000/users/', {headers})
@@ -86,6 +84,11 @@ axios.get('http://127.0.0.1:3000/users/', {headers})
 })
 
  }, []);
+
+
+  function handleChange() {
+      alert("Do you really want to Edit!");
+  }
 
   const handleDeleteClick = (auditorId) => {
     console.log({auditorId})
@@ -127,32 +130,33 @@ axios.get('http://127.0.0.1:3000/users/', {headers})
               </TableRow>
               </TableHead>
               <TableBody>
-              {data.map((row) => (
+              {/* {data.map((row) => ( */}
+              {/* {this.props.data.map((data, index) => ( */}
                   <TableRow
-                      key={row.id}
+                //   key={index}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                       <TableCell>
                       <Stack direction="row" alignItems="center" gap={1} mb={1}>
                         <PersonOutlineIcon />
-                        <Typography variant="body1">{row.fullName}</Typography>
+                        <Typography variant="body1">{data.fullName}</Typography>
                       </Stack>
                       <Stack direction="row" alignItems="center" gap={1} mb={1}>
                         <CallOutlinedIcon />
-                        <Typography variant="body1">{row.contactNumber}</Typography>
+                        <Typography variant="body1">{data.contactNumber}</Typography>
                       </Stack>
                       <Stack direction="row" alignItems="center" gap={1}>
                         <EmailOutlinedIcon />
-                        <Typography variant="body1">{row.email}</Typography>
+                        <Typography variant="body1">{data.email}</Typography>
                       </Stack>
                       </TableCell>
-                      <TableCell>{row.userType}</TableCell>
+                      <TableCell>{data.userType}</TableCell>
                       {/* <TableCell>{row.address.street}</TableCell> */}
-                      <TableCell>{row.address}</TableCell>
+                      <TableCell>{data.address}</TableCell>
                       <TableCell align='center'>
                         <Stack direction="row" alignItems="center" gap={2}>
                           <Button variant="contained" color="secondary">Approved</Button> 
-                          <Button className={classes.editButton} variant="contained" color="primary" >Edit</Button> 
+                          <Button className={classes.editButton} variant="contained" color="primary" onClick={()=>{handleChange(data.id)}} >Edit</Button> 
                           <Button variant="contained" color="error" onClick={() => {setOpen(true)} }>Delete</Button>
                         </Stack>
                         <Dialog aria-labelledby='dialog-title' 
@@ -169,12 +173,11 @@ axios.get('http://127.0.0.1:3000/users/', {headers})
                             <DialogTitle id='dialog-title'>Do you really want to delete?</DialogTitle>
                             <DialogActions>
                                 <Button onClick={() => setOpen(false)}>Cancel</Button>
-                                <Button onClick={() => handleDeleteClick(row.id)} color="error">Delete</Button>
+                                <Button onClick={() => handleDeleteClick(data.id)} color="error">Delete</Button>
                             </DialogActions>
                           </Dialog>
                       </TableCell>
                   </TableRow>
-              ))}
               </TableBody>
           </Table>
       </TableContainer>
