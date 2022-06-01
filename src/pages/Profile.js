@@ -16,17 +16,13 @@ import {
   Col,
   Card,
   Button,
-  List,
   Descriptions,
   Avatar,
-  Radio,
-  Switch,
   Upload,
   message,
   Modal,
-  Form, 
-  Input, 
-  InputNumber,
+  Form,
+  Input,
 } from "antd";
 
 import {
@@ -185,10 +181,10 @@ function Profile() {
   };
 
   const validateMessages = {
-    required: '${label} is required!',
+    required: "${label} is required!",
     types: {
-      email: '${label} is not a valid email!',
-      number: '${label} is not a valid number!',
+      email: "${label} is not a valid email!",
+      number: "${label} is not a valid number!",
     },
     // number: {
     //   range: '${label} must be between ${min} and ${max}',
@@ -233,10 +229,20 @@ function Profile() {
               <Button type="primary" onClick={showModal}>
                 Update Profile
               </Button>
-              <Modal title="Personal Information" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+              <Modal
+                title="Personal Information"
+                visible={isModalVisible}
+                onOk={handleOk}
+                onCancel={handleCancel}
+              >
+                <Form
+                  {...layout}
+                  name="nest-messages"
+                  onFinish={onFinish}
+                  validateMessages={validateMessages}
+                >
                   <Form.Item
-                    name={['user', 'name']}
+                    name={["user", "name"]}
                     label="Name"
                     rules={[
                       {
@@ -247,31 +253,34 @@ function Profile() {
                     <Input />
                   </Form.Item>
                   <Form.Item
-                    name={['user', 'mobileNo']}
+                    name={["user", "mobileNo"]}
                     label="Mobile No."
                     rules={[
                       {
-                        type: 'number',
+                        type: "number",
                       },
                     ]}
                   >
                     <Input />
                   </Form.Item>
                   <Form.Item
-                    name={['user', 'email']}
+                    name={["user", "email"]}
                     label="Email"
                     rules={[
                       {
-                        type: 'email',
+                        type: "email",
                       },
                     ]}
                   >
                     <Input />
                   </Form.Item>
-                  <Form.Item name={['user', 'location']} label="Location">
+                  <Form.Item name={["user", "location"]} label="Location">
                     <Input />
                   </Form.Item>
-                  <Form.Item name={['user', 'profileinfo']} label="Profile Information">
+                  <Form.Item
+                    name={["user", "profileinfo"]}
+                    label="Profile Information"
+                  >
                     <Input.TextArea />
                   </Form.Item>
                   <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
@@ -410,7 +419,9 @@ function Profile() {
         className="header-solid mb-24"
         title={
           <>
-            <h6 className="font-semibold">Blockchain Secured C-PES Production Verification System</h6>
+            <h6 className="font-semibold">
+              Blockchain Secured C-PES Production Verification System
+            </h6>
             {/* <p>Architects design houses</p> */}
           </>
         }
