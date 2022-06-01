@@ -1767,7 +1767,7 @@ body {
 /* sign up start */
 .layout-default.ant-layout.layout-sign-up header.ant-layout-header {
   background-color: transparent;
-  color: #fff;
+  /* color: #fff; */
   margin: 0;
   padding: 0 20px;
   z-index: 1;
@@ -1820,13 +1820,13 @@ body {
   font-weight: 600;
 }
 
-.header-col.header-nav {
-  color: #fff;
+.header-col.header-nav Menu span {
+  color: rgb(41, 16, 16);
   font-weight: 600;
 }
 
 .header-col.header-nav ul li {
-  color: #fff !important;
+  /* color: #fff !important; */
 }
 
 .header-col.header-nav ul li img {
@@ -1845,11 +1845,11 @@ body {
   margin: auto;
 }
 .sign-up-header * {
-  color: #fff;
+  /* color: #fff; */
 }
 .sign-up-header .content h1 {
   font-size: 48px;
-  color: #fff;
+  /* color: #fff; */
 }
 .text-lg {
   font-size: 16px;
