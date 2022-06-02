@@ -16,17 +16,13 @@ import {
   Col,
   Card,
   Button,
-  List,
   Descriptions,
   Avatar,
-  Radio,
-  Switch,
   Upload,
   message,
   Modal,
-  Form, 
-  Input, 
-  InputNumber,
+  Form,
+  Input,
 } from "antd";
 
 import {
@@ -38,18 +34,13 @@ import {
 
 import BgProfile from "../assets/images/pexels-richa-sharma-4217311.jpg";
 import profilavatar from "../assets/images/face-1.jpg";
-import convesionImg from "../assets/images/face-3.jpg";
-import convesionImg2 from "../assets/images/face-4.jpg";
-import convesionImg3 from "../assets/images/face-5.jpeg";
-import convesionImg4 from "../assets/images/face-6.jpeg";
-import convesionImg5 from "../assets/images/face-2.jpg";
 import project1 from "../assets/images/qr-code.png";
 import project2 from "../assets/images/qr-code.png";
 import project3 from "../assets/images/qr-code.png";
 
 function Profile() {
   const [imageURL, setImageURL] = useState(false);
-  const [, setLoading] = useState(false);
+  const [setLoading] = useState(false);
 
   const getBase64 = (img, callback) => {
     const reader = new FileReader();
@@ -109,34 +100,6 @@ function Profile() {
     </div>
   );
 
-  const data = [
-    {
-      title: "Sophie B.",
-      avatar: convesionImg,
-      description: "Hi! I need more information…",
-    },
-    {
-      title: "Anne Marie",
-      avatar: convesionImg2,
-      description: "Awesome work, can you…",
-    },
-    {
-      title: "Ivan",
-      avatar: convesionImg3,
-      description: "About files I can…",
-    },
-    {
-      title: "Peterson",
-      avatar: convesionImg4,
-      description: "Have a great afternoon…",
-    },
-    {
-      title: "Nick Daniel",
-      avatar: convesionImg5,
-      description: "Hi! I need more information…",
-    },
-  ];
-
   const project = [
     {
       img: project1,
@@ -185,19 +148,19 @@ function Profile() {
   };
 
   const validateMessages = {
-    required: '${label} is required!',
+    required: '$"label" is required!',
     types: {
-      email: '${label} is not a valid email!',
-      number: '${label} is not a valid number!',
+      email: '$"label" is not a valid email!',
+      number: '$"label" is not a valid number!',
     },
-    // number: {
-    //   range: '${label} must be between ${min} and ${max}',
-    // },
   };
 
   const onFinish = (values) => {
     console.log(values);
   };
+
+  const handleSubmit = () => {
+  }
 
   return (
     <>
@@ -233,10 +196,10 @@ function Profile() {
               <Button type="primary" onClick={showModal}>
                 Update Profile
               </Button>
-              <Modal title="Personal Information" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+              <Modal title="Personal Information" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} footer={null}>
                 <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
                   <Form.Item
-                    name={['user', 'name']}
+                    name={["user", "name"]}
                     label="Name"
                     rules={[
                       {
@@ -247,94 +210,46 @@ function Profile() {
                     <Input />
                   </Form.Item>
                   <Form.Item
-                    name={['user', 'mobileNo']}
+                    name={["user", "mobileNo"]}
                     label="Mobile No."
                     rules={[
-                      {
-                        type: 'number',
-                      },
                     ]}
                   >
                     <Input />
                   </Form.Item>
                   <Form.Item
-                    name={['user', 'email']}
+                    name={["user", "email"]}
                     label="Email"
                     rules={[
                       {
-                        type: 'email',
+                        type: "email",
                       },
                     ]}
                   >
                     <Input />
                   </Form.Item>
-                  <Form.Item name={['user', 'location']} label="Location">
+                  <Form.Item name={["user", "location"]} label="Location">
                     <Input />
                   </Form.Item>
-                  <Form.Item name={['user', 'profileinfo']} label="Profile Information">
+                  <Form.Item
+                    name={["user", "profileinfo"]}
+                    label="Profile Information"
+                  >
                     <Input.TextArea />
                   </Form.Item>
                   <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" onClick={handleSubmit}>
                       Submit
                     </Button>
                   </Form.Item>
                 </Form>
               </Modal>
-              {/* <Radio.Group defaultValue="a">
-                <Radio.Button value="a">OVERVIEW</Radio.Button>
-                <Radio.Button value="b">TEAMS</Radio.Button>
-                <Radio.Button value="c">PROJECTS</Radio.Button>
-              </Radio.Group> */}
             </Col>
           </Row>
         }
       ></Card>
 
       <Row gutter={[24, 0]}>
-        {/* <Col span={24} md={8} className="mb-24 ">
-          <Card
-            bordered={false}
-            className="header-solid h-full"
-            title={<h6 className="font-semibold m-0">Platform Settings</h6>}
-          >
-            <ul className="list settings-list">
-              <li>
-                <h6 className="list-header text-sm text-muted">ACCOUNT</h6>
-              </li>
-              <li>
-                <Switch defaultChecked />
-
-                <span>Email me when someone follows me</span>
-              </li>
-              <li>
-                <Switch />
-                <span>Email me when someone answers me</span>
-              </li>
-              <li>
-                <Switch defaultChecked />
-                <span>Email me when someone mentions me</span>
-              </li>
-              <li>
-                <h6 className="list-header text-sm text-muted m-0">
-                  APPLICATION
-                </h6>
-              </li>
-              <li>
-                <Switch defaultChecked />
-                <span>New launches and projects</span>
-              </li>
-              <li>
-                <Switch defaultChecked />
-                <span>Monthly product updates</span>
-              </li>
-              <li>
-                <Switch defaultChecked />
-                <span>Subscribe to newsletter</span>
-              </li>
-            </ul>
-          </Card>
-        </Col> */}
         <Col span={12} offset={6} className="mb-24">
           <Card
             bordered={false}
@@ -378,32 +293,6 @@ function Profile() {
             </Descriptions>
           </Card>
         </Col>
-        {/* <Col span={24} md={12} className="mb-24">
-          <Card
-            bordered={false}
-            title={<h6 className="font-semibold m-0">Conversations</h6>}
-            className="header-solid h-full"
-            bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
-          >
-            <List
-              itemLayout="horizontal"
-              dataSource={data}
-              split={false}
-              className="conversations-list"
-              renderItem={(item) => (
-                <List.Item actions={[<Button type="link">REPLY</Button>]}>
-                  <List.Item.Meta
-                    avatar={
-                      <Avatar shape="square" size={48} src={item.avatar} />
-                    }
-                    title={item.title}
-                    description={item.description}
-                  />
-                </List.Item>
-              )}
-            />
-          </Card>
-        </Col> */}
       </Row>
       <Card
         bordered={false}
@@ -411,7 +300,6 @@ function Profile() {
         title={
           <>
             <h6 className="font-semibold">Blockchain Secured C-PES Production Verification System</h6>
-            {/* <p>Architects design houses</p> */}
           </>
         }
       >
@@ -430,14 +318,6 @@ function Profile() {
                   <Col span={12}>
                     <Button type="button">VIEW PROJECT</Button>
                   </Col>
-                  {/* <Col span={12} className="text-right">
-                    <Avatar.Group className="avatar-chips">
-                      <Avatar size="small" src={profilavatar} />
-                      <Avatar size="small" src={convesionImg} />
-                      <Avatar size="small" src={convesionImg2} />
-                      <Avatar size="small" src={convesionImg3} />
-                    </Avatar.Group>
-                  </Col> */}
                 </Row>
               </Card>
             </Col>
