@@ -2,7 +2,11 @@ import { useCookies } from "react-cookie";
 import http from "./http-common";
 
 export default function AuthService() {
-  const [setCookie] = useCookies("token");
+  const [cookies, setCookie] = useCookies(["token"]);
+
+  // const handleCookie(){
+  //   setCookie()
+  // }
   // signup function
   async function AuthSignup(data) {
     // destructure the data Object
@@ -10,7 +14,7 @@ export default function AuthService() {
     return http
       .post("/addUser", { userName: Name, email, password })
       .then((res) => console.log(res.data.message))
-      .catch((err) => console.log(err.response.data.Message));
+      .catch((err) => console.log(err));
   }
 
   // signin function

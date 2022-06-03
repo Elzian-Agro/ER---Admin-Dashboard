@@ -12,27 +12,14 @@
 import { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import { PlusOutlined } from "@ant-design/icons";
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogActions from '@mui/material/DialogActions';
-import {
-  Row,
-  Col,
-  Card,
-  Button,
-  List,
-  Descriptions,
-  Avatar,
-  Radio,
-  Switch,
-  Upload,
-  message,
-  Modal,
-  Form,
-  Input,
-  InputNumber,
-} from "antd";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogActions from "@mui/material/DialogActions";
+import { Card, Button, Modal, Form, Input } from "antd";
 import axios from "axios";
+import { useCookies } from "react-cookie";
+import { Token } from "@mui/icons-material";
+
 const { Meta } = Card;
 
 function Feed() {
@@ -40,6 +27,17 @@ function Feed() {
   const [deleteFeed, setDeleteFeed] = useState(false);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [feedData, setFeedData] = useState([]);
+  const [selectedId, setSelectedId] = useState("");
+  const [cookies, setCookie] = useCookies(["token"]);
+  const [updateDescription, setUpdateDescription] = useState("");
+  const [updateTag, setUpdateTag] = useState("");
+  const [updateImageUrl, setUpdateImageUrl] = useState("");
+
+  axios.defaults.headers = {
+    "Content-Type": "application/json",
+    "x-auth-token": cookies.token,
+  };
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -63,17 +61,24 @@ function Feed() {
 
   useEffect(() => {
     GetAllFeeds();
-  }, []);
+  }, [deleteFeed]);
 
   const GetAllFeeds = async () => {
     const result = await axios.get(
       "http://localhost:3000/feeds/getFeedsByTag/Elzian%20Agro"
     );
     setFeedData(result.data.Result);
-    console.log(result.data.Result);
   };
 
-  const handleDeleteClick = () =>{}
+  const handleDeleteClick = async () => {
+    // console.log(cookies.token);
+    // const token = cookies.token;
+
+    const result = await axios.delete(
+      `http://localhost:3000/feeds/deleteFeed/${selectedId}`
+    );
+    setDeleteFeed(false);
+  };
   return (
     <>
       <Grid container direction="column" spacing={4}>
@@ -133,10 +138,10 @@ function Feed() {
                   <Card
                     hoverable
                     style={{
-                      minWidth: 500,
+                      minWidth: 400,
                     }}
                     cover={
-                      <img height="350px" alt="example" src={item.imageUrl} />
+                      <img height="300px" alt="example" src={item.imageUrl} />
                     }
                   >
                     <Meta title={item.tags} description={item.message} />
@@ -145,7 +150,12 @@ function Feed() {
                         <Button
                           type="primary"
                           color="primary"
-                          onClick={showUpdateModal}
+                          onClick={() => {
+                            showUpdateModal();
+                            setUpdateTag(item.tags);
+                            setUpdateDescription(item.message);
+                            setUpdateImageUrl(item.imageUrl);
+                          }}
                         >
                           Update
                         </Button>
@@ -156,6 +166,7 @@ function Feed() {
                           danger
                           onClick={() => {
                             setDeleteFeed(true);
+                            setSelectedId(item.id);
                           }}
                         >
                           Delete
@@ -181,10 +192,10 @@ function Feed() {
                     },
                   ]}
                 >
-                  <Input />
+                  <Input placeholder={updateTag} />
                 </Form.Item>
                 <Form.Item name={["user", "mobileNo"]} label="Tag">
-                  <Input />
+                  <Input placeholder={updateDescription} />
                 </Form.Item>
                 <Form.Item name={["user", "email"]} label="Image">
                   <Input type="file" />
@@ -208,8 +219,15 @@ function Feed() {
                 Do you really want to delete?
               </DialogTitle>
               <DialogActions>
-                <Button type="primary"  onClick={() => setDeleteFeed(false)}>Cancel</Button>
-                <Button type="primary" danger onClick={() => handleDeleteClick()} color="error">
+                <Button type="primary" onClick={() => setDeleteFeed(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  type="primary"
+                  danger
+                  onClick={() => handleDeleteClick()}
+                  color="error"
+                >
                   Delete
                 </Button>
               </DialogActions>

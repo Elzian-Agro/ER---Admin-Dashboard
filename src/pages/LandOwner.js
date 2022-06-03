@@ -8,9 +8,6 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogActions from '@mui/material/DialogActions';
 import Stack from '@mui/material/Stack';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
@@ -44,9 +41,7 @@ const useStyles = makeStyles({
 function LandOwner() {
 
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
-
 
   useEffect(() => {
 
@@ -57,7 +52,6 @@ function LandOwner() {
   axios.get('http://127.0.0.1:4000/landOwners/', {headers})
   .then((res) => {
     setData(res.data.Result);
-    console.log(res.data.Result)
   })
   .catch((error) => {
     console.error(error)
@@ -70,18 +64,24 @@ function LandOwner() {
       alert("Do you really want to Edit!");
   }
 
-  const handleDeleteClick = (landOwnerId) => {
-    console.log({landOwnerId})
+  function handleApprove(appId) {
+    setData(
+      data.map((row) => {
+        if (row.landOwnerID === appId) {
+          return { ...row, isApproved: !row.isApproved };
+        } else return { ...row };
+      })
+    );
+  }
+
+  const handleDeleteClick = (loId) => {
     const delLandOwner = [...data];
   
-    const index = data.findIndex((land) => land.id === landOwnerId);
+    const index = data.findIndex((land) => land.landOwnerID === loId);
   
     delLandOwner.splice(index, 1);
   
     setData(delLandOwner);
-    console.log(delLandOwner);
-    console.log(landOwnerId);
-    
   };
 
   return(
@@ -137,27 +137,10 @@ function LandOwner() {
                       <TableCell>{row.country}</TableCell>
                       <TableCell align='center'>
                         <Stack direction="row" alignItems="center" gap={2}>
-                          <Button className={classes.featuredButton} variant="contained" color="secondary">Approved</Button> 
+                          <Button className={classes.featuredButton} variant="contained" color={row.isApproved ? "primary" : "secondary"} onClick={() => {handleApprove(row.landOwnerID)}}>{row.isApproved ? "UnApprove" : "Approve"}</Button> 
                           <Button className={classes.featuredButton} variant="contained" color="primary" onClick={()=>{handleChange(row.id)}} >Edit</Button> 
-                          <Button className={classes.featuredButton} variant="contained" color="error" onClick={() => {setOpen(true)} }>Delete</Button>
+                          <Button className={classes.featuredButton} variant="contained" color="error" onClick={() => {handleDeleteClick(row.landOwnerID)}}>Delete</Button>
                         </Stack>
-                        <Dialog aria-labelledby='dialog-title' 
-                            open={open} 
-                            onClose={() => setOpen(false)} 
-                            hideBackdrop 
-                            PaperProps={{
-                              elevation: 0,
-                              sx: {
-                                boxShadow: "0 2px 8px rgb(0 0 0 / 0.1)"
-                              }
-                            }}
-                          >
-                            <DialogTitle id='dialog-title'>Do you really want to delete?</DialogTitle>
-                            <DialogActions>
-                                <Button onClick={() => setOpen(false)}>Cancel</Button>
-                                <Button onClick={() => handleDeleteClick(row.id)} color="error">Delete</Button>
-                            </DialogActions>
-                          </Dialog>
                       </TableCell>
                   </TableRow>
               ))}
