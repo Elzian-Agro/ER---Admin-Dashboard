@@ -18,7 +18,7 @@ import DialogActions from "@mui/material/DialogActions";
 import { Card, Button, Modal, Form, Input } from "antd";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import { Token } from "@mui/icons-material";
+// import { Token } from "@mui/icons-material";
 
 const { Meta } = Card;
 
@@ -32,6 +32,10 @@ function Feed() {
   const [updateDescription, setUpdateDescription] = useState("");
   const [updateTag, setUpdateTag] = useState("");
   const [updateImageUrl, setUpdateImageUrl] = useState("");
+  const [selectedFile, setSelectedFile] = useState();
+  const [selectedFileName, setSelectedFileName] = useState();
+  const [insertMessage, setInsertMessage] = useState("");
+  const [insertTag, setInsertTag] = useState("");
 
   axios.defaults.headers = {
     "Content-Type": "application/json",
@@ -61,12 +65,17 @@ function Feed() {
 
   useEffect(() => {
     GetAllFeeds();
-  }, [deleteFeed]);
+  }, [deleteFeed, isModalVisible]);
+
+  const fileHandler = (event) => {
+    setSelectedFile(event.target.files[0]);
+    setSelectedFileName(event.target.files[0].name);
+    console.log(event.target.files[0]);
+    console.log(event.target.files[0].name);
+  };
 
   const GetAllFeeds = async () => {
-    const result = await axios.get(
-      "http://localhost:3000/feeds/getFeedsByTag/Elzian%20Agro"
-    );
+    const result = await axios.get("http://localhost:3000/feeds");
     setFeedData(result.data.Result);
   };
 
@@ -78,6 +87,27 @@ function Feed() {
       `http://localhost:3000/feeds/deleteFeed/${selectedId}`
     );
     setDeleteFeed(false);
+  };
+
+  //Add Feed
+  const AddFeedHandler = async () => {
+    console.log(insertMessage);
+
+    const formData = new FormData();
+    formData.append("imageUrl", selectedFile);
+    formData.append("message", insertMessage);
+    formData.append("tags", insertTag);
+    formData.append("published", "Yes");
+
+    try {
+      const result = await axios.post(
+        "http://localhost:3000/feeds/add",
+        formData
+      );
+      setIsModalVisible(false);
+    } catch (error) {
+      alert("Error Occcured");
+    }
   };
   return (
     <>
@@ -98,6 +128,7 @@ function Feed() {
                 title="Add New Feed"
                 visible={isModalVisible}
                 onCancel={handleCancel}
+                onOk={AddFeedHandler}
               >
                 <Form {...layout}>
                   <Form.Item
@@ -109,21 +140,22 @@ function Feed() {
                       },
                     ]}
                   >
-                    <Input />
+                    <Input
+                      type="text"
+                      value={insertMessage}
+                      onChange={(event) => setInsertMessage(event.target.value)}
+                    />
                   </Form.Item>
-                  <Form.Item name={["user", "mobileNo"]} label="Tag">
-                    <Input />
+                  <Form.Item name={["user", "tag"]} label="Tag">
+                    <Input
+                      type="text"
+                      value={insertTag}
+                      onChange={(event) => setInsertTag(event.target.value)}
+                    />
                   </Form.Item>
-                  <Form.Item
-                    name={["user", "email"]}
-                    label="Image"
-                    rules={[
-                      {
-                        type: "file",
-                      },
-                    ]}
-                  >
-                    <Input type="file" />
+                  <Form.Item name={["user", "image"]} label="Image">
+                    <Input type="file" onChange={fileHandler} />
+                    {/* <Input type="file" accept="image/*" /> */}
                   </Form.Item>
                 </Form>
               </Modal>
