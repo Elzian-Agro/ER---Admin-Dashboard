@@ -98,12 +98,35 @@ const Auditor = () =>{
     getData();
   }, []);
 
+  // const getData = async () => {
+  //   const headers = {
+  //     'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
+  //   };
+    
+  //   const res = await axios.get(`http://127.0.0.1:3000/users`, {headers});
+  //   console.log(res)
+  //   setdata(
+  //     res.data.Result.map((row) => ({
+  //       id: row.userID,
+  //       fullName: row.fullName,
+  //       qualification: row.qualification,
+  //       imageUri: row.imageUri,
+  //       contactNumber: row.contactNumber,
+  //       email: row.email,
+  //       address: row.address,
+  //       type: row.userType,
+  //       userName: row.userName,
+  //       DOB: row.DOB,
+  //     }))
+  //   );
+  // };
+
   const getData = async () => {
     const headers = {
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
     };
     
-    const res = await axios.get(`http://127.0.0.1:3000/users`, {headers});
+    const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/`, {headers});
     console.log(res)
     setdata(
       res.data.Result.map((row) => ({
@@ -159,7 +182,7 @@ const Auditor = () =>{
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
     };
     axios.delete(
-      `http://localhost:3000/feeds/deleteUser/${auditorID}`
+      `127.0.0.1:3000/users/deleteUser/9c4f0436-7c8c-436a-b87f-c41e4ffee43c/${auditorID}`, {headers}
     ).then((req,res) => {
       setIsModalVisible(false)
     });
@@ -171,22 +194,42 @@ const Auditor = () =>{
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUwNTU5NDExfQ.-uL0RCokz4AuN0eozRI_SP4jmz58p2bA41vpBAYlLQo',
     };
 
+  //   const user = {
+  //     "userName": modaldata.userName,
+  //     "email": modaldata.email,
+  //     "fullName": modaldata.fullName,
+  //     "imageUri": modaldata.imageUri,
+  //     "address": modaldata.address,
+  //     "contactNumber": modaldata.contactNumber,
+  //     "DOB": modaldata.DOB,
+  //     "qualification": modaldata.qualification
+  // }
+
+    // axios.put(
+    //   `http://127.0.0.1:3000/users/updateUser/${auditorID}`,user,{headers}
+    // ).then((req,res) => {
+    //   setIsModalVisible(false)
+    // });
+
     const user = {
-      "userName": modaldata.userName,
-      "email": modaldata.email,
-      "fullName": modaldata.fullName,
-      "imageUri": modaldata.imageUri,
-      "address": modaldata.address,
-      "contactNumber": modaldata.contactNumber,
-      "DOB": modaldata.DOB,
-      "qualification": modaldata.qualification
+      id: modaldata.userID,
+        fullName: modaldata.fullName,
+        qualification: modaldata.qualification,
+        imageUri: modaldata.imageUri,
+        contactNumber: modaldata.contactNumber,
+        email: modaldata.email,
+        address: modaldata.address,
+        type: modaldata.userType,
+        userName: modaldata.userName,
+        DOB: modaldata.DOB,
+
   }
 
-    axios.put(
-      `http://127.0.0.1:3000/users/updateUser/${auditorID}`,user,{headers}
-    ).then((req,res) => {
-      setIsModalVisible(false)
-    });
+  axios.put(
+    `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/updateUser/userID`,user,{headers}
+  ).then((req,res) => {
+    setIsModalVisible(false)
+  });
   };
 
   return (
