@@ -98,29 +98,6 @@ const Auditor = () =>{
     getData();
   }, []);
 
-  // const getData = async () => {
-  //   const headers = {
-  //     'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
-  //   };
-    
-  //   const res = await axios.get(`http://127.0.0.1:3000/users`, {headers});
-  //   console.log(res)
-  //   setdata(
-  //     res.data.Result.map((row) => ({
-  //       id: row.userID,
-  //       fullName: row.fullName,
-  //       qualification: row.qualification,
-  //       imageUri: row.imageUri,
-  //       contactNumber: row.contactNumber,
-  //       email: row.email,
-  //       address: row.address,
-  //       type: row.userType,
-  //       userName: row.userName,
-  //       DOB: row.DOB,
-  //     }))
-  //   );
-  // };
-
   const getData = async () => {
     const headers = {
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
@@ -144,8 +121,31 @@ const Auditor = () =>{
     );
   };
 
+  // const getData = async () => {
+  //   const headers = {
+  //     'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
+  //   };
+    
+  //   const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/`, {headers});
+  //   console.log(res)
+  //   setdata(
+  //     res.data.Result.map((row) => ({
+  //       id: row.userID,
+  //       fullName: row.fullName,
+  //       qualification: row.qualification,
+  //       imageUri: row.imageUri,
+  //       contactNumber: row.contactNumber,
+  //       email: row.email,
+  //       address: row.address,
+  //       type: row.userType,
+  //       userName: row.userName,
+  //       DOB: row.DOB,
+  //     }))
+  //   );
+  // };
+
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [setLoading] = useState(false);
 
   const [fullName,setFullName] = useState("");
 
@@ -178,11 +178,12 @@ const Auditor = () =>{
   };
 
   const handleDeleteClick = (auditorID) => {
+    console.log(auditorID)
     const headers = {
-      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
+      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
     };
     axios.delete(
-      `127.0.0.1:3000/users/deleteUser/9c4f0436-7c8c-436a-b87f-c41e4ffee43c/${auditorID}`, {headers}
+      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/deleteUser/${auditorID}`, {headers}
     ).then((req,res) => {
       setIsModalVisible(false)
     });
@@ -191,8 +192,28 @@ const Auditor = () =>{
   const handleUpdatelick = (auditorID) => {
     console.log(auditorID)
     const headers = {
-      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUwNTU5NDExfQ.-uL0RCokz4AuN0eozRI_SP4jmz58p2bA41vpBAYlLQo',
+      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
     };
+
+    const user = {
+      id: modaldata.userID,
+        fullName: modaldata.fullName,
+        qualification: modaldata.qualification,
+        imageUri: modaldata.imageUri,
+        contactNumber: modaldata.contactNumber,
+        email: modaldata.email,
+        address: modaldata.address,
+        type: modaldata.userType,
+        userName: modaldata.userName,
+        DOB: modaldata.DOB,
+
+  }
+
+  axios.put(
+    `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/updateAll/${auditorID}`,user,{headers}
+  ).then((req,res) => {
+    setIsModalVisible(false)
+  });
 
   //   const user = {
   //     "userName": modaldata.userName,
@@ -211,25 +232,6 @@ const Auditor = () =>{
     //   setIsModalVisible(false)
     // });
 
-    const user = {
-      id: modaldata.userID,
-        fullName: modaldata.fullName,
-        qualification: modaldata.qualification,
-        imageUri: modaldata.imageUri,
-        contactNumber: modaldata.contactNumber,
-        email: modaldata.email,
-        address: modaldata.address,
-        type: modaldata.userType,
-        userName: modaldata.userName,
-        DOB: modaldata.DOB,
-
-  }
-
-  axios.put(
-    `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/updateUser/userID`,user,{headers}
-  ).then((req,res) => {
-    setIsModalVisible(false)
-  });
   };
 
   return (
@@ -372,6 +374,23 @@ const Auditor = () =>{
                     })
                   }}
                   />
+                </Form.Item>
+                <Form.Item
+                  name="dob"
+                  label="dob"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <Input name="dob" placeholder={modaldata.DOB} value={modaldata.DOB}
+                  onChange={(event) => {
+                    setmodaldata({
+                      ...modaldata,
+                      DOB: event.target.value
+                    })
+                  }}/>
                 </Form.Item>
               </Form>
       </Modal>
