@@ -2,7 +2,7 @@ import { useCookies } from "react-cookie";
 import http from "./http-common";
 
 export default function AuthService() {
-  const [cookies, setCookie] = useCookies(["token"]);
+  const [setCookie] = useCookies(["token"]);
 
   // const handleCookie(){
   //   setCookie()

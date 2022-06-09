@@ -28,14 +28,13 @@ function Feed() {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [feedData, setFeedData] = useState([]);
   const [selectedId, setSelectedId] = useState("");
-  const [cookies, setCookie] = useCookies(["token"]);
   const [updateDescription, setUpdateDescription] = useState("");
   const [updateTag, setUpdateTag] = useState("");
-  const [updateImageUrl, setUpdateImageUrl] = useState("");
   const [selectedFile, setSelectedFile] = useState();
-  const [selectedFileName, setSelectedFileName] = useState();
   const [insertMessage, setInsertMessage] = useState("");
   const [insertTag, setInsertTag] = useState("");
+
+  const cookies = useCookies(["token"]);
 
   axios.defaults.headers = {
     "Content-Type": "application/json",
@@ -69,7 +68,6 @@ function Feed() {
 
   const fileHandler = (event) => {
     setSelectedFile(event.target.files[0]);
-    setSelectedFileName(event.target.files[0].name);
     console.log(event.target.files[0]);
     console.log(event.target.files[0].name);
   };
@@ -83,9 +81,10 @@ function Feed() {
     // console.log(cookies.token);
     // const token = cookies.token;
 
-    const result = await axios.delete(
+    await axios.delete(
       `http://localhost:3000/feeds/deleteFeed/${selectedId}`
     );
+
     setDeleteFeed(false);
   };
 
@@ -100,7 +99,7 @@ function Feed() {
     formData.append("published", "Yes");
 
     try {
-      const result = await axios.post(
+      await axios.post(
         "http://localhost:3000/feeds/add",
         formData
       );
@@ -186,7 +185,6 @@ function Feed() {
                             showUpdateModal();
                             setUpdateTag(item.tags);
                             setUpdateDescription(item.message);
-                            setUpdateImageUrl(item.imageUrl);
                           }}
                         >
                           Update

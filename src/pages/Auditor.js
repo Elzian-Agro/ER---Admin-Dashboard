@@ -15,9 +15,11 @@ import { Content } from 'antd/lib/layout/layout';
 import { Table, Row, Col } from 'antd';
 import axios from 'axios';
 import 'antd/dist/antd.css';
-import { Modal, Button, Card, Form, Input, Avatar, Typography } from 'antd';
+import { Modal, Button, Card, Form, Input, Avatar, Typography, DatePicker, Space } from 'antd';
 
 import { MdEmail, MdPhone }  from "react-icons/md";
+
+import moment from 'moment';
 
 const { Title } = Typography;
 
@@ -121,29 +123,6 @@ const Auditor = () =>{
     );
   };
 
-  // const getData = async () => {
-  //   const headers = {
-  //     'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
-  //   };
-    
-  //   const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/`, {headers});
-  //   console.log(res)
-  //   setdata(
-  //     res.data.Result.map((row) => ({
-  //       id: row.userID,
-  //       fullName: row.fullName,
-  //       qualification: row.qualification,
-  //       imageUri: row.imageUri,
-  //       contactNumber: row.contactNumber,
-  //       email: row.email,
-  //       address: row.address,
-  //       type: row.userType,
-  //       userName: row.userName,
-  //       DOB: row.DOB,
-  //     }))
-  //   );
-  // };
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [setLoading] = useState(false);
 
@@ -209,28 +188,14 @@ const Auditor = () =>{
 
   }
 
+  console.log(user);
+
   axios.put(
     `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/updateAll/${auditorID}`,user,{headers}
   ).then((req,res) => {
+    getData()
     setIsModalVisible(false)
   });
-
-  //   const user = {
-  //     "userName": modaldata.userName,
-  //     "email": modaldata.email,
-  //     "fullName": modaldata.fullName,
-  //     "imageUri": modaldata.imageUri,
-  //     "address": modaldata.address,
-  //     "contactNumber": modaldata.contactNumber,
-  //     "DOB": modaldata.DOB,
-  //     "qualification": modaldata.qualification
-  // }
-
-    // axios.put(
-    //   `http://127.0.0.1:3000/users/updateUser/${auditorID}`,user,{headers}
-    // ).then((req,res) => {
-    //   setIsModalVisible(false)
-    // });
 
   };
 
@@ -271,9 +236,6 @@ const Auditor = () =>{
                 <Form.Item
                   name="fullName"
                   label="Full Name"
-                  // initialValues={{
-                  //   modifier: 'public',
-                  // }}
                   rules={[
                     {
                       required: true,
@@ -384,13 +346,25 @@ const Auditor = () =>{
                     },
                   ]}
                 >
-                  <Input name="dob" placeholder={modaldata.DOB} value={modaldata.DOB}
+                  {/* <Input type= "date" name="dob" placeholder={modaldata.DOB} value={modaldata.DOB}
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
                       DOB: event.target.value
                     })
-                  }}/>
+                  }}/> */}
+                <Space direction="vertical">
+                    <DatePicker 
+                      name="dob" 
+                      value={moment(modaldata.DOB)}
+                      onChange={(date, datestring) => {
+                        console.log(date.date())
+                        setmodaldata({
+                          ...modaldata,
+                          DOB: datestring
+                        })
+                      }} />
+               </Space>
                 </Form.Item>
               </Form>
       </Modal>
@@ -399,210 +373,3 @@ const Auditor = () =>{
 };
 
 export default Auditor;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { useState, useEffect } from "react"
-// import axios from "axios";
-// import {
-//     Row,
-//     Col,
-//     Card,
-//     Table,
-//     Avatar,
-//     Typography,
-//     Modal,
-//     Button,
-//     Form,
-//     Input,
-//   } from "antd";
-
-//   import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
-//   import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-//   import Grid from "@mui/material/Grid";
-  
-  
-//   const { Title } = Typography;
-  
-//   // table code start
-//   const columns = [
-//     {
-//       title: "AUDITOR NAME",
-//       dataIndex: "name",
-//       key: "name",
-//       width: "22%",
-//     },
-  
-//     {
-//       title: "CONTACT NUMBER",
-//       key: "contact",
-//       dataIndex: "contact",
-//     },
-//     {
-//       title: "ADDRESS",
-//       key: "address",
-//       dataIndex: "address",
-//     },
-//       {
-//         title: "USER TYPE",
-//         key: "type",
-//         dataIndex: "type",
-//       },
-//     //   {
-//     //     title: "",
-//     //     key: "action",
-//     //     dataIndex: "action",
-//     //   },
-//   ];
-  
-//   const rows = [];
-  
-//   function Auditor() {
-//     const [data, setData] = useState([]);
-//     const [modaldata, setmodaldata] = useState([]);
-//     const { Meta } = Card;
-
-//     const setRows = (data) => {
-//         data.forEach((item,index) => {
-//             let object = {
-//                 key: index,
-//                 name: (
-//                   <>
-//                     <Avatar.Group>
-//                       <Avatar
-//                         className="shape-avatar"
-//                         shape="square"
-//                         size={40}
-//                         src={item.imageUri}
-//                       ></Avatar>
-//                     <div className="avatar-info">
-//                         <Title level={5}>{item.fullName}</Title>
-//                         <p>{item.qualification}</p>
-//                     </div>
-//                     </Avatar.Group>
-//                   </>
-//                 ),
-            
-//                 contact: (
-//                   <>
-//                     <div className="author-info">
-//                       <CallOutlinedIcon />
-//                       <Title level={5}>{item.contactNumber}</Title>
-//                       <EmailOutlinedIcon />
-//                       <Title level={5}>{item.email}</Title>
-//                     </div>
-//                   </>
-//                 ),
-//                 address: (
-//                   <>
-//                     <div className="ant-employed">
-//                     <Title level={5}>{item.address}</Title>
-//                     </div>
-//                   </>
-//                 ),
-//                 type: (
-//                     <>
-//                       <div className="ant-employed">
-//                       <Title level={5}>{item.userType}</Title>
-//                       <Button type="primary" className="tag-primary" onClick={showModal}>
-//                         Edit
-//                       </Button>
-//                       </div>
-//                     </>
-//                 ),
-//               };
-
-//               rows.push(object);
-//         })
-//     }
-
-//     useEffect(() => {
-//     const headers = {
-//         'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
-//       };
-      
-//     axios.get('http://127.0.0.1:3000/users/', {headers})
-//     .then((res) => {
-//         setData(res.data);
-//         console.log(res.data);
-//         setRows(res.data.Result);
-//     })
-//     .catch((error) => {
-//         console.error(error)
-//         console.log('check err')
-//     })
-    
-//      }, []);
-
-//      const [isModalVisible, setIsModalVisible] = useState(false);
-
-//      const showModal = (record) => {
-//        console.log(record);
-//        setmodaldata(record);
-//        setIsModalVisible(true);
-//      };
-   
-//      const handleOk = () => {
-//        setIsModalVisible(false);
-//      };
-   
-//      const handleCancel = () => {
-//        setIsModalVisible(false);
-//      };
-   
-  
-//     return (
-//       <>
-//         <div className="tabled">
-//           <Row gutter={[24, 0]}>
-//             <Col xs="24" xl={24}>
-//               <Card
-//                 bordered={false}
-//                 className="criclebox tablespace mb-24"
-//                 title="Auditors"
-//               >
-//                 <div className="table-responsive">
-//                   <Table
-//                     columns={columns}
-//                     dataSource={rows}
-//                     pagination={false}
-//                   />
-//                 </div>
-//               </Card>
-//             </Col>
-//           </Row>
-//         </div>
-//         <Modal
-//         title="Basic Modal"
-//         visible={isModalVisible}
-//         onOk={handleOk}
-//         onCancel={handleCancel}
-//       >
-//         <p>Name: vjhbk</p>
-//         <p>Email: vjh</p>
-//         <p>Address:yujvhkb</p>
-//       </Modal>
-//       </>
-//     );
-//   }
-  
-//   export default Auditor;
