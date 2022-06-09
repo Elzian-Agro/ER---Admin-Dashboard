@@ -9,31 +9,37 @@
   =========================================================
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import { PlusOutlined } from "@ant-design/icons";
-import {
-  Row,
-  Col,
-  Card,
-  Button,
-  List,
-  Descriptions,
-  Avatar,
-  Radio,
-  Switch,
-  Upload,
-  message,
-  Modal,
-  Form,
-  Input,
-  InputNumber,
-} from "antd";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogActions from "@mui/material/DialogActions";
+import { Card, Button, Modal, Form, Input } from "antd";
+import axios from "axios";
+import { useCookies } from "react-cookie";
+// import { Token } from "@mui/icons-material";
+
 const { Meta } = Card;
 
 function Feed() {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [deleteFeed, setDeleteFeed] = useState(false);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+  const [feedData, setFeedData] = useState([]);
+  const [selectedId, setSelectedId] = useState("");
+  const [updateDescription, setUpdateDescription] = useState("");
+  const [updateTag, setUpdateTag] = useState("");
+  const [selectedFile, setSelectedFile] = useState();
+  const [insertMessage, setInsertMessage] = useState("");
+  const [insertTag, setInsertTag] = useState("");
+
+  const cookies = useCookies(["token"]);
+
+  axios.defaults.headers = {
+    "Content-Type": "application/json",
+    "x-auth-token": cookies.token,
+  };
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -55,6 +61,53 @@ function Feed() {
       span: 16,
     },
   };
+
+  useEffect(() => {
+    GetAllFeeds();
+  }, [deleteFeed, isModalVisible]);
+
+  const fileHandler = (event) => {
+    setSelectedFile(event.target.files[0]);
+    console.log(event.target.files[0]);
+    console.log(event.target.files[0].name);
+  };
+
+  const GetAllFeeds = async () => {
+    const result = await axios.get("http://localhost:3000/feeds");
+    setFeedData(result.data.Result);
+  };
+
+  const handleDeleteClick = async () => {
+    // console.log(cookies.token);
+    // const token = cookies.token;
+
+    await axios.delete(
+      `http://localhost:3000/feeds/deleteFeed/${selectedId}`
+    );
+
+    setDeleteFeed(false);
+  };
+
+  //Add Feed
+  const AddFeedHandler = async () => {
+    console.log(insertMessage);
+
+    const formData = new FormData();
+    formData.append("imageUrl", selectedFile);
+    formData.append("message", insertMessage);
+    formData.append("tags", insertTag);
+    formData.append("published", "Yes");
+
+    try {
+      await axios.post(
+        "http://localhost:3000/feeds/add",
+        formData
+      );
+      setIsModalVisible(false);
+    } catch (error) {
+      alert("Error Occcured");
+    }
+  };
   return (
     <>
       <Grid container direction="column" spacing={4}>
@@ -62,17 +115,19 @@ function Feed() {
           <Grid item container justifyContent="flex-end">
             <Grid item>
               <Button
-                type="dashed"
+                type="primary"
                 className="ant-full-box"
                 icon={<PlusOutlined />}
                 onClick={showModal}
+                style={{ color: "white" }}
               >
-                <span className="click">Add Feed</span>
+                Add Feed
               </Button>
               <Modal
                 title="Add New Feed"
                 visible={isModalVisible}
                 onCancel={handleCancel}
+                onOk={AddFeedHandler}
               >
                 <Form {...layout}>
                   <Form.Item
@@ -84,138 +139,129 @@ function Feed() {
                       },
                     ]}
                   >
-                    <Input />
+                    <Input
+                      type="text"
+                      value={insertMessage}
+                      onChange={(event) => setInsertMessage(event.target.value)}
+                    />
                   </Form.Item>
-                  <Form.Item name={["user", "mobileNo"]} label="Tag">
-                    <Input />
+                  <Form.Item name={["user", "tag"]} label="Tag">
+                    <Input
+                      type="text"
+                      value={insertTag}
+                      onChange={(event) => setInsertTag(event.target.value)}
+                    />
                   </Form.Item>
-                  <Form.Item
-                    name={["user", "email"]}
-                    label="Image"
-                    // rules={[
-                    //   {
-                    //     type: "file",
-                    //   },
-                    // ]}
-                  >
-                    <Input type="file" />
+                  <Form.Item name={["user", "image"]} label="Image">
+                    <Input type="file" onChange={fileHandler} />
+                    {/* <Input type="file" accept="image/*" /> */}
                   </Form.Item>
                 </Form>
               </Modal>
             </Grid>
           </Grid>
         </Grid>
-
         <Grid item>
           <Grid container spacing={3} justifyContent="center">
-            <Grid item>
-              <Card
-                hoverable
-                style={{
-                  minWidth: 350,
-                }}
-                cover={
-                  <img
-                    height="300px"
-                    alt="example"
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAjVBMVEW5DS7///+0AAC1ABW1ABK4ACjryc20AAXv1tm3ACS2AB+2ABv79fbDSVnOc37Yk5vhrrT25ui0AAu2AB29Jj7ViZLXjpfAOEznvsPNbXnfpq3amaG+L0XdoajReoTCQ1XKYm/GUWHz3+G7GDXFTl7Tgozlt7357vDIWmi8IDrszNDLaHT25efv09bCPlF5sGhSAAAFOElEQVR4nO3Z6ZKiOgAFYEiIGIKKwQV3bW211/d/vKssSQDBrhpR6tb5/kwLGeCQQBYsCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoAYlNZzmzutl56DNnSNGO3aN78YieoPsHD8NR6xPOJRNnVcn7DbYUK6QsKnzIuHjIGFT50XCx6lPePpfJfSnvZINa+q8L0lIWFlj531JQrfZM+W1MiH3BKVUeNUVy8WlhAh51X7GvTBM/n/7EnIqtotjpxMF440rboX03NF6HnU6x1V/L73yfibc6XqxWox3DmWtS8jI2Xjn+sGoNB/wxGSoS7y9y2JF0o/Az3ZHUxq2K6GYvhW6kaBQjeS9UMCf5Q7H5Dy3e05alVBfjZFgajREzrrlEpFxPL4fFvZ2J69IWJzhpw2NROXLv+ipdsiX/q0CXTVcYKObR3h2wrJ+nIFUlViyO9f/SbJbcPMOtCWhM6/anQ3pvMrrH4i4ALnRhtuTkG+r9y/iAG7NET6uBcSkukALEjq6gvzxnhDW/9YFri8b/qV/f54pkdOV3nCMe5X8UU/tSqg7ZvuNxm9PTnSznVy2EH3F4/jdxMReb7psEIFxyPnUdclo0aKERFXhSV2IfvVcLo7pVrzI3p1sr7atueXoA572lMX3IDSezNcmZDv141fwVKjfncKiqiv5JlkBo5ojwWeqtK+HtES39dcmDNUzddr2lS9VsQfmqr+PM11Cte2hNBrpVo/k2LIVCdecflbvjUt4+/oCtuuoAd+JGOeV6shPHNMsN3m9D0sWX3wFE3q+k5DrJzkQxnm98QsSlub4l76ubjByMXBm9QVsS6o/x+aUiqtb89qR9/2E/TsJmU74bk6o9DvMTMi8sGaC3URCeSfhhNYMeWKhq/5c5OpQ3RqdkLm9wWpwdivXCBpI6BTnhQVr0buTUOpHuWM2R6E6FJVQHJIp1unroe22PqHu7SLiGrIf3ApVloNZgqQ/pOX86Po0jqyHQllCsda1/ciI9Qk9PWjONbGRei1K1XVHudVjljU13aXagS4h9JpAmpCZrWH2wIZan9DomI+6NxM7e56tw+jWZvf0TbhMmrdpHGNYZM+yiNSIkyZ0jRG97T9wrf3OKobUD+KCJG85Jq8v+tMhvfVTfV3TdH2Kk+O1Tr3kJhDjbbVwr2M/kVvVSRKyX9v0wEq8k9AYVdrdHqGCkmX6bAY0vgqpnzN7xSQVjjtLnjH/K6720JxJ+MF61p/nxhFJQj0CiM3FjYtpJKFFzLep/3ns6CUlfxtPFKbmlb1FRyNxZ389hLBrJQlz9+HyTDwvofEklvhxq6Sr6hJxF+itqwvYFXUYPC+hFVaPWg7Jg0l+qgoMk0NWrmUZCdkmt/F5z+GFMy5dVGKQLXxXjgtG6QiMFldLywktN1fmgR3iH1aEK0bXc11e3l5R3WQVwVh5jlIc0/CdsXP9tP4w4Y1uVNK72WWRG4/acGRMeEWxoU7UC0qNaXQXsnrkp2c9x635bsHI7Dt/gdFHmCvh8cKyqj9xc5MEMjOrcbiTqsrUuJSe016m/9Bv63wcpOZhXTGymWcV6f8M9k5pjiNoP8pCnKJZ6fsaJ+dj8qgNj1vCrekxPe9AlWTueRGstqXPVv+Ii1RdwOvphSP3vd3hl7nOja+D1yNRKZaH3WF5+ffWRXIhpfWxd2S84GZl5zUPxjwRNvdl/S/uftpv9uM/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8yX8epU5utMHo7gAAAABJRU5ErkJggg=="
-                  />
-                }
-              >
-                <Meta title="Feed" description="Feed Description add here" />
-                <Grid container justifyContent="flex-end" spacing={1}>
-                  <Grid item>
-                    <Button onClick={showUpdateModal}>Update</Button>
-                    <Modal
-                      title="Update Feed"
-                      visible={isUpdateModalVisible}
-                      onCancel={handleUpdateCancel}
-                    >
-                      <Form {...layout}>
-                        <Form.Item
-                          name={["user", "name"]}
-                          label="Title"
-                          rules={[
-                            {
-                              required: true,
-                            },
-                          ]}
+            {feedData.map((item, index) => {
+              return (
+                <Grid item>
+                  <Card
+                    hoverable
+                    style={{
+                      minWidth: 400,
+                    }}
+                    cover={
+                      <img height="300px" alt="example" src={item.imageUrl} />
+                    }
+                  >
+                    <Meta title={item.tags} description={item.message} />
+                    <Grid container justifyContent="flex-end" spacing={1}>
+                      <Grid item>
+                        <Button
+                          type="primary"
+                          color="primary"
+                          onClick={() => {
+                            showUpdateModal();
+                            setUpdateTag(item.tags);
+                            setUpdateDescription(item.message);
+                          }}
                         >
-                          <Input />
-                        </Form.Item>
-                        <Form.Item name={["user", "mobileNo"]} label="Tag">
-                          <Input />
-                        </Form.Item>
-                        <Form.Item
-                          name={["user", "email"]}
-                          label="Image"
-                          rules={[
-                            {
-                              type: "file",
-                            },
-                          ]}
+                          Update
+                        </Button>
+                      </Grid>
+                      <Grid item>
+                        <Button
+                          type="primary"
+                          danger
+                          onClick={() => {
+                            setDeleteFeed(true);
+                            setSelectedId(item.id);
+                          }}
                         >
-                          <Input type="file" />
-                        </Form.Item>
-                      </Form>
-                    </Modal>
-                  </Grid>
-                  <Grid item>
-                    <Button>Delete</Button>
-                  </Grid>
+                          Delete
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Card>
                 </Grid>
-              </Card>
-            </Grid>
-            <Grid item>
-              <Card
-                hoverable
-                style={{
-                  minWidth: 350,
-                }}
-                cover={
-                  <img
-                    height="300px"
-                    alt="example"
-                    src="data:image/png;base64,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"
-                  />
-                }
-              >
-                <Meta title="Feed" description="Feed Description add here" />
-                <Grid container justifyContent="flex-end" spacing={1}>
-                  <Grid item>
-                    <Button>Update</Button>
-                  </Grid>
-                  <Grid item>
-                    <Button>Delete</Button>
-                  </Grid>
-                </Grid>
-              </Card>
-            </Grid>
-            <Grid item>
-              <Card
-                hoverable
-                style={{
-                  minWidth: 350,
-                }}
-                cover={
-                  <img
-                    height="300px"
-                    alt="example"
-                    src="data:image/png;base64,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"
-                  />
-                }
-              >
-                <Meta title="Feed" description="Feed Description add here" />
-                <Grid container justifyContent="flex-end" spacing={1}>
-                  <Grid item>
-                    <Button>Update</Button>
-                  </Grid>
-                  <Grid item>
-                    <Button>Delete</Button>
-                  </Grid>
-                </Grid>
-              </Card>
-            </Grid>
+              );
+            })}
+            <Modal
+              title="Update Feed"
+              visible={isUpdateModalVisible}
+              onCancel={handleUpdateCancel}
+            >
+              <Form {...layout}>
+                <Form.Item
+                  name={["user", "name"]}
+                  label="Title"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <Input placeholder={updateTag} />
+                </Form.Item>
+                <Form.Item name={["user", "mobileNo"]} label="Tag">
+                  <Input placeholder={updateDescription} />
+                </Form.Item>
+                <Form.Item name={["user", "email"]} label="Image">
+                  <Input type="file" />
+                </Form.Item>
+              </Form>
+            </Modal>
+
+            <Dialog
+              aria-labelledby="dialog-title"
+              open={deleteFeed}
+              onClose={() => setDeleteFeed(false)}
+              hideBackdrop
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  boxShadow: "0 2px 8px rgb(0 0 0 / 0.1)",
+                },
+              }}
+            >
+              <DialogTitle id="dialog-title">
+                Do you really want to delete?
+              </DialogTitle>
+              <DialogActions>
+                <Button type="primary" onClick={() => setDeleteFeed(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  type="primary"
+                  danger
+                  onClick={() => handleDeleteClick()}
+                  color="error"
+                >
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Grid>
         </Grid>
       </Grid>

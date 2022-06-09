@@ -24,11 +24,11 @@ const { Title } = Typography;
 const { Content } = Layout;
 
 export default function SignIn() {
+  const { AuthSignin } = AuthService();
   // function when validation success
   const onFinish = (values) => {
     console.log("Success:", values);
-    // signin function from AuthService component
-    AuthService.signin(values);
+    AuthSignin(values);
   };
 
   // function when validation unsuccess
@@ -81,7 +81,7 @@ export default function SignIn() {
                     },
                   ]}
                 >
-                  <Input placeholder="Password" />
+                  <Input type="password" placeholder="Password" />
                 </Form.Item>
 
                 <Form.Item
