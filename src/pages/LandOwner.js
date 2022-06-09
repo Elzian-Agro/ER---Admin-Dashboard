@@ -61,7 +61,6 @@ function LandOwner(props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [deleteFeed, setDeleteFeed] = useState(false);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
-  const [cookies, setCookie] = useCookies(["token"]);
   const [selectedId, setSelectedId] = useState("");
   const [registerNumber, setRegisterNumber] = useState("");
   const [landOwnerName, setLandOwnerName] = useState("");
@@ -80,6 +79,8 @@ function LandOwner(props) {
   const [updateRegisterNumber, setUpdateRegisterNumber] = useState("");
   const [updateLandOwnerName, setUpdateLandOwnerName] = useState("");
   const [updateLandOwnerFullName, setUpdateLandOwnerFullName] = useState("");
+
+  const cookies = useCookies(["token"]);
 
   // const [addFormData, setAddFormData] = useState({
   //   landOwnerName: "",
@@ -111,7 +112,7 @@ function LandOwner(props) {
     };
 
     axios
-      .get("http://127.0.0.1:3000/landOwners/", { headers })
+      .get("http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners", { headers })
       .then((res) => {
         setData(res.data.Result);
       })
@@ -119,7 +120,7 @@ function LandOwner(props) {
         console.error(error);
         console.log("check err");
       });
-  }, [deleteFeed]);
+  }, [isModalVisible, deleteFeed, isUpdateModalVisible]);
 
 
   const showModal = () => {
@@ -148,10 +149,8 @@ function LandOwner(props) {
   };
 
 
-  const handleAddFormSubmit = async (e) => {
+  const handleAddFormSubmit = async () => {
     //   // store the states in the form data
-
-    e.preventDefault();
 
     const formData = new FormData();
     formData.append("registerNumber", registerNumber);
@@ -169,6 +168,7 @@ function LandOwner(props) {
     formData.append("noOfTrees", noOfTrees);
     formData.append("perimeter", perimeter);
 
+    
     const landData = {
       registerNumber: registerNumber,
       landOwnerName: landOwnerName,
@@ -188,10 +188,11 @@ function LandOwner(props) {
 
     const newLandOwner = [...data, landData];
     setData(newLandOwner);
+    
 
     try {
       // make axios post request
-      const response = await axios({
+      await axios({
         method: "post",
         url: "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/add",
         data: landData,
@@ -204,6 +205,8 @@ function LandOwner(props) {
     }
 
     console.log(landData)
+
+    
   };
 
 
@@ -219,8 +222,8 @@ function LandOwner(props) {
 
 
   const handleDeleteClick = async () => {
-    const result = await axios.put(
-      `http://127.0.0.1:3000/landOwners/deleteLandowner/${selectedId}`
+    await axios.put(
+      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`
     );
 
     setDeleteFeed(false);
@@ -229,15 +232,52 @@ function LandOwner(props) {
 
   const handleUpdateClick = async () => {
 
-    const headers = {
-      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUwNTU5NDExfQ.-uL0RCokz4AuN0eozRI_SP4jmz58p2bA41vpBAYlLQo',
+    const formData = new FormData();
+    formData.append("registerNumber", registerNumber);
+    formData.append("landOwnerName", landOwnerName);
+    formData.append("landOwnerFullname", landOwnerFullname);
+    formData.append("contact", contactNumber);
+    formData.append("email", email);
+    formData.append("country", country);
+    formData.append("address", landAddress);
+    formData.append("longitude", longitude);
+    formData.append("latitude", latitude);
+    formData.append("bankAccountNumber", bankAccountNumber);
+    formData.append("bankName", bankName);
+    formData.append("bankBranch", bankBranch);
+    formData.append("noOfTrees", noOfTrees);
+    formData.append("perimeter", perimeter);
+    
+    const landData = {
+      updateRegisterNumber: registerNumber,
+      updateLandOwnerName: landOwnerName,
+      updateLandOwnerFullName: landOwnerFullname,
+      // contactNumber: contactNumber,
+      // email: email,
+      // country: country,
+      // landAddress: landAddress,
+      // longitude: longitude,
+      // latitude: latitude,
+      // bankAccountNumber: bankAccountNumber,
+      // bankName: bankName,
+      // bankBranch: bankBranch,
+      // noOfTrees: noOfTrees,
+      // perimeter: perimeter,
     };
 
-    axios.put(
-      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`,{headers}
-    ).then((req,res) => {
-      setIsUpdateModalVisible(false)
-    });
+    try {
+      await axios({
+      method: "put",
+      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`,
+      data: landData,
+      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUwNTU5NDExfQ.-uL0RCokz4AuN0eozRI_SP4jmz58p2bA41vpBAYlLQo" },
+      }).then((response) => {
+        setIsUpdateModalVisible(false)
+      });
+    } catch(error) {
+      console.log(error)
+    }
+
   };
 
   return (
@@ -259,11 +299,11 @@ function LandOwner(props) {
           title="Add New Land Owner"
           visible={isModalVisible}
           onCancel={handleCancel}
-          onOk={handleAddFormSubmit}
+          onOk={() => {handleAddFormSubmit()}}
         >
           <Form {...layout}>
             <Form.Item
-              name={["user", "registerNumber"]}
+              name={"registerNumber"}
               label="Register Number"
               rules={[
                 {
@@ -277,7 +317,7 @@ function LandOwner(props) {
                 onChange={(event) => setRegisterNumber(event.target.value)}
               />
             </Form.Item>
-            <Form.Item name={["user", "landOwnerName"]} label="Land Owner Name">
+            <Form.Item name={"landOwnerName"} label="Land Owner Name">
               <Input
                 type="text"
                 value={landOwnerName}
@@ -285,7 +325,7 @@ function LandOwner(props) {
               />
             </Form.Item>
             <Form.Item
-              name={["user", "landOwnerFullName"]}
+              name={"landOwnerFullName"}
               label="Land Owner Full Name"
             >
               <Input
@@ -483,39 +523,6 @@ function LandOwner(props) {
                   </Stack>
                 </TableCell>
 
-                <Modal
-                  title="Update Feed"
-                  visible={isUpdateModalVisible}
-                  onCancel={handleUpdateCancel}
-                  onOk={handleUpdateClick}
-                >
-                  <Form>
-                    <Form.Item
-                      name={"registerNumber"}
-                      label="Register Number"
-                      rules={[
-                        {
-                          required: true,
-                        },
-                      ]}
-                    >
-                      <Input placeholder={updateRegisterNumber} />
-                    </Form.Item>
-                    <Form.Item
-                      name={"landOwnerName"}
-                      label="Land Owner Name"
-                    >
-                      <Input placeholder={updateLandOwnerName} />
-                    </Form.Item>
-                    <Form.Item
-                      name={"landOwnerFullName"}
-                      label="Land Owner Full Name"
-                    >
-                      <Input placeholder={updateLandOwnerFullName} />
-                    </Form.Item>
-                  </Form>
-                </Modal>
-
                 <Dialog
                   aria-labelledby="dialog-title"
                   open={deleteFeed}
@@ -547,6 +554,35 @@ function LandOwner(props) {
                 </Dialog>
               </TableRow>
             ))}
+            <Modal
+                  title="Update Land Owner"
+                  visible={isUpdateModalVisible}
+                  onCancel={handleUpdateCancel}
+                  onOk={handleUpdateClick}
+                >
+                  <Form>
+                    <Form.Item
+                      name={"updateRegisterNumber"}
+                      label="Register Number"
+                      value={registerNumber}
+                    >
+                      <Input placeholder={updateRegisterNumber} value={updateRegisterNumber} onChange={(event) => setUpdateRegisterNumber(event.target.value)}/>
+                    </Form.Item>
+                    <Form.Item
+                      name={"updateLandOwnerName"}
+                      label="Land Owner Name"
+                      value={landOwnerName}
+                    >
+                      <Input placeholder={updateLandOwnerName} value={updateLandOwnerName} onChange={(event) => setUpdateRegisterNumber(event.target.value)}/>
+                    </Form.Item>
+                    <Form.Item
+                      name={"updateLandOwnerFullName"}
+                      label="Land Owner Full Name"
+                    >
+                      <Input placeholder={updateLandOwnerFullName} value={updateLandOwnerFullName} />
+                    </Form.Item>
+                  </Form>
+                </Modal>
           </TableBody>
         </Table>
       </TableContainer>
