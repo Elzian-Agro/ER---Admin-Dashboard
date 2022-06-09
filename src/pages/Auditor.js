@@ -157,13 +157,15 @@ const Auditor = () =>{
   };
 
   const handleDeleteClick = (auditorID) => {
+    const user = {}
     console.log(auditorID)
     const headers = {
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
     };
-    axios.delete(
-      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/deleteUser/${auditorID}`, {headers}
+    axios.put(
+      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/deleteUser/${auditorID}`, user, {headers}
     ).then((req,res) => {
+      getData()
       setIsModalVisible(false)
     });
   };
