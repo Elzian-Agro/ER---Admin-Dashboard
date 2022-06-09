@@ -1,4 +1,5 @@
 {
+  "homepage": "https://elzian-agro.github.io/ER---Admin-Dashboard/",
   "name": "muse-ant-design-dashboard",
   "version": "1.0.0",
   "private": true,
@@ -27,6 +28,8 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
+    "pre-deploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
