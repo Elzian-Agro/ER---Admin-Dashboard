@@ -24,6 +24,7 @@ import { makeStyles } from "@mui/styles";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
+
 const useStyles = makeStyles({
   mainHeading: {
     fontWeight: "bold",
@@ -79,6 +80,17 @@ function LandOwner(props) {
   const [updateRegisterNumber, setUpdateRegisterNumber] = useState("");
   const [updateLandOwnerName, setUpdateLandOwnerName] = useState("");
   const [updateLandOwnerFullName, setUpdateLandOwnerFullName] = useState("");
+  const [updateContactNumber, setUpdateLandONContact] = useState("");
+  const [updateEmail, setUpdateEmail] = useState("");
+  const [updateCountry, setUpdateCountry] = useState("");
+  const [updateLandAddress, setUpdateLandAddress] = useState("");
+  const [updateLongitude, setUpdateLongitude] = useState("");
+  const [updateLatitude, setUpdateLatitude] = useState("");
+  const [updateBankAccountNumber, setUpdateBankAccountNumber] = useState("");
+  const [updateBankName, setUpdateBankName] = useState("");
+  const [updateBankBranch, setUpdateBankBranch] = useState("");
+  const [updateNoOfTrees, setUpdateNoTrees] = useState("");
+  const [updatePerimeter, setUpdatePerimeter] = useState("");
 
   const cookies = useCookies(["token"]);
 
@@ -98,7 +110,7 @@ function LandOwner(props) {
       .then((res) => {
         setData(res.data.Result);
       })
-  }, [isModalVisible, deleteFeed, isUpdateModalVisible]);
+  }, []);
 
 
   const showModal = () => {
@@ -164,17 +176,20 @@ function LandOwner(props) {
       perimeter: perimeter,
     };
 
-    const newLandOwner = [...data, landData];
-    setData(newLandOwner);
 
-    const headers = {
-      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk',
-    };
+      axios({
+        method: "post",
+        url: "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/add",
+        data: landData,
+        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk" },
+      }).then((response) => {
+        const newLandOwner = [...data, landData];
+        setData(newLandOwner);
+        console.log(response.landData);
+      }).catch(err=>{
+        console.log(err)
+      });
   
-    await axios.put(
-      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/add`, landData, {headers}
-    );
-
     setIsModalVisible(false);
 
     console.log(landData)
@@ -194,11 +209,28 @@ function LandOwner(props) {
 
 
   const handleDeleteClick = async () => {
+
+    const headers = {
+      "x-auth-token":
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI",
+    };
     await axios.put(
-      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`
-    );
+      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`, {headers}
+    ).then(()=>{
+      const deleteLandOwner = data.filter(land=>land.landOwnerID !== selectedId);
+      setData(deleteLandOwner);
+    }).catch(err=>{
+      console.log(err)
+    });
+    
 
     setDeleteFeed(false);
+
+    // await axios.put(
+    //   `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`, {headers}
+    // );
+
+    // setDeleteFeed(false);
   };
 
 
@@ -221,26 +253,35 @@ function LandOwner(props) {
     formData.append("perimeter", perimeter);
     
     const landData = {
-      updateRegisterNumber: registerNumber,
-      updateLandOwnerName: landOwnerName,
-      updateLandOwnerFullName: landOwnerFullname,
-      // contactNumber: contactNumber,
-      // email: email,
-      // country: country,
-      // landAddress: landAddress,
-      // longitude: longitude,
-      // latitude: latitude,
-      // bankAccountNumber: bankAccountNumber,
-      // bankName: bankName,
-      // bankBranch: bankBranch,
-      // noOfTrees: noOfTrees,
-      // perimeter: perimeter,
+      registerNumber: updateRegisterNumber,
+      landOwnerName: updateLandOwnerName,
+      landOwnerFullName: updateLandOwnerFullName,
+      contactNumber: updateContactNumber,
+      email: updateEmail,
+      country: updateCountry,
+      landAddress: updateLandAddress,
+      longitude: updateLongitude,
+      latitude: updateLatitude,
+      bankAccountNumber: updateBankAccountNumber,
+      bankName: updateBankName,
+      bankBranch: updateBankBranch,
+      noOfTrees: updateNoOfTrees,
+      perimeter: updatePerimeter,
     };
 
 
     await axios.put(
       `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`, landData
-    );
+    ).then(() => {
+      const updateLandowner = data.map(land=>{
+        if(land.landOwnerID === selectedId){
+          return landData
+        }
+        return land
+      })
+      setData(updateLandowner)
+
+    });
 
     setIsUpdateModalVisible(false);
 
@@ -471,6 +512,17 @@ function LandOwner(props) {
                         setUpdateRegisterNumber(row.registerNumber);
                         setUpdateLandOwnerName(row.landOwnerName);
                         setUpdateLandOwnerFullName(row.landOwnerFullname);
+                        setUpdateEmail(row.email);
+                        setUpdateLandONContact(row.contactNumber);
+                        setUpdateCountry(row.country);
+                        setUpdateLandAddress(row.landAddress);
+                        setUpdateBankName(row.bankName);
+                        setUpdateBankAccountNumber(row.bankAccountNumber);
+                        setUpdateBankBranch(row.bankBranch);
+                        setUpdateLongitude(row.longitude);
+                        setUpdateLatitude(row.latitude);
+                        setUpdateNoTrees(row.noOfTrees);
+                        setUpdatePerimeter(row.perimeter);
                       }}
                     >
                       Edit
@@ -532,20 +584,86 @@ function LandOwner(props) {
                       label="Register Number"
                       value={registerNumber}
                     >
-                      <Input placeholder={updateRegisterNumber} value={updateRegisterNumber} onChange={(event) => setUpdateRegisterNumber(event.target.value)}/>
+                      <Input placeholder={updateRegisterNumber} value={updateRegisterNumber} onChange={(event) => setUpdateRegisterNumber({registerNumber: event.target.value})}/>
                     </Form.Item>
                     <Form.Item
                       name={"updateLandOwnerName"}
                       label="Land Owner Name"
                       value={landOwnerName}
                     >
-                      <Input placeholder={updateLandOwnerName} value={updateLandOwnerName} onChange={(event) => setUpdateRegisterNumber(event.target.value)}/>
+                      <Input placeholder={updateLandOwnerName} value={updateLandOwnerName} onChange={(event) => setUpdateLandOwnerName({landOwnerName: event.target.value})}/>
                     </Form.Item>
                     <Form.Item
                       name={"updateLandOwnerFullName"}
                       label="Land Owner Full Name"
                     >
-                      <Input placeholder={updateLandOwnerFullName} value={updateLandOwnerFullName} />
+                      <Input placeholder={updateLandOwnerFullName} value={updateLandOwnerFullName} onChange={(event) => setUpdateLandOwnerFullName({landOwnerFullname: event.target.value})}/>
+                    </Form.Item>
+                    <Form.Item
+                      name={"updateContactNumber"}
+                      label="Contact NUmber"
+                    >
+                      <Input placeholder={updateContactNumber} value={updateContactNumber} onChange={(event) => setUpdateLandONContact(event.target.value)}/>
+                    </Form.Item>
+                    <Form.Item
+                      name={"updateEmail"}
+                      label="Email"
+                    >
+                      <Input placeholder={updateEmail} value={updateEmail} onChange={(event) => setUpdateEmail(event.target.value)}/>
+                    </Form.Item>
+                    <Form.Item
+                      name={"updateCountry"}
+                      label="Country"
+                    >
+                      <Input placeholder={updateCountry} value={updateCountry} onChange={(event) => setUpdateCountry(event.target.value)}/>
+                    </Form.Item>
+                    <Form.Item
+                      name={"updateLandAddress"}
+                      label="Land Address"
+                    >
+                      <Input placeholder={updateLandAddress} value={updateLandAddress} onChange={(event) => setUpdateLandAddress(event.target.value)}/>
+                    </Form.Item>
+                    <Form.Item
+                      name={"updateBankAccountNumber"}
+                      label="Bank Account Number"
+                    >
+                      <Input placeholder={updateBankAccountNumber} value={updateBankAccountNumber} onChange={(event) => setUpdateBankAccountNumber(event.target.value)}/>
+                    </Form.Item>
+                    <Form.Item
+                      name={"updateBankName"}
+                      label="Bank Name"
+                    >
+                      <Input placeholder={updateBankName} value={updateBankName} onChange={(event) => setUpdateBankName(event.target.value)}/>
+                    </Form.Item>
+                    <Form.Item
+                      name={"updateBankBranch"}
+                      label="Bank Branch"
+                    >
+                      <Input placeholder={updateBankBranch} value={updateBankBranch} onChange={(event) => setUpdateBankBranch(event.target.value)}/>
+                    </Form.Item>
+                     <Form.Item
+                      name={"updateLongitude"}
+                      label="Longitude"
+                    >
+                      <Input placeholder={updateLongitude} value={updateLongitude} onChange={(event) => setUpdateLongitude(event.target.value)}/>
+                    </Form.Item>
+                    <Form.Item
+                      name={"updateLatitude"}
+                      label="Latitude"
+                    >
+                      <Input placeholder={updateLatitude} value={updateLatitude} onChange={(event) => setUpdateLatitude(event.target.value)}/>
+                    </Form.Item>
+                    <Form.Item
+                      name={"updateNoOfTrees"}
+                      label="Number Of Trees"
+                    >
+                      <Input placeholder={updateNoOfTrees} value={updateNoOfTrees} onChange={(event) => setUpdateNoTrees(event.target.value)}/>
+                    </Form.Item>
+                    <Form.Item
+                      name={"updatePerimeter"}
+                      label="Perimeter"
+                    >
+                      <Input placeholder={updatePerimeter} value={updatePerimeter} onChange={(event) => setUpdatePerimeter(event.target.value)}/>
                     </Form.Item>
                   </Form>
                 </Modal>
