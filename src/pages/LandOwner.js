@@ -82,24 +82,6 @@ function LandOwner(props) {
 
   const cookies = useCookies(["token"]);
 
-  // const [addFormData, setAddFormData] = useState({
-  //   landOwnerName: "",
-  //   contactNumber: "",
-  //   email: "",
-  //   landAddress: "",
-  //   region: "",
-  //   country: "",
-  //   registerNumber: "",
-  //   longitude: "",
-  //   latitude: "",
-  //   bankAccountNumber: "",
-  //   bankName: "",
-  //   bankBranch: "",
-  //   noOfTrees: "",
-  //   perimeter: "",
-  //   landOwnerFullname: "",
-  // })
-
   axios.defaults.headers = {
     "Content-Type": "application/json",
     "x-auth-token": cookies.token,
@@ -116,10 +98,6 @@ function LandOwner(props) {
       .then((res) => {
         setData(res.data.Result);
       })
-      .catch((error) => {
-        console.error(error);
-        console.log("check err");
-      });
   }, [isModalVisible, deleteFeed, isUpdateModalVisible]);
 
 
@@ -188,25 +166,19 @@ function LandOwner(props) {
 
     const newLandOwner = [...data, landData];
     setData(newLandOwner);
-    
 
-    try {
-      // make axios post request
-      await axios({
-        method: "post",
-        url: "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/add",
-        data: landData,
-        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk" },
-      }).then((response) => {
-        setIsModalVisible(false)
-      });
-    } catch(error) {
-      console.log(error)
-    }
+    const headers = {
+      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk',
+    };
+  
+    await axios.put(
+      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/add`, landData, {headers}
+    );
+
+    setIsModalVisible(false);
 
     console.log(landData)
 
-    
   };
 
 
@@ -265,18 +237,12 @@ function LandOwner(props) {
       // perimeter: perimeter,
     };
 
-    try {
-      await axios({
-      method: "put",
-      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`,
-      data: landData,
-      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUwNTU5NDExfQ.-uL0RCokz4AuN0eozRI_SP4jmz58p2bA41vpBAYlLQo" },
-      }).then((response) => {
-        setIsUpdateModalVisible(false)
-      });
-    } catch(error) {
-      console.log(error)
-    }
+
+    await axios.put(
+      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`, landData
+    );
+
+    setIsUpdateModalVisible(false);
 
   };
 
