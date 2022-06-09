@@ -26,10 +26,7 @@ jobs:
     - name: Install and Build
       run: npm install && npm run build
       
-    - name: Deploy
+    - name: Deploy 🚀
       uses: tanwanimohit/deploy-react-to-ghpages@v1.0.1
-      with: 
-        branch: gh-pages
-        folder: build
       
 
