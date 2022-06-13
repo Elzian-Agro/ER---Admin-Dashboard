@@ -5,18 +5,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-// import Button from '@mui/material/Button';
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useCookies } from "react-cookie";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
-// import Input from '@mui/material/Input';
 import Typography from "@mui/material/Typography";
 import { Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-
 import Stack from "@mui/material/Stack";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
@@ -57,7 +54,7 @@ const useStyles = makeStyles({
   },
 });
 
-function LandOwner(props) {
+function LandOwner() {
   const classes = useStyles();
   const [data, setData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -66,7 +63,7 @@ function LandOwner(props) {
   const [selectedId, setSelectedId] = useState("");
   const [registerNumber, setRegisterNumber] = useState("");
   const [landOwnerName, setLandOwnerName] = useState("");
-  const [landOwnerFullname, setLandOwnerFullName] = useState("");
+  const [landOwnerFullName, setLandOwnerFullName] = useState("");
   const [contactNumber, setLandONContact] = useState("");
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");
@@ -146,7 +143,7 @@ function LandOwner(props) {
     const formData = new FormData();
     formData.append("registerNumber", registerNumber);
     formData.append("landOwnerName", landOwnerName);
-    formData.append("landOwnerFullname", landOwnerFullname);
+    formData.append("landOwnerFullName", landOwnerFullName);
     formData.append("contact", contactNumber);
     formData.append("email", email);
     formData.append("country", country);
@@ -163,7 +160,7 @@ function LandOwner(props) {
     const landData = {
       registerNumber: registerNumber,
       landOwnerName: landOwnerName,
-      landOwnerFullname: landOwnerFullname,
+      landOwnerFullName: landOwnerFullName,
       contactNumber: contactNumber,
       email: email,
       country: country,
@@ -240,7 +237,7 @@ function LandOwner(props) {
     const formData = new FormData();
     formData.append("registerNumber", registerNumber);
     formData.append("landOwnerName", landOwnerName);
-    formData.append("landOwnerFullname", landOwnerFullname);
+    formData.append("landOwnerFullName", landOwnerFullName);
     formData.append("contact", contactNumber);
     formData.append("email", email);
     formData.append("country", country);
@@ -329,6 +326,7 @@ function LandOwner(props) {
                 onChange={(event) => setRegisterNumber(event.target.value)}
               />
             </Form.Item>
+
             <Form.Item name={"landOwnerName"} label="Land Owner Name">
               <Input
                 type="text"
@@ -336,16 +334,18 @@ function LandOwner(props) {
                 onChange={(event) => setLandOwnerName(event.target.value)}
               />
             </Form.Item>
+
             <Form.Item
               name={"landOwnerFullName"}
               label="Land Owner Full Name"
             >
               <Input
                 type="text"
-                value={landOwnerFullname}
+                value={landOwnerFullName}
                 onChange={(event) => setLandOwnerFullName(event.target.value)}
               />
             </Form.Item>
+
             <Form.Item
               name="contactNumber"
               label="Contact Number"
@@ -356,6 +356,7 @@ function LandOwner(props) {
                 onChange={(event) => setLandONContact(event.target.value)}
               />
             </Form.Item>
+
             <Form.Item
               name="email"
               label="Email"
@@ -366,6 +367,7 @@ function LandOwner(props) {
                 onChange={(event) => setEmail(event.target.value)}
               />
             </Form.Item>
+
             <Form.Item
               name="country"
               label="Country"
@@ -376,6 +378,7 @@ function LandOwner(props) {
                 onChange={(event) => setCountry(event.target.value)}
               />
             </Form.Item>
+
             <Form.Item
               name="landAddress"
               label="Land Address"
@@ -386,6 +389,7 @@ function LandOwner(props) {
                 onChange={(event) => setLandAddress(event.target.value)}
               />
             </Form.Item>
+
             <Form.Item
               name="longitude"
               label="Longitude"
@@ -396,6 +400,7 @@ function LandOwner(props) {
                 onChange={(event) => setLongitude(event.target.value)}
               />
             </Form.Item>
+
             <Form.Item
               name="latitude"
               label="Latitude"
@@ -406,6 +411,7 @@ function LandOwner(props) {
                 onChange={(event) => setLatitude(event.target.value)}
               />
             </Form.Item>
+
             <Form.Item
               name="bankAccountNumber"
               label="Bank Account Number"
@@ -416,6 +422,7 @@ function LandOwner(props) {
                 onChange={(event) => setBankAccountNumber(event.target.value)}
               />
             </Form.Item>
+
             <Form.Item
               name="bankName"
               label="Bank Name"
@@ -426,6 +433,7 @@ function LandOwner(props) {
                 onChange={(event) => setBankName(event.target.value)}
               />
             </Form.Item>
+
             <Form.Item
               name="bankBranch"
               label="Bank Branch"
@@ -436,6 +444,7 @@ function LandOwner(props) {
                 onChange={(event) => setBankBranch(event.target.value)}
               />
             </Form.Item>
+
             <Form.Item
               name="noOfTrees"
               label="Number Of Trees"
@@ -446,6 +455,7 @@ function LandOwner(props) {
                 onChange={(event) => setNoTrees(event.target.value)}
               />
             </Form.Item>
+
             <Form.Item
               name="perimeter"
               label="Perimeter"
@@ -497,159 +507,59 @@ function LandOwner(props) {
                 <TableCell>{row.region}</TableCell>
                 <TableCell>{row.country}</TableCell>
                 <TableCell align="center">
-                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 2 }}>
-                <Grid item md={8} lg={4}>
-                <Button
-                      type="primary"
-                      className={classes.approveButton}
-                      color={row.isApproved ? "primary" : "secondary"}
-                      onClick={() => {
-                        handleApprove(row.landOwnerID);
-                      }}
-                    >
-                      {row.isApproved ? "UnApprove" : "Approve"}
-                    </Button>
-                </Grid>
-                <Grid item md={8} lg={4}>
-                <Button
-                      className={classes.featuredButton}
-                      type="primary"
-                      onClick={() => {
-                        showUpdateModal();
-                        setSelectedId(row.landOwnerID)
-                        setUpdateRegisterNumber(row.registerNumber);
-                        setUpdateLandOwnerName(row.landOwnerName);
-                        setUpdateLandOwnerFullName(row.landOwnerFullname);
-                        setUpdateEmail(row.email);
-                        setUpdateLandONContact(row.contactNumber);
-                        setUpdateCountry(row.country);
-                        setUpdateLandAddress(row.landAddress);
-                        setUpdateBankName(row.bankName);
-                        setUpdateBankAccountNumber(row.bankAccountNumber);
-                        setUpdateBankBranch(row.bankBranch);
-                        setUpdateLongitude(row.longitude);
-                        setUpdateLatitude(row.latitude);
-                        setUpdateNoTrees(row.noOfTrees);
-                        setUpdatePerimeter(row.perimeter);
-                      }}
-                    >
-                      Edit
-                    </Button>
-                </Grid>
-                <Grid item md={8} lg={4}>
-                <Button
-                      className={classes.featuredButton}
-                      type="primary"
-                      danger
-                      onClick={() => {
-                        setDeleteFeed(true);
-                        setSelectedId(row.landOwnerID);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                </Grid>
-              </Grid>
-                {/* <div className="ant-row">
-                  <div className="ant-col ant-col-xs-24 ant-col-xl-8">
-                  <Button
-                      type="primary"
-                      className={classes.approveButton}
-                      color={row.isApproved ? "primary" : "secondary"}
-                      onClick={() => {
-                        handleApprove(row.landOwnerID);
-                      }}
-                    >
-                      {row.isApproved ? "UnApprove" : "Approve"}
-                    </Button>
-                  </div>
-                  <div className="ant-col ant-col-xs-24 ant-col-xl-8">
-                  <Button
-                      className={classes.featuredButton}
-                      type="primary"
-                      onClick={() => {
-                        showUpdateModal();
-                        setSelectedId(row.landOwnerID)
-                        setUpdateRegisterNumber(row.registerNumber);
-                        setUpdateLandOwnerName(row.landOwnerName);
-                        setUpdateLandOwnerFullName(row.landOwnerFullname);
-                        setUpdateEmail(row.email);
-                        setUpdateLandONContact(row.contactNumber);
-                        setUpdateCountry(row.country);
-                        setUpdateLandAddress(row.landAddress);
-                        setUpdateBankName(row.bankName);
-                        setUpdateBankAccountNumber(row.bankAccountNumber);
-                        setUpdateBankBranch(row.bankBranch);
-                        setUpdateLongitude(row.longitude);
-                        setUpdateLatitude(row.latitude);
-                        setUpdateNoTrees(row.noOfTrees);
-                        setUpdatePerimeter(row.perimeter);
-                      }}
-                    >
-                      Edit
-                    </Button>
-                  </div>
-                  <div className="ant-col ant-col-xs-24 ant-col-xl-8">
-                  <Button
-                      className={classes.featuredButton}
-                      type="primary"
-                      danger
-                      onClick={() => {
-                        setDeleteFeed(true);
-                        setSelectedId(row.landOwnerID);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </div> */}
-                  {/* <Stack direction="row" alignItems="center" gap={2}>
-                    <Button
-                      type="primary"
-                      className={classes.approveButton}
-                      color={row.isApproved ? "primary" : "secondary"}
-                      onClick={() => {
-                        handleApprove(row.landOwnerID);
-                      }}
-                    >
-                      {row.isApproved ? "UnApprove" : "Approve"}
-                    </Button>
-                    <Button
-                      className={classes.featuredButton}
-                      type="primary"
-                      onClick={() => {
-                        showUpdateModal();
-                        setSelectedId(row.landOwnerID)
-                        setUpdateRegisterNumber(row.registerNumber);
-                        setUpdateLandOwnerName(row.landOwnerName);
-                        setUpdateLandOwnerFullName(row.landOwnerFullname);
-                        setUpdateEmail(row.email);
-                        setUpdateLandONContact(row.contactNumber);
-                        setUpdateCountry(row.country);
-                        setUpdateLandAddress(row.landAddress);
-                        setUpdateBankName(row.bankName);
-                        setUpdateBankAccountNumber(row.bankAccountNumber);
-                        setUpdateBankBranch(row.bankBranch);
-                        setUpdateLongitude(row.longitude);
-                        setUpdateLatitude(row.latitude);
-                        setUpdateNoTrees(row.noOfTrees);
-                        setUpdatePerimeter(row.perimeter);
-                      }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      className={classes.featuredButton}
-                      type="primary"
-                      danger
-                      onClick={() => {
-                        setDeleteFeed(true);
-                        setSelectedId(row.landOwnerID);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </Stack> */}
+                  <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 2 }}>
+                    <Grid item md={8} lg={4}>
+                      <Button
+                          type="primary"
+                          className={classes.approveButton}
+                          color={row.isApproved ? "primary" : "secondary"}
+                          onClick={() => {
+                            handleApprove(row.landOwnerID);
+                          }}
+                        >
+                          {row.isApproved ? "UnApprove" : "Approve"}
+                      </Button>
+                    </Grid>
+                    <Grid item md={8} lg={4}>
+                      <Button
+                          className={classes.featuredButton}
+                          type="primary"
+                          onClick={() => {
+                            showUpdateModal();
+                            setSelectedId(row.landOwnerID)
+                            setUpdateRegisterNumber(row.registerNumber);
+                            setUpdateLandOwnerName(row.landOwnerName);
+                            setUpdateLandOwnerFullName(row.landOwnerFullname);
+                            setUpdateEmail(row.email);
+                            setUpdateLandONContact(row.contactNumber);
+                            setUpdateCountry(row.country);
+                            setUpdateLandAddress(row.landAddress);
+                            setUpdateBankName(row.bankName);
+                            setUpdateBankAccountNumber(row.bankAccountNumber);
+                            setUpdateBankBranch(row.bankBranch);
+                            setUpdateLongitude(row.longitude);
+                            setUpdateLatitude(row.latitude);
+                            setUpdateNoTrees(row.noOfTrees);
+                            setUpdatePerimeter(row.perimeter);
+                          }}
+                        >
+                          Edit
+                      </Button>
+                    </Grid>
+                    <Grid item md={8} lg={4}>
+                      <Button
+                          className={classes.featuredButton}
+                          type="primary"
+                          danger
+                          onClick={() => {
+                            setDeleteFeed(true);
+                            setSelectedId(row.landOwnerID);
+                          }}
+                        >
+                          Delete
+                      </Button>
+                    </Grid>
+                  </Grid>
                 </TableCell>
 
                 <Dialog
@@ -684,100 +594,113 @@ function LandOwner(props) {
               </TableRow>
             ))}
             <Modal
-                  title="Update Land Owner"
-                  visible={isUpdateModalVisible}
-                  onCancel={handleUpdateCancel}
-                  onOk={handleUpdateClick}
+              title="Update Land Owner"
+              visible={isUpdateModalVisible}
+              onCancel={handleUpdateCancel}
+              onOk={handleUpdateClick}
+            >
+              <Form>
+
+                <Form.Item
+                  name={"updateRegisterNumber"}
+                  label="Register Number"
                 >
-                  <Form>
-                    <Form.Item
-                      name={"updateRegisterNumber"}
-                      label="Register Number"
-                      value={registerNumber}
-                    >
-                      <Input placeholder={updateRegisterNumber} value={updateRegisterNumber} onChange={(event) => setUpdateRegisterNumber({registerNumber: event.target.value})}/>
-                    </Form.Item>
-                    <Form.Item
-                      name={"updateLandOwnerName"}
-                      label="Land Owner Name"
-                      value={landOwnerName}
-                    >
-                      <Input placeholder={updateLandOwnerName} value={updateLandOwnerName} onChange={(event) => setUpdateLandOwnerName({landOwnerName: event.target.value})}/>
-                    </Form.Item>
-                    <Form.Item
-                      name={"updateLandOwnerFullName"}
-                      label="Land Owner Full Name"
-                    >
-                      <Input placeholder={updateLandOwnerFullName} value={updateLandOwnerFullName} onChange={(event) => setUpdateLandOwnerFullName({landOwnerFullname: event.target.value})}/>
-                    </Form.Item>
-                    <Form.Item
-                      name={"updateContactNumber"}
-                      label="Contact NUmber"
-                    >
-                      <Input placeholder={updateContactNumber} value={updateContactNumber} onChange={(event) => setUpdateLandONContact(event.target.value)}/>
-                    </Form.Item>
-                    <Form.Item
-                      name={"updateEmail"}
-                      label="Email"
-                    >
-                      <Input placeholder={updateEmail} value={updateEmail} onChange={(event) => setUpdateEmail(event.target.value)}/>
-                    </Form.Item>
-                    <Form.Item
-                      name={"updateCountry"}
-                      label="Country"
-                    >
-                      <Input placeholder={updateCountry} value={updateCountry} onChange={(event) => setUpdateCountry({country: event.target.value})}/>
-                    </Form.Item>
-                    <Form.Item
-                      name={"updateLandAddress"}
-                      label="Land Address"
-                    >
-                      <Input placeholder={updateLandAddress} value={updateLandAddress} onChange={(event) => setUpdateLandAddress(event.target.value)}/>
-                    </Form.Item>
-                    <Form.Item
-                      name={"updateBankAccountNumber"}
-                      label="Bank Account Number"
-                    >
-                      <Input placeholder={updateBankAccountNumber} value={updateBankAccountNumber} onChange={(event) => setUpdateBankAccountNumber(event.target.value)}/>
-                    </Form.Item>
-                    <Form.Item
-                      name={"updateBankName"}
-                      label="Bank Name"
-                    >
-                      <Input placeholder={updateBankName} value={updateBankName} onChange={(event) => setUpdateBankName(event.target.value)}/>
-                    </Form.Item>
-                    <Form.Item
-                      name={"updateBankBranch"}
-                      label="Bank Branch"
-                    >
-                      <Input placeholder={updateBankBranch} value={updateBankBranch} onChange={(event) => setUpdateBankBranch(event.target.value)}/>
-                    </Form.Item>
-                     <Form.Item
-                      name={"updateLongitude"}
-                      label="Longitude"
-                    >
-                      <Input placeholder={updateLongitude} value={updateLongitude} onChange={(event) => setUpdateLongitude(event.target.value)}/>
-                    </Form.Item>
-                    <Form.Item
-                      name={"updateLatitude"}
-                      label="Latitude"
-                    >
-                      <Input placeholder={updateLatitude} value={updateLatitude} onChange={(event) => setUpdateLatitude(event.target.value)}/>
-                    </Form.Item>
-                    <Form.Item
-                      name={"updateNoOfTrees"}
-                      label="Number Of Trees"
-                    >
-                      <Input placeholder={updateNoOfTrees} value={updateNoOfTrees} onChange={(event) => setUpdateNoTrees(event.target.value)}/>
-                    </Form.Item>
-                    <Form.Item
-                      name={"updatePerimeter"}
-                      label="Perimeter"
-                    >
-                      <Input placeholder={updatePerimeter} value={updatePerimeter} onChange={(event) => setUpdatePerimeter(event.target.value)}/>
-                    </Form.Item>
-                  </Form>
-                </Modal>
+                  <Input placeholder={updateRegisterNumber} value={updateRegisterNumber} onChange={(event) => setUpdateRegisterNumber({registerNumber: event.target.value})}/>
+                </Form.Item>
+
+                <Form.Item
+                  name={"updateLandOwnerName"}
+                  label="Land Owner Name"
+                >
+                  <Input placeholder={updateLandOwnerName} value={updateLandOwnerName} onChange={(event) => setUpdateLandOwnerName({landOwnerName: event.target.value})}/>
+                </Form.Item>
+
+                <Form.Item
+                  name={"updateLandOwnerFullName"}
+                  label="Land Owner Full Name"
+                >
+                  <Input placeholder={updateLandOwnerFullName} value={updateLandOwnerFullName} onChange={(event) => setUpdateLandOwnerFullName({landOwnerFullName: event.target.value})}/>
+                </Form.Item>
+
+                <Form.Item
+                  name={"updateContactNumber"}
+                  label="Contact NUmber"
+                >
+                  <Input placeholder={updateContactNumber} value={updateContactNumber} onChange={(event) => setUpdateLandONContact({contactNumber: event.target.value})}/>
+                </Form.Item>
+
+                <Form.Item
+                  name={"updateEmail"}
+                  label="Email"
+                >
+                  <Input placeholder={updateEmail} value={updateEmail} onChange={(event) => setUpdateEmail({email: event.target.value})}/>
+                </Form.Item>
+
+                <Form.Item
+                  name={"updateCountry"}
+                  label="Country"
+                >
+                  <Input placeholder={updateCountry} value={updateCountry} onChange={(event) => setUpdateCountry({country: event.target.value})}/>
+                </Form.Item>
+
+                <Form.Item
+                  name={"updateLandAddress"}
+                  label="Land Address"
+                >
+                  <Input placeholder={updateLandAddress} value={updateLandAddress} onChange={(event) => setUpdateLandAddress({landAddress: event.target.value})}/>
+                </Form.Item>
+
+                <Form.Item
+                  name={"updateBankAccountNumber"}
+                  label="Bank Account Number"
+                >
+                  <Input placeholder={updateBankAccountNumber} value={updateBankAccountNumber} onChange={(event) => setUpdateBankAccountNumber({bankAccountNumber: event.target.value})}/>
+                </Form.Item>
+
+                <Form.Item
+                  name={"updateBankName"}
+                  label="Bank Name"
+                >
+                  <Input placeholder={updateBankName} value={updateBankName} onChange={(event) => setUpdateBankName({bankName: event.target.value})}/>
+                </Form.Item>
+
+                <Form.Item
+                  name={"updateBankBranch"}
+                  label="Bank Branch"
+                >
+                  <Input placeholder={updateBankBranch} value={updateBankBranch} onChange={(event) => setUpdateBankBranch({bankBranch: event.target.value})}/>
+                </Form.Item>
+
+                  <Form.Item
+                  name={"updateLongitude"}
+                  label="Longitude"
+                >
+                  <Input placeholder={updateLongitude} value={updateLongitude} onChange={(event) => setUpdateLongitude({longitude: event.target.value})}/>
+                </Form.Item>
+
+                <Form.Item
+                  name={"updateLatitude"}
+                  label="Latitude"
+                >
+                  <Input placeholder={updateLatitude} value={updateLatitude} onChange={(event) => setUpdateLatitude({latitude: event.target.value})}/>
+                </Form.Item>
+
+                <Form.Item
+                  name={"updateNoOfTrees"}
+                  label="Number Of Trees"
+                >
+                  <Input placeholder={updateNoOfTrees} value={updateNoOfTrees} onChange={(event) => setUpdateNoTrees({noOfTrees: event.target.value})}/>
+                </Form.Item>
+
+                <Form.Item
+                  name={"updatePerimeter"}
+                  label="Perimeter"
+                >
+                  <Input placeholder={updatePerimeter} value={updatePerimeter} onChange={(event) => setUpdatePerimeter({perimeter: event.target.value})}/>
+                </Form.Item>
+
+              </Form>
+            </Modal>
           </TableBody>
         </Table>
       </TableContainer>
