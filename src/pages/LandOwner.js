@@ -7,6 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 // import Button from '@mui/material/Button';
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import { useCookies } from "react-cookie";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -106,7 +107,7 @@ function LandOwner(props) {
     };
 
     axios
-      .get("http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners", { headers })
+      .get("http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners", {headers})
       .then((res) => {
         setData(res.data.Result);
       })
@@ -217,7 +218,7 @@ function LandOwner(props) {
     await axios.put(
       `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`, {headers}
     ).then(()=>{
-      const deleteLandOwner = data.filter(land=>land.landOwnerID !== selectedId);
+      const deleteLandOwner = data.filter((land)=>land.landOwnerID !== selectedId);
       setData(deleteLandOwner);
     }).catch(err=>{
       console.log(err)
@@ -269,9 +270,13 @@ function LandOwner(props) {
       perimeter: updatePerimeter,
     };
 
+    const headers = {
+      "x-auth-token":
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI",
+    };
 
     await axios.put(
-      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`, landData
+      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`, landData, headers
     ).then(() => {
       const updateLandowner = data.map(land=>{
         if(land.landOwnerID === selectedId){
@@ -456,7 +461,7 @@ function LandOwner(props) {
 
       </Box>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 450 }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell className={classes.tableHeading}>Land Owner Name</TableCell>
@@ -492,7 +497,113 @@ function LandOwner(props) {
                 <TableCell>{row.region}</TableCell>
                 <TableCell>{row.country}</TableCell>
                 <TableCell align="center">
-                  <Stack direction="row" alignItems="center" gap={2}>
+                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 2 }}>
+                <Grid item md={8} lg={4}>
+                <Button
+                      type="primary"
+                      className={classes.approveButton}
+                      color={row.isApproved ? "primary" : "secondary"}
+                      onClick={() => {
+                        handleApprove(row.landOwnerID);
+                      }}
+                    >
+                      {row.isApproved ? "UnApprove" : "Approve"}
+                    </Button>
+                </Grid>
+                <Grid item md={8} lg={4}>
+                <Button
+                      className={classes.featuredButton}
+                      type="primary"
+                      onClick={() => {
+                        showUpdateModal();
+                        setSelectedId(row.landOwnerID)
+                        setUpdateRegisterNumber(row.registerNumber);
+                        setUpdateLandOwnerName(row.landOwnerName);
+                        setUpdateLandOwnerFullName(row.landOwnerFullname);
+                        setUpdateEmail(row.email);
+                        setUpdateLandONContact(row.contactNumber);
+                        setUpdateCountry(row.country);
+                        setUpdateLandAddress(row.landAddress);
+                        setUpdateBankName(row.bankName);
+                        setUpdateBankAccountNumber(row.bankAccountNumber);
+                        setUpdateBankBranch(row.bankBranch);
+                        setUpdateLongitude(row.longitude);
+                        setUpdateLatitude(row.latitude);
+                        setUpdateNoTrees(row.noOfTrees);
+                        setUpdatePerimeter(row.perimeter);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                </Grid>
+                <Grid item md={8} lg={4}>
+                <Button
+                      className={classes.featuredButton}
+                      type="primary"
+                      danger
+                      onClick={() => {
+                        setDeleteFeed(true);
+                        setSelectedId(row.landOwnerID);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                </Grid>
+              </Grid>
+                {/* <div className="ant-row">
+                  <div className="ant-col ant-col-xs-24 ant-col-xl-8">
+                  <Button
+                      type="primary"
+                      className={classes.approveButton}
+                      color={row.isApproved ? "primary" : "secondary"}
+                      onClick={() => {
+                        handleApprove(row.landOwnerID);
+                      }}
+                    >
+                      {row.isApproved ? "UnApprove" : "Approve"}
+                    </Button>
+                  </div>
+                  <div className="ant-col ant-col-xs-24 ant-col-xl-8">
+                  <Button
+                      className={classes.featuredButton}
+                      type="primary"
+                      onClick={() => {
+                        showUpdateModal();
+                        setSelectedId(row.landOwnerID)
+                        setUpdateRegisterNumber(row.registerNumber);
+                        setUpdateLandOwnerName(row.landOwnerName);
+                        setUpdateLandOwnerFullName(row.landOwnerFullname);
+                        setUpdateEmail(row.email);
+                        setUpdateLandONContact(row.contactNumber);
+                        setUpdateCountry(row.country);
+                        setUpdateLandAddress(row.landAddress);
+                        setUpdateBankName(row.bankName);
+                        setUpdateBankAccountNumber(row.bankAccountNumber);
+                        setUpdateBankBranch(row.bankBranch);
+                        setUpdateLongitude(row.longitude);
+                        setUpdateLatitude(row.latitude);
+                        setUpdateNoTrees(row.noOfTrees);
+                        setUpdatePerimeter(row.perimeter);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                  </div>
+                  <div className="ant-col ant-col-xs-24 ant-col-xl-8">
+                  <Button
+                      className={classes.featuredButton}
+                      type="primary"
+                      danger
+                      onClick={() => {
+                        setDeleteFeed(true);
+                        setSelectedId(row.landOwnerID);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </div> */}
+                  {/* <Stack direction="row" alignItems="center" gap={2}>
                     <Button
                       type="primary"
                       className={classes.approveButton}
@@ -538,7 +649,7 @@ function LandOwner(props) {
                     >
                       Delete
                     </Button>
-                  </Stack>
+                  </Stack> */}
                 </TableCell>
 
                 <Dialog
@@ -615,7 +726,7 @@ function LandOwner(props) {
                       name={"updateCountry"}
                       label="Country"
                     >
-                      <Input placeholder={updateCountry} value={updateCountry} onChange={(event) => setUpdateCountry(event.target.value)}/>
+                      <Input placeholder={updateCountry} value={updateCountry} onChange={(event) => setUpdateCountry({country: event.target.value})}/>
                     </Form.Item>
                     <Form.Item
                       name={"updateLandAddress"}
