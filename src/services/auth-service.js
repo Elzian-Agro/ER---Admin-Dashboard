@@ -4,15 +4,12 @@ import http from "./http-common";
 export default function AuthService() {
   const [setCookie] = useCookies(["token"]);
 
-  // const handleCookie(){
-  //   setCookie()
-  // }
   // signup function
   async function AuthSignup(data) {
     // destructure the data Object
     const { Name, email, password } = data;
     return http
-      .post("/addUser", { userName: Name, email, password })
+      .post("/admin/addUser", { userName: Name, email, password })
       .then((res) => console.log(res.data.message))
       .catch((err) => console.log(err));
   }
@@ -22,7 +19,7 @@ export default function AuthService() {
     // set jwt token as a cookie if signedin
     const { email, password } = data;
     return http
-      .post("/login", { email, password })
+      .post("/admin/login", { email, password })
       .then((res) => setCookie("token", res.data.token))
       .catch((err) => console.log(err));
   }
