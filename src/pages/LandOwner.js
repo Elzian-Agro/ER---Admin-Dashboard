@@ -63,7 +63,7 @@ function LandOwner() {
   const [selectedId, setSelectedId] = useState("");
   const [registerNumber, setRegisterNumber] = useState("");
   const [landOwnerName, setLandOwnerName] = useState("");
-  const [landOwnerFullName, setLandOwnerFullName] = useState("");
+  const [landOwnerFullname, setLandOwnerFullName] = useState("");
   const [contactNumber, setLandONContact] = useState("");
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");
@@ -104,7 +104,7 @@ function LandOwner() {
     };
 
     axios
-      .get("http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners", {headers})
+      .get("http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/", {headers})
       .then((res) => {
         setData(res.data.Result);
       })
@@ -143,7 +143,7 @@ function LandOwner() {
     const formData = new FormData();
     formData.append("registerNumber", registerNumber);
     formData.append("landOwnerName", landOwnerName);
-    formData.append("landOwnerFullName", landOwnerFullName);
+    formData.append("landOwnerFullname", landOwnerFullname);
     formData.append("contact", contactNumber);
     formData.append("email", email);
     formData.append("country", country);
@@ -160,7 +160,7 @@ function LandOwner() {
     const landData = {
       registerNumber: registerNumber,
       landOwnerName: landOwnerName,
-      landOwnerFullName: landOwnerFullName,
+      landOwnerFullname: landOwnerFullname,
       contactNumber: contactNumber,
       email: email,
       country: country,
@@ -208,13 +208,18 @@ function LandOwner() {
 
   const handleDeleteClick = async () => {
 
-    const headers = {
-      "x-auth-token":
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI",
-    };
-    await axios.put(
-      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`, {headers}
-    ).then(()=>{
+    // const headers = {
+    //   "x-auth-token":
+    //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" 
+    // };
+    // await axios.put(
+    //   `http://localhost:3000/landOwners/deleteLandowner/${selectedId}`, { headers }
+    // )
+    axios({
+      method: "put",
+      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`,
+      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
+    }).then(()=>{
       const deleteLandOwner = data.filter((land)=>land.landOwnerID !== selectedId);
       setData(deleteLandOwner);
     }).catch(err=>{
@@ -237,7 +242,7 @@ function LandOwner() {
     const formData = new FormData();
     formData.append("registerNumber", registerNumber);
     formData.append("landOwnerName", landOwnerName);
-    formData.append("landOwnerFullName", landOwnerFullName);
+    formData.append("landOwnerFullname", landOwnerFullname);
     formData.append("contact", contactNumber);
     formData.append("email", email);
     formData.append("country", country);
@@ -253,7 +258,7 @@ function LandOwner() {
     const landData = {
       registerNumber: updateRegisterNumber,
       landOwnerName: updateLandOwnerName,
-      landOwnerFullName: updateLandOwnerFullName,
+      landOwnerFullname: updateLandOwnerFullName,
       contactNumber: updateContactNumber,
       email: updateEmail,
       country: updateCountry,
@@ -266,15 +271,13 @@ function LandOwner() {
       noOfTrees: updateNoOfTrees,
       perimeter: updatePerimeter,
     };
-
-    const headers = {
-      "x-auth-token":
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI",
-    };
-
-    await axios.put(
-      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`, landData, headers
-    ).then(() => {
+    
+    axios({
+      method: "put",
+      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`,
+      data: landData,
+      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
+    }).then(() => {
       const updateLandowner = data.map(land=>{
         if(land.landOwnerID === selectedId){
           return landData
@@ -282,7 +285,6 @@ function LandOwner() {
         return land
       })
       setData(updateLandowner)
-
     });
 
     setIsUpdateModalVisible(false);
@@ -309,6 +311,7 @@ function LandOwner() {
           visible={isModalVisible}
           onCancel={handleCancel}
           onOk={() => {handleAddFormSubmit()}}
+          destroyOnClose={true}
         >
           <Form {...layout}>
             <Form.Item
@@ -341,7 +344,7 @@ function LandOwner() {
             >
               <Input
                 type="text"
-                value={landOwnerFullName}
+                value={landOwnerFullname}
                 onChange={(event) => setLandOwnerFullName(event.target.value)}
               />
             </Form.Item>
@@ -360,9 +363,14 @@ function LandOwner() {
             <Form.Item
               name="email"
               label="Email"
+              rules={[
+                {
+                  type: 'email',
+                  message: 'The input is not valid E-mail!',
+                },
+              ]}
             >
               <Input
-                type="text"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
               />
@@ -508,7 +516,7 @@ function LandOwner() {
                 <TableCell>{row.country}</TableCell>
                 <TableCell align="center">
                   <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 2 }}>
-                    <Grid item md={8} lg={4}>
+                    <Grid item md={12} lg={6} xl={4}>
                       <Button
                           type="primary"
                           className={classes.approveButton}
@@ -520,7 +528,7 @@ function LandOwner() {
                           {row.isApproved ? "UnApprove" : "Approve"}
                       </Button>
                     </Grid>
-                    <Grid item md={8} lg={4}>
+                    <Grid item md={12} lg={6} xl={4}>
                       <Button
                           className={classes.featuredButton}
                           type="primary"
@@ -546,7 +554,7 @@ function LandOwner() {
                           Edit
                       </Button>
                     </Grid>
-                    <Grid item md={8} lg={4}>
+                    <Grid item md={12} lg={12} xl={4}>
                       <Button
                           className={classes.featuredButton}
                           type="primary"
@@ -598,6 +606,7 @@ function LandOwner() {
               visible={isUpdateModalVisible}
               onCancel={handleUpdateCancel}
               onOk={handleUpdateClick}
+              destroyOnClose={true}
             >
               <Form>
 
@@ -605,98 +614,98 @@ function LandOwner() {
                   name={"updateRegisterNumber"}
                   label="Register Number"
                 >
-                  <Input placeholder={updateRegisterNumber} value={updateRegisterNumber} onChange={(event) => setUpdateRegisterNumber({registerNumber: event.target.value})}/>
+                  <Input type="text" placeholder={updateRegisterNumber} value={updateRegisterNumber} onChange={(event) => setUpdateRegisterNumber( event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
                   name={"updateLandOwnerName"}
                   label="Land Owner Name"
                 >
-                  <Input placeholder={updateLandOwnerName} value={updateLandOwnerName} onChange={(event) => setUpdateLandOwnerName({landOwnerName: event.target.value})}/>
+                  <Input type="text" placeholder={updateLandOwnerName} value={updateLandOwnerName} onChange={(event) => setUpdateLandOwnerName(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
                   name={"updateLandOwnerFullName"}
                   label="Land Owner Full Name"
                 >
-                  <Input placeholder={updateLandOwnerFullName} value={updateLandOwnerFullName} onChange={(event) => setUpdateLandOwnerFullName({landOwnerFullName: event.target.value})}/>
+                  <Input type="text" placeholder={updateLandOwnerFullName} value={updateLandOwnerFullName} onChange={(event) => setUpdateLandOwnerFullName(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
                   name={"updateContactNumber"}
                   label="Contact NUmber"
                 >
-                  <Input placeholder={updateContactNumber} value={updateContactNumber} onChange={(event) => setUpdateLandONContact({contactNumber: event.target.value})}/>
+                  <Input type="text" placeholder={updateContactNumber} value={updateContactNumber} onChange={(event) => setUpdateLandONContact(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
                   name={"updateEmail"}
                   label="Email"
                 >
-                  <Input placeholder={updateEmail} value={updateEmail} onChange={(event) => setUpdateEmail({email: event.target.value})}/>
+                  <Input type="text" placeholder={updateEmail} value={updateEmail} onChange={(event) => setUpdateEmail({email: event.target.value})}/>
                 </Form.Item>
 
                 <Form.Item
                   name={"updateCountry"}
                   label="Country"
                 >
-                  <Input placeholder={updateCountry} value={updateCountry} onChange={(event) => setUpdateCountry({country: event.target.value})}/>
+                  <Input type="text" placeholder={updateCountry} value={updateCountry} onChange={(event) => setUpdateCountry(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
                   name={"updateLandAddress"}
                   label="Land Address"
                 >
-                  <Input placeholder={updateLandAddress} value={updateLandAddress} onChange={(event) => setUpdateLandAddress({landAddress: event.target.value})}/>
+                  <Input type="text" placeholder={updateLandAddress} value={updateLandAddress} onChange={(event) => setUpdateLandAddress(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
                   name={"updateBankAccountNumber"}
                   label="Bank Account Number"
                 >
-                  <Input placeholder={updateBankAccountNumber} value={updateBankAccountNumber} onChange={(event) => setUpdateBankAccountNumber({bankAccountNumber: event.target.value})}/>
+                  <Input type="text" placeholder={updateBankAccountNumber} value={updateBankAccountNumber} onChange={(event) => setUpdateBankAccountNumber(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
                   name={"updateBankName"}
                   label="Bank Name"
                 >
-                  <Input placeholder={updateBankName} value={updateBankName} onChange={(event) => setUpdateBankName({bankName: event.target.value})}/>
+                  <Input type="text" placeholder={updateBankName} value={updateBankName} onChange={(event) => setUpdateBankName(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
                   name={"updateBankBranch"}
                   label="Bank Branch"
                 >
-                  <Input placeholder={updateBankBranch} value={updateBankBranch} onChange={(event) => setUpdateBankBranch({bankBranch: event.target.value})}/>
+                  <Input placeholder={updateBankBranch} value={updateBankBranch} onChange={(event) => setUpdateBankBranch(event.target.value)}/>
                 </Form.Item>
 
                   <Form.Item
                   name={"updateLongitude"}
                   label="Longitude"
                 >
-                  <Input placeholder={updateLongitude} value={updateLongitude} onChange={(event) => setUpdateLongitude({longitude: event.target.value})}/>
+                  <Input placeholder={updateLongitude} value={updateLongitude} onChange={(event) => setUpdateLongitude(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
                   name={"updateLatitude"}
                   label="Latitude"
                 >
-                  <Input placeholder={updateLatitude} value={updateLatitude} onChange={(event) => setUpdateLatitude({latitude: event.target.value})}/>
+                  <Input placeholder={updateLatitude} value={updateLatitude} onChange={(event) => setUpdateLatitude(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
                   name={"updateNoOfTrees"}
                   label="Number Of Trees"
                 >
-                  <Input placeholder={updateNoOfTrees} value={updateNoOfTrees} onChange={(event) => setUpdateNoTrees({noOfTrees: event.target.value})}/>
+                  <Input placeholder={updateNoOfTrees} value={updateNoOfTrees} onChange={(event) => setUpdateNoTrees(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
                   name={"updatePerimeter"}
                   label="Perimeter"
                 >
-                  <Input placeholder={updatePerimeter} value={updatePerimeter} onChange={(event) => setUpdatePerimeter({perimeter: event.target.value})}/>
+                  <Input placeholder={updatePerimeter} value={updatePerimeter} onChange={(event) => setUpdatePerimeter(event.target.value)}/>
                 </Form.Item>
 
               </Form>
