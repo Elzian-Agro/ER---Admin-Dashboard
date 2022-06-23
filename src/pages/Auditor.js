@@ -243,7 +243,7 @@ const Auditor = () =>{
                     },
                   ]}
                 >
-                  <Input name="fullName" placeholder={modaldata.fullName} value={modaldata.fullName}
+                  <Input name="fullName" placeholder={modaldata.fullName} defaultValue={modaldata.fullName}
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
@@ -261,7 +261,7 @@ const Auditor = () =>{
                     },
                   ]}
                 >
-                  <Input name="qualification" placeholder={modaldata.qualification} value={modaldata.qualification}
+                  <Input name="qualification" placeholder={modaldata.qualification} defaultValue={modaldata.qualification}
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
@@ -278,7 +278,7 @@ const Auditor = () =>{
                     },
                   ]}
                 >
-                  <Input name="contactNumber" placeholder={modaldata.contactNumber} value={modaldata.contactNumber}
+                  <Input name="contactNumber" placeholder={modaldata.contactNumber} defaultValue={modaldata.contactNumber}
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
@@ -312,7 +312,7 @@ const Auditor = () =>{
                     },
                   ]}
                 >
-                  <Input name="address" placeholder={modaldata.address} value={modaldata.address}
+                  <Input name="address" placeholder={modaldata.address} defaultValue={modaldata.address}
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
