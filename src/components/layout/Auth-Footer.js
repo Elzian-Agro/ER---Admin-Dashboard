@@ -14,24 +14,24 @@ export default function AuthFooter() {
   return (
     <Footer>
       <Menu mode="horizontal">
-        <Menu.Item>
+        <Menu.Item key={1}>
           <a href="https://www.restore.earth">Company</a>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key={2}>
           <a href="https://www.restore.earth">About Us</a>
         </Menu.Item>
       </Menu>
       <Menu mode="horizontal" className="menu-nav-social">
-        <Menu.Item>
+        <Menu.Item key={3}>
           <Link to="#">{<DribbbleOutlined />}</Link>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key={4}>
           <Link to="#">{<TwitterOutlined />}</Link>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key={5}>
           <Link to="#">{<InstagramOutlined />}</Link>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key={6}>
           <Link to="#">
             <svg
               width="18"
@@ -43,7 +43,7 @@ export default function AuthFooter() {
             </svg>
           </Link>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key={7}>
           <Link to="#">{<GithubOutlined />}</Link>
         </Menu.Item>
       </Menu>
