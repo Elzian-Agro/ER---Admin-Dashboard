@@ -15,11 +15,9 @@ import { Content } from 'antd/lib/layout/layout';
 import { Table, Row, Col } from 'antd';
 import axios from 'axios';
 import 'antd/dist/antd.css';
-import { Modal, Button, Card, Form, Input, Avatar, Typography, DatePicker, Space } from 'antd';
+import { Modal, Button, Card, Form, Input, Avatar, Typography } from 'antd';
 
 import { MdEmail, MdPhone }  from "react-icons/md";
-
-import moment from 'moment';
 
 const { Title } = Typography;
 
@@ -186,7 +184,7 @@ const Auditor = () =>{
         address: modaldata.address,
         type: modaldata.userType,
         userName: modaldata.userName,
-        DOB: modaldata.DOB,
+        DOB: "1998-04-11",
 
   }
 
@@ -195,8 +193,9 @@ const Auditor = () =>{
   axios.put(
     `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/updateAll/${auditorID}`,user,{headers}
   ).then((req,res) => {
-    getData()
-    setIsModalVisible(false)
+    getData();
+    setIsModalVisible(false);
+    // alert("Auditor Updated Succesfully");
   });
 
   };
@@ -244,7 +243,7 @@ const Auditor = () =>{
                     },
                   ]}
                 >
-                  <Input name="fullName" placeholder={modaldata.fullName} value={modaldata.fullName}
+                  <Input name="fullName" placeholder={modaldata.fullName} defaultValue={modaldata.fullName}
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
@@ -262,7 +261,7 @@ const Auditor = () =>{
                     },
                   ]}
                 >
-                  <Input name="qualification" placeholder={modaldata.qualification} value={modaldata.qualification}
+                  <Input name="qualification" placeholder={modaldata.qualification} defaultValue={modaldata.qualification}
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
@@ -279,7 +278,7 @@ const Auditor = () =>{
                     },
                   ]}
                 >
-                  <Input name="contactNumber" placeholder={modaldata.contactNumber} value={modaldata.contactNumber}
+                  <Input name="contactNumber" placeholder={modaldata.contactNumber} defaultValue={modaldata.contactNumber}
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
@@ -287,7 +286,7 @@ const Auditor = () =>{
                     })
                   }}/>
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                   name="email"
                   label="Email"
                   rules={[
@@ -303,7 +302,7 @@ const Auditor = () =>{
                       email: event.target.value
                     })
                   }}/>
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item
                   name="address"
                   label="Address"
@@ -313,7 +312,7 @@ const Auditor = () =>{
                     },
                   ]}
                 >
-                  <Input name="address" placeholder={modaldata.address} value={modaldata.address}
+                  <Input name="address" placeholder={modaldata.address} defaultValue={modaldata.address}
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
@@ -321,7 +320,7 @@ const Auditor = () =>{
                     })
                   }}/>
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                   name="type"
                   label="User Type"
                   rules={[
@@ -338,8 +337,8 @@ const Auditor = () =>{
                     })
                   }}
                   />
-                </Form.Item>
-                <Form.Item
+                </Form.Item> */}
+                {/* <Form.Item
                   name="dob"
                   label="dob"
                   rules={[
@@ -348,13 +347,6 @@ const Auditor = () =>{
                     },
                   ]}
                 >
-                  {/* <Input type= "date" name="dob" placeholder={modaldata.DOB} value={modaldata.DOB}
-                  onChange={(event) => {
-                    setmodaldata({
-                      ...modaldata,
-                      DOB: event.target.value
-                    })
-                  }}/> */}
                 <Space direction="vertical">
                     <DatePicker 
                       name="dob" 
@@ -367,7 +359,7 @@ const Auditor = () =>{
                         })
                       }} />
                </Space>
-                </Form.Item>
+                </Form.Item> */}
               </Form>
       </Modal>
       </>

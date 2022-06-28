@@ -73,7 +73,9 @@ function Feed() {
   };
 
   const GetAllFeeds = async () => {
-    const result = await axios.get("http://localhost:3000/feeds");
+    const result = await axios.get(
+      "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/"
+    );
     setFeedData(result.data.Result);
   };
 
@@ -82,7 +84,7 @@ function Feed() {
     // const token = cookies.token;
 
     await axios.delete(
-      `http://localhost:3000/feeds/deleteFeed/${selectedId}`
+      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/4eb16ec9-6b25-46fe-b858-f41df4a0763d/${selectedId}`
     );
 
     setDeleteFeed(false);
@@ -100,7 +102,7 @@ function Feed() {
 
     try {
       await axios.post(
-        "http://localhost:3000/feeds/add",
+        "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/add",
         formData
       );
       setIsModalVisible(false);
