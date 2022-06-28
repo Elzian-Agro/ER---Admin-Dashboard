@@ -218,6 +218,19 @@ function Sidenav({ color }) {
           </NavLink>
         </Menu.Item>
         <Menu.Item key="3">
+          <NavLink to="/trees">
+            <span
+              className="icon"
+              style={{
+                background: page === "trees" ? color : "",
+              }}
+            >
+              {billing}
+            </span>
+            <span className="label">Trees</span>
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item key="4">
           <NavLink to="/billing">
             <span
               className="icon"
@@ -230,7 +243,7 @@ function Sidenav({ color }) {
             <span className="label">Billing</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="4">
+        <Menu.Item key="5">
           <NavLink to="/feed">
             <span
               className="icon"
@@ -243,7 +256,7 @@ function Sidenav({ color }) {
             <span className="label">Feed</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="5">
+        <Menu.Item key="6">
           <NavLink to="/landOwner">
             <span
               className="icon"
@@ -256,7 +269,7 @@ function Sidenav({ color }) {
             <span className="label">Land Owner</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="6">
+        <Menu.Item key="7">
           <NavLink to="/auditor">
             <span
               className="icon"
@@ -272,7 +285,7 @@ function Sidenav({ color }) {
         <Menu.Item className="menu-item-header" key="5">
           Account Pages
         </Menu.Item>
-        <Menu.Item key="6">
+        <Menu.Item key="8">
           <NavLink to="/profile">
             <span
               className="icon"
@@ -285,13 +298,13 @@ function Sidenav({ color }) {
             <span className="label">Profile</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="7">
+        <Menu.Item key="9">
           <NavLink to="/sign-in">
             <span className="icon">{signin}</span>
             <span className="label">Sign In</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="8">
+        <Menu.Item key="10">
           <NavLink to="/sign-up">
             <span className="icon">{signup}</span>
             <span className="label">Sign Up</span>

@@ -4,6 +4,7 @@ import Tables from "./pages/Tables";
 import Billing from "./pages/Billing";
 import Feed from "./pages/Feed";
 import LandOwner from "./pages/LandOwner";
+import Trees from "./pages/Trees";
 import Auditor from "./pages/Auditor";
 import Profile from "./pages/Profile";
 import SignUp from "./pages/SignUp";
@@ -25,6 +26,7 @@ function App() {
           <Route exact path="/billing" component={Billing} />
           <Route exact path="/feed" component={Feed} />
           <Route exact path="/landOwner" component={LandOwner} />
+          <Route exact path="/trees" component={Trees} />
           <Route exact path="/auditor" component={Auditor} />
           <Route exact path="/profile" component={Profile} />
           <Redirect from="*" to="/dashboard" />
