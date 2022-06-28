@@ -21,6 +21,9 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import {
+  SearchOutlined,
+} from "@ant-design/icons";
 
 
 const useStyles = makeStyles({
@@ -52,6 +55,13 @@ const useStyles = makeStyles({
     marginLeft: "10px",
     width: "400px",
   },
+
+  headerSearch: {
+    width: "300px",
+    borderRadius: "5px",
+    marginRight: "10px",
+    marginLeft: "10px"
+  }
 });
 
 function LandOwner() {
@@ -89,6 +99,8 @@ function LandOwner() {
   const [updateBankBranch, setUpdateBankBranch] = useState("");
   const [updateNoOfTrees, setUpdateNoTrees] = useState("");
   const [updatePerimeter, setUpdatePerimeter] = useState("");
+  const [searchLandOwner, setSearchLandOwner] = useState("");
+  const [isApproved] = useState(true);
 
   const cookies = useCookies(["token"]);
 
@@ -194,8 +206,35 @@ function LandOwner() {
 
   };
 
+  function approveLandOwner() {
+    axios({
+      method: "put",
+      url: `http://127.0.0.1:3000/landOwners/approveLandowner/${selectedId}`,
+      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
+    }).then((response) => {
+    
+    }).catch(err=>{
+      console.log(err)
+    });
+  }
+
+  function UnApproveLandOwner() {
+    axios({
+      method: "put",
+      url: `http://127.0.0.1:3000/landOwners/unApproveLandowner/${selectedId}`,
+      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
+    }).then((response) => {
+     
+    }).catch(err=>{
+      console.log(err)
+    });
+  }
+
 
   function handleApprove(appId) {
+
+    isApproved ? approveLandOwner() : UnApproveLandOwner()
+
     setData(
       data.map((row) => {
         if (row.landOwnerID === appId) {
@@ -302,6 +341,12 @@ function LandOwner() {
         mt={1}
       >
         <h1 className={classes.mainHeading}>Land Owners</h1>
+        <Input
+          placeholder="Search Land Owners..."
+          prefix={<SearchOutlined />}
+          className={classes.headerSearch}
+          onChange={(event) => {setSearchLandOwner(event.target.value)}}
+        />
         <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
           New
         </Button>
@@ -490,7 +535,16 @@ function LandOwner() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row) => (
+            {
+            
+            data.filter(row => {
+              if (searchLandOwner === '') {
+                return row;
+              } else if (row.landOwnerName.toLowerCase().includes(searchLandOwner.toLowerCase())) {
+                return row;
+              }
+              return null;
+            }).map((row) => (
               <TableRow
                 key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -534,7 +588,7 @@ function LandOwner() {
                           type="primary"
                           onClick={() => {
                             showUpdateModal();
-                            setSelectedId(row.landOwnerID)
+                            setSelectedId(row.landOwnerID);
                             setUpdateRegisterNumber(row.registerNumber);
                             setUpdateLandOwnerName(row.landOwnerName);
                             setUpdateLandOwnerFullName(row.landOwnerFullname);
@@ -611,101 +665,89 @@ function LandOwner() {
               <Form>
 
                 <Form.Item
-                  name={"updateRegisterNumber"}
                   label="Register Number"
                 >
-                  <Input type="text" placeholder={updateRegisterNumber} value={updateRegisterNumber} onChange={(event) => setUpdateRegisterNumber( event.target.value)}/>
+                  <Input type="text" name="updateRegisterNumber" defaultValue={updateRegisterNumber} onChange={(event) => setUpdateRegisterNumber( event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name={"updateLandOwnerName"}
                   label="Land Owner Name"
                 >
-                  <Input type="text" placeholder={updateLandOwnerName} value={updateLandOwnerName} onChange={(event) => setUpdateLandOwnerName(event.target.value)}/>
+                  <Input type="text" name="updateLandOwnerName" defaultValue={updateLandOwnerName} onChange={(event) => setUpdateLandOwnerName(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name={"updateLandOwnerFullName"}
                   label="Land Owner Full Name"
                 >
-                  <Input type="text" placeholder={updateLandOwnerFullName} value={updateLandOwnerFullName} onChange={(event) => setUpdateLandOwnerFullName(event.target.value)}/>
+                  <Input type="text" name="updateLandOwnerFullName" defaultValue={updateLandOwnerFullName} onChange={(event) => setUpdateLandOwnerFullName(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name={"updateContactNumber"}
-                  label="Contact NUmber"
+                  label="Contact Number"
                 >
-                  <Input type="text" placeholder={updateContactNumber} value={updateContactNumber} onChange={(event) => setUpdateLandONContact(event.target.value)}/>
+                  <Input type="text" name="updateContactNumber" defaultValue={updateContactNumber} onChange={(event) => setUpdateLandONContact(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
                   name={"updateEmail"}
                   label="Email"
                 >
-                  <Input type="text" placeholder={updateEmail} value={updateEmail} onChange={(event) => setUpdateEmail({email: event.target.value})}/>
+                  <Input type="text" name="updateEmail" defaultValue={updateEmail} onChange={(event) => setUpdateEmail({email: event.target.value})}/>
                 </Form.Item>
 
                 <Form.Item
                   name={"updateCountry"}
                   label="Country"
                 >
-                  <Input type="text" placeholder={updateCountry} value={updateCountry} onChange={(event) => setUpdateCountry(event.target.value)}/>
+                  <Input type="text" name="updateCountry" defaultValue={updateCountry} onChange={(event) => setUpdateCountry(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name={"updateLandAddress"}
                   label="Land Address"
                 >
-                  <Input type="text" placeholder={updateLandAddress} value={updateLandAddress} onChange={(event) => setUpdateLandAddress(event.target.value)}/>
+                  <Input type="text" name="updateLandAddress" defaultValue={updateLandAddress} onChange={(event) => setUpdateLandAddress(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name={"updateBankAccountNumber"}
                   label="Bank Account Number"
                 >
-                  <Input type="text" placeholder={updateBankAccountNumber} value={updateBankAccountNumber} onChange={(event) => setUpdateBankAccountNumber(event.target.value)}/>
+                  <Input type="text" name="updateBankAccountNumber" defaultValue={updateBankAccountNumber} onChange={(event) => setUpdateBankAccountNumber(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name={"updateBankName"}
                   label="Bank Name"
                 >
-                  <Input type="text" placeholder={updateBankName} value={updateBankName} onChange={(event) => setUpdateBankName(event.target.value)}/>
+                  <Input type="text" name="updateBankName" defaultValue={updateBankName} onChange={(event) => setUpdateBankName(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name={"updateBankBranch"}
                   label="Bank Branch"
                 >
-                  <Input placeholder={updateBankBranch} value={updateBankBranch} onChange={(event) => setUpdateBankBranch(event.target.value)}/>
+                  <Input name="updateBankBranch" defaultValue={updateBankBranch} onChange={(event) => setUpdateBankBranch(event.target.value)}/>
                 </Form.Item>
 
                   <Form.Item
-                  name={"updateLongitude"}
                   label="Longitude"
                 >
-                  <Input placeholder={updateLongitude} value={updateLongitude} onChange={(event) => setUpdateLongitude(event.target.value)}/>
+                  <Input name="updateLongitude" defaultValue={updateLongitude} onChange={(event) => setUpdateLongitude(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name={"updateLatitude"}
                   label="Latitude"
                 >
-                  <Input placeholder={updateLatitude} value={updateLatitude} onChange={(event) => setUpdateLatitude(event.target.value)}/>
+                  <Input name="updateLatitude" defaultValue={updateLatitude} onChange={(event) => setUpdateLatitude(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name={"updateNoOfTrees"}
                   label="Number Of Trees"
                 >
-                  <Input placeholder={updateNoOfTrees} value={updateNoOfTrees} onChange={(event) => setUpdateNoTrees(event.target.value)}/>
+                  <Input name="updateNoOfTrees" defaultValue={updateNoOfTrees} onChange={(event) => setUpdateNoTrees(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name={"updatePerimeter"}
                   label="Perimeter"
                 >
-                  <Input placeholder={updatePerimeter} value={updatePerimeter} onChange={(event) => setUpdatePerimeter(event.target.value)}/>
+                  <Input name="updatePerimeter" defaultValue={updatePerimeter} onChange={(event) => setUpdatePerimeter(event.target.value)}/>
                 </Form.Item>
 
               </Form>
