@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { useHistory } from "react-router-dom";
 
 export default function AuthService() {
+  const history= useHistory();
   const [, setCookie] = useCookies(['token']);
 
 const http = axios.create({
@@ -24,15 +26,12 @@ const http = axios.create({
   async function AuthSignin(data) {
     // set jwt token as a cookie if signedin
     const { email, password } = data;
-    // try {
-    //   await http.post("/admin/login", { email, password }).then(res => console.log(res));
-    // } catch (error) {
-      
-    //   console.log(error);
-    // }
       return http
       .post("/admin/login", { email, password })
-      .then((res) => setCookie("token", res.data.token))
+      .then((res) => {
+        setCookie("token", res.data.token);
+        history.push("/");
+      })
       .catch((err) => console.log(err));
   }
 
