@@ -10,14 +10,17 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import React , {useState , useEffect } from 'react'
-import { Content } from 'antd/lib/layout/layout';
+import React , {useState , useEffect } from 'react';
 import { Table, Row, Col } from 'antd';
 import axios from 'axios';
 import 'antd/dist/antd.css';
 import { Modal, Button, Card, Form, Input, Avatar, Typography } from 'antd';
 
 import { MdEmail, MdPhone }  from "react-icons/md";
+
+import {
+  SearchOutlined,
+} from "@ant-design/icons";
 
 const { Title } = Typography;
 
@@ -111,7 +114,7 @@ const Auditor = () =>{
         fullName: row.fullName,
         qualification: row.qualification,
         imageUri: row.imageUri,
-        contactNumber: row.contactNumber,
+        contactNumber: '0' + row.contactNumber,
         email: row.email,
         address: row.address,
         type: row.userType,
@@ -174,18 +177,18 @@ const Auditor = () =>{
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
     };
 
+    console.log(typeof(modaldata.contactNumber))
+
     const user = {
       id: modaldata.userID,
         fullName: modaldata.fullName,
         qualification: modaldata.qualification,
         imageUri: modaldata.imageUri,
-        contactNumber: modaldata.contactNumber,
+        contactNumber: modaldata.contactNumber.toString(),
         email: modaldata.email,
         address: modaldata.address,
         type: modaldata.userType,
         userName: modaldata.userName,
-        DOB: "1998-04-11",
-
   }
 
   console.log(user);
@@ -195,26 +198,36 @@ const Auditor = () =>{
   ).then((req,res) => {
     getData();
     setIsModalVisible(false);
-    // alert("Auditor Updated Succesfully");
   });
 
   };
 
   return (
     <>
-      <Content>
+      <div className="tabled">
         <Row gutter={[24, 0]}>
           <Col xs="24" xl={24}>
           <Card
                 bordered={false}
                 className="criclebox tablespace mb-24"
                 title="Auditors"
+                extra={
+                  <>
+                    <Input
+                      className="header-search"
+                       placeholder="Type here..."
+                        prefix={<SearchOutlined />}
+          />
+                  </>
+                }
               >
-            <Table dataSource={data} columns={columns} />
+            <div className="table-responsive">
+            <Table dataSource={data} columns={columns}/>
+            </div>
           </Card>
           </Col>
         </Row>
-      </Content>
+      </div>
       <Modal
         title="Update Auditor"
         visible={isModalVisible}
@@ -240,8 +253,14 @@ const Auditor = () =>{
                   rules={[
                     {
                       required: true,
+                      message: "Please enter the name",
                     },
+                    {
+                      whitespace: true
+                    },
+                    { min: 3},
                   ]}
+                  hasFeedback
                 >
                   <Input name="fullName" placeholder={modaldata.fullName} defaultValue={modaldata.fullName}
                   onChange={(event) => {
@@ -258,8 +277,13 @@ const Auditor = () =>{
                   rules={[
                     {
                       required: true,
+                      message: "Please enter the qualification",
+                    },
+                    {
+                      whitespace: true
                     },
                   ]}
+                  hasFeedback
                 >
                   <Input name="qualification" placeholder={modaldata.qualification} defaultValue={modaldata.qualification}
                   onChange={(event) => {
@@ -275,42 +299,38 @@ const Auditor = () =>{
                   rules={[
                     {
                       required: true,
+                      message: "Please enter the Contact number",
                     },
+                    {
+                      whitespace: true
+                    },
+                    { min: 10},
+                    { max: 10},
                   ]}
+                  hasFeedback
                 >
                   <Input name="contactNumber" placeholder={modaldata.contactNumber} defaultValue={modaldata.contactNumber}
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
-                      contactNumber: event.target.value
+                      contactNumber: event.target.value.toString()
                     })
                   }}/>
                 </Form.Item>
-                {/* <Form.Item
-                  name="email"
-                  label="Email"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
-                >
-                  <Input name="email" placeholder={modaldata.email} value={modaldata.email}
-                  onChange={(event) => {
-                    setmodaldata({
-                      ...modaldata,
-                      email: event.target.value
-                    })
-                  }}/>
-                </Form.Item> */}
                 <Form.Item
                   name="address"
                   label="Address"
                   rules={[
                     {
                       required: true,
+                      message: "Please enter the address",
                     },
+                    {
+                      whitespace: true
+                    },
+                    { min: 5},
                   ]}
+                  hasFeedback
                 >
                   <Input name="address" placeholder={modaldata.address} defaultValue={modaldata.address}
                   onChange={(event) => {
@@ -320,46 +340,6 @@ const Auditor = () =>{
                     })
                   }}/>
                 </Form.Item>
-                {/* <Form.Item
-                  name="type"
-                  label="User Type"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
-                >
-                  <Input name="type" placeholder={modaldata.type} value={modaldata.type}
-                  onChange={(event) => {
-                    setmodaldata({
-                      ...modaldata,
-                      type: event.target.value
-                    })
-                  }}
-                  />
-                </Form.Item> */}
-                {/* <Form.Item
-                  name="dob"
-                  label="dob"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
-                >
-                <Space direction="vertical">
-                    <DatePicker 
-                      name="dob" 
-                      value={moment(modaldata.DOB)}
-                      onChange={(date, datestring) => {
-                        console.log(date.date())
-                        setmodaldata({
-                          ...modaldata,
-                          DOB: datestring
-                        })
-                      }} />
-               </Space>
-                </Form.Item> */}
               </Form>
       </Modal>
       </>
