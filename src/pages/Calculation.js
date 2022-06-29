@@ -30,7 +30,7 @@ const defaultCenter = {
   
   return (
       <LoadScript
-        googleMapsApiKey='AIzaSyDiLGSXIJnxUDycnYEN4UPR_TLB-JVp50k'>
+        googleMapsApiKey={process.env.GOOGLE_MAP_API_KEY}>
         <GoogleMap
           mapContainerStyle={mapStyles}
           zoom={14}
