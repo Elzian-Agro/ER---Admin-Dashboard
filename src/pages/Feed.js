@@ -68,8 +68,6 @@ function Feed() {
 
   const fileHandler = (event) => {
     setSelectedFile(event.target.files[0]);
-    console.log(event.target.files[0]);
-    console.log(event.target.files[0].name);
   };
 
   const GetAllFeeds = async () => {
@@ -83,23 +81,24 @@ function Feed() {
     // console.log(cookies.token);
     // const token = cookies.token;
 
-    await axios.delete(
-      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/4eb16ec9-6b25-46fe-b858-f41df4a0763d/${selectedId}`
-    );
-
-    setDeleteFeed(false);
+    try {
+      await axios.delete(
+        `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
+      );
+      setDeleteFeed(false);
+    } catch (error) {
+      setDeleteFeed(false);
+    }
   };
 
   //Add Feed
   const AddFeedHandler = async () => {
-    console.log(insertMessage);
-
     const formData = new FormData();
     formData.append("imageUrl", selectedFile);
     formData.append("message", insertMessage);
     formData.append("tags", insertTag);
     formData.append("published", "Yes");
-
+    console.log("this is form data", selectedFile);
     try {
       await axios.post(
         "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/add",
@@ -110,6 +109,13 @@ function Feed() {
       alert("Error Occcured");
     }
   };
+
+  const UpdateFeedHandler = async () => {
+    console.log(updateTag);
+    console.log(updateDescription);
+    console.log(selectedFile);
+  };
+
   return (
     <>
       <Grid container direction="column" spacing={4}>
@@ -187,6 +193,7 @@ function Feed() {
                             showUpdateModal();
                             setUpdateTag(item.tags);
                             setUpdateDescription(item.message);
+                            setSelectedFile(item.imageUrl)
                           }}
                         >
                           Update
@@ -213,6 +220,7 @@ function Feed() {
               title="Update Feed"
               visible={isUpdateModalVisible}
               onCancel={handleUpdateCancel}
+              onOk={UpdateFeedHandler}
             >
               <Form {...layout}>
                 <Form.Item
@@ -224,13 +232,23 @@ function Feed() {
                     },
                   ]}
                 >
-                  <Input placeholder={updateTag} />
+                  <Input
+                    placeholder={updateTag}
+                    value={updateTag}
+                    onChange={(event) => setUpdateTag(event.target.value)}
+                  />
                 </Form.Item>
                 <Form.Item name={["user", "mobileNo"]} label="Tag">
-                  <Input placeholder={updateDescription} />
+                  <Input
+                    placeholder={updateDescription}
+                    value={updateDescription}
+                    onChange={(event) =>
+                      setUpdateDescription(event.target.value)
+                    }
+                  />
                 </Form.Item>
                 <Form.Item name={["user", "email"]} label="Image">
-                  <Input type="file" />
+                  <Input type="file" onChange={fileHandler}/>
                 </Form.Item>
               </Form>
             </Modal>
