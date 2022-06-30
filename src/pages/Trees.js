@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Content } from "antd/lib/layout/layout";
-import { Table, Row, Col } from "antd";
+import { Table, Row, Col, Space } from "antd";
 import service from "./../services/data-service";
 import "antd/dist/antd.css";
-import {
-  Modal,
-  Button,
-  Card,
-  Typography,
-  DatePicker,
-  Space,
-} from "antd";
+import { Modal, Button, Card, Typography, DatePicker } from "antd";
 
 const { Title } = Typography;
 
 const Trees = () => {
   const [data, setdata] = useState([]);
   const [modaldata, setmodaldata] = useState({});
+  const [landOwnerName, setLandOwnerName] = useState();
+  const [AuditorName, setAuditorName] = useState();
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const { getTrees } = service();
+  const { getTrees, getLandOwnerById, getAuditorById } = service();
 
   const columns = [
     {
@@ -104,19 +100,27 @@ const Trees = () => {
     );
   }, []);
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
-const {
-          treeID,
-          creatorID,
-          landOwnerID,
-          landOwnerRegisterNo,
-          lifeForceUnitTreeNo,
-          treeSpecies,
-          dateofPlanting,
-          createdAt,
-          longitude,
-          latitude,
-        } = modaldata
+  useEffect(async () => {
+    if (!modaldata) return;
+    const landOwner = await getLandOwnerById(modaldata.landOwnerRegisterNo)
+    const auditor = await getAuditorById(modaldata.creatorID)
+    setLandOwnerName(landOwner)
+    setAuditorName(auditor)
+  }, [modaldata]);
+
+  const {
+    treeID,
+    creatorID,
+    landOwnerID,
+    landOwnerRegisterNo,
+    lifeForceUnitTreeNo,
+    treeSpecies,
+    dateofPlanting,
+    createdAt,
+    longitude,
+    latitude,
+  } = modaldata;
+
   const handleCancel = () => {
     setIsModalVisible(false);
   };
@@ -137,9 +141,9 @@ const {
                 onRow={(record, rowIndex) => {
                   return {
                     onClick: () => {
-                      setIsModalVisible(true)
+                      setIsModalVisible(true);
                       console.log(record, rowIndex);
-                      setmodaldata(record)
+                      setmodaldata(record);
                     },
                   };
                 }}
@@ -162,10 +166,7 @@ const {
           >
             Update
           </Button>,
-          <Button
-            type="danger"
-            onClick={handleCancel}
-          >
+          <Button type="danger" onClick={handleCancel}>
             Delete
           </Button>,
           <Button key="back" onClick={handleCancel}>
@@ -173,15 +174,37 @@ const {
           </Button>,
         ]}
       >
-        <div>map</div>
-        <div>Tree ID : &nbsp;&nbsp;<b>{treeID}</b></div>
-        <div>Tree species : &nbsp;&nbsp;<b>{treeSpecies}</b></div>
-        <div>LifeForce Unit Tree No : &nbsp;&nbsp;<b>{lifeForceUnitTreeNo}</b></div>
-        <div>landOwner Register No : &nbsp;&nbsp;<b>{landOwnerRegisterNo}</b></div>
-        <div>landOwner ID : &nbsp;&nbsp;<b>{landOwnerID}</b></div>
-        <div>Auditor ID : &nbsp;&nbsp;<b>{creatorID}</b></div>
-        <div>Date of planting : &nbsp;&nbsp;<b>{dateofPlanting}</b></div>
-        
+        <Space direction="vertical">
+          <div>map</div>
+          <div>
+            Tree ID : &nbsp;&nbsp;<b>{treeID}</b>
+          </div>
+          <div>
+            Tree species : &nbsp;&nbsp;<b>{treeSpecies}</b>
+          </div>
+          <div>
+            LifeForce Unit Tree No : &nbsp;&nbsp;<b>{lifeForceUnitTreeNo}</b>
+          </div>
+          <div>
+            landOwner Register No : &nbsp;&nbsp;<b>{landOwnerRegisterNo}</b>
+          </div>
+          <div>
+            landOwner ID : &nbsp;&nbsp;<b>{landOwnerID}</b>
+          </div>
+          <div>
+            landOwner Name : &nbsp;&nbsp;<b>{landOwnerName}, {AuditorName}</b>
+          </div>
+          <div>
+            Auditor ID : &nbsp;&nbsp;<b>{creatorID}</b>
+          </div>
+          {/* <div>Auditor ID : &nbsp;&nbsp;<b>{getAuditorById(creatorID)}</b></div> */}
+          <div>
+            Date of planting : &nbsp;&nbsp;<b>{dateofPlanting}</b>
+          </div>
+          <div>
+            created At : &nbsp;&nbsp;<b>{createdAt}</b>
+          </div>
+        </Space>
       </Modal>
     </>
   );

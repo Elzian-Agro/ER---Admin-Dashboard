@@ -16,5 +16,16 @@ const http = axios.create({
      return data
   }
 
-  return {getTrees} 
+  async function getAuditorById(id){
+    const data = await http.get("/users/" + id).then((res) => res.data.Result)
+    console.log(data);
+    //  return data
+  }
+
+  async function getLandOwnerById(id){
+    const data = await http.get("/landOwners/" + id).then((res) => res.data.Result)
+    return data[0].landOwnerName
+  }
+
+  return {getTrees, getLandOwnerById, getAuditorById} 
 }
