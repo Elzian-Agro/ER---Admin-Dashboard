@@ -7,6 +7,7 @@ import LandOwner from "./pages/LandOwner";
 import Trees from "./pages/Trees";
 import Auditor from "./pages/Auditor";
 import Profile from "./pages/Profile";
+import Calculation from "./pages/Calculation"
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Main from "./components/layout/Main";
@@ -29,6 +30,7 @@ function App() {
           <Route exact path="/trees" component={Trees} />
           <Route exact path="/auditor" component={Auditor} />
           <Route exact path="/profile" component={Profile} />
+          <Route exact path="/calculation" component={Calculation} />
           <Redirect from="*" to="/dashboard" />
         </Main>
       </Switch>
