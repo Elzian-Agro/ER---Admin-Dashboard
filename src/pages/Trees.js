@@ -4,6 +4,7 @@ import { Table, Row, Col, Space } from "antd";
 import service from "./../services/data-service";
 import "antd/dist/antd.css";
 import { Modal, Button, Card, Typography, DatePicker } from "antd";
+import Map from "../components/map";
 
 const { Title } = Typography;
 
@@ -154,13 +155,13 @@ const Trees = () => {
       </Content>
 
       <Modal
-        title="Tree"
+        title="Tree Details"
         visible={isModalVisible}
         onCancel={handleCancel}
         destroyOnClose
+        width={1000}
         footer={[
           <Button
-            // key="submit"
             type="primary"
             onClick={handleCancel}
           >
@@ -174,8 +175,12 @@ const Trees = () => {
           </Button>,
         ]}
       >
+        <Row gutter={[16,16]}>
+        <Col md={12} xs={24}>
+          <Map lat={latitude} lon={longitude} />
+        </Col>
+        <Col md={12} xs={24}>
         <Space direction="vertical">
-          <div>map</div>
           <div>
             Tree ID : &nbsp;&nbsp;<b>{treeID}</b>
           </div>
@@ -192,7 +197,7 @@ const Trees = () => {
             landOwner ID : &nbsp;&nbsp;<b>{landOwnerID}</b>
           </div>
           <div>
-            landOwner Name : &nbsp;&nbsp;<b>{landOwnerName}, {AuditorName}</b>
+            landOwner Name : &nbsp;&nbsp;<b>{landOwnerName}</b>
           </div>
           <div>
             Auditor ID : &nbsp;&nbsp;<b>{creatorID}</b>
@@ -205,6 +210,8 @@ const Trees = () => {
             created At : &nbsp;&nbsp;<b>{createdAt}</b>
           </div>
         </Space>
+        </Col>
+        </Row>
       </Modal>
     </>
   );
