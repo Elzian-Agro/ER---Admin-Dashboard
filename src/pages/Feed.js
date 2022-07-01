@@ -38,7 +38,7 @@ function Feed() {
 
   axios.defaults.headers = {
     "Content-Type": "application/json",
-    "x-auth-token": cookies.token,
+    "x-auth-token": cookies[0].token,
   };
 
   const showModal = () => {
@@ -93,6 +93,7 @@ function Feed() {
 
   //Add Feed
   const AddFeedHandler = async () => {
+    console.log(cookies[0].token);
     const formData = new FormData();
     formData.append("imageUrl", selectedFile);
     formData.append("message", insertMessage);
@@ -114,6 +115,14 @@ function Feed() {
     console.log(updateTag);
     console.log(updateDescription);
     console.log(selectedFile);
+
+    try {
+      await axios.put(
+        `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/updateFeed/${selectedId}`,
+        { imageUrl: selectedFile, message: updateDescription, tags: updateTag }
+      );
+      setIsUpdateModalVisible(false);
+    } catch (error) {}
   };
 
   return (
@@ -193,7 +202,8 @@ function Feed() {
                             showUpdateModal();
                             setUpdateTag(item.tags);
                             setUpdateDescription(item.message);
-                            setSelectedFile(item.imageUrl)
+                            setSelectedFile(item.imageUrl);
+                            setSelectedId(item.id);
                           }}
                         >
                           Update
@@ -248,7 +258,7 @@ function Feed() {
                   />
                 </Form.Item>
                 <Form.Item name={["user", "email"]} label="Image">
-                  <Input type="file" onChange={fileHandler}/>
+                  <Input type="file" onChange={fileHandler} />
                 </Form.Item>
               </Form>
             </Modal>
