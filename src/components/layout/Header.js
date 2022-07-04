@@ -15,10 +15,6 @@ import {
   Switch,
 } from "antd";
 
-import {
-  SearchOutlined,
-} from "@ant-design/icons";
-
 import { NavLink, Link } from "react-router-dom";
 import styled from "styled-components";
 import avtar from "../../assets/images/team-2.jpg";
@@ -388,11 +384,6 @@ function Header({
             {profile}
             <span>Sign in</span>
           </Link>
-          <Input
-            className="header-search"
-            placeholder="Type here..."
-            prefix={<SearchOutlined />}
-          />
         </Col>
       </Row>
     </>
