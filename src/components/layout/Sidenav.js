@@ -281,7 +281,7 @@ function Sidenav({ color }) {
             >
               {billing}
             </span>
-            <span className="label">Trees</span>
+            <span className="label">Planted Trees</span>
           </NavLink>
         </Menu.Item>
         <Menu.Item key="12">
