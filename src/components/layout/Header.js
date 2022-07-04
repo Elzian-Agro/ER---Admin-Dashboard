@@ -455,6 +455,7 @@ function Header({
                       : ""}
                   </Avatar>
                 ) : (
+                  // profile icon if user didn't sign in
                   profile
                 )}
               </a>

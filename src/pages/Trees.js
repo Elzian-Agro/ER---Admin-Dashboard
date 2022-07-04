@@ -3,7 +3,7 @@ import { Content } from "antd/lib/layout/layout";
 import { Table, Row, Col, Space } from "antd";
 import service from "./../services/data-service";
 import "antd/dist/antd.css";
-import { Modal, Button, Card, Typography, DatePicker } from "antd";
+import { Modal, Button, Card, Typography } from "antd";
 import Map from "../components/map";
 
 const { Title } = Typography;
@@ -14,8 +14,15 @@ const Trees = () => {
   const [landOwnerName, setLandOwnerName] = useState();
   const [AuditorName, setAuditorName] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
-  const { getTrees, getLandOwnerById, getAuditorById } = service();
+  const {
+    getPlantedTrees,
+    updatePlantedTree,
+    deletePlantedTree,
+    getLandOwnerById,
+    getAuditorById,
+  } = service();
 
   const columns = [
     {
@@ -71,7 +78,7 @@ const Trees = () => {
   ];
 
   useEffect(async () => {
-    const res = await getTrees();
+    const res = await getPlantedTrees();
     setdata(
       res.map(
         ({
@@ -126,6 +133,19 @@ const Trees = () => {
     setIsModalVisible(false);
   };
 
+  const handleUpdate = (treeID) => {
+    updatePlantedTree(treeID);
+  };
+
+  const handleConfirmDelete = async () => {
+    const res = await deletePlantedTree(treeID);
+    console.log(res);
+  };
+
+  const handleDeleteModalCancel = () => {
+    setIsDeleteModalVisible(false);
+  };
+
   return (
     <>
       <Content>
@@ -143,7 +163,6 @@ const Trees = () => {
                   return {
                     onClick: () => {
                       setIsModalVisible(true);
-                      console.log(record, rowIndex);
                       setmodaldata(record);
                     },
                   };
@@ -154,6 +173,7 @@ const Trees = () => {
         </Row>
       </Content>
 
+      {/* Tree detail Modal  */}
       <Modal
         title="Tree Details"
         visible={isModalVisible}
@@ -161,10 +181,10 @@ const Trees = () => {
         destroyOnClose
         width={1000}
         footer={[
-          <Button type="primary" onClick={handleCancel}>
+          <Button type="primary" onClick={() => handleUpdate(treeID)}>
             Update
           </Button>,
-          <Button type="danger" onClick={handleCancel}>
+          <Button type="danger" onClick={() => setIsDeleteModalVisible(true)}>
             Delete
           </Button>,
           <Button key="back" onClick={handleCancel}>
@@ -210,6 +230,24 @@ const Trees = () => {
             </Space>
           </Col>
         </Row>
+      </Modal>
+
+      {/* Delete Modal */}
+      <Modal
+        visible={isDeleteModalVisible}
+        onCancel={() => setIsDeleteModalVisible(false)}
+        destroyOnClose
+        width={500}
+        footer={[
+          <Button key="back" onClick={handleDeleteModalCancel}>
+            Cancel
+          </Button>,
+          <Button type="danger" onClick={handleConfirmDelete}>
+            Delete
+          </Button>,
+        ]}
+      >
+        Are you sure You want to delete <b>{treeID}</b> ?
       </Modal>
     </>
   );

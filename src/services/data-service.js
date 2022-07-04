@@ -13,9 +13,21 @@ export default function DataService() {
     },
   });
 
-  async function getTrees() {
+  async function getPlantedTrees() {
     const data = await http.get("/trees").then((res) => res.data.Result);
     return data;
+  }
+
+  async function updatePlantedTree(Id) {
+    const data = await http.put("/trees/updateTree/" + Id).then((res) => res);
+    console.log(data);
+    // return data;
+  }
+
+  async function deletePlantedTree(Id) {
+    const data = await http.put("/trees/deleteTree/" + Id).then((res) => res);
+    console.log(data);
+    // return data;
   }
 
   async function getAuditorById(id) {
@@ -38,5 +50,12 @@ export default function DataService() {
     return data[0];
   }
 
-  return { getTrees, getLandOwnerById, getAuditorById, getProfile };
+  return {
+    getPlantedTrees,
+    updatePlantedTree,
+    deletePlantedTree,
+    getLandOwnerById,
+    getAuditorById,
+    getProfile,
+  };
 }
