@@ -13,14 +13,14 @@ import {
   Drawer,
   Typography,
   Switch,
+  Space,
 } from "antd";
 
-import {
-  SearchOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined, UserOutlined } from "@ant-design/icons";
 
 import { NavLink, Link } from "react-router-dom";
 import styled from "styled-components";
+import service from "./../../services/data-service";
 import avtar from "../../assets/images/team-2.jpg";
 
 const ButtonContainer = styled.div`
@@ -246,12 +246,59 @@ function Header({
   const { Title, Text } = Typography;
 
   const [visible, setVisible] = useState(false);
+  const [profileVisible, setProfileVisible] = useState(false);
   const [sidenavType, setSidenavType] = useState("transparent");
+  const [profileData, setProfileData] = useState({});
+
+  const { getProfile } = service();
 
   useEffect(() => window.scrollTo(0, 0));
 
+  useEffect(async () => {
+    const { userName, email, profImage } = await getProfile();
+    setProfileData({ userName, email, profImage });
+  }, []);
+
   const showDrawer = () => setVisible(true);
   const hideDrawer = () => setVisible(false);
+  const handleProfileVisible = (flag) => setProfileVisible(flag);
+
+  const profileMenu = (
+    <List
+      min-width="100%"
+      className="header-notifications-dropdown "
+      itemLayout="horizontal"
+    >
+      <List.Item>
+        <Col>
+          <Avatar
+            shape="circle"
+            style={{
+              backgroundColor: "#d0d0d0",
+            }}
+            icon={<UserOutlined />}
+            size={64}
+          />
+        </Col>
+        <Col>
+          <div>
+            <b>{profileData.userName}</b>
+          </div>
+          <div>{profileData.email}</div>
+        </Col>
+      </List.Item>
+      <List.Item>
+        <b>
+          <Link to="/profile">view profile</Link>
+        </b>
+      </List.Item>
+      <List.Item>
+        <b>
+          <Link to="/sign-in">signout</Link>
+        </b>
+      </List.Item>
+    </List>
+  );
 
   return (
     <>
@@ -277,6 +324,7 @@ function Header({
             </span>
           </div>
         </Col>
+
         <Col span={24} md={18} className="header-control">
           <Badge size="small" count={4}>
             <Dropdown overlay={menu} trigger={["click"]}>
@@ -384,10 +432,35 @@ function Header({
               </div>
             </div>
           </Drawer>
-          <Link to="/sign-in" className="btn-sign-in">
-            {profile}
-            <span>Sign in</span>
-          </Link>
+          <Button type="link">
+            <Dropdown
+              overlay={profileMenu}
+              onVisibleChange={handleProfileVisible}
+              visible={profileVisible}
+              placement="bottomCenter"
+            >
+              <a onClick={(e) => e.preventDefault()}>
+                {profileData ? (
+                  // default profile image if profile image didn't exist
+                  <Avatar
+                    style={{
+                      backgroundColor: "#f56a00",
+                      verticalAlign: "middle",
+                    }}
+                    size="large"
+                    src={profileData.profImage}
+                  >
+                    {!profileData.profImage && profileData.userName
+                      ? profileData.userName.slice(0, 1)
+                      : ""}
+                  </Avatar>
+                ) : (
+                  profile
+                )}
+              </a>
+            </Dropdown>
+          </Button>
+
           <Input
             className="header-search"
             placeholder="Type here..."
