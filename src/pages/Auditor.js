@@ -17,6 +17,7 @@ import 'antd/dist/antd.css';
 import { Modal, Button, Card, Form, Input, Avatar, Typography } from 'antd';
 
 import { MdEmail, MdPhone }  from "react-icons/md";
+import { makeStyles } from "@mui/styles";
 
 import {
   SearchOutlined,
@@ -24,8 +25,20 @@ import {
 
 const { Title } = Typography;
 
+const useStyles = makeStyles({
+  headerSearch: {
+    width: "220px",
+    borderRadius: "7px",
+    marginRight: "10px",
+    marginLeft: "10px"
+  }
+});
+
+
 const Auditor = () =>{
+  const classes = useStyles();
   const [data, setdata] = useState([]);
+  const [tableData, setTableData] = useState([]);
   const [modaldata, setmodaldata] = useState({});
 
   const columns = [
@@ -114,7 +127,7 @@ const Auditor = () =>{
         fullName: row.fullName,
         qualification: row.qualification,
         imageUri: row.imageUri,
-        contactNumber: '0' + row.contactNumber,
+        contactNumber: row.contactNumber,
         email: row.email,
         address: row.address,
         type: row.userType,
@@ -122,6 +135,18 @@ const Auditor = () =>{
         DOB: row.DOB,
       }))
     );
+    setTableData(res.data.Result.map((row) => ({
+      id: row.userID,
+      fullName: row.fullName,
+      qualification: row.qualification,
+      imageUri: row.imageUri,
+      contactNumber: row.contactNumber,
+      email: row.email,
+      address: row.address,
+      type: row.userType,
+      userName: row.userName,
+      DOB: row.DOB,
+    })));
   };
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -187,8 +212,7 @@ const Auditor = () =>{
         contactNumber: modaldata.contactNumber.toString(),
         email: modaldata.email,
         address: modaldata.address,
-        type: modaldata.userType,
-        userName: modaldata.userName,
+        userType: modaldata.type,
   }
 
   console.log(user);
@@ -200,6 +224,24 @@ const Auditor = () =>{
     setIsModalVisible(false);
   });
 
+  };
+
+  const handleonChange = (e) => {
+    const searchKey = e.target.value.toLowerCase();
+    
+    if (searchKey === '') {
+      setdata(tableData);
+    } else {
+      const filteredData = tableData.filter(item =>{
+          return (item.fullName.toLowerCase().includes(searchKey) ||
+                  item.qualification.toLowerCase().includes(searchKey) ||
+                  item.contactNumber.toLowerCase().includes(searchKey) ||
+                  item.email.toLowerCase().includes(searchKey) ||
+                  item.address.toLowerCase().includes(searchKey)
+                  );
+        })
+      setdata(filteredData);
+    }
   };
 
   return (
@@ -214,10 +256,11 @@ const Auditor = () =>{
                 extra={
                   <>
                     <Input
-                      className="header-search"
-                       placeholder="Type here..."
-                        prefix={<SearchOutlined />}
-          />
+                      className={classes.headerSearch}
+                      placeholder="Search here..."
+                      prefix={<SearchOutlined />}
+                      onChange={handleonChange}
+                    />
                   </>
                 }
               >
@@ -339,6 +382,28 @@ const Auditor = () =>{
                       address: event.target.value
                     })
                   }}/>
+                </Form.Item>
+                <Form.Item
+                  name="type"
+                  label="User Type"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter the user type",
+                    },
+                    {
+                      whitespace: true
+                    },
+                  ]}
+                >
+                  <Input name="type" placeholder={modaldata.type} defaultValue={modaldata.type}
+                  onChange={(event) => {
+                    setmodaldata({
+                      ...modaldata,
+                      type: event.target.value
+                    })
+                  }}
+                  />
                 </Form.Item>
               </Form>
       </Modal>
