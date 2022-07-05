@@ -94,6 +94,7 @@ const Trees = () => {
           longitude,
           latitude,
         }) => ({
+          key: treeID,
           treeID,
           creatorID,
           landOwnerID,
@@ -110,9 +111,10 @@ const Trees = () => {
   }, []);
 
   useEffect(async () => {
-    if (!modaldata) return;
-    const landOwner = await getLandOwnerById(modaldata.landOwnerRegisterNo);
-    const auditor = await getAuditorById(modaldata.creatorID);
+    const landOwner = await getLandOwnerById(
+      modaldata.landOwnerRegisterNo || null
+    );
+    const auditor = await getAuditorById(modaldata.creatorID || null);
     setLandOwnerName(landOwner);
     setAuditorName(auditor);
   }, []);
@@ -205,33 +207,33 @@ const Trees = () => {
           </Col>
           <Col md={12} xs={24}>
             <Space direction="vertical">
-              <div>
+              <div key={0}>
                 Tree ID : &nbsp;&nbsp;<b>{treeID}</b>
               </div>
-              <div>
+              <div key={1}>
                 Tree species : &nbsp;&nbsp;<b>{treeSpecies}</b>
               </div>
-              <div>
+              <div key={2}>
                 LifeForce Unit Tree No : &nbsp;&nbsp;
                 <b>{lifeForceUnitTreeNo}</b>
               </div>
-              <div>
+              <div key={3}>
                 landOwner Register No : &nbsp;&nbsp;<b>{landOwnerRegisterNo}</b>
               </div>
-              <div>
+              <div key={4}>
                 landOwner ID : &nbsp;&nbsp;<b>{landOwnerID}</b>
               </div>
-              <div>
-                {/* landOwner Name : &nbsp;&nbsp;<b>{landOwnerName}</b> */}
+              <div key={5}>
+                landOwner Name : &nbsp;&nbsp;<b>{landOwnerName}</b>
               </div>
-              <div>
+              <div key={6}>
                 Auditor ID : &nbsp;&nbsp;<b>{creatorID}</b>
               </div>
-              {/* <div>Auditor ID : &nbsp;&nbsp;<b>{getAuditorById(creatorID)}</b></div> */}
-              <div>
+              {/* <div key={7}>Auditor ID : &nbsp;&nbsp;<b>{getAuditorById(creatorID)}</b></div> */}
+              <div key={8}>
                 Date of planting : &nbsp;&nbsp;<b>{dateofPlanting}</b>
               </div>
-              <div>
+              <div key={9}>
                 created At : &nbsp;&nbsp;<b>{createdAt}</b>
               </div>
             </Space>

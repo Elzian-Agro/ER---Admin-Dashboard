@@ -26,20 +26,27 @@ export default function DataService() {
 
   async function deletePlantedTree(Id) {
     const data = await http.put("/trees/deleteTree/" + Id).then((res) => res);
-    console.log(data.status == 200 ? data.data.message : "");
+    console.log(
+      data.status == 200
+        ? data.data.message
+        : "Oops! something went wrong when deleting Tree"
+    );
     // return data;
   }
 
   async function getAuditorById(id) {
+    if (!id) return;
     const data = await http.get("/users/" + id).then((res) => res.data.Result);
     console.log(data);
     //  return data
   }
 
   async function getLandOwnerById(id) {
+    if (!id) return;
     const data = await http
       .get("/landOwners/" + id)
       .then((res) => res.data.Result);
+    console.log(data);
     return data[0].landOwnerName;
   }
 
