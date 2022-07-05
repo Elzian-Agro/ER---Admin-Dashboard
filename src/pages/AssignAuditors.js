@@ -35,7 +35,7 @@ const useStyles = makeStyles({
 });
 
 
-const Auditor = () =>{
+const AssignAuditors = () =>{
   const classes = useStyles();
   const [data, setdata] = useState([]);
   const [tableData, setTableData] = useState([]);
@@ -43,7 +43,7 @@ const Auditor = () =>{
 
   const columns = [
     {
-      title: "AUDITOR NAME",
+      title: "LAND OWNER NAME",
       dataIndex: "name",
       key: "name",
       width: "22%",
@@ -86,25 +86,15 @@ const Auditor = () =>{
         </>
       ),
     },
-      {
-        title: "USER TYPE",
-        key: "type",
-        dataIndex: "type",
-        render: (index, record) => (
-          <>
-              <Title level={5}>{record.type}</Title>
-          </>
-        ),
-      },
     {
-      title: 'Edit User',
+      title: 'ASSIGN AUDITOR',
       dataIndex: 'id',
       key: 'id',
       render: (index, record) => (
         <Button type="primary" onClick={() => {
           showModal(record)
           }}>
-          Edit
+          Assign
         </Button>
       ),
     },
@@ -252,7 +242,7 @@ const Auditor = () =>{
           <Card
                 bordered={false}
                 className="criclebox tablespace mb-24"
-                title="Auditors"
+                title="Assign Auditors"
                 extra={
                   <>
                     <Input
@@ -272,7 +262,7 @@ const Auditor = () =>{
         </Row>
       </div>
       <Modal
-        title="Update Auditor"
+        title="Assign Auditor"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -383,45 +373,10 @@ const Auditor = () =>{
                     })
                   }}/>
                 </Form.Item>
-                <Form.Item
-                  name="type"
-                  label="User Type"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter the user type",
-                    },
-                    {
-                      whitespace: true
-                    },
-                  ]}
-                >
-                  {/* <Input name="type" placeholder={modaldata.type} defaultValue={modaldata.type}
-                  onChange={(event) => {
-                    setmodaldata({
-                      ...modaldata,
-                      type: event.target.value
-                    })
-                  }}
-                  /> */}
-                  <Select
-                    name="type"
-                    placeholder={modaldata.type}
-                    onChange={(value) => {
-                      setmodaldata({
-                        ...modaldata,
-                        type: value
-                      })
-                    }}
-                  >
-                    <Select.Option value="Auditor">Auditor</Select.Option>
-                    <Select.Option value="Field Agent">Field Agent</Select.Option>
-                  </Select>
-                </Form.Item>
               </Form>
       </Modal>
       </>
   );
 };
 
-export default Auditor;
+export default AssignAuditors;
