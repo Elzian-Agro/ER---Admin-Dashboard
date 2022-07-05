@@ -145,24 +145,6 @@ function Sidenav({ color }) {
     </svg>,
   ];
 
-  const assignauditors = [
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      key={0}
-    >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M3 6C3 4.34315 4.34315 3 6 3H16C16.3788 3 16.725 3.214 16.8944 3.55279C17.0638 3.89157 17.0273 4.29698 16.8 4.6L14.25 8L16.8 11.4C17.0273 11.703 17.0638 12.1084 16.8944 12.4472C16.725 12.786 16.3788 13 16 13H6C5.44772 13 5 13.4477 5 14V17C5 17.5523 4.55228 18 4 18C3.44772 18 3 17.5523 3 17V6Z"
-        fill={color}
-      ></path>
-    </svg>,
-  ];
-
   const calculation = [
     <svg
       width="20"
@@ -245,7 +227,7 @@ function Sidenav({ color }) {
       </div>
       <hr />
       <Menu theme="light" mode="inline">
-        <Menu.Item key="1">
+        <Menu.Item key="m1">
           <NavLink to="/dashboard">
             <span
               className="icon"
@@ -258,7 +240,7 @@ function Sidenav({ color }) {
             <span className="label">Dashboard</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="2">
+        <Menu.Item key="m2">
           <NavLink to="/tables">
             <span
               className="icon"
@@ -271,7 +253,7 @@ function Sidenav({ color }) {
             <span className="label">Tables</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="3">
+        <Menu.Item key="m3">
           <NavLink to="/trees">
             <span
               className="icon"
@@ -284,7 +266,7 @@ function Sidenav({ color }) {
             <span className="label">Planted Trees</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="12">
+        <Menu.Item key="m4">
           <NavLink to="/treeSpecies">
             <span
               className="icon"
@@ -297,7 +279,7 @@ function Sidenav({ color }) {
             <span className="label">Tree Species</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="4">
+        <Menu.Item key="m5">
           <NavLink to="/billing">
             <span
               className="icon"
@@ -310,7 +292,7 @@ function Sidenav({ color }) {
             <span className="label">Billing</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="5">
+        <Menu.Item key="m6">
           <NavLink to="/feed">
             <span
               className="icon"
@@ -323,7 +305,7 @@ function Sidenav({ color }) {
             <span className="label">Feed</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="6">
+        <Menu.Item key="m7">
           <NavLink to="/landOwner">
             <span
               className="icon"
@@ -336,7 +318,7 @@ function Sidenav({ color }) {
             <span className="label">Land Owner</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="7">
+        <Menu.Item key="m8">
           <NavLink to="/auditor">
             <span
               className="icon"
@@ -349,20 +331,7 @@ function Sidenav({ color }) {
             <span className="label">Auditor</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="8">
-          <NavLink to="/Assign-Auditors">
-            <span
-              className="icon"
-              style={{
-                background: page === "assignauditors" ? color : "",
-              }}
-            >
-              {assignauditors}
-            </span>
-            <span className="label">Assign Auditors</span>
-          </NavLink>
-        </Menu.Item>
-        <Menu.Item key="11">
+        <Menu.Item key="m9">
           <NavLink to="/calculation">
             <span
               className="icon"
@@ -375,10 +344,10 @@ function Sidenav({ color }) {
             <span className="label">Calculations</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item className="menu-item-header" key="5">
+        <Menu.Item className="menu-item-header" key="m10">
           Account Pages
         </Menu.Item>
-        <Menu.Item key="8">
+        <Menu.Item key="m11">
           <NavLink to="/profile">
             <span
               className="icon"
@@ -391,13 +360,13 @@ function Sidenav({ color }) {
             <span className="label">Profile</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="9">
+        <Menu.Item key="m12">
           <NavLink to="/sign-in">
             <span className="icon">{signin}</span>
             <span className="label">Sign In</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="10">
+        <Menu.Item key="m13">
           <NavLink to="/sign-up">
             <span className="icon">{signup}</span>
             <span className="label">Sign Up</span>
