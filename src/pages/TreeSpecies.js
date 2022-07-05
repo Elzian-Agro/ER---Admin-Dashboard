@@ -348,6 +348,21 @@ function TreeSpecies() {
     setIsUpdateModalVisible(false)
   }
 
+  const handleDeleteTreeSpecies = async () => {
+    axios({
+      method: "put",
+      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/species/deleteSpecies/${selectedId}`,
+      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
+    }).then(()=>{
+      const deleteTrSp = data.filter((tree)=>tree.plant_id !== selectedId);
+      setData(deleteTrSp);
+    }).catch(err=>{
+      console.log(err)
+    });
+    
+    setDeleteTreeSpecies(false);
+  };
+
   return (
     <div>
       <Box
@@ -457,7 +472,7 @@ function TreeSpecies() {
                           danger
                           onClick={() => {
                             setDeleteTreeSpecies(true);
-                            
+                            setSelectedId(row.plant_id);
                           }}
                         >
                           Delete
@@ -489,6 +504,7 @@ function TreeSpecies() {
                       type="primary"
                       danger
                       color="error"
+                      onClick={handleDeleteTreeSpecies}
                     >
                       Delete
                     </Button>
@@ -607,7 +623,7 @@ function TreeSpecies() {
               />
             </Form.Item>
             <Form.Item
-              name="photosyntheticBiomassYear1"
+              name="photosyntheticBiomassYear4"
               label="Photosynthetic Biomass Year 4"
             >
               <Input
