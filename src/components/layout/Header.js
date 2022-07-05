@@ -9,14 +9,12 @@ import {
   Button,
   List,
   Avatar,
-  Input,
   Drawer,
   Typography,
   Switch,
-  Space,
 } from "antd";
 
-import { SearchOutlined, UserOutlined } from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 
 import { NavLink, Link } from "react-router-dom";
 import styled from "styled-components";
@@ -461,12 +459,6 @@ function Header({
               </a>
             </Dropdown>
           </Button>
-
-          <Input
-            className="header-search"
-            placeholder="Type here..."
-            prefix={<SearchOutlined />}
-          />
         </Col>
       </Row>
     </>
