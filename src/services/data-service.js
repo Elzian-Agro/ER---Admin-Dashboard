@@ -26,7 +26,7 @@ export default function DataService() {
 
   async function deletePlantedTree(Id) {
     const data = await http.put("/trees/deleteTree/" + Id).then((res) => res);
-    console.log(data);
+    console.log(data.status == 200 ? data.data.message : "");
     // return data;
   }
 

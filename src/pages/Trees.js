@@ -15,6 +15,7 @@ const Trees = () => {
   const [AuditorName, setAuditorName] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
 
   const {
     getPlantedTrees,
@@ -114,7 +115,7 @@ const Trees = () => {
     const auditor = await getAuditorById(modaldata.creatorID);
     setLandOwnerName(landOwner);
     setAuditorName(auditor);
-  }, [modaldata]);
+  }, []);
 
   const {
     treeID,
@@ -133,17 +134,23 @@ const Trees = () => {
     setIsModalVisible(false);
   };
 
-  const handleUpdate = (treeID) => {
-    updatePlantedTree(treeID);
+  const handleConfirmDelete = async () => {
+    await deletePlantedTree(treeID);
+    handleDeleteModalCancel();
+    handleCancel();
   };
 
-  const handleConfirmDelete = async () => {
-    const res = await deletePlantedTree(treeID);
-    console.log(res);
+  const handleConfirmUpdate = async () => {
+    // await updatePlantedTree(treeID);
+    handleUpdateModalCancel();
   };
 
   const handleDeleteModalCancel = () => {
     setIsDeleteModalVisible(false);
+  };
+
+  const handleUpdateModalCancel = () => {
+    setIsUpdateModalVisible(false);
   };
 
   return (
@@ -181,7 +188,7 @@ const Trees = () => {
         destroyOnClose
         width={1000}
         footer={[
-          <Button type="primary" onClick={() => handleUpdate(treeID)}>
+          <Button type="primary" onClick={() => setIsUpdateModalVisible(true)}>
             Update
           </Button>,
           <Button type="danger" onClick={() => setIsDeleteModalVisible(true)}>
@@ -215,7 +222,7 @@ const Trees = () => {
                 landOwner ID : &nbsp;&nbsp;<b>{landOwnerID}</b>
               </div>
               <div>
-                landOwner Name : &nbsp;&nbsp;<b>{landOwnerName}</b>
+                {/* landOwner Name : &nbsp;&nbsp;<b>{landOwnerName}</b> */}
               </div>
               <div>
                 Auditor ID : &nbsp;&nbsp;<b>{creatorID}</b>
@@ -248,6 +255,26 @@ const Trees = () => {
         ]}
       >
         Are you sure You want to delete <b>{treeID}</b> ?
+      </Modal>
+
+      {/* Update Modal */}
+      <Modal
+        title="Update Tree "
+        visible={isUpdateModalVisible}
+        onCancel={() => setIsUpdateModalVisible(false)}
+        destroyOnClose
+        width={500}
+        footer={[
+          <Button key="back" onClick={handleUpdateModalCancel}>
+            Cancel
+          </Button>,
+          <Button type="primary" onClick={handleConfirmUpdate}>
+            update
+          </Button>,
+        ]}
+      >
+        Form should be Here for tree <b>{treeID}</b>
+        {/* Add Form here  */}
       </Modal>
     </>
   );
