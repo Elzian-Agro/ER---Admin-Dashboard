@@ -1,10 +1,12 @@
 import { Menu } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 import logo from "../../assets/images/earth-restoration-logo.png";
+import userType from "../userType";
 
 function Sidenav({ color }) {
   const { pathname } = useLocation();
   const page = pathname.replace("/", "");
+  const { admin } = userType();
 
   const dashboard = [
     <svg
@@ -253,19 +255,23 @@ function Sidenav({ color }) {
             <span className="label">Tables</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="m3">
-          <NavLink to="/trees">
-            <span
-              className="icon"
-              style={{
-                background: page === "trees" ? color : "",
-              }}
-            >
-              {billing}
-            </span>
-            <span className="label">Planted Trees</span>
-          </NavLink>
-        </Menu.Item>
+        {admin ? (
+          <Menu.Item key="m3">
+            <NavLink to="/trees">
+              <span
+                className="icon"
+                style={{
+                  background: page === "trees" ? color : "",
+                }}
+              >
+                {billing}
+              </span>
+              <span className="label">Planted Trees</span>
+            </NavLink>
+          </Menu.Item>
+        ) : (
+          ""
+        )}
         <Menu.Item key="m4">
           <NavLink to="/treeSpecies">
             <span

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Content } from "antd/lib/layout/layout";
 import { Table, Row, Col, Space } from "antd";
-import service from "./../services/data-service";
 import "antd/dist/antd.css";
 import { Modal, Button, Card, Typography } from "antd";
+
+import service from "./../services/data-service";
 import Map from "../components/map";
+import userType from "../components/userType";
 
 const { Title } = Typography;
 
@@ -19,11 +21,13 @@ const Trees = () => {
 
   const {
     getPlantedTrees,
-    updatePlantedTree,
+    // updatePlantedTree,
     deletePlantedTree,
     getLandOwnerById,
     getAuditorById,
   } = service();
+
+  const { admin } = userType();
 
   const columns = [
     {
@@ -155,6 +159,7 @@ const Trees = () => {
     setIsUpdateModalVisible(false);
   };
 
+  if (!admin) return null;
   return (
     <>
       <Content>
@@ -168,7 +173,7 @@ const Trees = () => {
               <Table
                 dataSource={data}
                 columns={columns}
-                onRow={(record, rowIndex) => {
+                onRow={(record) => {
                   return {
                     onClick: () => {
                       setIsModalVisible(true);
