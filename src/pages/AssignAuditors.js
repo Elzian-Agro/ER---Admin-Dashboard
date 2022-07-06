@@ -14,7 +14,7 @@ import React , {useState , useEffect } from 'react';
 import { Table, Row, Col } from 'antd';
 import axios from 'axios';
 import 'antd/dist/antd.css';
-import { Modal, Button, Card, Form, Input, Avatar, Typography, Select, Descriptions, Space, Badge  } from 'antd';
+import { Modal, Button, Card, Form, Input, Avatar, Typography, Select, Space, Badge  } from 'antd';
 
 import { MdEmail, MdPhone }  from "react-icons/md";
 import { makeStyles } from "@mui/styles";
@@ -188,28 +188,6 @@ const AssignAuditors = () =>{
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-  const layout = {
-    labelCol: {
-      span: 6,
-    },
-    wrapperCol: {
-      span: 16,
-    },
-  };
-
-  const handleDeleteClick = (auditorID) => {
-    const user = {}
-    console.log(auditorID)
-    const headers = {
-      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
-    };
-    axios.put(
-      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/deleteUser/${auditorID}`, user, {headers}
-    ).then((req,res) => {
-      getData()
-      setIsModalVisible(false)
-    });
-  };
 
   const handleUpdatelick = (auditorID) => {
     console.log(auditorID)
@@ -327,7 +305,6 @@ const AssignAuditors = () =>{
                 >
                   <Select
                     name="type"
-                    placeholder={modaldata.type}
                     onChange={(value) => {
                       setmodaldata({
                         ...modaldata,
