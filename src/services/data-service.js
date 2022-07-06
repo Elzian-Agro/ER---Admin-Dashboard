@@ -27,7 +27,7 @@ export default function DataService() {
   async function deletePlantedTree(Id) {
     const data = await http.put("/trees/deleteTree/" + Id).then((res) => res);
     console.log(
-      data.status == 200
+      data.status === 200
         ? data.data.message
         : "Oops! something went wrong when deleting Tree"
     );

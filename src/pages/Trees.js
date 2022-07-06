@@ -13,18 +13,18 @@ const { Title } = Typography;
 const Trees = () => {
   const [data, setdata] = useState([]);
   const [modaldata, setmodaldata] = useState({});
-  const [landOwnerName, setLandOwnerName] = useState();
-  const [AuditorName, setAuditorName] = useState();
+  // const [landOwnerName, setLandOwnerName] = useState();
+  // const [AuditorName, setAuditorName] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
 
   const {
     getPlantedTrees,
-    // updatePlantedTree,
     deletePlantedTree,
-    getLandOwnerById,
-    getAuditorById,
+    // updatePlantedTree,
+    // getLandOwnerById,
+    // getAuditorById,
   } = service();
 
   const { admin } = userType();
@@ -82,46 +82,50 @@ const Trees = () => {
     },
   ];
 
-  useEffect(async () => {
-    const res = await getPlantedTrees();
-    setdata(
-      res.map(
-        ({
-          treeID,
-          creatorID,
-          landOwnerID,
-          landOwnerRegisterNo,
-          lifeForceUnitTreeNo,
-          treeSpecies,
-          dateofPlanting,
-          createdAt,
-          longitude,
-          latitude,
-        }) => ({
-          key: treeID,
-          treeID,
-          creatorID,
-          landOwnerID,
-          landOwnerRegisterNo,
-          lifeForceUnitTreeNo,
-          treeSpecies,
-          dateofPlanting,
-          createdAt,
-          longitude,
-          latitude,
-        })
-      )
-    );
-  }, []);
+  useEffect(() => {
+    async function fetchData() {
+      const res = await getPlantedTrees();
+      setdata(
+        res.map(
+          ({
+            treeID,
+            creatorID,
+            landOwnerID,
+            landOwnerRegisterNo,
+            lifeForceUnitTreeNo,
+            treeSpecies,
+            dateofPlanting,
+            createdAt,
+            longitude,
+            latitude,
+          }) => ({
+            key: treeID,
+            treeID,
+            creatorID,
+            landOwnerID,
+            landOwnerRegisterNo,
+            lifeForceUnitTreeNo,
+            treeSpecies,
+            dateofPlanting,
+            createdAt,
+            longitude,
+            latitude,
+          })
+        )
+      );
+    }
+    fetchData();
+  }, [getPlantedTrees]);
 
-  useEffect(async () => {
-    const landOwner = await getLandOwnerById(
-      modaldata.landOwnerRegisterNo || null
-    );
-    const auditor = await getAuditorById(modaldata.creatorID || null);
-    setLandOwnerName(landOwner);
-    setAuditorName(auditor);
-  }, []);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const landOwner = await getLandOwnerById(modaldata.landOwnerID || null);
+  //     const auditor = await getAuditorById(modaldata.creatorID || null);
+  //     setLandOwnerName(landOwner);
+  //     setAuditorName(auditor);
+  //   }
+  //   fetchData();
+  // }, [getLandOwnerById, modaldata.landOwnerID]);
 
   const {
     treeID,
@@ -195,10 +199,18 @@ const Trees = () => {
         destroyOnClose
         width={1000}
         footer={[
-          <Button type="primary" onClick={() => setIsUpdateModalVisible(true)}>
+          <Button
+            key="update"
+            type="primary"
+            onClick={() => setIsUpdateModalVisible(true)}
+          >
             Update
           </Button>,
-          <Button type="danger" onClick={() => setIsDeleteModalVisible(true)}>
+          <Button
+            key="delete"
+            type="danger"
+            onClick={() => setIsDeleteModalVisible(true)}
+          >
             Delete
           </Button>,
           <Button key="back" onClick={handleCancel}>
@@ -228,9 +240,7 @@ const Trees = () => {
               <div key={4}>
                 landOwner ID : &nbsp;&nbsp;<b>{landOwnerID}</b>
               </div>
-              <div key={5}>
-                landOwner Name : &nbsp;&nbsp;<b>{landOwnerName}</b>
-              </div>
+              {/* <div key={5}>landOwner Name : &nbsp;&nbsp;<b>{landOwnerName}</b></div> */}
               <div key={6}>
                 Auditor ID : &nbsp;&nbsp;<b>{creatorID}</b>
               </div>

@@ -146,7 +146,7 @@ function Sidenav({ color }) {
       ></path>
     </svg>,
   ];
-  
+
   const assignauditor = [
     <svg
       width="20"
@@ -273,7 +273,7 @@ function Sidenav({ color }) {
             <span className="label">Tables</span>
           </NavLink>
         </Menu.Item>
-        {admin ? (
+        {admin && (
           <Menu.Item key="m3">
             <NavLink to="/trees">
               <span
@@ -287,8 +287,6 @@ function Sidenav({ color }) {
               <span className="label">Planted Trees</span>
             </NavLink>
           </Menu.Item>
-        ) : (
-          ""
         )}
         <Menu.Item key="m4">
           <NavLink to="/treeSpecies">
@@ -368,7 +366,7 @@ function Sidenav({ color }) {
             <span className="label">Assign Auditor</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="m10">
+        <Menu.Item key="m14">
           <NavLink to="/calculation">
             <span
               className="icon"
