@@ -396,14 +396,6 @@ const Auditor = () =>{
                     },
                   ]}
                 >
-                  {/* <Input name="type" placeholder={modaldata.type} defaultValue={modaldata.type}
-                  onChange={(event) => {
-                    setmodaldata({
-                      ...modaldata,
-                      type: event.target.value
-                    })
-                  }}
-                  /> */}
                   <Select
                     name="type"
                     placeholder={modaldata.type}
