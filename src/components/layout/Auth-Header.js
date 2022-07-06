@@ -14,6 +14,7 @@ const signup = [
     viewBox="0 0 20 20"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    key={1}
   >
     <path
       data-v-4ebdc598=""
@@ -25,12 +26,14 @@ const signup = [
     ></path>
   </svg>,
 ];
+
 const signin = [
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="14"
     height="14"
     viewBox="0 0 14 14"
+    key={2}
   >
     <path
       className="fill-muted"

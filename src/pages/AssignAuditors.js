@@ -14,7 +14,7 @@ import React , {useState , useEffect } from 'react';
 import { Table, Row, Col } from 'antd';
 import axios from 'axios';
 import 'antd/dist/antd.css';
-import { Modal, Button, Card, Form, Input, Avatar, Typography, Select } from 'antd';
+import { Modal, Button, Card, Form, Input, Avatar, Typography, Select, Space, Badge  } from 'antd';
 
 import { MdEmail, MdPhone }  from "react-icons/md";
 import { makeStyles } from "@mui/styles";
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
 });
 
 
-const Auditor = () =>{
+const AssignAuditors = () =>{
   const classes = useStyles();
   const [data, setdata] = useState([]);
   const [tableData, setTableData] = useState([]);
@@ -43,10 +43,10 @@ const Auditor = () =>{
 
   const columns = [
     {
-      title: "AUDITOR NAME",
+      title: "LAND OWNER NAME",
       dataIndex: "name",
       key: "name",
-      width: "22%",
+      width: "15%",
       render: (index, record) => (
         <>
                     <Avatar.Group>
@@ -69,6 +69,7 @@ const Auditor = () =>{
       title: "CONTACT NUMBER",
       key: "contact",
       dataIndex: "contact",
+      width: "15%",
       render: (index, record) => (
         <>
             <Title level={5}> <MdPhone /> {record.contactNumber}</Title>
@@ -80,31 +81,45 @@ const Auditor = () =>{
       title: "ADDRESS",
       key: "address",
       dataIndex: "address",
+      width: "15%",
       render: (index, record) => (
         <>
             <Title level={5}>{record.address}</Title>
         </>
       ),
     },
-      {
-        title: "USER TYPE",
-        key: "type",
-        dataIndex: "type",
+    {
+        title: "AUDITOR ID",
+        key: "id",
+        dataIndex: "id",
+        width: "15%",
         render: (index, record) => (
           <>
-              <Title level={5}>{record.type}</Title>
+              <Title level={5}>2</Title>
           </>
         ),
       },
     {
-      title: 'Edit User',
+        title: "ASSIGNED AUDITOR",
+        key: "aname",
+        dataIndex: "aname",
+        width: "15%",
+        render: (index, record) => (
+          <>
+              <Title level={5}> <Badge status="success" /> {record.fullName}</Title>
+          </>
+        ),
+      },
+    {
+      title: 'ASSIGN AUDITOR',
       dataIndex: 'id',
       key: 'id',
+      width: "15%",
       render: (index, record) => (
         <Button type="primary" onClick={() => {
           showModal(record)
           }}>
-          Edit
+          Assign
         </Button>
       ),
     },
@@ -173,28 +188,6 @@ const Auditor = () =>{
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-  const layout = {
-    labelCol: {
-      span: 6,
-    },
-    wrapperCol: {
-      span: 16,
-    },
-  };
-
-  const handleDeleteClick = (auditorID) => {
-    const user = {}
-    console.log(auditorID)
-    const headers = {
-      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
-    };
-    axios.put(
-      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/deleteUser/${auditorID}`, user, {headers}
-    ).then((req,res) => {
-      getData()
-      setIsModalVisible(false)
-    });
-  };
 
   const handleUpdatelick = (auditorID) => {
     console.log(auditorID)
@@ -212,7 +205,6 @@ const Auditor = () =>{
         contactNumber: modaldata.contactNumber.toString(),
         email: modaldata.email,
         address: modaldata.address,
-        userType: modaldata.type.toString(),
   }
 
   console.log(user);
@@ -252,7 +244,7 @@ const Auditor = () =>{
           <Card
                 bordered={false}
                 className="criclebox tablespace mb-24"
-                title="Auditors"
+                title="Assign Auditors"
                 extra={
                   <>
                     <Input
@@ -272,125 +264,40 @@ const Auditor = () =>{
         </Row>
       </div>
       <Modal
-        title="Update Auditor"
+        title="Assign Auditor"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         destroyOnClose
         footer={[
-          <Button type="danger" onClick={() => {handleDeleteClick(modaldata.id)}}>
-            Delete Auditor
-          </Button>,
           <Button key="back" onClick={handleCancel}>
             Cancel
           </Button>,
           <Button key="submit" type="primary" onClick={() => handleUpdatelick(modaldata.id)}>
-            Save
+            Assign
           </Button>,
         ]}
       >
-        <Form {...layout}>
-                <Form.Item
-                  name="fullName"
-                  label="Full Name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter the name",
-                    },
-                    {
-                      whitespace: true
-                    },
-                    { min: 3},
-                  ]}
-                  hasFeedback
-                >
-                  <Input name="fullName" placeholder={modaldata.fullName} defaultValue={modaldata.fullName}
-                  onChange={(event) => {
-                    setmodaldata({
-                      ...modaldata,
-                      fullName: event.target.value
-                    })
-                  }}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="qualification"
-                  label="Qualification"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter the qualification",
-                    },
-                    {
-                      whitespace: true
-                    },
-                  ]}
-                  hasFeedback
-                >
-                  <Input name="qualification" placeholder={modaldata.qualification} defaultValue={modaldata.qualification}
-                  onChange={(event) => {
-                    setmodaldata({
-                      ...modaldata,
-                      qualification: event.target.value
-                    })
-                  }}/>
-                </Form.Item>
-                <Form.Item
-                  name="contactNumber"
-                  label="Contact Number"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter the Contact number",
-                    },
-                    {
-                      whitespace: true
-                    },
-                    { min: 10},
-                    { max: 10},
-                  ]}
-                  hasFeedback
-                >
-                  <Input name="contactNumber" placeholder={modaldata.contactNumber} defaultValue={modaldata.contactNumber}
-                  onChange={(event) => {
-                    setmodaldata({
-                      ...modaldata,
-                      contactNumber: event.target.value.toString()
-                    })
-                  }}/>
-                </Form.Item>
-                <Form.Item
-                  name="address"
-                  label="Address"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter the address",
-                    },
-                    {
-                      whitespace: true
-                    },
-                    { min: 5},
-                  ]}
-                  hasFeedback
-                >
-                  <Input name="address" placeholder={modaldata.address} defaultValue={modaldata.address}
-                  onChange={(event) => {
-                    setmodaldata({
-                      ...modaldata,
-                      address: event.target.value
-                    })
-                  }}/>
-                </Form.Item>
+        <Row gutter={[20, 20]}>
+        <Col offset={4} md={30} xs={24}>
+            <Space direction="vertical">
+              <div>
+                Land Owner Name : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.fullName}</b>
+              </div>
+              <div>
+                Contact Number : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.contactNumber}</b>
+              </div>
+              <div>
+                Email : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.email}</b>
+              </div>
+              <div>
+                Address : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.address}</b>
+              </div>
+              <Form>
                 <Form.Item
                   name="type"
-                  label="User Type"
+                  label="Auditor"
                   rules={[
-                    {
-                      required: true,
-                      message: "Please enter the user type",
-                    },
                     {
                       whitespace: true
                     },
@@ -398,7 +305,6 @@ const Auditor = () =>{
                 >
                   <Select
                     name="type"
-                    placeholder={modaldata.type}
                     onChange={(value) => {
                       setmodaldata({
                         ...modaldata,
@@ -406,14 +312,17 @@ const Auditor = () =>{
                       })
                     }}
                   >
-                    <Select.Option value="Auditor">Auditor</Select.Option>
-                    <Select.Option value="Field Agent">Field Agent</Select.Option>
+                    <Select.Option value="Auditor">Auditor 1</Select.Option>
+                    <Select.Option value="Field Agent">Auditor 2</Select.Option>
                   </Select>
                 </Form.Item>
               </Form>
+            </Space>
+        </Col>
+      </Row>
       </Modal>
       </>
   );
 };
 
-export default Auditor;
+export default AssignAuditors;

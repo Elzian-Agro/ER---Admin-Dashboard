@@ -4,14 +4,18 @@ import Tables from "./pages/Tables";
 import Billing from "./pages/Billing";
 import Feed from "./pages/Feed";
 import LandOwner from "./pages/LandOwner";
+import Trees from "./pages/Trees";
 import Auditor from "./pages/Auditor";
+import AssignAuditors from "./pages/AssignAuditors"
 import Profile from "./pages/Profile";
+import Calculation from "./pages/Calculation"
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Main from "./components/layout/Main";
 import "antd/dist/antd.css";
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
+import TreeSpecies from "./pages/TreeSpecies";
 
 function App() {
   return (
@@ -25,8 +29,12 @@ function App() {
           <Route exact path="/billing" component={Billing} />
           <Route exact path="/feed" component={Feed} />
           <Route exact path="/landOwner" component={LandOwner} />
+          <Route exact path="/trees" component={Trees} />
           <Route exact path="/auditor" component={Auditor} />
+          <Route exact path="/Assign-Auditors" component={AssignAuditors} />
           <Route exact path="/profile" component={Profile} />
+          <Route exact path="/calculation" component={Calculation} />
+          <Route exact path="/treeSpecies" component={TreeSpecies} />
           <Redirect from="*" to="/dashboard" />
         </Main>
       </Switch>

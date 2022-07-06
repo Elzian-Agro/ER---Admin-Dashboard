@@ -85,7 +85,7 @@ export default function SignIn() {
                 </Form.Item>
 
                 <Form.Item
-                  name="remember"
+                  // name="remember"
                   className="aligin-center"
                   valuePropName="checked"
                 >

@@ -5,17 +5,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-// import Button from '@mui/material/Button';
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import { useCookies } from "react-cookie";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
-// import Input from '@mui/material/Input';
 import Typography from "@mui/material/Typography";
 import { Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-
 import Stack from "@mui/material/Stack";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
@@ -23,6 +21,12 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import {
+  SearchOutlined,
+} from "@ant-design/icons";
+
+import { landOwnersApi } from "../services/land-owner-service";
+
 
 const useStyles = makeStyles({
   mainHeading: {
@@ -53,9 +57,16 @@ const useStyles = makeStyles({
     marginLeft: "10px",
     width: "400px",
   },
+
+  headerSearch: {
+    width: "300px",
+    borderRadius: "5px",
+    marginRight: "10px",
+    marginLeft: "10px"
+  }
 });
 
-function LandOwner(props) {
+function LandOwner() {
   const classes = useStyles();
   const [data, setData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -79,6 +90,19 @@ function LandOwner(props) {
   const [updateRegisterNumber, setUpdateRegisterNumber] = useState("");
   const [updateLandOwnerName, setUpdateLandOwnerName] = useState("");
   const [updateLandOwnerFullName, setUpdateLandOwnerFullName] = useState("");
+  const [updateContactNumber, setUpdateLandONContact] = useState("");
+  const [updateEmail, setUpdateEmail] = useState("");
+  const [updateCountry, setUpdateCountry] = useState("");
+  const [updateLandAddress, setUpdateLandAddress] = useState("");
+  const [updateLongitude, setUpdateLongitude] = useState("");
+  const [updateLatitude, setUpdateLatitude] = useState("");
+  const [updateBankAccountNumber, setUpdateBankAccountNumber] = useState("");
+  const [updateBankName, setUpdateBankName] = useState("");
+  const [updateBankBranch, setUpdateBankBranch] = useState("");
+  const [updateNoOfTrees, setUpdateNoTrees] = useState("");
+  const [updatePerimeter, setUpdatePerimeter] = useState("");
+  const [searchLandOwner, setSearchLandOwner] = useState("");
+  //const [isApproved] = useState(true);
 
   const cookies = useCookies(["token"]);
 
@@ -88,17 +112,11 @@ function LandOwner(props) {
   };
 
   useEffect(() => {
-    const headers = {
-      "x-auth-token":
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk",
-    };
-
-    axios
-      .get("http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners", { headers })
+    landOwnersApi()
       .then((res) => {
         setData(res.data.Result);
       })
-  }, [isModalVisible, deleteFeed, isUpdateModalVisible]);
+  }, [isUpdateModalVisible]);
 
 
   const showModal = () => {
@@ -164,41 +182,91 @@ function LandOwner(props) {
       perimeter: perimeter,
     };
 
-    const newLandOwner = [...data, landData];
-    setData(newLandOwner);
 
-    const headers = {
-      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk',
-    };
+    axios({
+      method: "post",
+      url: "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/add",
+      data: landData,
+      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk" },
+    }).then((response) => {
+      const newLandOwner = [...data, landData];
+      setData(newLandOwner);
+      console.log(response.landData);
+    }).catch(err=>{
+      console.log(err)
+    });
   
-    await axios.put(
-      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/add`, landData, {headers}
-    );
-
     setIsModalVisible(false);
-
-    console.log(landData)
 
   };
 
-
-  function handleApprove(appId) {
-    setData(
-      data.map((row) => {
-        if (row.landOwnerID === appId) {
-          return { ...row, isApproved: !row.isApproved };
-        } else return { ...row };
-      })
-    );
+  function approveLandOwner(appId) {
+    axios({
+      method: "put",
+      url: `http://127.0.0.1:3000/landOwners/approveLandowner/${selectedId}`,
+      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
+    }).then((response) => {
+      
+    }).catch(err=>{
+      console.log(err)
+    });
   }
+
+  // function UnApproveLandOwner() {
+  //   axios({
+  //     method: "put",
+  //     url: `http://127.0.0.1:3000/landOwners/unApproveLandowner/${selectedId}`,
+  //     headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
+  //   }).then((response) => {
+     
+  //   }).catch(err=>{
+  //     console.log(err)
+  //   });
+  // }
+
+
+  // function handleApprove(appId) {
+
+  //   isApproved ? approveLandOwner() : UnApproveLandOwner()
+
+  //   setData(
+  //     data.map((row) => {
+  //       if (row.landOwnerID === appId) {
+  //         return { ...row, isApproved: !row.isApproved };
+  //       } else return { ...row };
+  //     })
+  //   );
+  // }
 
 
   const handleDeleteClick = async () => {
-    await axios.put(
-      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`
-    );
+
+    // const headers = {
+    //   "x-auth-token":
+    //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" 
+    // };
+    // await axios.put(
+    //   `http://localhost:3000/landOwners/deleteLandowner/${selectedId}`, { headers }
+    // )
+    axios({
+      method: "put",
+      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`,
+      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
+    }).then(()=>{
+      const deleteLandOwner = data.filter((land)=>land.landOwnerID !== selectedId);
+      setData(deleteLandOwner);
+    }).catch(err=>{
+      console.log(err)
+    });
+    
 
     setDeleteFeed(false);
+
+    // await axios.put(
+    //   `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`, {headers}
+    // );
+
+    // setDeleteFeed(false);
   };
 
 
@@ -221,26 +289,36 @@ function LandOwner(props) {
     formData.append("perimeter", perimeter);
     
     const landData = {
-      updateRegisterNumber: registerNumber,
-      updateLandOwnerName: landOwnerName,
-      updateLandOwnerFullName: landOwnerFullname,
-      // contactNumber: contactNumber,
-      // email: email,
-      // country: country,
-      // landAddress: landAddress,
-      // longitude: longitude,
-      // latitude: latitude,
-      // bankAccountNumber: bankAccountNumber,
-      // bankName: bankName,
-      // bankBranch: bankBranch,
-      // noOfTrees: noOfTrees,
-      // perimeter: perimeter,
+      registerNumber: updateRegisterNumber,
+      landOwnerName: updateLandOwnerName,
+      landOwnerFullname: updateLandOwnerFullName,
+      contactNumber: updateContactNumber,
+      email: updateEmail,
+      country: updateCountry,
+      landAddress: updateLandAddress,
+      longitude: updateLongitude,
+      latitude: updateLatitude,
+      bankAccountNumber: updateBankAccountNumber,
+      bankName: updateBankName,
+      bankBranch: updateBankBranch,
+      noOfTrees: updateNoOfTrees,
+      perimeter: updatePerimeter,
     };
-
-
-    await axios.put(
-      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`, landData
-    );
+    
+    axios({
+      method: "put",
+      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`,
+      data: landData,
+      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
+    }).then(() => {
+      const updateLandowner = data.map((land)=>{
+        if(land.landOwnerID === selectedId){
+          return landData
+        }
+        return land
+      })
+      setData(updateLandowner)
+    });
 
     setIsUpdateModalVisible(false);
 
@@ -257,6 +335,12 @@ function LandOwner(props) {
         mt={1}
       >
         <h1 className={classes.mainHeading}>Land Owners</h1>
+        <Input
+          placeholder="Search Land Owners..."
+          prefix={<SearchOutlined />}
+          className={classes.headerSearch}
+          onChange={(event) => {setSearchLandOwner(event.target.value)}}
+        />
         <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
           New
         </Button>
@@ -266,156 +350,300 @@ function LandOwner(props) {
           visible={isModalVisible}
           onCancel={handleCancel}
           onOk={() => {handleAddFormSubmit()}}
+          destroyOnClose={true}
         >
-          <Form {...layout}>
-            <Form.Item
-              name={"registerNumber"}
-              label="Register Number"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-            >
-              <Input
-                type="text"
-                value={registerNumber}
-                onChange={(event) => setRegisterNumber(event.target.value)}
-              />
-            </Form.Item>
-            <Form.Item name={"landOwnerName"} label="Land Owner Name">
-              <Input
-                type="text"
-                value={landOwnerName}
-                onChange={(event) => setLandOwnerName(event.target.value)}
-              />
-            </Form.Item>
-            <Form.Item
-              name={"landOwnerFullName"}
-              label="Land Owner Full Name"
-            >
-              <Input
-                type="text"
-                value={landOwnerFullname}
-                onChange={(event) => setLandOwnerFullName(event.target.value)}
-              />
-            </Form.Item>
-            <Form.Item
-              name="contactNumber"
-              label="Contact Number"
-            >
-              <Input
-                type="text"
-                value={contactNumber}
-                onChange={(event) => setLandONContact(event.target.value)}
-              />
-            </Form.Item>
-            <Form.Item
-              name="email"
-              label="Email"
-            >
-              <Input
-                type="text"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-              />
-            </Form.Item>
-            <Form.Item
-              name="country"
-              label="Country"
-            >
-              <Input
-                type="text"
-                value={country}
-                onChange={(event) => setCountry(event.target.value)}
-              />
-            </Form.Item>
-            <Form.Item
-              name="landAddress"
-              label="Land Address"
-            >
-              <Input
-                type="text"
-                value={landAddress}
-                onChange={(event) => setLandAddress(event.target.value)}
-              />
-            </Form.Item>
-            <Form.Item
-              name="longitude"
-              label="Longitude"
-            >
-              <Input
-                type="text"
-                value={longitude}
-                onChange={(event) => setLongitude(event.target.value)}
-              />
-            </Form.Item>
-            <Form.Item
-              name="latitude"
-              label="Latitude"
-            >
-              <Input
-                type="text"
-                value={latitude}
-                onChange={(event) => setLatitude(event.target.value)}
-              />
-            </Form.Item>
-            <Form.Item
-              name="bankAccountNumber"
-              label="Bank Account Number"
-            >
-              <Input
-                type="text"
-                value={bankAccountNumber}
-                onChange={(event) => setBankAccountNumber(event.target.value)}
-              />
-            </Form.Item>
-            <Form.Item
-              name="bankName"
-              label="Bank Name"
-            >
-              <Input
-                type="text"
-                value={bankName}
-                onChange={(event) => setBankName(event.target.value)}
-              />
-            </Form.Item>
-            <Form.Item
-              name="bankBranch"
-              label="Bank Branch"
-            >
-              <Input
-                type="text"
-                value={bankBranch}
-                onChange={(event) => setBankBranch(event.target.value)}
-              />
-            </Form.Item>
-            <Form.Item
-              name="noOfTrees"
-              label="Number Of Trees"
-            >
-              <Input
-                type="text"
-                value={noOfTrees}
-                onChange={(event) => setNoTrees(event.target.value)}
-              />
-            </Form.Item>
-            <Form.Item
-              name="perimeter"
-              label="Perimeter"
-            >
-              <Input
-                type="text"
-                value={perimeter}
-                onChange={(event) => setPerimeter(event.target.value)}
-              />
-            </Form.Item>
-          </Form>
-        </Modal>
+        <Form {...layout}>
+          <Form.Item
+            name="registerNumber"
+            label="Register Number"
+            rules={[
+              {
+                required: true,
+                message: "Please enter register number"
+              },
+              {
+                whitespace: true
+              },
+              {min: 4}
+            ]}
+            hasFeedback
+          >
+            <Input
+              value={registerNumber}
+              onChange={(event) => setRegisterNumber(event.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item name="landOwnerName" label="Land Owner Name"
+            rules={[
+              {
+                required: true,
+                message: "Please enter land owner name"
+              },
+              {
+                whitespace: true
+              },
+              {min: 5}
+            ]}
+            hasFeedback
+          >
+            <Input
+              value={landOwnerName}
+              onChange={(event) => setLandOwnerName(event.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="landOwnerFullName"
+            label="Land Owner Full Name"
+            rules={[
+              {
+                required: true,
+                message: "Please enter land owner full name"
+              },
+              {
+                whitespace: true
+              },
+              {min: 5}
+            ]}
+            hasFeedback
+          >
+            <Input
+              value={landOwnerFullname}
+              onChange={(event) => setLandOwnerFullName(event.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="contactNumber"
+            label="Contact Number"
+            rules={[
+              {
+                required: true,
+                message: "Please enter contact number"
+              },
+              {
+                whitespace: true
+              },
+              {min: 10},
+              {max: 10}
+            ]}
+            hasFeedback
+          >
+            <Input
+              value={contactNumber}
+              onChange={(event) => setLandONContact(event.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="email"
+            label="Email"
+            rules={[
+              {
+                required: true,
+                message: "Please enter email"
+              },
+              {
+                whitespace: true
+              }
+            ]}
+            hasFeedback
+          >
+            <Input
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="country"
+            label="Country"
+            rules={[
+              {
+                required: true,
+                message: "Please enter country"
+              },
+              {
+                whitespace: true
+              }
+            ]}
+            hasFeedback
+          >
+            <Input
+              value={country}
+              onChange={(event) => setCountry(event.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="landAddress"
+            label="Land Address"
+            rules={[
+              {
+                required: true,
+                message: "Please enter land address"
+              },
+              {
+                whitespace: true
+              }
+            ]}
+            hasFeedback
+          >
+            <Input
+              value={landAddress}
+              onChange={(event) => setLandAddress(event.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="longitude"
+            label="Longitude"
+            rules={[
+              {
+                required: true,
+                message: "Please enter longitude"
+              },
+              {
+                whitespace: true
+              }
+            ]}
+            hasFeedback
+          >
+            <Input
+              value={longitude}
+              onChange={(event) => setLongitude(event.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="latitude"
+            label="Latitude"
+            rules={[
+              {
+                required: true,
+                message: "Please enter latitude"
+              },
+              {
+                whitespace: true
+              }
+            ]}
+            hasFeedback
+          >
+            <Input
+              value={latitude}
+              onChange={(event) => setLatitude(event.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="bankAccountNumber"
+            label="Bank Account Number"
+            rules={[
+              {
+                required: true,
+                message: "Please enter bank account number"
+              },
+              {
+                whitespace: true
+              },
+              {min: 10},
+              {max: 12}
+            ]}
+            hasFeedback
+          >
+            <Input
+              value={bankAccountNumber}
+              onChange={(event) => setBankAccountNumber(event.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="bankName"
+            label="Bank Name"
+            rules={[
+              {
+                required: true,
+                message: "Please enter bank name"
+              },
+              {
+                whitespace: true
+              }
+            ]}
+            hasFeedback
+          >
+            <Input
+              value={bankName}
+              onChange={(event) => setBankName(event.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="bankBranch"
+            label="Bank Branch"
+            rules={[
+              {
+                required: true,
+                message: "Please enter bank branch"
+              },
+              {
+                whitespace: true
+              }
+            ]}
+            hasFeedback
+          >
+            <Input
+              value={bankBranch}
+              onChange={(event) => setBankBranch(event.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="noOfTrees"
+            label="Number Of Trees"
+            rules={[
+              {
+                required: true,
+                message: "Please enter number of trees"
+              },
+              {
+                whitespace: true
+              }
+            ]}
+            hasFeedback
+          >
+            <Input
+              type="number"
+              value={noOfTrees}
+              onChange={(event) => setNoTrees(event.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="perimeter"
+            label="Perimeter"
+            rules={[
+              {
+                required: true,
+                message: "Please enter perimeter"
+              },
+              {
+                whitespace: true
+              }
+            ]}
+            hasFeedback
+          >
+            <Input
+              value={perimeter}
+              onChange={(event) => setPerimeter(event.target.value)}
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
 
       </Box>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 450 }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell className={classes.tableHeading}>Land Owner Name</TableCell>
@@ -426,9 +654,19 @@ function LandOwner(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row) => (
+            {
+            
+            data.filter(row => {
+              if (searchLandOwner === '') {
+                return row;
+              } else if (row.landOwnerName.toLowerCase().includes(searchLandOwner.toLowerCase())) {
+                return row;
+              }
+              return null;
+            }).map((row) => (
               <TableRow
                 key={row.id}
+                id={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell>
@@ -451,42 +689,59 @@ function LandOwner(props) {
                 <TableCell>{row.region}</TableCell>
                 <TableCell>{row.country}</TableCell>
                 <TableCell align="center">
-                  <Stack direction="row" alignItems="center" gap={2}>
-                    <Button
-                      type="primary"
-                      className={classes.approveButton}
-                      color={row.isApproved ? "primary" : "secondary"}
-                      onClick={() => {
-                        handleApprove(row.landOwnerID);
-                      }}
-                    >
-                      {row.isApproved ? "UnApprove" : "Approve"}
-                    </Button>
-                    <Button
-                      className={classes.featuredButton}
-                      type="primary"
-                      onClick={() => {
-                        showUpdateModal();
-                        setSelectedId(row.landOwnerID)
-                        setUpdateRegisterNumber(row.registerNumber);
-                        setUpdateLandOwnerName(row.landOwnerName);
-                        setUpdateLandOwnerFullName(row.landOwnerFullname);
-                      }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      className={classes.featuredButton}
-                      type="primary"
-                      danger
-                      onClick={() => {
-                        setDeleteFeed(true);
-                        setSelectedId(row.landOwnerID);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </Stack>
+                  <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 2 }}>
+                    <Grid item md={12} lg={6} xl={4}>
+                      <Button
+                          type="primary"
+                          className={classes.approveButton}
+                          color={row.isApproved ? "primary" : "secondary"}
+                          onClick={() => {
+                            approveLandOwner(row.landOwnerID);
+                          }}
+                        >
+                          {row.isApproved ? "UnApprove" : "Approve"}
+                      </Button>
+                    </Grid>
+                    <Grid item md={12} lg={6} xl={4}>
+                      <Button
+                          className={classes.featuredButton}
+                          type="primary"
+                          onClick={() => {
+                            showUpdateModal();
+                            setSelectedId(row.landOwnerID);
+                            setUpdateRegisterNumber(row.registerNumber);
+                            setUpdateLandOwnerName(row.landOwnerName);
+                            setUpdateLandOwnerFullName(row.landOwnerFullname);
+                            setUpdateEmail(row.email);
+                            setUpdateLandONContact(row.contactNumber);
+                            setUpdateCountry(row.country);
+                            setUpdateLandAddress(row.landAddress);
+                            setUpdateBankName(row.bankName);
+                            setUpdateBankAccountNumber(row.bankAccountNumber);
+                            setUpdateBankBranch(row.bankBranch);
+                            setUpdateLongitude(row.longitude);
+                            setUpdateLatitude(row.latitude);
+                            setUpdateNoTrees(row.noOfTrees);
+                            setUpdatePerimeter(row.perimeter);
+                          }}
+                        >
+                          Edit
+                      </Button>
+                    </Grid>
+                    <Grid item md={12} lg={12} xl={4}>
+                      <Button
+                          className={classes.featuredButton}
+                          type="primary"
+                          danger
+                          onClick={() => {
+                            setDeleteFeed(true);
+                            setSelectedId(row.landOwnerID);
+                          }}
+                        >
+                          Delete
+                      </Button>
+                    </Grid>
+                  </Grid>
                 </TableCell>
 
                 <Dialog
@@ -521,34 +776,263 @@ function LandOwner(props) {
               </TableRow>
             ))}
             <Modal
-                  title="Update Land Owner"
-                  visible={isUpdateModalVisible}
-                  onCancel={handleUpdateCancel}
-                  onOk={handleUpdateClick}
+              title="Update Land Owner"
+              visible={isUpdateModalVisible}
+              onCancel={handleUpdateCancel}
+              onOk={handleUpdateClick}
+              destroyOnClose={true}
+            >
+              <Form autoComplete="off">
+
+                <Form.Item
+                  name="Register Number"
+                  label="Register Number"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter register number"
+                    },
+                    {
+                      whitespace: true
+                    },
+                    { min: 4},
+                  ]}
+                  hasFeedback
                 >
-                  <Form>
-                    <Form.Item
-                      name={"updateRegisterNumber"}
-                      label="Register Number"
-                      value={registerNumber}
-                    >
-                      <Input placeholder={updateRegisterNumber} value={updateRegisterNumber} onChange={(event) => setUpdateRegisterNumber(event.target.value)}/>
-                    </Form.Item>
-                    <Form.Item
-                      name={"updateLandOwnerName"}
-                      label="Land Owner Name"
-                      value={landOwnerName}
-                    >
-                      <Input placeholder={updateLandOwnerName} value={updateLandOwnerName} onChange={(event) => setUpdateRegisterNumber(event.target.value)}/>
-                    </Form.Item>
-                    <Form.Item
-                      name={"updateLandOwnerFullName"}
-                      label="Land Owner Full Name"
-                    >
-                      <Input placeholder={updateLandOwnerFullName} value={updateLandOwnerFullName} />
-                    </Form.Item>
-                  </Form>
-                </Modal>
+                  <Input name="updateRegisterNumber" defaultValue={updateRegisterNumber} onChange={(event) => setUpdateRegisterNumber( event.target.value)}/>
+                </Form.Item>
+
+                <Form.Item
+                  name="LandOwner Name"
+                  label="Land Owner Name"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter land owner name"
+                    },
+                    {
+                      whitespace: true
+                    },
+                    { min: 5},
+                  ]}
+                  hasFeedback
+                >
+                  <Input name="updateLandOwnerName" defaultValue={updateLandOwnerName} onChange={(event) => setUpdateLandOwnerName(event.target.value)}/>
+                </Form.Item>
+
+                <Form.Item
+                  name="LandOwner FullName"
+                  label="Land Owner Full Name"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter land owner full name"
+                    },
+                    {
+                      whitespace: true
+                    },
+                    { min: 5},
+                  ]}
+                  hasFeedback
+                >
+                  <Input name="updateLandOwnerFullName" defaultValue={updateLandOwnerFullName} onChange={(event) => setUpdateLandOwnerFullName(event.target.value)}/>
+                </Form.Item>
+
+                <Form.Item
+                  name="Contact Number"
+                  label="Contact Number"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please contact number"
+                    },
+                    {
+                      whitespace: true
+                    },
+                    { min: 10},
+                    { max: 10}
+                  ]}
+                  hasFeedback
+                >
+                  <Input name="updateContactNumber" defaultValue={updateContactNumber} onChange={(event) => setUpdateLandONContact(event.target.value)}/>
+                </Form.Item>
+
+                <Form.Item
+                  name="Email"
+                  label="Email"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter email"
+                    },
+                    {
+                      whitespace: true
+                    },
+                    { min: 5},
+                  ]}
+                  hasFeedback
+                >
+                  <Input name="updateEmail" defaultValue={updateEmail} onChange={(event) => setUpdateEmail({email: event.target.value})}/>
+                </Form.Item>
+
+                <Form.Item
+                  name="Country"
+                  label="Country"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter country"
+                    },
+                    {
+                      whitespace: true
+                    }
+                  ]}
+                  hasFeedback
+                >
+                  <Input name="updateCountry" defaultValue={updateCountry} onChange={(event) => setUpdateCountry(event.target.value)}/>
+                </Form.Item>
+
+                <Form.Item
+                  name="Land Address"
+                  label="Land Address"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter land address"
+                    },
+                    {
+                      whitespace: true
+                    }
+                  ]}
+                  hasFeedback
+                >
+                  <Input name="updateLandAddress" defaultValue={updateLandAddress} onChange={(event) => setUpdateLandAddress(event.target.value)}/>
+                </Form.Item>
+
+                <Form.Item
+                  name="Bank Account Number"
+                  label="Bank Account Number"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter bank account number"
+                    },
+                    {
+                      whitespace: true
+                    },
+                    { min: 10},
+                    { max: 12}
+                  ]}
+                  hasFeedback
+                >
+                  <Input name="updateBankAccountNumber" defaultValue={updateBankAccountNumber} onChange={(event) => setUpdateBankAccountNumber(event.target.value)}/>
+                </Form.Item>
+
+                <Form.Item
+                  name="Bank Name"
+                  label="Bank Name"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter bank name"
+                    },
+                    {
+                      whitespace: true
+                    }
+                  ]}
+                  hasFeedback
+                >
+                  <Input name="updateBankName" defaultValue={updateBankName} onChange={(event) => setUpdateBankName(event.target.value)}/>
+                </Form.Item>
+
+                <Form.Item
+                  name="Bank Branch"
+                  label="Bank Branch"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter bank branch"
+                    },
+                    {
+                      whitespace: true
+                    }
+                  ]}
+                  hasFeedback
+                >
+                  <Input name="updateBankBranch" defaultValue={updateBankBranch} onChange={(event) => setUpdateBankBranch(event.target.value)}/>
+                </Form.Item>
+
+                <Form.Item
+                  name="Longitude"
+                  label="Longitude"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter longitude"
+                    },
+                    {
+                      whitespace: true
+                    },
+                  ]}
+                  hasFeedback
+                >
+                  <Input name="updateLongitude" defaultValue={updateLongitude} onChange={(event) => setUpdateLongitude(event.target.value)}/>
+                </Form.Item>
+
+                <Form.Item
+                  name="Latitude"
+                  label="Latitude"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter latitude"
+                    },
+                    {
+                      whitespace: true
+                    },
+                    { min: 5},
+                  ]}
+                  hasFeedback
+                >
+                  <Input name="updateLatitude" defaultValue={updateLatitude} onChange={(event) => setUpdateLatitude(event.target.value)}/>
+                </Form.Item>
+
+                <Form.Item
+                  name="No Of Trees"
+                  label="Number Of Trees"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter number of trees"
+                    },
+                    {
+                      whitespace: true
+                    }
+                  ]}
+                  hasFeedback
+                >
+                  <Input type="number" name="updateNoOfTrees" defaultValue={updateNoOfTrees} onChange={(event) => setUpdateNoTrees(event.target.value)}/>
+                </Form.Item>
+
+                <Form.Item
+                  name="Perimeter"
+                  label="Perimeter"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter perimeter"
+                    },
+                    {
+                      whitespace: true
+                    }
+                  ]}
+                  hasFeedback
+                >
+                  <Input name="updatePerimeter" defaultValue={updatePerimeter} onChange={(event) => setUpdatePerimeter(event.target.value)}/>
+                </Form.Item>
+
+              </Form>
+            </Modal>
           </TableBody>
         </Table>
       </TableContainer>

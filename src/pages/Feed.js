@@ -38,7 +38,7 @@ function Feed() {
 
   axios.defaults.headers = {
     "Content-Type": "application/json",
-    "x-auth-token": cookies.token,
+    "x-auth-token": cookies[0].token,
   };
 
   const showModal = () => {
@@ -68,12 +68,12 @@ function Feed() {
 
   const fileHandler = (event) => {
     setSelectedFile(event.target.files[0]);
-    console.log(event.target.files[0]);
-    console.log(event.target.files[0].name);
   };
 
   const GetAllFeeds = async () => {
-    const result = await axios.get("http://localhost:3000/feeds");
+    const result = await axios.get(
+      "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/"
+    );
     setFeedData(result.data.Result);
   };
 
@@ -81,26 +81,32 @@ function Feed() {
     // console.log(cookies.token);
     // const token = cookies.token;
 
-    await axios.delete(
-      `http://localhost:3000/feeds/deleteFeed/${selectedId}`
-    );
-
-    setDeleteFeed(false);
+    try {
+      const data = await axios
+        .delete(
+          `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
+        )
+        .then((res) => res);
+      console.log(data);
+      setDeleteFeed(false);
+    } catch (error) {
+      console.log(error);
+      setDeleteFeed(false);
+    }
   };
 
   //Add Feed
   const AddFeedHandler = async () => {
-    console.log(insertMessage);
-
+    console.log(cookies[0].token);
     const formData = new FormData();
     formData.append("imageUrl", selectedFile);
     formData.append("message", insertMessage);
     formData.append("tags", insertTag);
     formData.append("published", "Yes");
-
+    console.log("this is form data", selectedFile);
     try {
       await axios.post(
-        "http://localhost:3000/feeds/add",
+        "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/add",
         formData
       );
       setIsModalVisible(false);
@@ -108,6 +114,21 @@ function Feed() {
       alert("Error Occcured");
     }
   };
+
+  const UpdateFeedHandler = async () => {
+    console.log(updateTag);
+    console.log(updateDescription);
+    console.log(selectedFile);
+
+    try {
+      await axios.put(
+        `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/updateFeed/${selectedId}`,
+        { imageUrl: selectedFile, message: updateDescription, tags: updateTag }
+      );
+      setIsUpdateModalVisible(false);
+    } catch (error) {}
+  };
+
   return (
     <>
       <Grid container direction="column" spacing={4}>
@@ -185,6 +206,8 @@ function Feed() {
                             showUpdateModal();
                             setUpdateTag(item.tags);
                             setUpdateDescription(item.message);
+                            setSelectedFile(item.imageUrl);
+                            setSelectedId(item.id);
                           }}
                         >
                           Update
@@ -211,6 +234,7 @@ function Feed() {
               title="Update Feed"
               visible={isUpdateModalVisible}
               onCancel={handleUpdateCancel}
+              onOk={UpdateFeedHandler}
             >
               <Form {...layout}>
                 <Form.Item
@@ -222,13 +246,23 @@ function Feed() {
                     },
                   ]}
                 >
-                  <Input placeholder={updateTag} />
+                  <Input
+                    placeholder={updateTag}
+                    value={updateTag}
+                    onChange={(event) => setUpdateTag(event.target.value)}
+                  />
                 </Form.Item>
                 <Form.Item name={["user", "mobileNo"]} label="Tag">
-                  <Input placeholder={updateDescription} />
+                  <Input
+                    placeholder={updateDescription}
+                    value={updateDescription}
+                    onChange={(event) =>
+                      setUpdateDescription(event.target.value)
+                    }
+                  />
                 </Form.Item>
                 <Form.Item name={["user", "email"]} label="Image">
-                  <Input type="file" />
+                  <Input type="file" onChange={fileHandler} />
                 </Form.Item>
               </Form>
             </Modal>
