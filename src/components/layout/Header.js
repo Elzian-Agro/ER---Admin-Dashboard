@@ -252,10 +252,13 @@ function Header({
 
   useEffect(() => window.scrollTo(0, 0));
 
-  useEffect(async () => {
-    const { userName, email, profImage } = await getProfile();
-    setProfileData({ userName, email, profImage });
-  }, []);
+  useEffect(() => {
+    async function fetchData() {
+      const { userName, email, profImage } = await getProfile();
+      setProfileData({ userName, email, profImage });
+    }
+    fetchData();
+  }, [getProfile]);
 
   const showDrawer = () => setVisible(true);
   const hideDrawer = () => setVisible(false);
@@ -437,7 +440,7 @@ function Header({
               visible={profileVisible}
               placement="bottomCenter"
             >
-              <a onClick={(e) => e.preventDefault()}>
+              <a href="#pablo" onClick={(e) => e.preventDefault()}>
                 {profileData ? (
                   // default profile image if profile image didn't exist
                   <Avatar

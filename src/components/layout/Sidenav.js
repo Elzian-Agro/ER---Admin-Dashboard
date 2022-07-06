@@ -1,10 +1,12 @@
 import { Menu } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 import logo from "../../assets/images/earth-restoration-logo.png";
+import userType from "../userType";
 
 function Sidenav({ color }) {
   const { pathname } = useLocation();
   const page = pathname.replace("/", "");
+  const { admin } = userType();
 
   const dashboard = [
     <svg
@@ -144,7 +146,7 @@ function Sidenav({ color }) {
       ></path>
     </svg>,
   ];
-  
+
   const assignauditor = [
     <svg
       width="20"
@@ -271,19 +273,21 @@ function Sidenav({ color }) {
             <span className="label">Tables</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="m3">
-          <NavLink to="/trees">
-            <span
-              className="icon"
-              style={{
-                background: page === "trees" ? color : "",
-              }}
-            >
-              {billing}
-            </span>
-            <span className="label">Planted Trees</span>
-          </NavLink>
-        </Menu.Item>
+        {admin && (
+          <Menu.Item key="m3">
+            <NavLink to="/trees">
+              <span
+                className="icon"
+                style={{
+                  background: page === "trees" ? color : "",
+                }}
+              >
+                {billing}
+              </span>
+              <span className="label">Planted Trees</span>
+            </NavLink>
+          </Menu.Item>
+        )}
         <Menu.Item key="m4">
           <NavLink to="/treeSpecies">
             <span
@@ -362,7 +366,7 @@ function Sidenav({ color }) {
             <span className="label">Assign Auditor</span>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="m10">
+        <Menu.Item key="m14">
           <NavLink to="/calculation">
             <span
               className="icon"

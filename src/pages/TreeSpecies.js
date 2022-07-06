@@ -142,7 +142,7 @@ function TreeSpecies() {
       .then((res) => {
         setData(res.data.Result);
       })
-  }, [isUpdateModalVisible]);
+  }, [isModalVisible, isUpdateModalVisible]);
 
 
   const showModal = () => {
@@ -518,6 +518,7 @@ function TreeSpecies() {
             visible={isModalVisible}
             onCancel={handleCancel}
             onOk={() => {handleAddFormSubmit()}}
+            destroyOnClose={true}
           >
           <Form {...layout}>
             <Form.Item
@@ -526,8 +527,13 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  message: "Please enter plant name"
+                },
+                {
+                  whitespace: true
                 },
               ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -535,7 +541,18 @@ function TreeSpecies() {
                 onChange={(event) => setPlantName(event.target.value)}
               />
             </Form.Item>
-            <Form.Item name="commonNames" label="Common Names">
+            <Form.Item name="commonNames" label="Common Names" 
+               rules={[
+                {
+                  required: true,
+                  message: "Please enter common names"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
+            >
               <Input
                 type="text"
                 value={commonNames}
@@ -545,6 +562,16 @@ function TreeSpecies() {
             <Form.Item
               name="botanicalName"
               label="Botanical Name"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter botanical name"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -555,6 +582,16 @@ function TreeSpecies() {
             <Form.Item
               name="originofSpecies"
               label="Origin Of Species"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter origin of species"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -565,6 +602,16 @@ function TreeSpecies() {
             <Form.Item
               name="family"
               label="Family"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter family"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -575,6 +622,16 @@ function TreeSpecies() {
             <Form.Item
               name="afNotationPhysiognomy"
               label="af Notation Physiognomy"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter af notation physiognomy"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -585,6 +642,16 @@ function TreeSpecies() {
             <Form.Item
               name="plantReference_onERPlantDatabase"
               label="plantReference_onERPlantDatabase"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter plant preference"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -595,6 +662,16 @@ function TreeSpecies() {
             <Form.Item
               name="photosyntheticBiomassYear1"
               label="Photosynthetic Biomass Year 1"
+                rules={[
+                {
+                  required: true,
+                  message: "Please enter photosynthetic biomass year 1"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -605,6 +682,16 @@ function TreeSpecies() {
             <Form.Item
               name="photosyntheticBiomassYear2"
               label="Photosynthetic Biomass Year 2"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter photosynthetic biomass year 2"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -615,6 +702,16 @@ function TreeSpecies() {
             <Form.Item
               name="photosyntheticBiomassYear3"
               label="Photosynthetic Biomass Year 3"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter photosynthetic biomass year 3"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -625,6 +722,16 @@ function TreeSpecies() {
             <Form.Item
               name="photosyntheticBiomassYear4"
               label="Photosynthetic Biomass Year 4"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter photosynthetic biomass year 4"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -635,6 +742,16 @@ function TreeSpecies() {
             <Form.Item
               name="weightPerLeaf"
               label="Weight Per Leaf"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter weight per leaf"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -645,6 +762,16 @@ function TreeSpecies() {
             <Form.Item
               name="leafCycle"
               label="Leaf Cycle"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter leaf cycle"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -655,6 +782,16 @@ function TreeSpecies() {
             <Form.Item
               name="length"
               label="Length"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter length"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -665,6 +802,16 @@ function TreeSpecies() {
             <Form.Item
               name="width"
               label="Width"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter width"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -675,6 +822,16 @@ function TreeSpecies() {
             <Form.Item
               name="texture"
               label="Texture"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter texture"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -685,6 +842,16 @@ function TreeSpecies() {
             <Form.Item
               name="conservationStatus"
               label="Conservation Status"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter conservation status"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -695,6 +862,16 @@ function TreeSpecies() {
             <Form.Item
               name="growthRate"
               label="Growth Rate"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter growth rate"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -705,6 +882,16 @@ function TreeSpecies() {
             <Form.Item
               name="crownType"
               label="Crown Type"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter crown type"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -715,6 +902,16 @@ function TreeSpecies() {
             <Form.Item
               name="propagationMethod"
               label="Propagation Method"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter propagation method"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -725,6 +922,16 @@ function TreeSpecies() {
             <Form.Item
               name="rootType"
               label="Root Type"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter root type"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -735,6 +942,16 @@ function TreeSpecies() {
             <Form.Item
               name="preferredSolis"
               label="Preferred Solis"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter preferred soils"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -745,6 +962,16 @@ function TreeSpecies() {
             <Form.Item
               name="impactOnSoil"
               label="Impact On Soil"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter impact on soil"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -755,6 +982,16 @@ function TreeSpecies() {
             <Form.Item
               name="salinityTolerance"
               label="Salinity Tolerance"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter salinity tolerance"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -765,6 +1002,16 @@ function TreeSpecies() {
             <Form.Item
               name="humanUses"
               label="Human Uses"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter human uses"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -775,6 +1022,16 @@ function TreeSpecies() {
             <Form.Item
               name="economicImportance"
               label="Economic Importance"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter economic distribution"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -785,6 +1042,16 @@ function TreeSpecies() {
             <Form.Item
               name="distribution"
               label="Distribution"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter distribution"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -795,6 +1062,16 @@ function TreeSpecies() {
             <Form.Item
               name="lightPreferences"
               label="Light Preferences"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter light preferences"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -805,6 +1082,16 @@ function TreeSpecies() {
             <Form.Item
               name="floweringTime"
               label="Flowering Time"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter flowering time"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -815,6 +1102,16 @@ function TreeSpecies() {
             <Form.Item
               name="flowerColor"
               label="Flower Color"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter flower color"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -825,6 +1122,16 @@ function TreeSpecies() {
             <Form.Item
               name="fruitType"
               label="Fruit Type"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter fruit type"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"

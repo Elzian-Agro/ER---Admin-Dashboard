@@ -82,11 +82,15 @@ function Feed() {
     // const token = cookies.token;
 
     try {
-      await axios.delete(
-        `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
-      );
+      const data = await axios
+        .delete(
+          `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
+        )
+        .then((res) => res);
+      console.log(data);
       setDeleteFeed(false);
     } catch (error) {
+      console.log(error);
       setDeleteFeed(false);
     }
   };
