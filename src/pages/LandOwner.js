@@ -25,9 +25,6 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 
-import { landOwnersApi } from "../services/land-owner-service";
-
-
 const useStyles = makeStyles({
   mainHeading: {
     fontWeight: "bold",
@@ -104,15 +101,25 @@ function LandOwner() {
 
   axios.defaults.headers = {
     "Content-Type": "application/json",
-    "x-auth-token": cookies[0].token,
+    "x-auth-token": cookies.token,
   };
 
   useEffect(() => {
-    landOwnersApi()
-      .then((res) => {
-        setData(res.data.Result);
-      })
-  }, [isUpdateModalVisible]);
+    // landOwnersApi()
+    //   .then((res) => {
+    //     setData(res.data.Result);
+    //   })
+    GetAllLandOwners();
+  }, [isUpdateModalVisible , deleteFeed]);
+
+  const GetAllLandOwners = async () => {
+      const result = await axios({
+        method: "get",
+        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/`,
+        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk" },
+      });
+      setData(result.data.Result);
+  };
 
 
   const showModal = () => {
@@ -178,29 +185,43 @@ function LandOwner() {
       perimeter: perimeter,
     };
 
-
-    axios({
-      method: "post",
-      url: "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/add",
-      data: landData,
-      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk" },
-    }).then((response) => {
-      const newLandOwner = [...data, landData];
-      setData(newLandOwner);
-      
-      console.log(response.landData);
-    }).catch(err=>{
-      console.log(err)
-    });
-  
+    try {
+      await axios({
+        method: "post",
+        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/add`,
+        data: landData,
+        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk" },
+      }).then((response) => {
+          const newLandOwner = [...data, landData];
+          setData(newLandOwner);
+      })
+    } catch (error) {
+      alert("Error Occcured");
+    }
     setIsModalVisible(false);
+
+    // axios({
+    //   method: "post",
+    //   url: "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/add",
+    //   data: landData,
+    //   headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk" },
+    // }).then((response) => {
+    //   const newLandOwner = [...data, landData];
+    //   setData(newLandOwner);
+      
+    //   console.log(response.landData);
+    // }).catch(err=>{
+    //   console.log(err)
+    // });
+  
+    // setIsModalVisible(false);
 
   };
 
-  function approveLandOwner(appId) {
+  function approveLandOwner(selectedId) {
     axios({
       method: "put",
-      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/approveLandowner/${appId}`,
+      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/approveLandowner/${selectedId}`,
       headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
     }).then((response) => {
       setData(response);
@@ -211,10 +232,10 @@ function LandOwner() {
     setIsApproved(true)
   }
 
-    function UnApproveLandOwner(appId) {
+    function UnApproveLandOwner(selectedId) {
     axios({
       method: "put",
-      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/unApproveLandowner/${appId}`,
+      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/unApproveLandowner/${selectedId}`,
       headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
     }).then((response) => {
       setData(response)
@@ -226,13 +247,13 @@ function LandOwner() {
   }
 
 
-  function handleApprove(appId) {
+  function handleApprove(selectedId) {
 
-    isApproved ? UnApproveLandOwner(appId) : approveLandOwner(appId)
+    isApproved ? UnApproveLandOwner(selectedId) : approveLandOwner(selectedId)
 
     setData(
       data.map((row) => {
-        if (row.landOwnerID === appId) {
+        if (row.landOwnerID === selectedId) {
           return { ...row, isApproved: !row.isApproved };
         } else return { ...row };
       })
@@ -242,32 +263,34 @@ function LandOwner() {
 
   const handleDeleteClick = async () => {
 
-    // const headers = {
-    //   "x-auth-token":
-    //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" 
-    // };
-    // await axios.put(
-    //   `http://localhost:3000/landOwners/deleteLandowner/${selectedId}`, { headers }
-    // )
-    axios({
-      method: "put",
-      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`,
-      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-    }).then(()=>{
-      const deleteLandOwner = data.filter((land)=>land.landOwnerID !== selectedId);
-      setData(deleteLandOwner);
-    }).catch(err=>{
-      console.log(err)
-    });
+    try {
+      await axios({
+        method: "put",
+        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`,
+        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
+      })
+        .then((res) => res);
+      setDeleteFeed(false);
+    } catch (error) {
+      console.log(error);
+      setDeleteFeed(false);
+    }
+
+    
+    // axios({
+    //   method: "put",
+    //   url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`,
+    //   headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
+    // }).then(()=>{
+    //   const deleteLandOwner = data.filter((land)=>land.landOwnerID !== selectedId);
+    //   setData(deleteLandOwner);
+    // }).catch(err=>{
+    //   console.log(err)
+    // });
     
 
-    setDeleteFeed(false);
-
-    // await axios.put(
-    //   `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`, {headers}
-    // );
-
     // setDeleteFeed(false);
+
   };
 
 
@@ -301,23 +324,40 @@ function LandOwner() {
       bankName: updateBankName,
       bankBranch: updateBankBranch,
     };
-    
-    axios({
-      method: "put",
-      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`,
-      data: landData,
-      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-    }).then(() => {
-      const updateLandowner = data.map((land)=>{
-        if(land.landOwnerID === selectedId){
-          return landData
-        }
-        return land
-      })
-      setData(updateLandowner)
-    });
 
-    setIsUpdateModalVisible(false);
+    try {
+      await axios({
+        method: "put",
+        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`,
+        data: landData,
+        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
+      })
+        .then((res) => res);
+      console.log(data);
+      setIsUpdateModalVisible(false);
+    } catch (error) {
+      console.log(error);
+      setIsUpdateModalVisible(false);
+    }
+    
+    // axios({
+    //   method: "put",
+    //   url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`,
+    //   data: landData,
+    //   headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
+    // }).then(() => {
+    //   const updateLandowner = data.map((land)=>{
+    //     if(land.landOwnerID === selectedId){
+    //       return landData
+    //     }
+    //     return land
+    //   })
+    //   setData(updateLandowner)
+    // });
+
+    // setIsUpdateModalVisible(false);
+
+    
 
   };
 
@@ -397,7 +437,7 @@ function LandOwner() {
                       <Button
                           type="primary"
                           className={classes.approveButton}
-                          color={row.isApproved ? "primary" : "secondary"}
+                          color={row.isApproved ? "primary" : "danger"}
                           onClick={() => {
                             handleApprove(row.landOwnerID);
                           }}
