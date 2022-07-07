@@ -19,8 +19,6 @@ import { useState, useEffect } from "react";
 import {
   SearchOutlined,
 } from "@ant-design/icons";
-import { treeSpeciesApi } from "../services/tree-species-service";
-
 
 
 const useStyles = makeStyles({
@@ -138,12 +136,21 @@ function TreeSpecies() {
   };
 
   useEffect(() => {
-    treeSpeciesApi()
-      .then((res) => {
-        setData(res.data.Result);
-      })
-  }, [isModalVisible, isUpdateModalVisible]);
+    // treeSpeciesApi()
+    //   .then((res) => {
+    //     setData(res.data.Result);
+    //   })
+    GetAllTreeSpecies();
+  }, [isModalVisible, isUpdateModalVisible, deleteTreeSpecies]);
 
+  const GetAllTreeSpecies = async () => {
+    const result = await axios({
+      method: "get",
+      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/species/`,
+      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
+    });
+    setData(result.data.Result);
+};
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -175,38 +182,38 @@ function TreeSpecies() {
   const handleAddFormSubmit = async () => {
     //   // store the states in the form data
 
-    const formData = new FormData();
-    formData.append("plantName", plantName);
-    formData.append("commonNames", commonNames);
-    formData.append("botanicalName", botanicalName);
-    formData.append("originofSpecies", originofSpecies);
-    formData.append("family", family);
-    formData.append("afNotationPhysiognomy", afNotationPhysiognomy);
-    formData.append("plantReference_onERPlantDatabase", plantReference_onERPlantDatabase);
-    formData.append("photosyntheticBiomassYear1", photosyntheticBiomassYear1);
-    formData.append("photosyntheticBiomassYear2", photosyntheticBiomassYear2);
-    formData.append("photosyntheticBiomassYear3", photosyntheticBiomassYear3);
-    formData.append("photosyntheticBiomassYear4", photosyntheticBiomassYear4);
-    formData.append("weightPerLeaf", weightPerLeaf);
-    formData.append("leafCycle", leafCycle);
-    formData.append("length", length);
-    formData.append("width", width);
-    formData.append("texture", texture);
-    formData.append("conservationStatus", conservationStatus);
-    formData.append("growthRate", growthRate);
-    formData.append("crownType", crownType);
-    formData.append("propagationMethod", propagationMethod);
-    formData.append("rootType", rootType);
-    formData.append("preferredSolis", preferredSolis);
-    formData.append("impactOnSoil", impactOnSoil);
-    formData.append("salinityTolerance", salinityTolerance);
-    formData.append("humanUses", humanUses);
-    formData.append("economicImportance", economicImportance);
-    formData.append("distribution", distribution);
-    formData.append("lightPreferences", lightPreferences);
-    formData.append("floweringTime", floweringTime);
-    formData.append("flowerColor", flowerColor);
-    formData.append("fruitType", fruitType);
+    // const formData = new FormData();
+    // formData.append("plantName", plantName);
+    // formData.append("commonNames", commonNames);
+    // formData.append("botanicalName", botanicalName);
+    // formData.append("originofSpecies", originofSpecies);
+    // formData.append("family", family);
+    // formData.append("afNotationPhysiognomy", afNotationPhysiognomy);
+    // formData.append("plantReference_onERPlantDatabase", plantReference_onERPlantDatabase);
+    // formData.append("photosyntheticBiomassYear1", photosyntheticBiomassYear1);
+    // formData.append("photosyntheticBiomassYear2", photosyntheticBiomassYear2);
+    // formData.append("photosyntheticBiomassYear3", photosyntheticBiomassYear3);
+    // formData.append("photosyntheticBiomassYear4", photosyntheticBiomassYear4);
+    // formData.append("weightPerLeaf", weightPerLeaf);
+    // formData.append("leafCycle", leafCycle);
+    // formData.append("length", length);
+    // formData.append("width", width);
+    // formData.append("texture", texture);
+    // formData.append("conservationStatus", conservationStatus);
+    // formData.append("growthRate", growthRate);
+    // formData.append("crownType", crownType);
+    // formData.append("propagationMethod", propagationMethod);
+    // formData.append("rootType", rootType);
+    // formData.append("preferredSolis", preferredSolis);
+    // formData.append("impactOnSoil", impactOnSoil);
+    // formData.append("salinityTolerance", salinityTolerance);
+    // formData.append("humanUses", humanUses);
+    // formData.append("economicImportance", economicImportance);
+    // formData.append("distribution", distribution);
+    // formData.append("lightPreferences", lightPreferences);
+    // formData.append("floweringTime", floweringTime);
+    // formData.append("flowerColor", flowerColor);
+    // formData.append("fruitType", fruitType);
 
     
     const treeData = {
@@ -244,57 +251,57 @@ function TreeSpecies() {
     };
 
 
-      axios({
+    try {
+      await axios({
         method: "post",
-        url: "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/species/add",
+        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/species/add`,
         data: treeData,
-        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk" },
+        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
       }).then((response) => {
-        const newTreeSpecies = [...data, treeData];
-        setData(newTreeSpecies);
-        console.log(response.treeData);
-      }).catch(err=>{
-        console.log(err)
-      });
-  
+          const newTreeSpecies = [...data, treeData];
+          setData(newTreeSpecies);
+      })
+    } catch (error) {
+      alert("Error Occcured");
+    }
     setIsModalVisible(false);
 
   };
 
 
-  function handleUpdateTreeSpecies() {
-    const formData = new FormData();
-    formData.append("plantName", plantName);
-    formData.append("commonNames", commonNames);
-    formData.append("botanicalName", botanicalName);
-    formData.append("originofSpecies", originofSpecies);
-    formData.append("family", family);
-    formData.append("afNotationPhysiognomy", afNotationPhysiognomy);
-    formData.append("plantReference_onERPlantDatabase", plantReference_onERPlantDatabase);
-    formData.append("photosyntheticBiomassYear1", photosyntheticBiomassYear1);
-    formData.append("photosyntheticBiomassYear2", photosyntheticBiomassYear2);
-    formData.append("photosyntheticBiomassYear3", photosyntheticBiomassYear3);
-    formData.append("photosyntheticBiomassYear4", photosyntheticBiomassYear4);
-    formData.append("weightPerLeaf", weightPerLeaf);
-    formData.append("leafCycle", leafCycle);
-    formData.append("length", length);
-    formData.append("width", width);
-    formData.append("texture", texture);
-    formData.append("conservationStatus", conservationStatus);
-    formData.append("growthRate", growthRate);
-    formData.append("crownType", crownType);
-    formData.append("propagationMethod", propagationMethod);
-    formData.append("rootType", rootType);
-    formData.append("preferredSolis", preferredSolis);
-    formData.append("impactOnSoil", impactOnSoil);
-    formData.append("salinityTolerance", salinityTolerance);
-    formData.append("humanUses", humanUses);
-    formData.append("economicImportance", economicImportance);
-    formData.append("distribution", distribution);
-    formData.append("lightPreferences", lightPreferences);
-    formData.append("floweringTime", floweringTime);
-    formData.append("flowerColor", flowerColor);
-    formData.append("fruitType", fruitType);
+  const handleUpdateTreeSpecies = async () => {
+    // const formData = new FormData();
+    // formData.append("plantName", plantName);
+    // formData.append("commonNames", commonNames);
+    // formData.append("botanicalName", botanicalName);
+    // formData.append("originofSpecies", originofSpecies);
+    // formData.append("family", family);
+    // formData.append("afNotationPhysiognomy", afNotationPhysiognomy);
+    // formData.append("plantReference_onERPlantDatabase", plantReference_onERPlantDatabase);
+    // formData.append("photosyntheticBiomassYear1", photosyntheticBiomassYear1);
+    // formData.append("photosyntheticBiomassYear2", photosyntheticBiomassYear2);
+    // formData.append("photosyntheticBiomassYear3", photosyntheticBiomassYear3);
+    // formData.append("photosyntheticBiomassYear4", photosyntheticBiomassYear4);
+    // formData.append("weightPerLeaf", weightPerLeaf);
+    // formData.append("leafCycle", leafCycle);
+    // formData.append("length", length);
+    // formData.append("width", width);
+    // formData.append("texture", texture);
+    // formData.append("conservationStatus", conservationStatus);
+    // formData.append("growthRate", growthRate);
+    // formData.append("crownType", crownType);
+    // formData.append("propagationMethod", propagationMethod);
+    // formData.append("rootType", rootType);
+    // formData.append("preferredSolis", preferredSolis);
+    // formData.append("impactOnSoil", impactOnSoil);
+    // formData.append("salinityTolerance", salinityTolerance);
+    // formData.append("humanUses", humanUses);
+    // formData.append("economicImportance", economicImportance);
+    // formData.append("distribution", distribution);
+    // formData.append("lightPreferences", lightPreferences);
+    // formData.append("floweringTime", floweringTime);
+    // formData.append("flowerColor", flowerColor);
+    // formData.append("fruitType", fruitType);
 
     
     const treeData = {
@@ -331,36 +338,38 @@ function TreeSpecies() {
       fruitType: updateFruitType
     };
 
-    axios({
-      method: "put",
-      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/species/updateSpecies/${selectedId}`,
-      data: treeData,
-      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-    }).then(() => {
-      const updateTreeSpecies = data.map((tree) => {
-        if(tree.plant_id === selectedId) {
-          return treeData
-        }
-        return tree
+    try {
+      await axios({
+        method: "put",
+        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/species/updateSpecies/${selectedId}`,
+        data: treeData,
+        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
       })
-      setData(updateTreeSpecies)
-    })
-    setIsUpdateModalVisible(false)
-  }
+        .then((res) => res);
+      console.log(data);
+      setIsUpdateModalVisible(false);
+    } catch (error) {
+      console.log(error);
+      setIsUpdateModalVisible(false);
+    }
+   
+  };
+
 
   const handleDeleteTreeSpecies = async () => {
-    axios({
-      method: "put",
-      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/species/deleteSpecies/${selectedId}`,
-      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-    }).then(()=>{
-      const deleteTrSp = data.filter((tree)=>tree.plant_id !== selectedId);
-      setData(deleteTrSp);
-    }).catch(err=>{
-      console.log(err)
-    });
-    
-    setDeleteTreeSpecies(false);
+
+    try {
+      await axios({
+        method: "put",
+        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/species/deleteSpecies/${selectedId}`,
+        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
+      })
+        .then((res) => res);
+        setDeleteTreeSpecies(false);
+    } catch (error) {
+      console.log(error);
+      setDeleteTreeSpecies(false);
+    }
   };
 
   return (
