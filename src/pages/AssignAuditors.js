@@ -78,7 +78,7 @@ const AssignAuditors = () =>{
       ),
     },
     {
-      title: "ADDRESS",
+      title: "LAND ADDRESS",
       key: "address",
       dataIndex: "address",
       width: "15%",
@@ -96,6 +96,7 @@ const AssignAuditors = () =>{
         render: (index, record) => (
           <>
               <Title level={5}> <Badge status="success" /> {record.landOwnerName}</Title>
+              <p>&nbsp;&nbsp;&nbsp; AuditorID</p>
           </>
         ),
       },
@@ -181,7 +182,7 @@ const AssignAuditors = () =>{
       setdata(tableData);
     } else {
       const filteredData = tableData.filter(item =>{
-          return (
+          return (item.landOwnerFullname.toLowerCase().includes(searchKey) ||
                   item.registerNumber.toLowerCase().includes(searchKey) ||
                   item.email.toLowerCase().includes(searchKey)
                   );
@@ -269,8 +270,8 @@ const AssignAuditors = () =>{
                       })
                     }}
                   >
-                    <Select.Option value="Auditor 1">Auditor 1</Select.Option>
-                    <Select.Option value="Auditor 2">Auditor 2</Select.Option>
+                    <Select.Option value="Auditor 1">Auditor - 1</Select.Option>
+                    <Select.Option value="Auditor 2">Auditor - 2</Select.Option>
                   </Select>
                 </Form.Item>
               </Form>
