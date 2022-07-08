@@ -4,7 +4,7 @@ import { useCookies } from "react-cookie";
 const UserType = () => {
   const [cookies] = useCookies(["token"]);
   const user = !cookies.token ? "" : jwt(cookies.token);
-  const admin = user.isAdmin;
+  const admin = Boolean(user.isAdmin);
   return { admin };
 };
 
