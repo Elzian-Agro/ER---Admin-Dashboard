@@ -11,10 +11,9 @@
 */
 
 import React , {useState , useEffect } from 'react';
-import { Table, Row, Col } from 'antd';
 import axios from 'axios';
 import 'antd/dist/antd.css';
-import { Modal, Button, Card, Form, Input, Avatar, Typography, Select, Space, Badge  } from 'antd';
+import { Modal, Button, Card, Form, Input, Avatar, Typography, Select, Space, Badge, Table, Row, Col  } from 'antd';
 
 import { MdEmail, MdPhone }  from "react-icons/md";
 import { makeStyles } from "@mui/styles";
@@ -132,7 +131,6 @@ const AssignAuditors = () =>{
         landOwnerFullname: row.landOwnerFullname,
         landOwnerName: row.landOwnerName,
         registerNumber: row.registerNumber,
-        qualification: row.qualification,
         contactNumber: row.contactNumber,
         email: row.email,
         landAddress: row.landAddress,
@@ -143,7 +141,6 @@ const AssignAuditors = () =>{
         landOwnerFullname: row.landOwnerFullname,
         landOwnerName: row.landOwnerName,
         registerNumber: row.registerNumber,
-        qualification: row.qualification,
         contactNumber: row.contactNumber,
         email: row.email,
         landAddress: row.landAddress,
@@ -212,7 +209,7 @@ const AssignAuditors = () =>{
                 }
               >
             <div className="table-responsive">
-            <Table dataSource={data} columns={columns}/>
+            <Table className="table-responsive" dataSource={data} columns={columns}/>
             </div>
           </Card>
           </Col>
