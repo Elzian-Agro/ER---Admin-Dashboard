@@ -16,18 +16,26 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
 import { Card, Button, Modal, Form, Input } from "antd";
+import { makeStyles } from "@mui/styles";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 // import { Token } from "@mui/icons-material";
 
 const { Meta } = Card;
-
+const useStyles = makeStyles({
+  featuredButton: {
+    fontSize: "12px",
+    width: "80px",
+  },
+});
 function Feed() {
+  const classes = useStyles();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [deleteFeed, setDeleteFeed] = useState(false);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [feedData, setFeedData] = useState([]);
   const [selectedId, setSelectedId] = useState("");
+  const [updateSelectedFile, setUpdateSelectedFile] = useState("");
   const [updateDescription, setUpdateDescription] = useState("");
   const [updateTag, setUpdateTag] = useState("");
   const [selectedFile, setSelectedFile] = useState();
@@ -64,7 +72,7 @@ function Feed() {
 
   useEffect(() => {
     GetAllFeeds();
-  }, [deleteFeed, isModalVisible]);
+  }, [isModalVisible, isUpdateModalVisible, deleteFeed]);
 
   const fileHandler = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -78,37 +86,32 @@ function Feed() {
   };
 
   const handleDeleteClick = async () => {
-    // console.log(cookies.token);
-    // const token = cookies.token;
-
     try {
-      const data = await axios
+      await axios
         .delete(
           `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
         )
         .then((res) => res);
-      console.log(data);
       setDeleteFeed(false);
     } catch (error) {
-      console.log(error);
+      alert("err");
       setDeleteFeed(false);
     }
   };
 
   //Add Feed
   const AddFeedHandler = async () => {
-    console.log(cookies[0].token);
     const formData = new FormData();
     formData.append("imageUrl", selectedFile);
     formData.append("message", insertMessage);
     formData.append("tags", insertTag);
     formData.append("published", "Yes");
-    console.log("this is form data", selectedFile);
     try {
       await axios.post(
         "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/add",
         formData
       );
+      alert("Added");
       setIsModalVisible(false);
     } catch (error) {
       alert("Error Occcured");
@@ -116,17 +119,17 @@ function Feed() {
   };
 
   const UpdateFeedHandler = async () => {
-    console.log(updateTag);
-    console.log(updateDescription);
-    console.log(selectedFile);
-
     try {
       await axios.put(
         `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/updateFeed/${selectedId}`,
-        { imageUrl: selectedFile, message: updateDescription, tags: updateTag }
+        alert("updated"),
+        console.log("done"),
+        setIsUpdateModalVisible(false)
       );
+    } catch (error) {
       setIsUpdateModalVisible(false);
-    } catch (error) {}
+      alert("err");
+    }
   };
 
   return (
@@ -149,6 +152,7 @@ function Feed() {
                 visible={isModalVisible}
                 onCancel={handleCancel}
                 onOk={AddFeedHandler}
+                destroyOnClose={true}
               >
                 <Form {...layout}>
                   <Form.Item
@@ -175,7 +179,7 @@ function Feed() {
                   </Form.Item>
                   <Form.Item name={["user", "image"]} label="Image">
                     <Input type="file" onChange={fileHandler} />
-                    {/* <Input type="file" accept="image/*" /> */}
+                    <img src={selectedFile} alt="img" />
                   </Form.Item>
                 </Form>
               </Modal>
@@ -184,52 +188,52 @@ function Feed() {
         </Grid>
         <Grid item>
           <Grid container spacing={3} justifyContent="center">
-            {feedData.map((item, index) => {
-              return (
-                <Grid item>
-                  <Card
-                    hoverable
-                    style={{
-                      minWidth: 400,
-                    }}
-                    cover={
-                      <img height="300px" alt="example" src={item.imageUrl} />
-                    }
-                  >
-                    <Meta title={item.tags} description={item.message} />
-                    <Grid container justifyContent="flex-end" spacing={1}>
-                      <Grid item>
-                        <Button
-                          type="primary"
-                          color="primary"
-                          onClick={() => {
-                            showUpdateModal();
-                            setUpdateTag(item.tags);
-                            setUpdateDescription(item.message);
-                            setSelectedFile(item.imageUrl);
-                            setSelectedId(item.id);
-                          }}
-                        >
-                          Update
-                        </Button>
-                      </Grid>
-                      <Grid item>
-                        <Button
-                          type="primary"
-                          danger
-                          onClick={() => {
-                            setDeleteFeed(true);
-                            setSelectedId(item.id);
-                          }}
-                        >
-                          Delete
-                        </Button>
-                      </Grid>
+            {feedData.map((item) => (
+              <Grid item key={item.id} id={item.id}>
+                <Card
+                  hoverable
+                  style={{
+                    minWidth: 380,
+                  }}
+                  cover={
+                    <img height="300px" alt="example" src={item.imageUrl} />
+                  }
+                >
+                  <Meta title={item.tags} description={item.message} />
+                  <Grid container justifyContent="flex-end" spacing={1}>
+                    <Grid item>
+                      <Button
+                        className={classes.featuredButton}
+                        type="primary"
+                        color="primary"
+                        onClick={() => {
+                          showUpdateModal();
+                          setUpdateTag(item.insertTag);
+                          setUpdateDescription(item.insertMessage);
+                          setSelectedFile(item.selectedFile);
+                          setSelectedId(item.id);
+                        }}
+                        // onClick={()=>  UpdateFeedHandler()}
+                      >
+                        Update
+                      </Button>
                     </Grid>
-                  </Card>
-                </Grid>
-              );
-            })}
+                    <Grid item>
+                      <Button
+                        type="primary"
+                        danger
+                        onClick={() => {
+                          setDeleteFeed(true);
+                          setSelectedId(item.id);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Card>
+              </Grid>
+            ))}
             <Modal
               title="Update Feed"
               visible={isUpdateModalVisible}
@@ -247,22 +251,29 @@ function Feed() {
                   ]}
                 >
                   <Input
-                    placeholder={updateTag}
-                    value={updateTag}
-                    onChange={(event) => setUpdateTag(event.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item name={["user", "mobileNo"]} label="Tag">
-                  <Input
-                    placeholder={updateDescription}
+                    type="text"
                     value={updateDescription}
                     onChange={(event) =>
                       setUpdateDescription(event.target.value)
                     }
                   />
                 </Form.Item>
-                <Form.Item name={["user", "email"]} label="Image">
-                  <Input type="file" onChange={fileHandler} />
+                <Form.Item name={["user", "tag"]} label="Tag">
+                  <Input
+                    type="text"
+                    value={updateTag}
+                    onChange={(event) => setUpdateTag(event.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item name={["user", "image"]} label="Image">
+                  <Input
+                    type="file"
+                    value={updateSelectedFile}
+                    onChange={(event) =>
+                      setUpdateSelectedFile(event.target.value)
+                    }
+                  />
+                  <img src={selectedFile} alt="img" />
                 </Form.Item>
               </Form>
             </Modal>
