@@ -18,7 +18,6 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import { makeStyles } from "@mui/styles";
-import axios from "axios";
 import { useState, useEffect } from "react";
 import {
   SearchOutlined,
@@ -104,6 +103,8 @@ function LandOwner() {
     deleteLandOwnerById,
     updateLandOwnerById,
     addNewLandOwner,
+    approveLandOwnerById,
+    unApproveLandOwnerById,
   } = service();
 
   useEffect(() => {
@@ -188,35 +189,31 @@ function LandOwner() {
       setIsModalVisible(false);
     }
     
+    getAllLandOwners();
 
   };
 
+
+
   const approveLandOwner = async (selectedId_) => {
     try {
-      await axios({
-        method: "put",
-        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/approveLandowner/${selectedId_}`,
-        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-      })
-        .then((res) => res);
+      await approveLandOwnerById(selectedId_);
         console.log(`${selectedId} landOwners approved`);
     } catch (error) {
       console.log(error);
     }
   };
+
   
   const unApproveLandOwner = async (selectedId_) => {
     try {
-      await axios({
-        method: "put",
-        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/unApproveLandowner/${selectedId_}`,
-        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-      })
-        .then((res) => res).then(r=>console.log({r}))
+      await unApproveLandOwnerById(selectedId_);
+      console.log(`${selectedId} landOwners Unapproved`);
     } catch (error) {
       console.log(error);
     }
   };
+
 
   async function handleApprove(row) {
     if(row.validated===1) {
@@ -227,6 +224,7 @@ function LandOwner() {
     }
     getAllLandOwners();
   }
+
 
 
   const handleDeleteClick = async () => {
@@ -240,6 +238,7 @@ function LandOwner() {
 
     getAllLandOwners();
   };
+
 
 
   const handleUpdateClick = async () => {
@@ -258,14 +257,7 @@ function LandOwner() {
     };
 
     try {
-      // await axios({
-      //   method: "put",
-      //   url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`,
-      //   data: landData,
-      //   headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-      // })
-      //   .then((res) => res);
-      await updateLandOwnerById(selectedId, landData);  /* *** When calling the function from data service folder update landowners will be empty need to solve this issue *** */
+      await updateLandOwnerById(selectedId, landData);
       setIsUpdateModalVisible(false);
     } catch (error) {
       setIsUpdateModalVisible(false);
@@ -273,6 +265,7 @@ function LandOwner() {
 
     getAllLandOwners();
   };
+
 
   return (
     <div>
@@ -348,7 +341,7 @@ function LandOwner() {
                           type="primary"
                           className={classes.approveButton}
                           //color change
-                          color={row.validated === 0 ? "danger" : "danger"}
+                          color={row.validated === 0 ? "primary" : "danger"}
                           onClick={() => {
                             setSelectedId(row.landOwnerID);
                             handleApprove(row);

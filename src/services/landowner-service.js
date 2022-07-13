@@ -40,10 +40,24 @@ export default function DataService() {
     // return data;
   }
 
+  async function approveLandOwnerById(Id) {
+    const data = await http.put("/landOwners/approveLandowner/" + Id).then((res) => res);
+    console.log(data);
+    // return data;
+  }
+
+  async function unApproveLandOwnerById(Id) {
+    const data = await http.put("/landOwners/unApproveLandowner/" + Id).then((res) => res);
+    console.log(data);
+    // return data;
+  }
+
   return {
     getLandOwners,
     deleteLandOwnerById,
     updateLandOwnerById,
-    addNewLandOwner
+    addNewLandOwner,
+    approveLandOwnerById,
+    unApproveLandOwnerById,
   };
 }
