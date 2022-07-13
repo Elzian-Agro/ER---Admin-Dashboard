@@ -7,19 +7,18 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { useCookies } from "react-cookie";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
 import { Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { makeStyles } from "@mui/styles";
-import axios from "axios";
 import { useState, useEffect } from "react";
 import {
   SearchOutlined,
 } from "@ant-design/icons";
 
+import service from "./../services/tree-species-service";
 
 const useStyles = makeStyles({
   mainHeading: {
@@ -128,29 +127,20 @@ function TreeSpecies() {
   const [searchTreeSpecies, setSearchTreeSpecies] = useState("");
   //const [isApproved] = useState(true);
 
-  const cookies = useCookies(["token"]);
-
-  axios.defaults.headers = {
-    "Content-Type": "application/json",
-    "x-auth-token": cookies.token,
-  };
+  const {
+    getAllTreeSpecies,
+    deleteTreeSpeciesById,
+    updateTreeSpeciesById,
+    addNewTreeSpecies,
+  } = service();
 
   useEffect(() => {
-    // treeSpeciesApi()
-    //   .then((res) => {
-    //     setData(res.data.Result);
-    //   })
-    GetAllTreeSpecies();
-  }, [isModalVisible, isUpdateModalVisible, deleteTreeSpecies]);
-
-  const GetAllTreeSpecies = async () => {
-    const result = await axios({
-      method: "get",
-      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/species/`,
-      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-    });
-    setData(result.data.Result);
-};
+    const getTreeSpecies = async () => {
+      const res = await getAllTreeSpecies();
+      setData(res);
+    }
+    getTreeSpecies()
+  }, [getAllTreeSpecies]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -252,19 +242,13 @@ function TreeSpecies() {
 
 
     try {
-      await axios({
-        method: "post",
-        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/species/add`,
-        data: treeData,
-        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-      }).then((response) => {
-          const newTreeSpecies = [...data, treeData];
-          setData(newTreeSpecies);
-      })
+      await addNewTreeSpecies(treeData);
+      setIsModalVisible(false);
     } catch (error) {
       alert("Error Occcured");
+      setIsModalVisible(false);
     }
-    setIsModalVisible(false);
+    
 
   };
 
@@ -339,14 +323,7 @@ function TreeSpecies() {
     };
 
     try {
-      await axios({
-        method: "put",
-        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/species/updateSpecies/${selectedId}`,
-        data: treeData,
-        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-      })
-        .then((res) => res);
-      console.log(data);
+      await updateTreeSpeciesById(selectedId, treeData);
       setIsUpdateModalVisible(false);
     } catch (error) {
       console.log(error);
@@ -359,13 +336,8 @@ function TreeSpecies() {
   const handleDeleteTreeSpecies = async () => {
 
     try {
-      await axios({
-        method: "put",
-        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/species/deleteSpecies/${selectedId}`,
-        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-      })
-        .then((res) => res);
-        setDeleteTreeSpecies(false);
+      await deleteTreeSpeciesById(selectedId);
+      setDeleteTreeSpecies(false);
     } catch (error) {
       console.log(error);
       setDeleteTreeSpecies(false);

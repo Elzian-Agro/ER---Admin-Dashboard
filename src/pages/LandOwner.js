@@ -200,10 +200,12 @@ function LandOwner() {
       //     setData(newLandOwner);
       // })
       await addNewLandOwner(landData);
+      setIsModalVisible(false);
     } catch (error) {
       alert("Error Occcured");
+      setIsModalVisible(false);
     }
-    setIsModalVisible(false);
+    
 
   };
 
