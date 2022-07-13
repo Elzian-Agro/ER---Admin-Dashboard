@@ -392,7 +392,6 @@ function LandOwner() {
               <TableCell className={classes.tableHeading}>Land Owner Name</TableCell>
               <TableCell className={classes.tableHeading}>Contact</TableCell>
               <TableCell className={classes.tableHeading}>Address</TableCell>
-              <TableCell className={classes.tableHeading}>Region</TableCell>
               <TableCell className={classes.tableHeading}>Country</TableCell>
             </TableRow>
           </TableHead>
@@ -429,7 +428,6 @@ function LandOwner() {
                   </Stack>
                 </TableCell>
                 <TableCell>{row.landAddress}</TableCell>
-                <TableCell>{row.region}</TableCell>
                 <TableCell>{row.country}</TableCell>
                 <TableCell align="center">
                   <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 2 }}>
