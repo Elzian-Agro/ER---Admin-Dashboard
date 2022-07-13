@@ -7,7 +7,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { useCookies } from "react-cookie";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
@@ -98,7 +97,6 @@ function LandOwner() {
   const [updateBankName, setUpdateBankName] = useState("");
   const [updateBankBranch, setUpdateBankBranch] = useState("");
   const [searchLandOwner, setSearchLandOwner] = useState("");
-  const [toggle, setToggle] = useState(true);
   const [form] = Form.useForm();
 
   const {
@@ -108,20 +106,15 @@ function LandOwner() {
     addNewLandOwner,
   } = service();
 
-  const cookies = useCookies(["token"]);
-
-  axios.defaults.headers = {
-    "Content-Type": "application/json",
-    "x-auth-token": cookies.token,
-  };
-
   useEffect(() => {
-    const getAllLandOwners = async () => {
-      const res = await getLandOwners();
-      setData(res);
-    }
     getAllLandOwners()
-  }, [getLandOwners]);
+  }, []);
+
+  const getAllLandOwners = async () => {
+    const res = await getLandOwners();
+    console.log("response data ",{res})
+    setData(res);
+  }
 
 
   const showModal = () => {
@@ -187,18 +180,7 @@ function LandOwner() {
       perimeter: perimeter,
     };
 
-    /* *** When calling the function from data service folder add landowners will be empty need to solve this issue *** */
     try {
-      // await axios({
-      //   method: "post",
-      //   url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/add`,
-      //   data: landData,
-      //   headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk" },
-      // })
-      // .then((response) => {
-      //     const newLandOwner = [...data, landData];
-      //     setData(newLandOwner);
-      // })
       await addNewLandOwner(landData);
       setIsModalVisible(false);
     } catch (error) {
@@ -208,8 +190,6 @@ function LandOwner() {
     
 
   };
-
-  /* ******* The Approve UnApprove functions starts from here ******* */
 
   const approveLandOwner = async (selectedId_) => {
     try {
@@ -232,77 +212,33 @@ function LandOwner() {
         url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/unApproveLandowner/${selectedId_}`,
         headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
       })
-        .then((res) => res);
-        console.log(`${selectedId} landOwners unapproved`);
+        .then((res) => res).then(r=>console.log({r}))
     } catch (error) {
       console.log(error);
     }
   };
 
-  function handleApprove(selectedId_) {
-    if(toggle) {
-      // 1. get a deep copy of data state
-      // 2. using the landowner id and selectedId_ find the row and update toggle to false
-      // 3. since this deep copy is stored in a variable store this result in a setData state
-       unApproveLandOwner(selectedId_);
-      data.map((row) => 
-        {
-          if(row.landOwnerID === selectedId_) {
-            row.toggle = false;
-          }
-        }
-      )
-      setToggle(false);
+  async function handleApprove(row) {
+    if(row.validated===1) {
+       await unApproveLandOwner(row.landOwnerID);
     }
     else {
-      approveLandOwner(selectedId_);
-      setToggle(true);
-      data.map((row) => 
-      {
-        if(row.landOwnerID === selectedId_) {
-          row.toggle = true;
-        }
-      }
-    )
+      await approveLandOwner(row.landOwnerID);
     }
-
-    // toggle ? unApproveLandOwner() : approveLandOwner()
-
-    // setData(
-    //   data.map((row) => {
-    //     if (row.landOwnerID === selectedId) {
-    //       return { ...row, toggle: !row.toggle };
-    //     } else return { ...row };
-    //   })
-    // );
-
-    // setToggle((prevState) => {
-    //   return{
-    //     ...prevState,
-    //     toggle: !prevState.toggle
-    //   }
-    // })
+    getAllLandOwners();
   }
-
-
-  /* ******* The Approve UnApprove functions ends here ******* */
 
 
   const handleDeleteClick = async () => {
 
     try {
-      // await axios({
-      //   method: "put",
-      //   url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`,
-      //   headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-      // })
-      //   .then((res) => res);
       await deleteLandOwnerById(selectedId);
       setDeleteFeed(false);
     } catch (error) {
       setDeleteFeed(false);
     }
 
+    getAllLandOwners();
   };
 
 
@@ -335,6 +271,7 @@ function LandOwner() {
       setIsUpdateModalVisible(false);
     }
 
+    getAllLandOwners();
   };
 
   return (
@@ -407,28 +344,18 @@ function LandOwner() {
                 <TableCell align="center">
                   <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 2 }}>
                     <Grid item md={12} lg={6} xl={4}>
-                      <Button
+                    <Button
                           type="primary"
                           className={classes.approveButton}
-                          color={row.toggle ? "primary" : "danger"}
+                          //color change
+                          color={row.validated === 0 ? "danger" : "danger"}
                           onClick={() => {
                             setSelectedId(row.landOwnerID);
-                            handleApprove(row.landOwnerID);
+                            handleApprove(row);
                           }}
                         >
-                          {row.toggle ? "UnApprove" : "Approve"} {/* The Approve UnApprove toggle text is here*/}
+                          {row.validated === 0 ? "Approve" : "UnApprove"}
                       </Button>
-                      {/* <Button
-                          type="primary"
-                          className={classes.approveButton}
-                          color={row.toggle ? "primary" : "danger"}
-                          onClick={() => {
-                            setSelectedId(row.landOwnerID);
-                            unApproveLandOwner()
-                          }}
-                        >
-                          UnApprove
-                      </Button> */}
                     </Grid>
                     <Grid item md={12} lg={6} xl={4}>
                       <Button
