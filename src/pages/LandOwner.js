@@ -454,6 +454,7 @@ function LandOwner() {
                           type="primary"
                           onClick={() => {
                             showUpdateModal();
+                            setSelectedId(row.landOwnerID);
                             setUpdateRegisterNumber(row.registerNumber);
                             setUpdateLandOwnerName(row.landOwnerName);
                             setUpdateLandOwnerFullName(row.landOwnerFullname);
