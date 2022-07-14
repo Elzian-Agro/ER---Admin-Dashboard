@@ -37,6 +37,7 @@ const useStyles = makeStyles({
 const AssignAuditors = () =>{
   const classes = useStyles();
   const [data, setdata] = useState([]);
+  const [auditorData, setAuditorData] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [modaldata, setmodaldata] = useState({});
 
@@ -116,6 +117,7 @@ const AssignAuditors = () =>{
 
   useEffect(() => {
     getData();
+    getAuditorData();
   }, []);
 
   const getData = async () => {
@@ -145,6 +147,21 @@ const AssignAuditors = () =>{
         email: row.email,
         landAddress: row.landAddress,
     })));
+  };
+
+  const getAuditorData = async () => {
+    const headers = {
+      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
+    };
+    
+    const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/`, {headers});
+    console.log(res)
+    setAuditorData(
+      res.data.Result.map((auditor) => ({
+        id: auditor.userID,
+        fullName: auditor.fullName,
+      }))
+    );
   };
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -231,7 +248,7 @@ const AssignAuditors = () =>{
         ]}
       >
         <Row gutter={[20, 20]}>
-        <Col offset={4} md={30} xs={24}>
+        <Col offset={3} md={25} xs={24}>
             <Space direction="vertical">
               <div>
                 Land Owner Name : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.landOwnerFullname}</b>
@@ -259,16 +276,20 @@ const AssignAuditors = () =>{
                   ]}
                 >
                   <Select
-                    name="landOwnerName"
+                    name="auditorName"
                     onChange={(value) => {
                       setmodaldata({
                         ...modaldata,
-                        landOwnerName: value
+                        landOwnerFullname: value
                       })
                     }}
                   >
-                    <Select.Option value="Auditor 1">Auditor - 1</Select.Option>
-                    <Select.Option value="Auditor 2">Auditor - 2</Select.Option>
+                    {auditorData && auditorData.map((auditor) => {
+                      return(
+                      <Select.Option value={auditor.userID}>{auditor.fullName} - {auditor.id}</Select.Option>
+                      )
+                    })
+                    }
                   </Select>
                 </Form.Item>
               </Form>

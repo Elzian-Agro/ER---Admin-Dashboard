@@ -104,10 +104,6 @@ const Auditor = () =>{
     deleteAuditors,
   } = service();
 
-  useEffect(() => {
-    getData();
-  }, []);
-
   const getData = async () => {
     const res = await getAuditors();
     setdata(
@@ -134,21 +130,19 @@ const Auditor = () =>{
     })));
   };
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [setLoading] = useState(false);
+  useEffect(() => {
+    getData();
+  });
 
-  const [fullName,setFullName] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = (record) => {
-    setFullName(record.fullName);
     setmodaldata(record);
     setIsModalVisible(true);
   };
 
   const handleOk = () => {
-    setLoading(true);
     setTimeout(() => {
-      setLoading(false);
       setIsModalVisible(false);
     }, 3000);
   };
