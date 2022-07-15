@@ -119,13 +119,32 @@ function Feed() {
   };
 
   const UpdateFeedHandler = async () => {
+    const formData = new FormData();
+    formData.append("imageUrl", updateSelectedFile);
+    formData.append("message", updateDescription);
+    formData.append("tags", updateTag);
+    formData.append("published", "Yes");
+
     try {
-      await axios.put(
-        `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/updateFeed/${selectedId}`,
-        alert("updated"),
-        console.log("done"),
-        setIsUpdateModalVisible(false)
-      );
+      await axios
+        .put(
+          `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/updateFeed/${selectedId}`,
+          // formData,
+          {
+            imageUrl: selectedFile,
+            message: updateDescription,
+            tags: updateTag,
+          },
+          {
+            headers: {
+              "x-auth-token":
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ3MzY4ODg4fQ.2o7M2RV88a7shoCmcEcgS0AXfjXAYrC14KynieCBuvA",
+            },
+          }
+        )
+        .then((response) => {
+          setFeedData(response.data);
+        });
     } catch (error) {
       setIsUpdateModalVisible(false);
       alert("err");
@@ -156,7 +175,7 @@ function Feed() {
               >
                 <Form {...layout}>
                   <Form.Item
-                    name={["user", "name"]}
+                    name="name"
                     label="Title"
                     rules={[
                       {
@@ -213,7 +232,7 @@ function Feed() {
                           setSelectedFile(item.selectedFile);
                           setSelectedId(item.id);
                         }}
-                        // onClick={()=>  UpdateFeedHandler()}
+                        // onClick={}
                       >
                         Update
                       </Button>
