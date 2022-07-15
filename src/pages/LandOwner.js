@@ -107,14 +107,19 @@ function LandOwner() {
   } = service();
 
   useEffect(() => {
-    getAllLandOwners()
-  }, []);
+    async function getAllLandOwners() {
+      const res = await getLandOwners();
+      console.log("response data ",{res})
+      setData(res);
+    }
+    getAllLandOwners();
+  }, [getLandOwners]);
 
-  const getAllLandOwners = async () => {
-    const res = await getLandOwners();
-    console.log("response data ",{res})
-    setData(res);
-  }
+  // const getAllLandOwners = async () => {
+  //   const res = await getLandOwners();
+  //   console.log("response data ",{res})
+  //   setData(res);
+  // }
 
 
   const showModal = () => {
@@ -188,7 +193,7 @@ function LandOwner() {
       setIsModalVisible(false);
     }
     
-    getAllLandOwners();
+    
 
   };
 
@@ -221,7 +226,7 @@ function LandOwner() {
     else {
       await approveLandOwner(row.landOwnerID);
     }
-    getAllLandOwners();
+    
   }
 
 
@@ -235,7 +240,7 @@ function LandOwner() {
       setDeleteFeed(false);
     }
 
-    getAllLandOwners();
+    
   };
 
 
@@ -262,7 +267,7 @@ function LandOwner() {
       setIsUpdateModalVisible(false);
     }
 
-    getAllLandOwners();
+    
   };
 
 
