@@ -35,7 +35,7 @@ export default function DataService() {
   }
 
   async function addNewLandOwner(landData) {
-    const data = await http.put("/landOwners/add", landData).then((res) => res);
+    const data = await http.post("/landOwners/add", landData).then((res) => res);
     console.log(data);
     // return data;
   }

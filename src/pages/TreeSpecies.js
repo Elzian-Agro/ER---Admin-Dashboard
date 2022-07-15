@@ -125,7 +125,6 @@ function TreeSpecies() {
   const [updateFlowerColor, setUpdateFlowerColor] = useState("");
   const [updateFruitType, setUpdateFruitType] = useState("");
   const [searchTreeSpecies, setSearchTreeSpecies] = useState("");
-  //const [isApproved] = useState(true);
 
   const {
     getAllTreeSpecies,
@@ -392,7 +391,7 @@ function TreeSpecies() {
               return null
             }).map((row) => (
               <TableRow
-                key={row.id}
+                key={row.plant_id}
                 id={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >

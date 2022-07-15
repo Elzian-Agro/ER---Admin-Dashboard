@@ -35,7 +35,7 @@ export default function DataService() {
   }
 
   async function addNewTreeSpecies(treeData) {
-    const data = await http.put("/species/add", treeData).then((res) => res);
+    const data = await http.post("/species/add", treeData).then((res) => res);
     console.log(data);
     // return data;
   }

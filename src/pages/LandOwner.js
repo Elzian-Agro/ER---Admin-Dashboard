@@ -7,7 +7,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { useCookies } from "react-cookie";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
@@ -19,11 +18,12 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import { makeStyles } from "@mui/styles";
-import axios from "axios";
 import { useState, useEffect } from "react";
 import {
   SearchOutlined,
 } from "@ant-design/icons";
+
+import service from "./../services/landowner-service";
 
 const useStyles = makeStyles({
   mainHeading: {
@@ -84,7 +84,6 @@ function LandOwner() {
   const [bankBranch, setBankBranch] = useState("");
   const [noOfTrees, setNoTrees] = useState("");
   const [perimeter, setPerimeter] = useState("");
-  const [updateRegisterNumber, setUpdateRegisterNumber] = useState("");
   const [updateLandOwnerName, setUpdateLandOwnerName] = useState("");
   const [updateLandOwnerFullName, setUpdateLandOwnerFullName] = useState("");
   const [updateContactNumber, setUpdateLandONContact] = useState("");
@@ -96,31 +95,26 @@ function LandOwner() {
   const [updateBankName, setUpdateBankName] = useState("");
   const [updateBankBranch, setUpdateBankBranch] = useState("");
   const [searchLandOwner, setSearchLandOwner] = useState("");
-  const [isApproved, setIsApproved] = useState(false);
+  const [form] = Form.useForm();
 
-  const cookies = useCookies(["token"]);
-
-  axios.defaults.headers = {
-    "Content-Type": "application/json",
-    "x-auth-token": cookies.token,
-  };
+  const {
+    getLandOwners,
+    deleteLandOwnerById,
+    updateLandOwnerById,
+    addNewLandOwner,
+    approveLandOwnerById,
+    unApproveLandOwnerById,
+  } = service();
 
   useEffect(() => {
-    // landOwnersApi()
-    //   .then((res) => {
-    //     setData(res.data.Result);
-    //   })
-    GetAllLandOwners();
-  }, [isUpdateModalVisible , deleteFeed]);
+    getAllLandOwners()
+  }, []);
 
-  const GetAllLandOwners = async () => {
-      const result = await axios({
-        method: "get",
-        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/`,
-        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk" },
-      });
-      setData(result.data.Result);
-  };
+  const getAllLandOwners = async () => {
+    const res = await getLandOwners();
+    console.log("response data ",{res})
+    setData(res);
+  }
 
 
   const showModal = () => {
@@ -187,134 +181,68 @@ function LandOwner() {
     };
 
     try {
-      await axios({
-        method: "post",
-        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/add`,
-        data: landData,
-        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk" },
-      }).then((response) => {
-          const newLandOwner = [...data, landData];
-          setData(newLandOwner);
-      })
+      await addNewLandOwner(landData);
+      setIsModalVisible(false);
     } catch (error) {
       alert("Error Occcured");
+      setIsModalVisible(false);
     }
-    setIsModalVisible(false);
-
-    // axios({
-    //   method: "post",
-    //   url: "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/add",
-    //   data: landData,
-    //   headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk" },
-    // }).then((response) => {
-    //   const newLandOwner = [...data, landData];
-    //   setData(newLandOwner);
-      
-    //   console.log(response.landData);
-    // }).catch(err=>{
-    //   console.log(err)
-    // });
-  
-    // setIsModalVisible(false);
+    
+    getAllLandOwners();
 
   };
 
-  function approveLandOwner(selectedId) {
-    axios({
-      method: "put",
-      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/approveLandowner/${selectedId}`,
-      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-    }).then((response) => {
-      setData(response);
-      
-    }).catch(err=>{
-      console.log(err)
-    });
-    setIsApproved(true)
+
+
+  const approveLandOwner = async (selectedId_) => {
+    try {
+      await approveLandOwnerById(selectedId_);
+        console.log(`${selectedId} landOwners approved`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  
+  const unApproveLandOwner = async (selectedId_) => {
+    try {
+      await unApproveLandOwnerById(selectedId_);
+      console.log(`${selectedId} landOwners Unapproved`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  async function handleApprove(row) {
+    if(row.validated===1) {
+       await unApproveLandOwner(row.landOwnerID);
+    }
+    else {
+      await approveLandOwner(row.landOwnerID);
+    }
+    getAllLandOwners();
   }
 
-    function UnApproveLandOwner(selectedId) {
-    axios({
-      method: "put",
-      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/unApproveLandowner/${selectedId}`,
-      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-    }).then((response) => {
-      setData(response)
-      
-    }).catch(err=>{
-      console.log(err)
-    });
-    setIsApproved(false)
-  }
-
-
-  function handleApprove(selectedId) {
-
-    isApproved ? UnApproveLandOwner(selectedId) : approveLandOwner(selectedId)
-
-    setData(
-      data.map((row) => {
-        if (row.landOwnerID === selectedId) {
-          return { ...row, isApproved: !row.isApproved };
-        } else return { ...row };
-      })
-    );
-  }
 
 
   const handleDeleteClick = async () => {
 
     try {
-      await axios({
-        method: "put",
-        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`,
-        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-      })
-        .then((res) => res);
+      await deleteLandOwnerById(selectedId);
       setDeleteFeed(false);
     } catch (error) {
-      console.log(error);
       setDeleteFeed(false);
     }
 
-    
-    // axios({
-    //   method: "put",
-    //   url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/deleteLandowner/${selectedId}`,
-    //   headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-    // }).then(()=>{
-    //   const deleteLandOwner = data.filter((land)=>land.landOwnerID !== selectedId);
-    //   setData(deleteLandOwner);
-    // }).catch(err=>{
-    //   console.log(err)
-    // });
-    
-
-    // setDeleteFeed(false);
-
+    getAllLandOwners();
   };
 
 
-  const handleUpdateClick = async () => {
 
-    // const formData = new FormData();
-    // formData.append("registerNumber", registerNumber);
-    // formData.append("landOwnerName", landOwnerName);
-    // formData.append("landOwnerFullname", landOwnerFullname);
-    // formData.append("contact", contactNumber);
-    // formData.append("email", email);
-    // formData.append("country", country);
-    // formData.append("address", landAddress);
-    // formData.append("longitude", longitude);
-    // formData.append("latitude", latitude);
-    // formData.append("bankAccountNumber", bankAccountNumber);
-    // formData.append("bankName", bankName);
-    // formData.append("bankBranch", bankBranch);
-    // formData.append("noOfTrees", noOfTrees);
-    // formData.append("perimeter", perimeter);
+  const handleUpdateClick = async () => {
     
     const landData = {
-      registerNumber: updateRegisterNumber,
       landOwnerName: updateLandOwnerName,
       landOwnerFullname: updateLandOwnerFullName,
       contactNumber: updateContactNumber.toString(),
@@ -328,40 +256,15 @@ function LandOwner() {
     };
 
     try {
-      await axios({
-        method: "put",
-        url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`,
-        data: landData,
-        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-      })
-        .then((res) => res);
-      console.log(data);
+      await updateLandOwnerById(selectedId, landData);
       setIsUpdateModalVisible(false);
     } catch (error) {
-      console.log(error);
       setIsUpdateModalVisible(false);
     }
-    
-    // axios({
-    //   method: "put",
-    //   url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/updateLandowner/${selectedId}`,
-    //   data: landData,
-    //   headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-    // }).then(() => {
-    //   const updateLandowner = data.map((land)=>{
-    //     if(land.landOwnerID === selectedId){
-    //       return landData
-    //     }
-    //     return land
-    //   })
-    //   setData(updateLandowner)
-    // });
 
-    // setIsUpdateModalVisible(false);
-
-    
-
+    getAllLandOwners();
   };
+
 
   return (
     <div>
@@ -404,13 +307,16 @@ function LandOwner() {
             data.filter(row => {
               if (searchLandOwner === '') {
                 return row;
-              } else if (row.landOwnerName?.toLowerCase().includes(searchLandOwner.toLowerCase())) {
+              } else if (
+                row.landOwnerName?.toLowerCase().includes(searchLandOwner.toLowerCase()) ||
+                row.registerNumber?.toLowerCase().includes(searchLandOwner.toLowerCase())
+                ) {
                 return row;
               }
               return null;
             }).map((row) => (
               <TableRow
-                key={row.id}
+                key={row.landOwnerID}
                 id={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
@@ -438,37 +344,51 @@ function LandOwner() {
                   <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 2 }}>
                     <Grid item md={12} lg={6} xl={4}>
                       <Button
-                          type="primary"
-                          className={classes.approveButton}
-                          color={row.isApproved ? "primary" : "danger"}
-                          onClick={() => {
-                            handleApprove(row.landOwnerID);
-                          }}
-                        >
-                          {row.isApproved ? "UnApprove" : "Approve"}
+                        type="primary"
+                        className={classes.approveButton}
+                        //color change
+                        color={row.validated === 0 ? "primary" : "danger"}
+                        onClick={() => {
+                          setSelectedId(row.landOwnerID);
+                          handleApprove(row);
+                        }}
+                      >
+                        {row.validated === 0 ? "Approve" : "UnApprove"}
                       </Button>
                     </Grid>
                     <Grid item md={12} lg={6} xl={4}>
                       <Button
-                          className={classes.featuredButton}
-                          type="primary"
-                          onClick={() => {
-                            showUpdateModal();
-                            setSelectedId(row.landOwnerID);
-                            setUpdateRegisterNumber(row.registerNumber);
-                            setUpdateLandOwnerName(row.landOwnerName);
-                            setUpdateLandOwnerFullName(row.landOwnerFullname);
-                            setUpdateLandONContact(row.contactNumber);
-                            setUpdateCountry(row.country);
-                            setUpdateLandAddress(row.landAddress);
-                            setUpdateBankName(row.bankName);
-                            setUpdateBankAccountNumber(row.bankAccountNumber);
-                            setUpdateBankBranch(row.bankBranch);
-                            setUpdateLongitude(row.longitude);
-                            setUpdateLatitude(row.latitude);
-                          }}
-                        >
-                          Edit
+                        className={classes.featuredButton}
+                        type="primary"
+                        onClick={() => {
+                          showUpdateModal();
+                          setSelectedId(row.landOwnerID);
+                          setUpdateLandOwnerName(row.landOwnerName);
+                          setUpdateLandOwnerFullName(row.landOwnerFullname);
+                          setUpdateLandONContact(row.contactNumber);
+                          setUpdateCountry(row.country);
+                          setUpdateLandAddress(row.landAddress);
+                          setUpdateBankName(row.bankName);
+                          setUpdateBankAccountNumber(row.bankAccountNumber);
+                          setUpdateBankBranch(row.bankBranch);
+                          setUpdateLongitude(row.longitude);
+                          setUpdateLatitude(row.latitude);
+
+                          form.setFieldsValue({
+                            updateLandOwnerName: row.landOwnerName,
+                            updateLandOwnerFullName: row.landOwnerFullname,
+                            updateContactNumber: row.contactNumber,
+                            updateCountry: row.country,
+                            updateLandAddress: row.landAddress,
+                            updateBankName: row.bankName,
+                            updateBankAccountNumber: row.bankAccountNumber,
+                            updateBankBranch: row.bankBranch,
+                            updateLongitude: row.longitude,
+                            updateLatitude: row.latitude,
+                          })
+                        }}
+                      >
+                        Edit
                       </Button>
                     </Grid>
                     <Grid item md={12} lg={12} xl={4}>
@@ -523,7 +443,7 @@ function LandOwner() {
                 title="Add New Land Owner"
                 visible={isModalVisible}
                 onCancel={handleCancel}
-                onOk={() => {handleAddFormSubmit()}}
+                onOk={() => handleAddFormSubmit()}
                 destroyOnClose={true}
               >
               <Form {...layout} autoComplete="off">
@@ -727,8 +647,8 @@ function LandOwner() {
                     {
                       whitespace: true
                     },
-                    {min: 7},
-                    {max: 9}
+                    {min: 10},
+                    {max: 12}
                     
                   ]}
                   hasFeedback
@@ -826,7 +746,6 @@ function LandOwner() {
             </Modal>
 
 
-            
             <Modal
               title="Update Land Owner"
               visible={isUpdateModalVisible}
@@ -834,10 +753,10 @@ function LandOwner() {
               onOk={handleUpdateClick}
               destroyOnClose={true}
             >
-              <Form autoComplete="off">
+              <Form autoComplete="off" form={form}>
 
                 <Form.Item
-                  name="LandOwner Name"
+                  name="updateLandOwnerName"
                   label="Land Owner Name"
                   rules={[
                     {
@@ -851,11 +770,11 @@ function LandOwner() {
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateLandOwnerName" defaultValue={updateLandOwnerName} onChange={(event) => setUpdateLandOwnerName(event.target.value)}/>
+                  <Input name="updateLandOwnerName" onChange={(event) => setUpdateLandOwnerName(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name="LandOwner FullName"
+                  name="updateLandOwnerFullName"
                   label="Land Owner Full Name"
                   rules={[
                     {
@@ -869,11 +788,11 @@ function LandOwner() {
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateLandOwnerFullName" defaultValue={updateLandOwnerFullName} onChange={(event) => setUpdateLandOwnerFullName(event.target.value)}/>
+                  <Input name="updateLandOwnerFullName" onChange={(event) => setUpdateLandOwnerFullName(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name="Contact Number"
+                  name="updateContactNumber"
                   label="Contact Number"
                   rules={[
                     {
@@ -888,11 +807,11 @@ function LandOwner() {
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateContactNumber" defaultValue={updateContactNumber} onChange={(event) => setUpdateLandONContact(event.target.value.toString())}/>
+                  <Input name="updateContactNumber" onChange={(event) => setUpdateLandONContact(event.target.value.toString())}/>
                 </Form.Item>
 
                 <Form.Item
-                  name="Country"
+                  name="updateCountry"
                   label="Country"
                   rules={[
                     {
@@ -906,11 +825,11 @@ function LandOwner() {
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateCountry" defaultValue={updateCountry} onChange={(event) => setUpdateCountry(event.target.value)}/>
+                  <Input name="updateCountry" onChange={(event) => setUpdateCountry(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name="Land Address"
+                  name="updateLandAddress"
                   label="Land Address"
                   rules={[
                     {
@@ -924,11 +843,11 @@ function LandOwner() {
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateLandAddress" defaultValue={updateLandAddress} onChange={(event) => setUpdateLandAddress(event.target.value)}/>
+                  <Input name="updateLandAddress" onChange={(event) => setUpdateLandAddress(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name="Bank Account Number"
+                  name="updateBankAccountNumber"
                   label="Bank Account Number"
                   rules={[
                     {
@@ -943,11 +862,11 @@ function LandOwner() {
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateBankAccountNumber" defaultValue={updateBankAccountNumber} onChange={(event) => setUpdateBankAccountNumber(event.target.value)}/>
+                  <Input name="updateBankAccountNumber" onChange={(event) => setUpdateBankAccountNumber(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name="Bank Name"
+                  name="updateBankName"
                   label="Bank Name"
                   rules={[
                     {
@@ -961,11 +880,11 @@ function LandOwner() {
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateBankName" defaultValue={updateBankName} onChange={(event) => setUpdateBankName(event.target.value)}/>
+                  <Input name="updateBankName" onChange={(event) => setUpdateBankName(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name="Bank Branch"
+                  name="updateBankBranch"
                   label="Bank Branch"
                   rules={[
                     {
@@ -979,11 +898,11 @@ function LandOwner() {
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateBankBranch" defaultValue={updateBankBranch} onChange={(event) => setUpdateBankBranch(event.target.value)}/>
+                  <Input name="updateBankBranch" onChange={(event) => setUpdateBankBranch(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name="Longitude"
+                  name="updateLongitude"
                   label="Longitude"
                   rules={[
                     {
@@ -996,11 +915,11 @@ function LandOwner() {
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateLongitude" defaultValue={updateLongitude} onChange={(event) => setUpdateLongitude(event.target.value)}/>
+                  <Input name="updateLongitude" onChange={(event) => setUpdateLongitude(event.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
-                  name="Latitude"
+                  name="updateLatitude"
                   label="Latitude"
                   rules={[
                     {
@@ -1013,7 +932,7 @@ function LandOwner() {
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateLatitude" defaultValue={updateLatitude} onChange={(event) => setUpdateLatitude(event.target.value)}/>
+                  <Input name="updateLatitude" onChange={(event) => setUpdateLatitude(event.target.value)}/>
                 </Form.Item>
 
               </Form>
