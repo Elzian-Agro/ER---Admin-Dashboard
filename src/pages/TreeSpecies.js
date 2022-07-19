@@ -125,6 +125,7 @@ function TreeSpecies() {
   const [updateFlowerColor, setUpdateFlowerColor] = useState("");
   const [updateFruitType, setUpdateFruitType] = useState("");
   const [searchTreeSpecies, setSearchTreeSpecies] = useState("");
+  const [form] = Form.useForm();
 
   const {
     getAllTreeSpecies,
@@ -440,6 +441,40 @@ function TreeSpecies() {
                             setUpdateFloweringTime(row.floweringTime);
                             setUpdateFlowerColor(row.flowerColor);
                             setUpdateFruitType(row.fruitType);
+
+                            form.setFieldsValue({
+                              updatePlantName: row.plantName,
+                              updateCommonNames: row.commonNames,
+                              updateBotanicalName: row.botanicalName,
+                              updateOriginofSpecies: row.originofSpecies,
+                              updateFamily: row.family,
+                              updateAfNotationPhysiognomy: row.afNotationPhysiognomy,
+                              updatePlantReference_onERPlantDatabase: row.plantReference_onERPlantDatabase,
+                              updatePhotosyntheticBiomassYear1: row.photosyntheticBiomassYear1,
+                              updatePhotosyntheticBiomassYear2: row.photosyntheticBiomassYear2,
+                              updatePhotosyntheticBiomassYear3: row.photosyntheticBiomassYear3,
+                              updatePhotosyntheticBiomassYear4: row.photosyntheticBiomassYear4,
+                              updateWeightPerLeaf: row.weightPerLeaf,
+                              updateLeafCycle: row.leafCycle,
+                              updateLength: row.length,
+                              updateWidth: row.width,
+                              updateTexture: row.texture,
+                              updateConservationStatus: row.conservationStatus,
+                              updateGrowthRate: row.growthRate,
+                              updateCrownType: row.crownType,
+                              updatePropagationMethod: row.propagationMethod,
+                              updateRootType: row.rootType,
+                              updatePreferredSolis: row.preferredSolis,
+                              updateImpactOnSoil: row.impactOnSoil,
+                              updateSalinityTolerance: row.salinityTolerance,
+                              updateHumanUses: row.humanUses,
+                              updateEconomicImportance: row.economicImportance,
+                              updateDistribution: row.distribution,
+                              updateLightPreferences: row.lightPreferences,
+                              updateFloweringTime: row.floweringTime,
+                              updateFlowerColor: row.flowerColor,
+                              updateFruitType: row.fruitType,
+                            })
                           }}
                         >
                           Edit
@@ -1131,10 +1166,10 @@ function TreeSpecies() {
             onOk={() => {handleUpdateTreeSpecies()}}
             destroyOnClose={true}
           >
-            <Form autoComplete="off">
+            <Form autoComplete="off" form={form}>
 
             <Form.Item
-              name="Plant Name"
+              name="updatePlantName"
               label="Plant Name"
               rules={[
                 {
@@ -1148,11 +1183,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePlantName" defaultValue={updatePlantName} onChange={(event) => setUpdatePlantName( event.target.value)}/>
+              <Input name="updatePlantName" onChange={(event) => setUpdatePlantName( event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Common Names"
+              name="updateCommonNames"
               label="Common Names"
               rules={[
                 {
@@ -1166,11 +1201,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateCommonNames" defaultValue={updateCommonNames} onChange={(event) => setUpdateCommonNames(event.target.value)}/>
+              <Input name="updateCommonNames" onChange={(event) => setUpdateCommonNames(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Botanical Name"
+              name="updateBotanicalName"
               label="Botanical Name"
               rules={[
                 {
@@ -1184,11 +1219,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateBotanicalName" defaultValue={updateBotanicalName} onChange={(event) => setUpdateBotanicalName(event.target.value)}/>
+              <Input name="updateBotanicalName" onChange={(event) => setUpdateBotanicalName(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Origin Of Species"
+              name="updateOriginofSpecies"
               label="Origin Of Species"
               rules={[
                 {
@@ -1197,17 +1232,15 @@ function TreeSpecies() {
                 },
                 {
                   whitespace: true
-                },
-                { min: 10},
-                { max: 10}
+                }
               ]}
               hasFeedback
             >
-              <Input name="updateOriginofSpecies" defaultValue={updateOriginofSpecies} onChange={(event) => setUpdateOriginofSpecies(event.target.value)}/>
+              <Input name="updateOriginofSpecies" onChange={(event) => setUpdateOriginofSpecies(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Family"
+              name="updateFamily"
               label="Family"
               rules={[
                 {
@@ -1221,11 +1254,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateFamily" defaultValue={updateFamily} onChange={(event) => setUpdateFamily({email: event.target.value})}/>
+              <Input name="updateFamily" onChange={(event) => setUpdateFamily({email: event.target.value})}/>
             </Form.Item>
 
             <Form.Item
-              name="Af Notation Physiognomy"
+              name="updateAfNotationPhysiognomy"
               label="Af Notation Physiognomy"
               rules={[
                 {
@@ -1238,11 +1271,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateAfNotationPhysiognomy" defaultValue={updateAfNotationPhysiognomy} onChange={(event) => setUpdateAfNotationPhysiognomy(event.target.value)}/>
+              <Input name="updateAfNotationPhysiognomy" onChange={(event) => setUpdateAfNotationPhysiognomy(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Plant Reference_on ER Plant Database"
+              name="updatePlantReference_onERPlantDatabase"
               label="Plant Reference_on ER Plant Database"
               rules={[
                 {
@@ -1255,11 +1288,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePlantReference_onERPlantDatabase" defaultValue={updatePlantReference_onERPlantDatabase} onChange={(event) => setUpdatePlantReference_onERPlantDatabase(event.target.value)}/>
+              <Input name="updatePlantReference_onERPlantDatabase" onChange={(event) => setUpdatePlantReference_onERPlantDatabase(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Photosynthetic Biomass Year 1"
+              name="updatePhotosyntheticBiomassYear1"
               label="Photosynthetic Biomass Year 1"
               rules={[
                 {
@@ -1272,11 +1305,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePhotosyntheticBiomassYear1" defaultValue={updatePhotosyntheticBiomassYear1} onChange={(event) => setUpdatePhotosyntheticBiomassYear1(event.target.value)}/>
+              <Input name="updatePhotosyntheticBiomassYear1" onChange={(event) => setUpdatePhotosyntheticBiomassYear1(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Photosynthetic Biomass Year 2"
+              name="updatePhotosyntheticBiomassYear2"
               label="Photosynthetic Biomass Year 2"
               rules={[
                 {
@@ -1289,11 +1322,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePhotosyntheticBiomassYear2" defaultValue={updatePhotosyntheticBiomassYear2} onChange={(event) => setUpdatePhotosyntheticBiomassYear2(event.target.value)}/>
+              <Input name="updatePhotosyntheticBiomassYear2" onChange={(event) => setUpdatePhotosyntheticBiomassYear2(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Photosynthetic Biomass Year 3"
+              name="updatePhotosyntheticBiomassYear3"
               label="Photosynthetic Biomass Year 3"
               rules={[
                 {
@@ -1306,11 +1339,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePhotosyntheticBiomassYear3" defaultValue={updatePhotosyntheticBiomassYear3} onChange={(event) => setUpdatePhotosyntheticBiomassYear3(event.target.value)}/>
+              <Input name="updatePhotosyntheticBiomassYear3" onChange={(event) => setUpdatePhotosyntheticBiomassYear3(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Photosynthetic Biomass Year 4"
+              name="updatePhotosyntheticBiomassYear4"
               label="Photosynthetic Biomass Year 4"
               rules={[
                 {
@@ -1323,11 +1356,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePhotosyntheticBiomassYear4" defaultValue={updatePhotosyntheticBiomassYear4} onChange={(event) => setUpdatePhotosyntheticBiomassYear4(event.target.value)}/>
+              <Input name="updatePhotosyntheticBiomassYear4" onChange={(event) => setUpdatePhotosyntheticBiomassYear4(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Weight Per Leaf"
+              name="updateWeightPerLeaf"
               label="Weight Per Leaf"
               rules={[
                 {
@@ -1340,11 +1373,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateWeightPerLeaf" defaultValue={updateWeightPerLeaf} onChange={(event) => setUpdateWeightPerLeaf(event.target.value)}/>
+              <Input name="updateWeightPerLeaf" onChange={(event) => setUpdateWeightPerLeaf(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Leaf Cycle"
+              name="updateLeafCycle"
               label="Leaf Cycle"
               rules={[
                 {
@@ -1357,11 +1390,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateLeafCycle" defaultValue={updateLeafCycle} onChange={(event) => setUpdateLeafCycle(event.target.value)}/>
+              <Input name="updateLeafCycle" onChange={(event) => setUpdateLeafCycle(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Length"
+              name="updateLength"
               label="Length"
               rules={[
                 {
@@ -1375,11 +1408,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateLength" defaultValue={updateLength} onChange={(event) => setUpdateLength(event.target.value)}/>
+              <Input name="updateLength" onChange={(event) => setUpdateLength(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Width"
+              name="updateWidth"
               label="Width"
               rules={[
                 {
@@ -1392,11 +1425,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateWidth" defaultValue={updateWidth} onChange={(event) => setUpdateWidth(event.target.value)}/>
+              <Input name="updateWidth" onChange={(event) => setUpdateWidth(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Texture"
+              name="updateTexture"
               label="Texture"
               rules={[
                 {
@@ -1409,11 +1442,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateTexture" defaultValue={updateTexture} onChange={(event) => setUpdateTexture(event.target.value)}/>
+              <Input name="updateTexture" onChange={(event) => setUpdateTexture(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Conservation Status"
+              name="updateConservationStatus"
               label="Conservation Status"
               rules={[
                 {
@@ -1426,11 +1459,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateConservationStatus" defaultValue={updateConservationStatus} onChange={(event) => setUpdateConservationStatus(event.target.value)}/>
+              <Input name="updateConservationStatus" onChange={(event) => setUpdateConservationStatus(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Growth Rate"
+              name="updateGrowthRate"
               label="Growth Rate"
               rules={[
                 {
@@ -1443,11 +1476,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateGrowthRate" defaultValue={updateGrowthRate} onChange={(event) => setUpdateGrowthRate(event.target.value)}/>
+              <Input name="updateGrowthRate" onChange={(event) => setUpdateGrowthRate(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Crown Type"
+              name="updateCrownType"
               label="Crown Type"
               rules={[
                 {
@@ -1460,11 +1493,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateCrownType" defaultValue={updateCrownType} onChange={(event) => setUpdateCrownType(event.target.value)}/>
+              <Input name="updateCrownType" onChange={(event) => setUpdateCrownType(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Propagation Method"
+              name="updatePropagationMethod"
               label="Propagation Method"
               rules={[
                 {
@@ -1477,11 +1510,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePropagationMethod" defaultValue={updatePropagationMethod} onChange={(event) => setUpdatePropagationMethod(event.target.value)}/>
+              <Input name="updatePropagationMethod" onChange={(event) => setUpdatePropagationMethod(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Root Type"
+              name="updateRootType"
               label="Root Type"
               rules={[
                 {
@@ -1494,11 +1527,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateRootType" defaultValue={updateRootType} onChange={(event) => setUpdateRootType(event.target.value)}/>
+              <Input name="updateRootType" onChange={(event) => setUpdateRootType(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Preferred Soils"
+              name="updatePreferredSolis"
               label="Preferred Soils"
               rules={[
                 {
@@ -1511,11 +1544,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePreferredSolis" defaultValue={updatePreferredSolis} onChange={(event) => setUpdatePreferredSolis(event.target.value)}/>
+              <Input name="updatePreferredSolis" onChange={(event) => setUpdatePreferredSolis(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Impact On Soil"
+              name="updateImpactOnSoil"
               label="Impact On Soil"
               rules={[
                 {
@@ -1528,11 +1561,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateImpactOnSoil" defaultValue={updateImpactOnSoil} onChange={(event) => setUpdateImpactOnSoil(event.target.value)}/>
+              <Input name="updateImpactOnSoil" onChange={(event) => setUpdateImpactOnSoil(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Salinity Tolerance"
+              name="updateSalinityTolerance"
               label="Salinity Tolerance"
               rules={[
                 {
@@ -1545,11 +1578,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateSalinityTolerance" defaultValue={updateSalinityTolerance} onChange={(event) => setUpdateSalinityTolerance(event.target.value)}/>
+              <Input name="updateSalinityTolerance" onChange={(event) => setUpdateSalinityTolerance(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Human Uses"
+              name="updateHumanUses"
               label="Human Uses"
               rules={[
                 {
@@ -1562,11 +1595,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateHumanUses" defaultValue={updateHumanUses} onChange={(event) => setUpdateHumanUses(event.target.value)}/>
+              <Input name="updateHumanUses" onChange={(event) => setUpdateHumanUses(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Economic Importance"
+              name="updateEconomicImportance"
               label="Economic Importance"
               rules={[
                 {
@@ -1579,11 +1612,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateEconomicImportance" defaultValue={updateEconomicImportance} onChange={(event) => setUpdateEconomicImportance(event.target.value)}/>
+              <Input name="updateEconomicImportance" onChange={(event) => setUpdateEconomicImportance(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Distribution"
+              name="updateDistribution"
               label="Distribution"
               rules={[
                 {
@@ -1596,11 +1629,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateDistribution" defaultValue={updateDistribution} onChange={(event) => setUpdateDistribution(event.target.value)}/>
+              <Input name="updateDistribution" onChange={(event) => setUpdateDistribution(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Light Preferences"
+              name="updateLightPreferences"
               label="Light Preferences"
               rules={[
                 {
@@ -1613,11 +1646,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateLightPreferences" defaultValue={updateLightPreferences} onChange={(event) => setUpdateLightPreferences(event.target.value)}/>
+              <Input name="updateLightPreferences" onChange={(event) => setUpdateLightPreferences(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Flowering Time"
+              name="updateFloweringTime"
               label="Flowering Time"
               rules={[
                 {
@@ -1630,11 +1663,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateFloweringTime" defaultValue={updateFloweringTime} onChange={(event) => setUpdateFloweringTime(event.target.value)}/>
+              <Input name="updateFloweringTime" onChange={(event) => setUpdateFloweringTime(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Flower Color"
+              name="updateFlowerColor"
               label="Flower Color"
               rules={[
                 {
@@ -1647,11 +1680,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateFlowerColor" defaultValue={updateFlowerColor} onChange={(event) => setUpdateFlowerColor(event.target.value)}/>
+              <Input name="updateFlowerColor" onChange={(event) => setUpdateFlowerColor(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Fruit Type"
+              name="updateFruitType"
               label="Fruit Type"
               rules={[
                 {
@@ -1664,7 +1697,7 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateFruitType" defaultValue={updateFruitType} onChange={(event) => setUpdateFruitType(event.target.value)}/>
+              <Input name="updateFruitType" onChange={(event) => setUpdateFruitType(event.target.value)}/>
             </Form.Item>
 
             </Form>
