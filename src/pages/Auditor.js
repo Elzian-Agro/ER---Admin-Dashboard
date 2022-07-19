@@ -28,6 +28,7 @@ const Auditor = () =>{
   const [data, setdata] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [modaldata, setmodaldata] = useState({});
+  const [form] = Form.useForm();
 
   const columns = [
     {
@@ -91,7 +92,18 @@ const Auditor = () =>{
       render: (index, record) => (
         <Button type="primary" onClick={() => {
           showModal(record)
-          }}>
+
+          form.setFieldsValue({
+            id: record.id,
+            fullName: record.fullName,
+            qualification: record.qualification,
+            imageUri: record.imageUri,
+            contactNumber: record.contactNumber,
+            email: record.email,
+            address: record.address,
+            userType: record.type
+          })
+        }}>
           Edit
         </Button>
       ),
@@ -246,7 +258,7 @@ const Auditor = () =>{
           </Button>,
         ]}
       >
-        <Form {...layout}>
+        <Form {...layout} form={form}>
                 <Form.Item
                   name="fullName"
                   label="Full Name"
@@ -262,7 +274,7 @@ const Auditor = () =>{
                   ]}
                   hasFeedback
                 >
-                  <Input name="fullName" placeholder={modaldata.fullName} defaultValue={modaldata.fullName}
+                  <Input name="fullName"
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
@@ -285,7 +297,7 @@ const Auditor = () =>{
                   ]}
                   hasFeedback
                 >
-                  <Input name="qualification" placeholder={modaldata.qualification} defaultValue={modaldata.qualification}
+                  <Input name="qualification"
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
@@ -309,7 +321,7 @@ const Auditor = () =>{
                   ]}
                   hasFeedback
                 >
-                  <Input name="contactNumber" placeholder={modaldata.contactNumber} defaultValue={modaldata.contactNumber}
+                  <Input name="contactNumber"
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
@@ -332,7 +344,7 @@ const Auditor = () =>{
                   ]}
                   hasFeedback
                 >
-                  <Input name="address" placeholder={modaldata.address} defaultValue={modaldata.address}
+                  <Input name="address"
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
