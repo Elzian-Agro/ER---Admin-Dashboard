@@ -15,6 +15,8 @@ import axios from 'axios';
 import 'antd/dist/antd.css';
 import { Modal, Button, Card, Form, Input, Avatar, Typography, Select, Space, Badge, Table, Row, Col  } from 'antd';
 
+
+
 import { MdEmail, MdPhone }  from "react-icons/md";
 import { makeStyles } from "@mui/styles";
 
@@ -34,13 +36,18 @@ const useStyles = makeStyles({
 });
 
 
+
 const AssignAuditors = () =>{
+  
+const { Option } = Select;
   const classes = useStyles();
   const [data, setdata] = useState([]);
   const [auditorData, setAuditorData] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [modaldata, setmodaldata] = useState({});
+  const [getAuditorId,setGetAuditorId]=useState("");
 
+  
   const columns = [
     {
       title: "LAND OWNER NAME",
@@ -108,6 +115,7 @@ const AssignAuditors = () =>{
       render: (index, record) => (
         <Button type="primary" onClick={() => {
           showModal(record)
+         
           }}>
           Assign
         </Button>
@@ -124,7 +132,7 @@ const AssignAuditors = () =>{
     const headers = {
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
     };
-    
+
     const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/`, {headers});
     console.log(res)
     setdata(
@@ -148,6 +156,27 @@ const AssignAuditors = () =>{
         landAddress: row.landAddress,
     })));
   };
+  // assign auditor
+const updateAssignAuditorId= async (auditorId,id)=>{
+  const headers = {
+    'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
+  };
+  try{
+    const res = await axios.put(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landowners/updateAssignAuditorId/${id}`,{assignAuditorID:auditorId} ,{headers})
+    .then((response)=>{
+      if(response.status===200){
+        alert("AssignAuditor Id successfuly updated !")
+      }else{
+        alert("Error!")
+      }
+    });
+  }catch(err){
+    if(err){
+      console.log(err)
+    }
+  }
+ ;
+}
 
   const getAuditorData = async () => {
     const headers = {
@@ -162,7 +191,10 @@ const AssignAuditors = () =>{
         fullName: auditor.fullName,
       }))
     );
+    console.log( auditorData )
   };
+
+
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [setLoading] = useState(false);
@@ -179,6 +211,7 @@ const AssignAuditors = () =>{
 
   const handleOk = () => {
     setLoading(true);
+
     setTimeout(() => {
       setLoading(false);
       setIsModalVisible(false);
@@ -232,19 +265,22 @@ const AssignAuditors = () =>{
           </Col>
         </Row>
       </div>
+
       <Modal
         title="Assign Auditor"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         destroyOnClose
+
         footer={[
           <Button key="back" onClick={handleCancel}>
             Cancel
           </Button>,
-          <Button key="submit" type="primary">
+          <Button key="submit" type="primary" onClick={()=>{updateAssignAuditorId(getAuditorId,modaldata.id)}} >
             Assign
           </Button>,
+         
         ]}
       >
         <Row gutter={[20, 20]}>
@@ -269,6 +305,7 @@ const AssignAuditors = () =>{
                 <Form.Item
                   name="landOwnerName"
                   label="Auditor"
+                 
                   rules={[
                     {
                       whitespace: true
@@ -278,15 +315,19 @@ const AssignAuditors = () =>{
                   <Select
                     name="auditorName"
                     onChange={(value) => {
-                      setmodaldata({
-                        ...modaldata,
-                        landOwnerFullname: value
-                      })
-                    }}
+                      
+                      setGetAuditorId(value);
+                      console.log(getAuditorId);
+                      // setmodaldata({
+                      //   ...modaldata,
+                      //   landOwnerFullname: value
+                      // })
+                    }
+                  }
                   >
-                    {auditorData && auditorData.map((auditor) => {
+                    {auditorData && auditorData.map((auditor ,key) => {
                       return(
-                      <Select.Option value={auditor.userID}>{auditor.fullName} - {auditor.id}</Select.Option>
+                      <Option value= {auditor.id} key={key} > {auditor.fullName} - {auditor.id}</Option> 
                       )
                     })
                     }
