@@ -38,7 +38,7 @@ const Auditor = () =>{
       width: "22%",
       render: (index, record) => (
         <>
-                    <Avatar.Group>
+                    <Avatar.Group key = {index}>
                       <Avatar
                         className="shape-avatar"
                         shape="square"
@@ -60,8 +60,10 @@ const Auditor = () =>{
       dataIndex: "contact",
       render: (index, record) => (
         <>
+        <div key = {index}>
             <Title level={5}> <MdPhone /> {record.contactNumber}</Title>
             <Title level={5}> <MdEmail /> {record.email}</Title>
+            </div>
         </>
       ),
     },
@@ -71,7 +73,7 @@ const Auditor = () =>{
       dataIndex: "address",
       render: (index, record) => (
         <>
-            <Title level={5}>{record.address}</Title>
+            <Title level={5} key = {index}>{record.address}</Title>
         </>
       ),
     },
@@ -81,7 +83,7 @@ const Auditor = () =>{
         dataIndex: "type",
         render: (index, record) => (
           <>
-              <Title level={5}>{record.type}</Title>
+              <Title level={5} key = {index}>{record.type}</Title>
           </>
         ),
       },
@@ -90,7 +92,7 @@ const Auditor = () =>{
       dataIndex: 'id',
       key: 'id',
       render: (index, record) => (
-        <Button type="primary" onClick={() => {
+        <Button key = {index} type="primary" onClick={() => {
           showModal(record)
 
           form.setFieldsValue({
@@ -118,8 +120,10 @@ const Auditor = () =>{
 
   const getData = async () => {
     const res = await getAuditors();
+    console.log(res)
     setdata(
       res.map((row) => ({
+        key: row.userID,
         id: row.userID,
         fullName: row.fullName,
         qualification: row.qualification,
@@ -131,6 +135,7 @@ const Auditor = () =>{
       }))
     );
     setTableData(res.map((row) => ({
+      key: row.userID,
       id: row.userID,
       fullName: row.fullName,
       qualification: row.qualification,
@@ -144,7 +149,7 @@ const Auditor = () =>{
 
   useEffect(() => {
     getData();
-  });
+  },[]);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -209,7 +214,8 @@ const Auditor = () =>{
                   item.address.toLowerCase().includes(searchKey)
                   );
         })
-      setdata(filteredData);
+        console.log(filteredData)
+        setdata(filteredData);
     }
   };
 
