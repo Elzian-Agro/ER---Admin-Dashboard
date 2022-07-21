@@ -385,7 +385,8 @@ function TreeSpecies() {
                 return row
               } else if (
                 row.plantName.toLowerCase().includes(searchTreeSpecies.toLowerCase()) ||
-                row.commonNames.toLowerCase().includes(searchTreeSpecies.toLowerCase())
+                row.commonNames.toLowerCase().includes(searchTreeSpecies.toLowerCase()) ||
+                row.originofSpecies.toLowerCase().includes(searchTreeSpecies.toLowerCase())
                 ) {
                 return row
               }

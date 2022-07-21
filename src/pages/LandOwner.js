@@ -109,7 +109,6 @@ function LandOwner() {
   useEffect(() => {
     async function getAllLandOwners() {
       const res = await getLandOwners();
-      console.log("response data ",{res})
       setData(res);
     }
     getAllLandOwners();
