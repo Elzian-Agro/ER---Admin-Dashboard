@@ -17,6 +17,7 @@ import {
 import { UserOutlined } from "@ant-design/icons";
 
 import { NavLink, Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import styled from "styled-components";
 import service from "./../../services/data-service";
 import avtar from "../../assets/images/team-2.jpg";
@@ -242,6 +243,7 @@ function Header({
   handleFixedNavbar,
 }) {
   const { Title, Text } = Typography;
+  const [, , removeCookie] = useCookies(["token"]);
 
   const [visible, setVisible] = useState(false);
   const [profileVisible, setProfileVisible] = useState(false);
@@ -250,7 +252,7 @@ function Header({
 
   const { getProfile } = service();
 
-  useEffect(() => window.scrollTo(0, 0));
+  useEffect(() => window.scrollTo(0, 0), []);
 
   useEffect(() => {
     async function fetchData() {
@@ -263,6 +265,7 @@ function Header({
   const showDrawer = () => setVisible(true);
   const hideDrawer = () => setVisible(false);
   const handleProfileVisible = (flag) => setProfileVisible(flag);
+  const signout = () => removeCookie("token");
 
   const profileMenu = (
     <List
@@ -295,7 +298,9 @@ function Header({
       </List.Item>
       <List.Item>
         <b>
-          <Link to="/sign-in">signout</Link>
+          <Link to="/sign-in" onClick={signout}>
+            signout
+          </Link>
         </b>
       </List.Item>
     </List>

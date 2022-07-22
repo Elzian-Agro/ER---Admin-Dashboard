@@ -13,13 +13,12 @@ const { Content } = Layout;
 export default function SignUp() {
   const { AuthSignup } = AuthService();
 
-  // function when validation is success
+  // when validation is success
   const onFinish = (values) => {
-    console.log("Success:", values);
     AuthSignup(values);
   };
 
-  // function when validation is unsuccess
+  // when validation is unsuccess
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };

@@ -11,10 +11,11 @@
 */
 
 import React , {useState , useEffect } from 'react';
-import { Table, Row, Col } from 'antd';
 import axios from 'axios';
 import 'antd/dist/antd.css';
-import { Modal, Button, Card, Form, Input, Avatar, Typography, Select, Space, Badge  } from 'antd';
+import { Modal, Button, Card, Form, Input, Avatar, Typography, Select, Space, Badge, Table, Row, Col  } from 'antd';
+
+
 
 import { MdEmail, MdPhone }  from "react-icons/md";
 import { makeStyles } from "@mui/styles";
@@ -35,12 +36,18 @@ const useStyles = makeStyles({
 });
 
 
+
 const AssignAuditors = () =>{
+  
+const { Option } = Select;
   const classes = useStyles();
   const [data, setdata] = useState([]);
+  const [auditorData, setAuditorData] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [modaldata, setmodaldata] = useState({});
+  const [getAuditorId,setGetAuditorId]=useState("");
 
+  
   const columns = [
     {
       title: "LAND OWNER NAME",
@@ -54,11 +61,11 @@ const AssignAuditors = () =>{
                         className="shape-avatar"
                         shape="square"
                         size={40}
-                        src={record.imageUri}
+                        src={null}
                       ></Avatar>
                     <div className="avatar-info">
-                        <Title level={5}>{record.fullName}</Title>
-                        <p>{record.qualification}</p>
+                        <Title level={5}>{record.landOwnerFullname}</Title>
+                        <p>{record.registerNumber}</p>
                     </div>
                     </Avatar.Group>
                   </>
@@ -78,27 +85,16 @@ const AssignAuditors = () =>{
       ),
     },
     {
-      title: "ADDRESS",
+      title: "LAND ADDRESS",
       key: "address",
       dataIndex: "address",
       width: "15%",
       render: (index, record) => (
         <>
-            <Title level={5}>{record.address}</Title>
+            <Title level={5}>{record.landAddress}</Title>
         </>
       ),
     },
-    {
-        title: "AUDITOR ID",
-        key: "id",
-        dataIndex: "id",
-        width: "15%",
-        render: (index, record) => (
-          <>
-              <Title level={5}>2</Title>
-          </>
-        ),
-      },
     {
         title: "ASSIGNED AUDITOR",
         key: "aname",
@@ -106,7 +102,8 @@ const AssignAuditors = () =>{
         width: "15%",
         render: (index, record) => (
           <>
-              <Title level={5}> <Badge status="success" /> {record.fullName}</Title>
+              <Title level={5}> <Badge status="success" /> {record.landOwnerName}</Title>
+              <p>&nbsp;&nbsp;&nbsp; AuditorID</p>
           </>
         ),
       },
@@ -118,6 +115,7 @@ const AssignAuditors = () =>{
       render: (index, record) => (
         <Button type="primary" onClick={() => {
           showModal(record)
+         
           }}>
           Assign
         </Button>
@@ -127,42 +125,77 @@ const AssignAuditors = () =>{
 
   useEffect(() => {
     getData();
-  }, []);
+    getAuditorData();
+  },[]);
 
   const getData = async () => {
+    const headers = {
+      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
+    };
+
+    const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/`, {headers});
+    console.log(res)
+    setdata(
+      res.data.Result.map((row) => ({
+        id: row.landOwnerID,
+        landOwnerFullname: row.landOwnerFullname,
+        landOwnerName: row.landOwnerName,
+        registerNumber: row.registerNumber,
+        contactNumber: row.contactNumber,
+        email: row.email,
+        landAddress: row.landAddress,
+      }))
+    );
+    setTableData(res.data.Result.map((row) => ({
+        id: row.landOwnerID,
+        landOwnerFullname: row.landOwnerFullname,
+        landOwnerName: row.landOwnerName,
+        registerNumber: row.registerNumber,
+        contactNumber: row.contactNumber,
+        email: row.email,
+        landAddress: row.landAddress,
+    })));
+  };
+  const getAuditorData = async () => {
     const headers = {
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
     };
     
     const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/`, {headers});
     console.log(res)
-    setdata(
-      res.data.Result.map((row) => ({
-        id: row.userID,
-        fullName: row.fullName,
-        qualification: row.qualification,
-        imageUri: row.imageUri,
-        contactNumber: row.contactNumber,
-        email: row.email,
-        address: row.address,
-        type: row.userType,
-        userName: row.userName,
-        DOB: row.DOB,
+    setAuditorData(
+      res.data.Result.map((auditor) => ({
+        id: auditor.userID,
+        fullName: auditor.fullName,
       }))
     );
-    setTableData(res.data.Result.map((row) => ({
-      id: row.userID,
-      fullName: row.fullName,
-      qualification: row.qualification,
-      imageUri: row.imageUri,
-      contactNumber: row.contactNumber,
-      email: row.email,
-      address: row.address,
-      type: row.userType,
-      userName: row.userName,
-      DOB: row.DOB,
-    })));
+    console.log( auditorData )
   };
+ 
+  // assign auditor
+const updateAssignAuditorId= async (auditorId,id)=>{
+  const headers = {
+    'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
+  };
+  try{
+    await axios.put(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landowners/updateAssignAuditorId/${id}`,{assignAuditorID:auditorId} ,{headers})
+    .then((response)=>{
+      if(response.status===200){
+        alert("AssignAuditor Id successfuly updated !")
+      }else{
+        alert("Error!")
+      }
+    });
+  }catch(err){
+    if(err){
+      console.log(err)
+    }
+  }
+ ;
+}
+
+
+
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [setLoading] = useState(false);
@@ -179,6 +212,7 @@ const AssignAuditors = () =>{
 
   const handleOk = () => {
     setLoading(true);
+
     setTimeout(() => {
       setLoading(false);
       setIsModalVisible(false);
@@ -189,35 +223,6 @@ const AssignAuditors = () =>{
     setIsModalVisible(false);
   };
 
-  const handleUpdatelick = (auditorID) => {
-    console.log(auditorID)
-    const headers = {
-      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
-    };
-
-    console.log(typeof(modaldata.contactNumber))
-
-    const user = {
-      id: modaldata.userID,
-        fullName: modaldata.fullName,
-        qualification: modaldata.qualification,
-        imageUri: modaldata.imageUri,
-        contactNumber: modaldata.contactNumber.toString(),
-        email: modaldata.email,
-        address: modaldata.address,
-  }
-
-  console.log(user);
-
-  axios.put(
-    `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/updateAll/${auditorID}`,user,{headers}
-  ).then((req,res) => {
-    getData();
-    setIsModalVisible(false);
-  });
-
-  };
-
   const handleonChange = (e) => {
     const searchKey = e.target.value.toLowerCase();
     
@@ -225,11 +230,9 @@ const AssignAuditors = () =>{
       setdata(tableData);
     } else {
       const filteredData = tableData.filter(item =>{
-          return (item.fullName.toLowerCase().includes(searchKey) ||
-                  item.qualification.toLowerCase().includes(searchKey) ||
-                  item.contactNumber.toLowerCase().includes(searchKey) ||
-                  item.email.toLowerCase().includes(searchKey) ||
-                  item.address.toLowerCase().includes(searchKey)
+          return (item.landOwnerFullname.toLowerCase().includes(searchKey) ||
+                  item.registerNumber.toLowerCase().includes(searchKey) ||
+                  item.email.toLowerCase().includes(searchKey)
                   );
         })
       setdata(filteredData);
@@ -257,32 +260,38 @@ const AssignAuditors = () =>{
                 }
               >
             <div className="table-responsive">
-            <Table dataSource={data} columns={columns}/>
+            <Table className="table-responsive" dataSource={data} columns={columns}/>
             </div>
           </Card>
           </Col>
         </Row>
       </div>
+
       <Modal
         title="Assign Auditor"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         destroyOnClose
+
         footer={[
           <Button key="back" onClick={handleCancel}>
             Cancel
           </Button>,
-          <Button key="submit" type="primary" onClick={() => handleUpdatelick(modaldata.id)}>
+          <Button key="submit" type="primary" onClick={()=>{updateAssignAuditorId(getAuditorId,modaldata.id)}} >
             Assign
           </Button>,
+         
         ]}
       >
         <Row gutter={[20, 20]}>
-        <Col offset={4} md={30} xs={24}>
+        <Col offset={3} md={25} xs={24}>
             <Space direction="vertical">
               <div>
-                Land Owner Name : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.fullName}</b>
+                Land Owner Name : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.landOwnerFullname}</b>
+              </div>
+              <div>
+                Register Number : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.registerNumber}</b>
               </div>
               <div>
                 Contact Number : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.contactNumber}</b>
@@ -291,12 +300,13 @@ const AssignAuditors = () =>{
                 Email : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.email}</b>
               </div>
               <div>
-                Address : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.address}</b>
+                Address : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.landAddress}</b>
               </div>
               <Form>
                 <Form.Item
-                  name="type"
+                  name="landOwnerName"
                   label="Auditor"
+                 
                   rules={[
                     {
                       whitespace: true
@@ -304,16 +314,23 @@ const AssignAuditors = () =>{
                   ]}
                 >
                   <Select
-                    name="type"
+                    name="auditorName"
                     onChange={(value) => {
+                      setGetAuditorId(value);
+                      console.log(getAuditorId);
                       setmodaldata({
                         ...modaldata,
-                        type: value
+                        landOwnerFullname: value
                       })
-                    }}
+                    }
+                  }
                   >
-                    <Select.Option value="Auditor">Auditor 1</Select.Option>
-                    <Select.Option value="Field Agent">Auditor 2</Select.Option>
+                    {auditorData && auditorData.map((auditor ,key) => {
+                      return(
+                      <Option value= {auditor.id} key={key} > {auditor.fullName} - {auditor.id}</Option> 
+                      )
+                    })
+                    }
                   </Select>
                 </Form.Item>
               </Form>

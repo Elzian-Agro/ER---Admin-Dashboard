@@ -23,7 +23,7 @@ function Main({ children }) {
   pathname = pathname.replace("/", "");
 
   useEffect(() => {
-    if (pathname === "feed") {
+    if (pathname === "sa") {
       setPlacement("left");
     } else {
       setPlacement("right");
