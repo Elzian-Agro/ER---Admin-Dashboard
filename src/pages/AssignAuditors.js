@@ -126,7 +126,7 @@ const { Option } = Select;
   useEffect(() => {
     getData();
     getAuditorData();
-  }, []);
+  },[]);
 
   const getData = async () => {
     const headers = {
@@ -156,28 +156,6 @@ const { Option } = Select;
         landAddress: row.landAddress,
     })));
   };
-  // assign auditor
-const updateAssignAuditorId= async (auditorId,id)=>{
-  const headers = {
-    'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
-  };
-  try{
-    const res = await axios.put(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landowners/updateAssignAuditorId/${id}`,{assignAuditorID:auditorId} ,{headers})
-    .then((response)=>{
-      if(response.status===200){
-        alert("AssignAuditor Id successfuly updated !")
-      }else{
-        alert("Error!")
-      }
-    });
-  }catch(err){
-    if(err){
-      console.log(err)
-    }
-  }
- ;
-}
-
   const getAuditorData = async () => {
     const headers = {
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
@@ -193,6 +171,29 @@ const updateAssignAuditorId= async (auditorId,id)=>{
     );
     console.log( auditorData )
   };
+ 
+  // assign auditor
+const updateAssignAuditorId= async (auditorId,id)=>{
+  const headers = {
+    'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
+  };
+  try{
+    await axios.put(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landowners/updateAssignAuditorId/${id}`,{assignAuditorID:auditorId} ,{headers})
+    .then((response)=>{
+      if(response.status===200){
+        alert("AssignAuditor Id successfuly updated !")
+      }else{
+        alert("Error!")
+      }
+    });
+  }catch(err){
+    if(err){
+      console.log(err)
+    }
+  }
+ ;
+}
+
 
 
 
@@ -315,13 +316,12 @@ const updateAssignAuditorId= async (auditorId,id)=>{
                   <Select
                     name="auditorName"
                     onChange={(value) => {
-                      
                       setGetAuditorId(value);
                       console.log(getAuditorId);
-                      // setmodaldata({
-                      //   ...modaldata,
-                      //   landOwnerFullname: value
-                      // })
+                      setmodaldata({
+                        ...modaldata,
+                        landOwnerFullname: value
+                      })
                     }
                   }
                   >
