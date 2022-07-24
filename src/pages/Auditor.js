@@ -118,9 +118,17 @@ const Auditor = () =>{
     deleteAuditors,
   } = service();
 
-  const getData = async () => {
+  const getData = async() =>  {
     const res = await getAuditors();
-    console.log(res)
+    setAllData(res);
+  };
+
+  useEffect(() => {
+    getData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+
+  const setAllData = (res) => {
     setdata(
       res.map((row) => ({
         key: row.userID,
@@ -145,11 +153,7 @@ const Auditor = () =>{
       address: row.address,
       type: row.userType,
     })));
-  };
-
-  useEffect(() => {
-    getData();
-  },[]);
+  }
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
