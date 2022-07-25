@@ -134,7 +134,7 @@ const { Option } = Select;
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
     };
 
-    const res = await axios.get(`http://localhost:4000/landOwners/getLandOwners/getLandOwnersGapCreateDateAssignDate`, {headers});
+    const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/getLandOwners/getLandOwnersGapCreateDateAssignDate`, {headers});
     console.log(res)
     setdata(
       res.data.Result.map((row) => ({
@@ -169,7 +169,7 @@ const { Option } = Select;
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
     };
     
-    const res = await axios.get(`http://localhost:4000/users/`, {headers});
+    const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/`, {headers});
     console.log(res)
     setAuditorData(
       res.data.Result.map((auditor) => ({
@@ -205,10 +205,11 @@ const updateAssignAuditorId= async (auditorId,id)=>{
   };
   if(auditorId!==''){
     try{
-      await axios.put(`http://localhost:4000/landowners/updateAssignAuditorId/${id}`,{assignAuditorID:auditorId} ,{headers})
+      await axios.put(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landowners/updateAssignAuditorId/${id}`,{assignAuditorID:auditorId} ,{headers})
       .then((response)=>{
         if(response.status===200){
           success("Successfully assigned !")
+          getData()
           console.log(modaldata)
         }else{
           error("Error in assigning !")
@@ -349,7 +350,6 @@ const updateAssignAuditorId= async (auditorId,id)=>{
                     name="auditorName"
                     onChange={(value) => {
                       setGetAuditorId(value);
-                      console.log(getAuditorId);
                       setmodaldata({
                         ...modaldata
                         //landOwnerFullname: value
