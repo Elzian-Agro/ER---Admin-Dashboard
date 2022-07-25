@@ -102,8 +102,8 @@ const { Option } = Select;
         width: "15%",
         render: (index, record) => (
           <>
-              <Title level={5}> <Badge status="success" /> {record.landOwnerName}</Title>
-              <p>&nbsp;&nbsp;&nbsp; AuditorID</p>
+              <Title level={5}> <Badge status="success" /> {record.assignAuditorname}</Title>
+              <p>&nbsp;&nbsp;&nbsp; {record.assignAuditorid}</p>
           </>
         ),
       },
@@ -134,7 +134,7 @@ const { Option } = Select;
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
     };
 
-    const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/`, {headers});
+    const res = await axios.get(`http://localhost:4000/landOwners/getLandOwners/getLandOwnersGapCreateDateAssignDate`, {headers});
     console.log(res)
     setdata(
       res.data.Result.map((row) => ({
@@ -145,6 +145,9 @@ const { Option } = Select;
         contactNumber: row.contactNumber,
         email: row.email,
         landAddress: row.landAddress,
+        assignAuditorid: row.userID,
+        assignAuditorname: row.fullName
+
       }))
     );
     setTableData(res.data.Result.map((row) => ({
@@ -155,14 +158,18 @@ const { Option } = Select;
         contactNumber: row.contactNumber,
         email: row.email,
         landAddress: row.landAddress,
+        assignAuditorid: row.userID,
+        assignAuditorname: row.fullName
     })));
   };
+
+  console.log("tableData", tableData[0])
   const getAuditorData = async () => {
     const headers = {
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
     };
     
-    const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/`, {headers});
+    const res = await axios.get(`http://localhost:4000/users/`, {headers});
     console.log(res)
     setAuditorData(
       res.data.Result.map((auditor) => ({
@@ -172,27 +179,49 @@ const { Option } = Select;
     );
     console.log( auditorData )
   };
- 
+  const success = (msg) => {
+    Modal.success({
+      title: 'success',
+      content: msg,
+    });
+  };
+  const error = (msg) => {
+    Modal.error({
+      title: 'Error',
+      content: msg,
+    });
+  };
+  const warning = (msg) => {
+    Modal.warning({
+      title: 'warning',
+      content: msg,
+    });
+  };
+  
   // assign auditor
 const updateAssignAuditorId= async (auditorId,id)=>{
   const headers = {
     'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
   };
-  try{
-    await axios.put(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landowners/updateAssignAuditorId/${id}`,{assignAuditorID:auditorId} ,{headers})
-    .then((response)=>{
-      if(response.status===200){
-        alert("AssignAuditor Id successfuly updated !")
-      }else{
-        alert("Error!")
+  if(auditorId!==''){
+    try{
+      await axios.put(`http://localhost:4000/landowners/updateAssignAuditorId/${id}`,{assignAuditorID:auditorId} ,{headers})
+      .then((response)=>{
+        if(response.status===200){
+          success("Successfully assigned !")
+          console.log(modaldata)
+        }else{
+          error("Error in assigning !")
+        }
+      });
+    }catch(err){
+      if(err){
+        console.log(err)
       }
-    });
-  }catch(err){
-    if(err){
-      console.log(err)
     }
+  }else{
+    warning("please select a auditor")
   }
- ;
 }
 
 
@@ -239,6 +268,8 @@ const updateAssignAuditorId= async (auditorId,id)=>{
       setdata(filteredData);
     }
   };
+
+ 
 
   return (
     <>
@@ -288,9 +319,9 @@ const updateAssignAuditorId= async (auditorId,id)=>{
         <Row gutter={[20, 20]}>
         <Col offset={3} md={25} xs={24}>
             <Space direction="vertical">
-              <div>
+              <dad iv>
                 Land Owner Name : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.landOwnerFullname}</b>
-              </div>
+              </dad>
               <div>
                 Register Number : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.registerNumber}</b>
               </div>
@@ -320,15 +351,16 @@ const updateAssignAuditorId= async (auditorId,id)=>{
                       setGetAuditorId(value);
                       console.log(getAuditorId);
                       setmodaldata({
-                        ...modaldata,
-                        landOwnerFullname: value
+                        ...modaldata
+                        //landOwnerFullname: value
                       })
                     }
+                    
                   }
                   >
                     {auditorData && auditorData.map((auditor ,key) => {
                       return(
-                      <Option value= {auditor.id} key={key} > {auditor.fullName} - {auditor.id}</Option> 
+                      <Option value= {auditor.id} key={key} > {auditor.fullName} - {modaldata.landOwnerFullname}</Option> 
                       )
                     })
                     }
