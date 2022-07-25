@@ -86,18 +86,30 @@ function Feed() {
   };
 
   const handleDeleteClick = async () => {
-    try {
-      await axios
-        .delete(
-          `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
-        )
-        .then((res) => res);
+
+    try {await axios
+      .delete(
+                `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
+              ).then((res) => res);
       setDeleteFeed(false);
     } catch (error) {
-      alert("err");
       setDeleteFeed(false);
     }
   };
+
+  // const handleDeleteClick = async () => {
+  //   try {
+  //     await axios
+  //       .delete(
+  //         `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
+  //       )
+  //       .then((res) => res);
+  //     setDeleteFeed(false);
+  //   } catch (error) {
+  //     alert("err");
+  //     setDeleteFeed(false);
+  //   }
+  // };
 
   //Add Feed
   const AddFeedHandler = async () => {
