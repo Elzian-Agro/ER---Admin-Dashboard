@@ -19,6 +19,9 @@ import { Card, Button, Modal, Form, Input } from "antd";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+
+import service from "./../services/feed-service";
+
 // import { Token } from "@mui/icons-material";
 
 const { Meta } = Card;
@@ -41,6 +44,11 @@ function Feed() {
   const [selectedFile, setSelectedFile] = useState();
   const [insertMessage, setInsertMessage] = useState("");
   const [insertTag, setInsertTag] = useState("");
+  const [form] = Form.useForm();
+
+  const {
+    updateFeedById,
+  } = service();
 
   const cookies = useCookies(["token"]);
 
@@ -87,29 +95,18 @@ function Feed() {
 
   const handleDeleteClick = async () => {
 
-    try {await axios
+    try {
+      await axios
       .delete(
-                `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
-              ).then((res) => res);
+          `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
+             ).then((res) => res);
       setDeleteFeed(false);
     } catch (error) {
+      alert("err");
       setDeleteFeed(false);
     }
   };
 
-  // const handleDeleteClick = async () => {
-  //   try {
-  //     await axios
-  //       .delete(
-  //         `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
-  //       )
-  //       .then((res) => res);
-  //     setDeleteFeed(false);
-  //   } catch (error) {
-  //     alert("err");
-  //     setDeleteFeed(false);
-  //   }
-  // };
 
   //Add Feed
   const AddFeedHandler = async () => {
@@ -131,37 +128,93 @@ function Feed() {
   };
 
   const UpdateFeedHandler = async () => {
-    const formData = new FormData();
-    formData.append("imageUrl", updateSelectedFile);
-    formData.append("message", updateDescription);
-    formData.append("tags", updateTag);
-    formData.append("published", "Yes");
 
-    try {
-      await axios
-        .put(
-          `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/updateFeed/${selectedId}`,
-          // formData,
-          {
+    const formData = {
             imageUrl: selectedFile,
             message: updateDescription,
             tags: updateTag,
-          },
-          {
-            headers: {
-              "x-auth-token":
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ3MzY4ODg4fQ.2o7M2RV88a7shoCmcEcgS0AXfjXAYrC14KynieCBuvA",
-            },
-          }
-        )
-        .then((response) => {
-          setFeedData(response.data);
-        });
-    } catch (error) {
-      setIsUpdateModalVisible(false);
-      alert("err");
-    }
+    };
+
+    try {
+        await axios
+          .put(
+            `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/updateFeed/1${selectedId}`,
+          )
+          setIsUpdateModalVisible(false);
+      } catch (error) {
+        setIsUpdateModalVisible(false); 
+      }
+
+    // try {
+    //   await updateFeedById(selectedId, formData);
+    //   setIsUpdateModalVisible(false);
+    // } catch (error) {
+    //   setIsUpdateModalVisible(false);
+    // }
+
+
+
+
+    // const formData = new FormData();
+    // formData.append("imageUrl", updateSelectedFile);
+    // formData.append("message", updateDescription);
+    // formData.append("tags", updateTag);
+    // formData.append("published", "Yes");
+
+    // try {
+    //   await axios
+    //     .put(
+    //       `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/updateFeed/1${selectedId}`,
+    //     )
+    //     setIsUpdateModalVisible(false);
+    // } catch (error) {
+    //   setIsUpdateModalVisible(false); 
+    // }
+
+    
   };
+
+ //   try {
+  //     await updateLandOwnerById(selectedId, landData);
+  //     setIsUpdateModalVisible(false);
+  //   } catch (error) {
+  //     setIsUpdateModalVisible(false);
+  //   }
+
+    
+  // };
+
+  // {
+  //   headers: {
+  //     "x-auth-token":
+  //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ3MzY4ODg4fQ.2o7M2RV88a7shoCmcEcgS0AXfjXAYrC14KynieCBuvA",
+  //   },
+  // }
+
+  // const handleUpdateClick = async () => {
+    
+  //   const landData = {
+  //     landOwnerName: updateLandOwnerName,
+  //     landOwnerFullname: updateLandOwnerFullName,
+  //     contactNumber: updateContactNumber.toString(),
+  //     country: updateCountry,
+  //     landAddress: updateLandAddress,
+  //     longitude: updateLongitude,
+  //     latitude: updateLatitude,
+  //     bankAccountNumber: updateBankAccountNumber,
+  //     bankName: updateBankName,
+  //     bankBranch: updateBankBranch,
+  //   };
+
+  //   try {
+  //     await updateLandOwnerById(selectedId, landData);
+  //     setIsUpdateModalVisible(false);
+  //   } catch (error) {
+  //     setIsUpdateModalVisible(false);
+  //   }
+
+  // };
+
 
   return (
     <>
@@ -178,6 +231,7 @@ function Feed() {
               >
                 Add Feed
               </Button>
+
               <Modal
                 title="Add New Feed"
                 visible={isModalVisible}
@@ -208,7 +262,8 @@ function Feed() {
                       onChange={(event) => setInsertTag(event.target.value)}
                     />
                   </Form.Item>
-                  <Form.Item name={["user", "image"]} label="Image">
+                  <Form.Item name={["user", "image"]} 
+                  label="Image">
                     <Input type="file" onChange={fileHandler} />
                     <img src={selectedFile} alt="img" />
                   </Form.Item>
@@ -243,6 +298,12 @@ function Feed() {
                           setUpdateDescription(item.insertMessage);
                           setSelectedFile(item.selectedFile);
                           setSelectedId(item.id);
+                      
+                          form.setFieldsValue({
+                            selectedFile: item.selectedFile,
+                            updateDescription: item.insertMessage,
+                            updateTag: item.insertTag,
+                          })
                         }}
                         // onClick={}
                       >
@@ -271,7 +332,7 @@ function Feed() {
               onCancel={handleUpdateCancel}
               onOk={UpdateFeedHandler}
             >
-              <Form {...layout}>
+              <Form autoComplete="off" form={form}>
                 <Form.Item
                   name={["user", "name"]}
                   label="Title"
