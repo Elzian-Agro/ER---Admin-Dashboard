@@ -17,7 +17,6 @@ const Trees = () => {
   // const [AuditorName, setAuditorName] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
 
   const {
     getPlantedTrees,
@@ -150,18 +149,10 @@ const Trees = () => {
     handleCancel();
   };
 
-  const handleConfirmUpdate = async () => {
-    // await updatePlantedTree(treeID);
-    handleUpdateModalCancel();
-  };
-
   const handleDeleteModalCancel = () => {
     setIsDeleteModalVisible(false);
   };
 
-  const handleUpdateModalCancel = () => {
-    setIsUpdateModalVisible(false);
-  };
 
   if (!admin) return null;
   return (
@@ -199,13 +190,6 @@ const Trees = () => {
         destroyOnClose
         width={1000}
         footer={[
-          <Button
-            key="update"
-            type="primary"
-            onClick={() => setIsUpdateModalVisible(true)}
-          >
-            Update
-          </Button>,
           <Button
             key="delete"
             type="danger"
@@ -272,27 +256,8 @@ const Trees = () => {
         ]}
       >
         Are you sure You want to delete <b>{treeID}</b> ?
-      </Modal>
-
-      {/* Update Modal */}
-      <Modal
-        title="Update Tree "
-        visible={isUpdateModalVisible}
-        onCancel={() => setIsUpdateModalVisible(false)}
-        destroyOnClose
-        width={500}
-        footer={[
-          <Button key="back" onClick={handleUpdateModalCancel}>
-            Cancel
-          </Button>,
-          <Button type="primary" onClick={handleConfirmUpdate}>
-            update
-          </Button>,
-        ]}
-      >
-        Form should be Here for tree <b>{treeID}</b>
-        {/* Add Form here  */}
-      </Modal>
+      </Modal>       
+   
     </>
   );
 };

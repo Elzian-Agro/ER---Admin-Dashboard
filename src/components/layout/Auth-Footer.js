@@ -5,8 +5,8 @@ import {
   TwitterOutlined,
   InstagramOutlined,
   GithubOutlined,
-  HeartFilled,
 } from "@ant-design/icons";
+import { FaTree } from 'react-icons/fa';
 
 const { Footer } = Layout;
 
@@ -48,8 +48,8 @@ export default function AuthFooter() {
         </Menu.Item>
       </Menu>
       <div className="copyright">
-        © 2022, developed by
-        {<HeartFilled />}
+        © 2022, developed by &nbsp;
+        {<FaTree />}
         <a href="https://agro.elzian.com/" className="font-weight-bold">
           ELZIAN AGRO
         </a>
