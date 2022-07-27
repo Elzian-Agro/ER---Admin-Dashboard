@@ -10,14 +10,14 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import React , {useState , useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'antd/dist/antd.css';
-import { Modal, Button, Card, Form, Input, Avatar, Typography, Select, Space, Badge, Table, Row, Col  } from 'antd';
+import { Modal, Button, Card, Form, Input, Avatar, Typography, Select, Space, Badge, Table, Row, Col } from 'antd';
 
 
 
-import { MdEmail, MdPhone }  from "react-icons/md";
+import { MdEmail, MdPhone } from "react-icons/md";
 import { makeStyles } from "@mui/styles";
 
 import {
@@ -37,17 +37,17 @@ const useStyles = makeStyles({
 
 
 
-const AssignAuditors = () =>{
-  
-const { Option } = Select;
+const AssignAuditors = () => {
+
+  const { Option } = Select;
   const classes = useStyles();
   const [data, setdata] = useState([]);
   const [auditorData, setAuditorData] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [modaldata, setmodaldata] = useState({});
-  const [getAuditorId,setGetAuditorId]=useState("");
+  const [getAuditorId, setGetAuditorId] = useState("");
 
-  
+
   const columns = [
     {
       title: "LAND OWNER NAME",
@@ -56,22 +56,22 @@ const { Option } = Select;
       width: "15%",
       render: (index, record) => (
         <>
-                    <Avatar.Group>
-                      <Avatar
-                        className="shape-avatar"
-                        shape="square"
-                        size={40}
-                        src={null}
-                      ></Avatar>
-                    <div className="avatar-info">
-                        <Title level={5}>{record.landOwnerFullname}</Title>
-                        <p>{record.registerNumber}</p>
-                    </div>
-                    </Avatar.Group>
-                  </>
+          <Avatar.Group>
+            <Avatar
+              className="shape-avatar"
+              shape="square"
+              size={40}
+              src={null}
+            ></Avatar>
+            <div className="avatar-info">
+              <Title level={5}>{record.landOwnerFullname}</Title>
+              <p>{record.registerNumber}</p>
+            </div>
+          </Avatar.Group>
+        </>
       ),
     },
-  
+
     {
       title: "CONTACT NUMBER",
       key: "contact",
@@ -79,8 +79,8 @@ const { Option } = Select;
       width: "15%",
       render: (index, record) => (
         <>
-            <Title level={5}> <MdPhone /> {record.contactNumber}</Title>
-            <Title level={5}> <MdEmail /> {record.email}</Title>
+          <Title level={5}> <MdPhone /> {record.contactNumber}</Title>
+          <Title level={5}> <MdEmail /> {record.email}</Title>
         </>
       ),
     },
@@ -91,22 +91,22 @@ const { Option } = Select;
       width: "15%",
       render: (index, record) => (
         <>
-            <Title level={5}>{record.landAddress}</Title>
+          <Title level={5}>{record.landAddress}</Title>
         </>
       ),
     },
     {
-        title: "ASSIGNED AUDITOR",
-        key: "aname",
-        dataIndex: "aname",
-        width: "15%",
-        render: (index, record) => (
-          <>
-              <Title level={5}> <Badge status="success" /> {record.assignAuditorname}</Title>
-              <p>&nbsp;&nbsp;&nbsp; {record.assignAuditorid}</p>
-          </>
-        ),
-      },
+      title: "ASSIGNED AUDITOR",
+      key: "aname",
+      dataIndex: "aname",
+      width: "15%",
+      render: (index, record) => (
+        <>
+          <Title level={5}> <Badge status="success" /> {record.assignAuditorname}</Title>
+          <p>&nbsp;&nbsp;&nbsp; {record.assignAuditorid}</p>
+        </>
+      ),
+    },
     {
       title: 'ASSIGN AUDITOR',
       dataIndex: 'id',
@@ -115,8 +115,8 @@ const { Option } = Select;
       render: (index, record) => (
         <Button type="primary" onClick={() => {
           showModal(record)
-         
-          }}>
+
+        }}>
           Assign
         </Button>
       ),
@@ -126,15 +126,15 @@ const { Option } = Select;
   useEffect(() => {
     getData();
     getAuditorData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getData = async () => {
     const headers = {
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
     };
 
-    const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/getLandOwners/getLandOwnersGapCreateDateAssignDate`, {headers});
+    const res = await axios.get(`http://localhost:4000/landOwners/getLandOwners/getLandOwnersGapCreateDateAssignDate`, { headers });
     console.log(res)
     setdata(
       res.data.Result.map((row) => ({
@@ -151,15 +151,15 @@ const { Option } = Select;
       }))
     );
     setTableData(res.data.Result.map((row) => ({
-        id: row.landOwnerID,
-        landOwnerFullname: row.landOwnerFullname,
-        landOwnerName: row.landOwnerName,
-        registerNumber: row.registerNumber,
-        contactNumber: row.contactNumber,
-        email: row.email,
-        landAddress: row.landAddress,
-        assignAuditorid: row.userID,
-        assignAuditorname: row.fullName
+      id: row.landOwnerID,
+      landOwnerFullname: row.landOwnerFullname,
+      landOwnerName: row.landOwnerName,
+      registerNumber: row.registerNumber,
+      contactNumber: row.contactNumber,
+      email: row.email,
+      landAddress: row.landAddress,
+      assignAuditorid: row.userID,
+      assignAuditorname: row.fullName
     })));
   };
 
@@ -168,8 +168,8 @@ const { Option } = Select;
     const headers = {
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
     };
-    
-    const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/`, {headers});
+
+    const res = await axios.get(`http://localhost:4000/users/`, { headers });
     console.log(res)
     setAuditorData(
       res.data.Result.map((auditor) => ({
@@ -177,7 +177,7 @@ const { Option } = Select;
         fullName: auditor.fullName,
       }))
     );
-    console.log( auditorData )
+    console.log(auditorData)
   };
   const success = (msg) => {
     Modal.success({
@@ -197,33 +197,33 @@ const { Option } = Select;
       content: msg,
     });
   };
-  
+
   // assign auditor
-const updateAssignAuditorId= async (auditorId,id)=>{
-  const headers = {
-    'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
-  };
-  if(auditorId!==''){
-    try{
-      await axios.put(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landowners/updateAssignAuditorId/${id}`,{assignAuditorID:auditorId} ,{headers})
-      .then((response)=>{
-        if(response.status===200){
-          success("Successfully assigned !")
-          getData()
-          console.log(modaldata)
-        }else{
-          error("Error in assigning !")
+  const updateAssignAuditorId = async (auditorId, id) => {
+    const headers = {
+      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
+    };
+    if (auditorId !== '') {
+      try {
+        await axios.put(`http://localhost:4000/landowners/updateAssignAuditorId/${id}`, { assignAuditorID: auditorId }, { headers })
+          .then((response) => {
+            if (response.status === 200) {
+              success("Successfully assigned !")
+              getData()
+              console.log(modaldata)
+            } else {
+              error("Error in assigning !")
+            }
+          });
+      } catch (err) {
+        if (err) {
+          console.log(err)
         }
-      });
-    }catch(err){
-      if(err){
-        console.log(err)
       }
+    } else {
+      warning("please select a auditor")
     }
-  }else{
-    warning("please select a auditor")
   }
-}
 
 
 
@@ -231,7 +231,7 @@ const updateAssignAuditorId= async (auditorId,id)=>{
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [setLoading] = useState(false);
 
-  const [fullName,setFullName] = useState("");
+  const [fullName, setFullName] = useState("");
 
   const showModal = (record) => {
     console.log(record);
@@ -256,46 +256,46 @@ const updateAssignAuditorId= async (auditorId,id)=>{
 
   const handleonChange = (e) => {
     const searchKey = e.target.value.toLowerCase();
-    
+
     if (searchKey === '') {
       setdata(tableData);
     } else {
-      const filteredData = tableData.filter(item =>{
-          return (item.landOwnerFullname.toLowerCase().includes(searchKey) ||
-                  item.registerNumber.toLowerCase().includes(searchKey) ||
-                  item.email.toLowerCase().includes(searchKey)
-                  );
-        })
+      const filteredData = tableData.filter(item => {
+        return (item.landOwnerFullname.toLowerCase().includes(searchKey) ||
+          item.registerNumber.toLowerCase().includes(searchKey) ||
+          item.email.toLowerCase().includes(searchKey)
+        );
+      })
       setdata(filteredData);
     }
   };
 
- 
+
 
   return (
     <>
       <div className="tabled">
         <Row gutter={[24, 0]}>
           <Col xs="24" xl={24}>
-          <Card
-                bordered={false}
-                className="criclebox tablespace mb-24"
-                title="Assign Auditors"
-                extra={
-                  <>
-                    <Input
-                      className={classes.headerSearch}
-                      placeholder="Search here..."
-                      prefix={<SearchOutlined />}
-                      onChange={handleonChange}
-                    />
-                  </>
-                }
-              >
-            <div className="table-responsive">
-            <Table className="table-responsive" dataSource={data} columns={columns}/>
-            </div>
-          </Card>
+            <Card
+              bordered={false}
+              className="criclebox tablespace mb-24"
+              title="Assign Auditors"
+              extra={
+                <>
+                  <Input
+                    className={classes.headerSearch}
+                    placeholder="Search here..."
+                    prefix={<SearchOutlined />}
+                    onChange={handleonChange}
+                  />
+                </>
+              }
+            >
+              <div className="table-responsive">
+                <Table className="table-responsive" dataSource={data} columns={columns} />
+              </div>
+            </Card>
           </Col>
         </Row>
       </div>
@@ -311,14 +311,14 @@ const updateAssignAuditorId= async (auditorId,id)=>{
           <Button key="back" onClick={handleCancel}>
             Cancel
           </Button>,
-          <Button key="submit" type="primary" onClick={()=>{updateAssignAuditorId(getAuditorId,modaldata.id)}} >
+          <Button key="submit" type="primary" onClick={() => { updateAssignAuditorId(getAuditorId, modaldata.id) }} >
             Assign
           </Button>,
-         
+
         ]}
       >
         <Row gutter={[20, 20]}>
-        <Col offset={3} md={25} xs={24}>
+          <Col offset={3} md={25} xs={24}>
             <Space direction="vertical">
               <dad iv>
                 Land Owner Name : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.landOwnerFullname}</b>
@@ -339,7 +339,7 @@ const updateAssignAuditorId= async (auditorId,id)=>{
                 <Form.Item
                   name="landOwnerName"
                   label="Auditor"
-                 
+
                   rules={[
                     {
                       whitespace: true
@@ -355,12 +355,12 @@ const updateAssignAuditorId= async (auditorId,id)=>{
                         //landOwnerFullname: value
                       })
                     }
-                    
-                  }
+
+                    }
                   >
-                    {auditorData && auditorData.map((auditor ,key) => {
-                      return(
-                      <Option value= {auditor.id} key={key} > {auditor.fullName} - {modaldata.landOwnerFullname}</Option> 
+                    {auditorData && auditorData.map((auditor, key) => {
+                      return (
+                        <Option value={auditor.id} key={key} > {auditor.fullName} - {modaldata.landOwnerFullname}</Option>
                       )
                     })
                     }
@@ -368,10 +368,10 @@ const updateAssignAuditorId= async (auditorId,id)=>{
                 </Form.Item>
               </Form>
             </Space>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
       </Modal>
-      </>
+    </>
   );
 };
 
