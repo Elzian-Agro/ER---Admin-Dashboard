@@ -293,7 +293,7 @@ const AssignAuditors = () => {
               }
             >
               <div className="table-responsive">
-                <Table className="table-responsive" dataSource={data} columns={columns} />
+                <Table  className="table-responsive" rowKey={data => data.id} dataSource={data} columns={columns} />
               </div>
             </Card>
           </Col>
@@ -320,9 +320,9 @@ const AssignAuditors = () => {
         <Row gutter={[20, 20]}>
           <Col offset={3} md={25} xs={24}>
             <Space direction="vertical">
-              <dad iv>
+              <div>
                 Land Owner Name : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.landOwnerFullname}</b>
-              </dad>
+              </div>
               <div>
                 Register Number : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{modaldata.registerNumber}</b>
               </div>
