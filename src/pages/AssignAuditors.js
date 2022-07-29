@@ -13,7 +13,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'antd/dist/antd.css';
-import { Modal, Button, Card, Form, Input, Avatar, Typography, Select, Space, Badge, Table, Row, Col } from 'antd';
+import { Modal, Button, Card, Form, Input, Avatar, Typography, Select, Space, Badge, Table, Row, Col, notification } from 'antd';
 
 
 
@@ -35,8 +35,6 @@ const useStyles = makeStyles({
   }
 });
 
-
-
 const AssignAuditors = () => {
 
   const { Option } = Select;
@@ -46,7 +44,6 @@ const AssignAuditors = () => {
   const [tableData, setTableData] = useState([]);
   const [modaldata, setmodaldata] = useState({});
   const [getAuditorId, setGetAuditorId] = useState("");
-
 
   const columns = [
     {
@@ -65,7 +62,7 @@ const AssignAuditors = () => {
             ></Avatar>
             <div className="avatar-info">
               <Title level={5}>{record.landOwnerFullname}</Title>
-              <p>{record.registerNumber}</p>
+              <p >{record.registerNumber}</p>
             </div>
           </Avatar.Group>
         </>
@@ -79,8 +76,8 @@ const AssignAuditors = () => {
       width: "15%",
       render: (index, record) => (
         <>
-          <Title level={5}> <MdPhone /> {record.contactNumber}</Title>
-          <Title level={5}> <MdEmail /> {record.email}</Title>
+          <Title level={5} > <MdPhone /> {record.contactNumber}</Title>
+          <Title level={5} > <MdEmail /> {record.email}</Title>
         </>
       ),
     },
@@ -103,7 +100,7 @@ const AssignAuditors = () => {
       render: (index, record) => (
         <>
           <Title level={5}> <Badge status="success" /> {record.assignAuditorname}</Title>
-          <p>&nbsp;&nbsp;&nbsp; {record.assignAuditorid}</p>
+          <p style={{fontSize:'12px'}}>&nbsp;&nbsp;&nbsp; {record.assignAuditorid}</p>
         </>
       ),
     },
@@ -115,7 +112,6 @@ const AssignAuditors = () => {
       render: (index, record) => (
         <Button type="primary" onClick={() => {
           showModal(record)
-
         }}>
           Assign
         </Button>
@@ -135,7 +131,7 @@ const AssignAuditors = () => {
     };
 
     const res = await axios.get(`http://localhost:4000/landOwners/getLandOwners/getLandOwnersGapCreateDateAssignDate`, { headers });
-    console.log(res)
+    //console.log(res)
     setdata(
       res.data.Result.map((row) => ({
         id: row.landOwnerID,
@@ -163,41 +159,29 @@ const AssignAuditors = () => {
     })));
   };
 
-  console.log("tableData", tableData[0])
+ // console.log("tableData", tableData[0])
   const getAuditorData = async () => {
     const headers = {
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
     };
 
     const res = await axios.get(`http://localhost:4000/users/`, { headers });
-    console.log(res)
+   // console.log(res)
     setAuditorData(
       res.data.Result.map((auditor) => ({
         id: auditor.userID,
         fullName: auditor.fullName,
       }))
     );
-    console.log(auditorData)
-  };
-  const success = (msg) => {
-    Modal.success({
-      title: 'success',
-      content: msg,
-    });
-  };
-  const error = (msg) => {
-    Modal.error({
-      title: 'Error',
-      content: msg,
-    });
-  };
-  const warning = (msg) => {
-    Modal.warning({
-      title: 'warning',
-      content: msg,
-    });
+  //  console.log(auditorData)
   };
 
+  const openNotificationWithIcon = (type,message,title) => {
+    notification[type]({
+      message: title,
+      description:message,
+    });
+  };
   // assign auditor
   const updateAssignAuditorId = async (auditorId, id) => {
     const headers = {
@@ -208,20 +192,20 @@ const AssignAuditors = () => {
         await axios.put(`http://localhost:4000/landowners/updateAssignAuditorId/${id}`, { assignAuditorID: auditorId }, { headers })
           .then((response) => {
             if (response.status === 200) {
-              success("Successfully assigned !")
+              openNotificationWithIcon('success',"body","successfully assigned !")
               getData()
-              console.log(modaldata)
+              //console.log(modaldata)
             } else {
-              error("Error in assigning !")
+              openNotificationWithIcon('Error',"Error in assigning","Error")
             }
           });
       } catch (err) {
         if (err) {
-          console.log(err)
+          openNotificationWithIcon('Error',"Error in assigning ","Error")
         }
       }
     } else {
-      warning("please select a auditor")
+      openNotificationWithIcon('warning',"Please select a auditor !","Warning")
     }
   }
 
@@ -234,10 +218,8 @@ const AssignAuditors = () => {
   const [fullName, setFullName] = useState("");
 
   const showModal = (record) => {
-    console.log(record);
     setFullName(record.fullName);
     setmodaldata(record);
-    console.log(modaldata, fullName);
     setIsModalVisible(true);
   };
 
@@ -276,7 +258,7 @@ const AssignAuditors = () => {
     <>
       <div className="tabled">
         <Row gutter={[24, 0]}>
-          <Col xs="24" xl={24}>
+          <Col  xl={24}>
             <Card
               bordered={false}
               className="criclebox tablespace mb-24"
@@ -294,7 +276,7 @@ const AssignAuditors = () => {
             >
               <div className="table-responsive">
                 <Table  className="table-responsive" rowKey={data => data.id} dataSource={data} columns={columns} />
-              </div>
+              </div> 
             </Card>
           </Col>
         </Row>
