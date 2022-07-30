@@ -15,15 +15,12 @@ import axios from 'axios';
 import 'antd/dist/antd.css';
 import { Modal, Button, Card, Form, Input, Avatar, Typography, Select, Space, Badge, Table, Row, Col, notification } from 'antd';
 
-
-
 import { MdEmail, MdPhone } from "react-icons/md";
 import { makeStyles } from "@mui/styles";
 
-import {
-  SearchOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 
+import useMediaQuery from '../components/customHooks/useMediaQuery';
 const { Title } = Typography;
 
 const useStyles = makeStyles({
@@ -45,7 +42,33 @@ const AssignAuditors = () => {
   const [modaldata, setmodaldata] = useState({});
   const [getAuditorId, setGetAuditorId] = useState("");
 
+  const match=useMediaQuery('(max-width: 991px)')
+  console.log(match)
+
   const columns = [
+    {
+      title: "LAND OWNER NAME CONTACT NUMBER",
+      render: (record) => (
+        <React.Fragment>
+          <Avatar.Group>
+            <Avatar
+              className="shape-avatar"
+              shape="square"
+              size={40}
+              src={null}
+            ></Avatar>
+            <div className="avatar-info">
+              <Title level={5}>{record.landOwnerFullname}</Title>
+              <p >{record.registerNumber}</p>
+            </div>
+          </Avatar.Group>
+          <br /> <br />
+          <Title level={5} > <MdPhone /> {record.contactNumber}</Title>
+          <Title level={5} > <MdEmail /> {record.email}</Title>
+        </React.Fragment>
+      ),
+      responsive: ["xs"]
+    },
     {
       title: "LAND OWNER NAME",
       dataIndex: "name",
@@ -67,6 +90,7 @@ const AssignAuditors = () => {
           </Avatar.Group>
         </>
       ),
+      responsive: ["sm"]
     },
 
     {
@@ -80,6 +104,7 @@ const AssignAuditors = () => {
           <Title level={5} > <MdEmail /> {record.email}</Title>
         </>
       ),
+      responsive: ["sm"]
     },
     {
       title: "LAND ADDRESS",
@@ -91,6 +116,7 @@ const AssignAuditors = () => {
           <Title level={5}>{record.landAddress}</Title>
         </>
       ),
+      hidden: match,
     },
     {
       title: "ASSIGNED AUDITOR",
@@ -117,7 +143,7 @@ const AssignAuditors = () => {
         </Button>
       ),
     },
-  ];
+  ].filter(item => !item.hidden);
 
   useEffect(() => {
     getData();
@@ -131,7 +157,7 @@ const AssignAuditors = () => {
     };
 
     const res = await axios.get(`http://localhost:4000/landOwners/getLandOwners/getLandOwnersGapCreateDateAssignDate`, { headers });
-    //console.log(res)
+ 
     setdata(
       res.data.Result.map((row) => ({
         id: row.landOwnerID,
@@ -159,42 +185,47 @@ const AssignAuditors = () => {
     })));
   };
 
- // console.log("tableData", tableData[0])
   const getAuditorData = async () => {
     const headers = {
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
     };
 
     const res = await axios.get(`http://localhost:4000/users/`, { headers });
-   // console.log(res)
     setAuditorData(
       res.data.Result.map((auditor) => ({
         id: auditor.userID,
         fullName: auditor.fullName,
       }))
     );
-  //  console.log(auditorData)
   };
 
   const openNotificationWithIcon = (type,message,title) => {
-    notification[type]({
-      message: title,
-      description:message,
-    });
+
+    if(type==="success"){
+      notification[type]({
+        message: title,
+        description:"Auditor Id : "+message,
+      });
+    }else{
+      notification[type]({
+        message: title,
+        description:message,
+      });
+    }
+    
   };
   // assign auditor
   const updateAssignAuditorId = async (auditorId, id) => {
     const headers = {
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
     };
-    if (auditorId !== '') {
+    if (auditorId !== '' && id !=='') {
       try {
         await axios.put(`http://localhost:4000/landowners/updateAssignAuditorId/${id}`, { assignAuditorID: auditorId }, { headers })
           .then((response) => {
             if (response.status === 200) {
-              openNotificationWithIcon('success',"body","successfully assigned !")
+              openNotificationWithIcon('success',auditorId,"successfully assigned !")
               getData()
-              //console.log(modaldata)
             } else {
               openNotificationWithIcon('Error',"Error in assigning","Error")
             }
@@ -210,15 +241,10 @@ const AssignAuditors = () => {
   }
 
 
-
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [setLoading] = useState(false);
 
-  const [fullName, setFullName] = useState("");
-
   const showModal = (record) => {
-    setFullName(record.fullName);
     setmodaldata(record);
     setIsModalVisible(true);
   };
@@ -233,6 +259,7 @@ const AssignAuditors = () => {
   };
 
   const handleCancel = () => {
+    setGetAuditorId("");
     setIsModalVisible(false);
   };
 
