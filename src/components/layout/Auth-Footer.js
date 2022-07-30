@@ -49,7 +49,7 @@ export default function AuthFooter() {
       </Menu>
       <div className="copyright">
         © 2022, developed by &nbsp;
-        {<FaTree />}
+        <FaTree style={{color:'green'}}/>
         <a href="https://agro.elzian.com/" className="font-weight-bold">
           ELZIAN AGRO
         </a>

@@ -10,7 +10,7 @@ function Footer() {
         <Col xs={24} md={12} lg={12}>
           <div className="copyright">
             © 2022, developed by &nbsp;
-            {<FaTree />}
+            <FaTree style={{color:'green'}}/>
             <a href="https://agro.elzian.com/" className="font-weight-bold">
               ELZIAN AGRO
             </a>
