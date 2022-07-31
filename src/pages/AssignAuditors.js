@@ -21,6 +21,8 @@ import { makeStyles } from "@mui/styles";
 import { SearchOutlined } from "@ant-design/icons";
 
 import useMediaQuery from '../components/customHooks/useMediaQuery';
+
+
 const { Title } = Typography;
 
 const useStyles = makeStyles({
@@ -31,6 +33,11 @@ const useStyles = makeStyles({
     marginLeft: "10px"
   }
 });
+const styles={
+  preventInlineText:{
+    whiteSpace:'pre-line',
+  }
+}
 
 const AssignAuditors = () => {
 
@@ -43,11 +50,10 @@ const AssignAuditors = () => {
   const [getAuditorId, setGetAuditorId] = useState("");
 
   const match=useMediaQuery('(max-width: 991px)')
-  console.log(match)
 
   const columns = [
     {
-      title: "LAND OWNER NAME CONTACT NUMBER",
+      title: "LAND OWNER NAME / CONTACT NUMBER",
       render: (record) => (
         <React.Fragment>
           <Avatar.Group>
@@ -58,13 +64,29 @@ const AssignAuditors = () => {
               src={null}
             ></Avatar>
             <div className="avatar-info">
-              <Title level={5}>{record.landOwnerFullname}</Title>
+              <Title style={styles.preventInlineText} level={5}>{record.landOwnerFullname}</Title>
               <p >{record.registerNumber}</p>
             </div>
           </Avatar.Group>
           <br /> <br />
-          <Title level={5} > <MdPhone /> {record.contactNumber}</Title>
-          <Title level={5} > <MdEmail /> {record.email}</Title>
+          <Title style={styles.preventInlineText} level={5} > <MdPhone /> {record.contactNumber}</Title>
+          <Title style={styles.preventInlineText} level={5} > <MdEmail /> {record.email}</Title>
+        </React.Fragment>
+      ),
+      responsive: ["xs"]
+    },
+    {
+      title: "ASSIGNED AUDITOR / ASSIGN AUDITOR",
+      render: (record) => (
+        <React.Fragment>
+          <Title style={styles.preventInlineText} level={5}> <Badge status="success" /> {record.assignAuditorname}</Title>
+          <p style={{fontSize:'12px',whiteSpace:'pre-line'}}> {record.assignAuditorid}</p>
+          <br />
+          <Button type="primary" onClick={() => {
+          showModal(record)
+        }}>
+          Assign
+        </Button>
         </React.Fragment>
       ),
       responsive: ["xs"]
@@ -84,8 +106,8 @@ const AssignAuditors = () => {
               src={null}
             ></Avatar>
             <div className="avatar-info">
-              <Title level={5}>{record.landOwnerFullname}</Title>
-              <p >{record.registerNumber}</p>
+              <Title style={styles.preventInlineText} level={5}>{record.landOwnerFullname}</Title>
+              <p style={styles.preventInlineText} >{record.registerNumber}</p>
             </div>
           </Avatar.Group>
         </>
@@ -100,8 +122,8 @@ const AssignAuditors = () => {
       width: "15%",
       render: (index, record) => (
         <>
-          <Title level={5} > <MdPhone /> {record.contactNumber}</Title>
-          <Title level={5} > <MdEmail /> {record.email}</Title>
+          <Title style={styles.preventInlineText} level={5} > <MdPhone /> {record.contactNumber}</Title>
+          <Title style={styles.preventInlineText} level={5} > <MdEmail /> {record.email}</Title>
         </>
       ),
       responsive: ["sm"]
@@ -113,7 +135,7 @@ const AssignAuditors = () => {
       width: "15%",
       render: (index, record) => (
         <>
-          <Title level={5}>{record.landAddress}</Title>
+          <Title style={styles.preventInlineText} level={5}>{record.landAddress}</Title>
         </>
       ),
       hidden: match,
@@ -125,10 +147,11 @@ const AssignAuditors = () => {
       width: "15%",
       render: (index, record) => (
         <>
-          <Title level={5}> <Badge status="success" /> {record.assignAuditorname}</Title>
-          <p style={{fontSize:'12px'}}>&nbsp;&nbsp;&nbsp; {record.assignAuditorid}</p>
+          <Title style={styles.preventInlineText} level={5}> <Badge status="success" /> {record.assignAuditorname}</Title>
+         <p  style={{fontSize:'12px',whiteSpace:'pre-line'}}> {record.assignAuditorid}</p>
         </>
       ),
+      responsive: ["sm"]
     },
     {
       title: 'ASSIGN AUDITOR',
@@ -142,6 +165,7 @@ const AssignAuditors = () => {
           Assign
         </Button>
       ),
+      responsive: ["sm"]
     },
   ].filter(item => !item.hidden);
 
@@ -302,7 +326,7 @@ const AssignAuditors = () => {
               }
             >
               <div className="table-responsive">
-                <Table  className="table-responsive" rowKey={data => data.id} dataSource={data} columns={columns} />
+                <Table scroll={{y:375}}  className="table-responsive" rowKey={data => data.id} dataSource={data} columns={columns} />
               </div> 
             </Card>
           </Col>
