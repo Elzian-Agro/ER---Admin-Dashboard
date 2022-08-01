@@ -15,10 +15,12 @@ import { PlusOutlined } from "@ant-design/icons";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
-import { Card, Button, Modal, Form, Input, message } from "antd";
+import { Card, Button, Modal, Form, Input, notification} from "antd";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+// import React, { useState, useEffect } from 'react';
+// import Swal from "sweetalert2";
 // import { Token } from "@mui/icons-material";
 
 const { Meta } = Card;
@@ -49,7 +51,7 @@ function Feed() {
     "Content-Type": "application/json",
     "x-auth-token": cookies[0].token,
   };
-
+  
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -66,6 +68,22 @@ function Feed() {
   const handleFocus = (e) => {
     setFocused(true);
   }
+
+  const openNotificationWithIcon = (type,message,title) => {
+
+    if(type==="success"){
+      notification[type]({
+        message: title,
+        description: message,
+      });
+    }else{
+      notification[type]({
+        message: title,
+        description:message,
+      });
+    }
+    
+  };
 
   const layout = {
     labelCol: {
@@ -129,10 +147,34 @@ function Feed() {
         "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/add",
         formData
       );
-      alert("Added");
+      openNotificationWithIcon('success',"Feed Added Successfully")
+      // alert("Added");
+      // Swal.fire({
+      //   position: "top-end",
+      //   icon: "sucsses",
+      //   title: "Feed Added Successfully",
+      //   showConfirmButton: true,
+      //   height: "50px",
+      //   width: '350px',
+      //   fontSize: "15",
+      //   font: "Georgia",
+      //   timer: 4500,
+      // });
       setIsModalVisible(false);
     } catch (error) {
-      alert("Error Occcured");
+      openNotificationWithIcon('error',"Something Went Wrong Please Check","Error")
+      // alert("Error Occcured");
+      // Swal.fire({
+      //   position: "top-end",
+      //   icon: "error",
+      //   title: "Something Went Wrong Please Check",
+      //   showConfirmButton: true,
+      //   height: "50px",
+      //   width: '350px',
+      //   fontSize: 12,
+      //   font: "Georgia",
+      //   timer: 4500,
+      // });
     }
   };
 
@@ -161,9 +203,11 @@ function Feed() {
           }
         )
         .then((response) => {
+          openNotificationWithIcon('success',"Feed Added Successfully")
           setFeedData(response.data);
         });
     } catch (error) {
+      openNotificationWithIcon('error',"Something Went Wrong Please Check","Error")
       setIsUpdateModalVisible(false);
       alert("err");
     }
@@ -305,6 +349,8 @@ function Feed() {
                   rules={[
                     {
                       required: true,
+                      pattern : "^[A-Za-z0-9].{2,16}$",
+                      message:"Title Should be 3-16 characters and shouldn't include any special character!", 
                     },
                   ]}
                 >
