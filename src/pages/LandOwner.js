@@ -518,6 +518,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[A-Za-z]",
                       message: "Please enter land owner name"
                     },
                     {
@@ -539,6 +540,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[A-Za-z]",
                       message: "Please enter land owner full name"
                     },
                     {
@@ -560,6 +562,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[0-9]",
                       message: "Please enter contact number"
                     },
                     {
@@ -606,6 +609,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[A-Za-z]",
                       message: "Please enter country"
                     },
                     {
@@ -648,6 +652,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[0-9]",
                       message: "Please enter longitude"
                     },
                     {
@@ -668,6 +673,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[0-9]",
                       message: "Please enter latitude"
                     },
                     {
@@ -688,6 +694,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[0-9]",
                       message: "Please enter bank account number"
                     },
                     {
@@ -711,6 +718,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[A-Za-z]",
                       message: "Please enter bank name"
                     },
                     {
@@ -732,6 +740,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[A-Za-z]",
                       message: "Please enter bank branch"
                     },
                     {
@@ -753,6 +762,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[0-9]",
                       message: "Please enter number of trees"
                     },
                     {
@@ -775,6 +785,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[0-9]",
                       message: "Please enter perimeter"
                     },
                     {
