@@ -543,6 +543,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter plant name"
                 },
                 {
@@ -561,6 +562,7 @@ function TreeSpecies() {
                rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter common names"
                 },
                 {
@@ -581,6 +583,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter botanical name"
                 },
                 {
@@ -601,6 +604,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter origin of species"
                 },
                 {
@@ -621,6 +625,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter family"
                 },
                 {
@@ -641,6 +646,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter af notation physiognomy"
                 },
                 {
@@ -661,6 +667,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter plant preference"
                 },
                 {
@@ -681,6 +688,7 @@ function TreeSpecies() {
                 rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter photosynthetic biomass year 1"
                 },
                 {
@@ -701,6 +709,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter photosynthetic biomass year 2"
                 },
                 {
@@ -721,6 +730,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter photosynthetic biomass year 3"
                 },
                 {
@@ -741,6 +751,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter photosynthetic biomass year 4"
                 },
                 {
@@ -761,6 +772,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter weight per leaf"
                 },
                 {
@@ -781,6 +793,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter leaf cycle"
                 },
                 {
@@ -801,6 +814,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter length"
                 },
                 {
@@ -821,6 +835,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter width"
                 },
                 {
@@ -841,6 +856,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter texture"
                 },
                 {
@@ -861,6 +877,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter conservation status"
                 },
                 {
@@ -881,6 +898,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter growth rate"
                 },
                 {
@@ -901,6 +919,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter crown type"
                 },
                 {
@@ -921,6 +940,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter propagation method"
                 },
                 {
@@ -941,6 +961,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter root type"
                 },
                 {
@@ -961,6 +982,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter preferred soils"
                 },
                 {
@@ -981,6 +1003,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter impact on soil"
                 },
                 {
@@ -1001,6 +1024,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter salinity tolerance"
                 },
                 {
@@ -1021,6 +1045,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter human uses"
                 },
                 {
@@ -1041,6 +1066,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter economic distribution"
                 },
                 {
@@ -1061,6 +1087,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter distribution"
                 },
                 {
@@ -1081,6 +1108,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter light preferences"
                 },
                 {
@@ -1101,6 +1129,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter flowering time"
                 },
                 {
@@ -1121,6 +1150,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter flower color"
                 },
                 {
@@ -1141,6 +1171,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter fruit type"
                 },
                 {
