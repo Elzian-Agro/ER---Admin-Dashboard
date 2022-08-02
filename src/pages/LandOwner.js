@@ -196,7 +196,49 @@ function LandOwner() {
 
   };
 
+  const handleUpdateLandOwner = async () => {
+// const formData = new FormData();
+    // formData.append("registerNumber", registerNumber);
+    // formData.append("landOwnerName", landOwnerName);
+    // formData.append("landOwnerFullname", landOwnerFullname);
+    // formData.append("contact", contactNumber);
+    // formData.append("email", email);
+    // formData.append("country", country);
+    // formData.append("address", landAddress);
+    // formData.append("longitude", longitude);
+    // formData.append("latitude", latitude);
+    // formData.append("bankAccountNumber", bankAccountNumber);
+    // formData.append("bankName", bankName);
+    // formData.append("bankBranch", bankBranch);
+    // formData.append("noOfTrees", noOfTrees);
+    // formData.append("perimeter", perimeter);
 
+    const landData = {
+      registerNumber: registerNumber,
+      landOwnerName: landOwnerName,
+      landOwnerFullname: landOwnerFullname,
+      contactNumber: contactNumber.toString(),
+      email: email,
+      country: country,
+      landAddress: landAddress,
+      longitude: longitude,
+      latitude: latitude,
+      bankAccountNumber: bankAccountNumber,
+      bankName: bankName,
+      bankBranch: bankBranch,
+      noOfTrees: noOfTrees,
+      perimeter: perimeter,
+    };
+
+    try {
+      await updateLandOwnerById(selectedId, landData);
+      setIsUpdateModalVisible(false);
+    } catch (error) {
+      console.log(error);
+      setIsUpdateModalVisible(false);
+    }
+   
+  };
 
   const approveLandOwner = async (selectedId_) => {
     try {
@@ -447,7 +489,7 @@ function LandOwner() {
                 title="Add New Land Owner"
                 visible={isModalVisible}
                 onCancel={handleCancel}
-                onOk={() => handleAddFormSubmit()}
+                onOk={() => {handleAddFormSubmit()}}
                 destroyOnClose={true}
               >
               <Form {...layout} autoComplete="off">
@@ -754,7 +796,7 @@ function LandOwner() {
               title="Update Land Owner"
               visible={isUpdateModalVisible}
               onCancel={handleUpdateCancel}
-              onOk={handleUpdateClick}
+              onOk={() => {handleUpdateLandOwner()}}
               destroyOnClose={true}
             >
               <Form autoComplete="off" form={form}>
