@@ -72,10 +72,10 @@ export default function DataService() {
     const data = await http.put("/landOwners/approveLandowner/" + Id).then((res) => res);
     console.log(data.status === 200)
     if (data.status === 200) {
-      openNotificationWithIcon('success',"successfully Deleted!","Success")
+      openNotificationWithIcon('success',"successfully Approved!","Success")
     } else
      {
-      openNotificationWithIcon('Error',"Error in Deleting","Error")
+      openNotificationWithIcon('Error',"Error in Approve","Error")
     }
     // return data;
   }
@@ -84,10 +84,10 @@ export default function DataService() {
     const data = await http.put("/landOwners/unApproveLandowner/" + Id).then((res) => res);
     console.log(data.status === 200)
     if (data.status === 200) {
-      openNotificationWithIcon('success',"successfully Deleted!","Success")
+      openNotificationWithIcon('success',"successfully Unapprove!","Success")
     } else
      {
-      openNotificationWithIcon('Error',"Error in Deleting","Error")
+      openNotificationWithIcon('Error',"Error in Unapprove","Error")
     }
     // return data;
   }
