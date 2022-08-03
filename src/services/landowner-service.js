@@ -1,5 +1,19 @@
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import { notification} from 'antd';
+const openNotificationWithIcon = (type,message,title) => {
+  if(type==="success"){
+    notification[type]({
+      message: title,
+      description:"Auditor Id : "+message,
+    });
+  }else{
+    notification[type]({
+      message: title,
+      description:message,
+    });
+  }
+}
 
 export default function DataService() {
   const [cookies] = useCookies(["token"]);
@@ -20,35 +34,61 @@ export default function DataService() {
 
   async function deleteLandOwnerById(Id) {
     const data = await http.put("/landOwners/deleteLandowner/" + Id).then((res) => res);
-    console.log(
-      data.status === 200
-        ? data.data.message
-        : "Oops! something went wrong when deleting Tree"
-    );
+    console.log(data.status === 200)
+    if (data.status === 200) {
+      openNotificationWithIcon('success',"successfully Deleted!","Success")
+    } else
+     {
+      openNotificationWithIcon('Error',"Error in Deleting","Error")
+    }
     // return data;
   }
 
   async function updateLandOwnerById(Id, landData) {
     const data = await http.put("/landOwners/updateLandowner/" + Id, landData).then((res) => res);
-    console.log(data);
+    console.log(data.status === 200)
+    if (data.status === 200) {
+      openNotificationWithIcon('success',"successfully Updated!","Success")
+    } else
+     {
+      openNotificationWithIcon('Error',"Error in Updating","Error")
+    }
     // return data;
   }
 
   async function addNewLandOwner(landData) {
     const data = await http.post("/landOwners/add", landData).then((res) => res);
-    console.log(data);
+    console.log(data.status === 200)
+    if (data.status === 200) {
+      openNotificationWithIcon('success',"successfully Added!","Success")
+    } else
+     {
+      openNotificationWithIcon('Error',"Error in Adding","Error")
+    }
     // return data;
   }
 
   async function approveLandOwnerById(Id) {
     const data = await http.put("/landOwners/approveLandowner/" + Id).then((res) => res);
-    console.log(data);
+    console.log(data.status === 200)
+    if (data.status === 200) {
+      openNotificationWithIcon('success',"successfully Deleted!","Success")
+    } else
+     {
+      openNotificationWithIcon('Error',"Error in Deleting","Error")
+    }
     // return data;
   }
 
   async function unApproveLandOwnerById(Id) {
     const data = await http.put("/landOwners/unApproveLandowner/" + Id).then((res) => res);
-    console.log(data);
+    console.log(data.status === 200)
+    if (data.status === 200) {
+      openNotificationWithIcon('success',"successfully Deleted!","Success")
+    } else
+     {
+      openNotificationWithIcon('Error',"Error in Deleting","Error")
+    }
     // return data;
   }
 
