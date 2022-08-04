@@ -20,7 +20,6 @@ import { makeStyles } from "@mui/styles";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 // import React, { useState, useEffect } from 'react';
-// import Swal from "sweetalert2";
 // import { Token } from "@mui/icons-material";
 
 const { Meta } = Card;
@@ -69,6 +68,8 @@ function Feed() {
     setFocused(true);
   }
 
+ 
+
   const openNotificationWithIcon = (type,message,title) => {
 
     if(type==="success"){
@@ -96,24 +97,31 @@ function Feed() {
 
   useEffect(() => {
     GetAllFeeds();
+    // const fetchFeeds = async () => {
+    //   const res = await fetch("http://localhost:4000/feeds/");
+    //   const data = await res.json();
+    //   console.log(data);
+    // }
+    // fetchFeeds();
   }, [isModalVisible, isUpdateModalVisible, deleteFeed]);
+
+  const GetAllFeeds = async () => {
+    const result = await axios.get(
+      "http://localhost:4000/feeds/"
+    );
+    setFeedData(result.data.Result);
+  };
 
   const fileHandler = (event) => {
     setSelectedFile(event.target.files[0]);
   };
 
-  const GetAllFeeds = async () => {
-    const result = await axios.get(
-      "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/"
-    );
-    setFeedData(result.data.Result);
-  };
 
   const handleDeleteClick = async () => {
 
     try {await axios
       .delete(
-                `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
+                `http://localhost:4000/feeds/deleteFeed/${selectedId}`
               ).then((res) => res);
       setDeleteFeed(false);
     } catch (error) {
@@ -144,37 +152,13 @@ function Feed() {
     formData.append("published", "Yes");
     try {
       await axios.post(
-        "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/add",
+        "http://localhost:4000/feeds/add",
         formData
       );
       openNotificationWithIcon('success',"Feed Added Successfully")
-      // alert("Added");
-      // Swal.fire({
-      //   position: "top-end",
-      //   icon: "sucsses",
-      //   title: "Feed Added Successfully",
-      //   showConfirmButton: true,
-      //   height: "50px",
-      //   width: '350px',
-      //   fontSize: "15",
-      //   font: "Georgia",
-      //   timer: 4500,
-      // });
       setIsModalVisible(false);
     } catch (error) {
       openNotificationWithIcon('error',"Something Went Wrong Please Check","Error")
-      // alert("Error Occcured");
-      // Swal.fire({
-      //   position: "top-end",
-      //   icon: "error",
-      //   title: "Something Went Wrong Please Check",
-      //   showConfirmButton: true,
-      //   height: "50px",
-      //   width: '350px',
-      //   fontSize: 12,
-      //   font: "Georgia",
-      //   timer: 4500,
-      // });
     }
   };
 
@@ -188,7 +172,7 @@ function Feed() {
     try {
       await axios
         .put(
-          `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/updateFeed/${selectedId}`,
+          `http://localhost:4000/feeds/updateFeed/${selectedId}`,
           formData,
           {
             imageUrl: selectedFile,
@@ -207,9 +191,9 @@ function Feed() {
           setFeedData(response.data);
         });
     } catch (error) {
-      openNotificationWithIcon('error',"Something Went Wrong Please Check","Error")
       setIsUpdateModalVisible(false);
-      alert("err");
+      openNotificationWithIcon('error',"Something Went Wrong Please Check","Error")
+      // alert("err");
     }
   };
 
@@ -280,6 +264,7 @@ function Feed() {
                   label="Image">
                     <Input 
                     type="file" 
+                    accept = "image/*"
                     onChange={fileHandler} />
                     <img src={selectedFile} alt="img" />
                   </Form.Item>
