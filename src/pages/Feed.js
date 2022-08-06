@@ -15,10 +15,11 @@ import { PlusOutlined } from "@ant-design/icons";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
-import { Card, Button, Modal, Form, Input, message } from "antd";
+import { Card, Button, Modal, Form, Input, notification} from "antd";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+// import React, { useState, useEffect } from 'react';
 // import { Token } from "@mui/icons-material";
 
 const { Meta } = Card;
@@ -49,7 +50,7 @@ function Feed() {
     "Content-Type": "application/json",
     "x-auth-token": cookies[0].token,
   };
-
+  
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -67,6 +68,24 @@ function Feed() {
     setFocused(true);
   }
 
+ 
+
+  const openNotificationWithIcon = (type,message,title) => {
+
+    if(type==="success"){
+      notification[type]({
+        message: title,
+        description: message,
+      });
+    }else{
+      notification[type]({
+        message: title,
+        description:message,
+      });
+    }
+    
+  };
+
   const layout = {
     labelCol: {
       span: 6,
@@ -78,24 +97,31 @@ function Feed() {
 
   useEffect(() => {
     GetAllFeeds();
+    // const fetchFeeds = async () => {
+    //   const res = await fetch("http://localhost:4000/feeds/");
+    //   const data = await res.json();
+    //   console.log(data);
+    // }
+    // fetchFeeds();
   }, [isModalVisible, isUpdateModalVisible, deleteFeed]);
+
+  const GetAllFeeds = async () => {
+    const result = await axios.get(
+      "http://localhost:4000/feeds/"
+    );
+    setFeedData(result.data.Result);
+  };
 
   const fileHandler = (event) => {
     setSelectedFile(event.target.files[0]);
   };
 
-  const GetAllFeeds = async () => {
-    const result = await axios.get(
-      "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/"
-    );
-    setFeedData(result.data.Result);
-  };
 
   const handleDeleteClick = async () => {
 
     try {await axios
       .delete(
-                `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
+                `http://localhost:4000/feeds/deleteFeed/${selectedId}`
               ).then((res) => res);
       setDeleteFeed(false);
     } catch (error) {
@@ -126,13 +152,13 @@ function Feed() {
     formData.append("published", "Yes");
     try {
       await axios.post(
-        "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/add",
+        "http://localhost:4000/feeds/add",
         formData
       );
-      alert("Added");
+      openNotificationWithIcon('success',"Feed Added Successfully")
       setIsModalVisible(false);
     } catch (error) {
-      alert("Error Occcured");
+      openNotificationWithIcon('error',"Something Went Wrong Please Check","Error")
     }
   };
 
@@ -146,7 +172,7 @@ function Feed() {
     try {
       await axios
         .put(
-          `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/updateFeed/${selectedId}`,
+          `http://localhost:4000/feeds/updateFeed/${selectedId}`,
           formData,
           {
             imageUrl: selectedFile,
@@ -161,11 +187,13 @@ function Feed() {
           }
         )
         .then((response) => {
+          openNotificationWithIcon('success',"Feed Added Successfully")
           setFeedData(response.data);
         });
     } catch (error) {
       setIsUpdateModalVisible(false);
-      alert("err");
+      openNotificationWithIcon('error',"Something Went Wrong Please Check","Error")
+      // alert("err");
     }
   };
 
@@ -236,6 +264,7 @@ function Feed() {
                   label="Image">
                     <Input 
                     type="file" 
+                    accept = "image/*"
                     onChange={fileHandler} />
                     <img src={selectedFile} alt="img" />
                   </Form.Item>
@@ -305,6 +334,8 @@ function Feed() {
                   rules={[
                     {
                       required: true,
+                      pattern : "^[A-Za-z0-9].{2,16}$",
+                      message:"Title Should be 3-16 characters and shouldn't include any special character!", 
                     },
                   ]}
                 >

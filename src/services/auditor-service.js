@@ -1,6 +1,20 @@
 import axios from "axios";
-import Swal from "sweetalert2";
+import { notification } from 'antd';
+const openNotificationWithIcon = (type,message,title) => {
 
+  if(type==="success"){
+    notification[type]({
+      message: title,
+      description:"Auditor Id : "+message,
+    });
+  }else{
+    notification[type]({
+      message: title,
+      description:message,
+    });
+  }
+  
+};
 export default function AuditorService() {
   const http = axios.create({
     baseURL:
@@ -21,28 +35,26 @@ export default function AuditorService() {
     const data = await http
       .put("/users/updateAll/" + user.id, user)
       .then((res) => res);
-      console.log(data.status === 200);
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Updated Successfully",
-      showConfirmButton: true,
-      timer: 2500,
-    });
+      console.log(data.status === 200)
+      if (data.status === 200) {
+        openNotificationWithIcon('success',"successfully Updated!","Success")
+      } else
+       {
+        openNotificationWithIcon('Error',"Error in Updating","Error")
+      }
   }
 
   async function deleteAuditors(Id) {
     const data = await http
       .put("/users/deleteUser/" + Id, {})
       .then((res) => res);
-      console.log(data.status === 200);
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Deleted Successfully",
-      showConfirmButton: true,
-      timer: 2500,
-    });
+      console.log(data.status === 200)
+      if (data.status === 200) {
+        openNotificationWithIcon('success',"successfully Deleted!","Success")
+      } else
+       {
+        openNotificationWithIcon('Error',"Error in Deleting","Error")
+      }
   }
   return {
     getAuditors,
