@@ -196,6 +196,76 @@ function LandOwner() {
 
   };
 
+//   const handleUpdateLandOwner = async () => {
+// // const formData = new FormData();
+//     // formData.append("registerNumber", registerNumber);
+//     // formData.append("landOwnerName", landOwnerName);
+//     // formData.append("landOwnerFullname", landOwnerFullname);
+//     // formData.append("contact", contactNumber);
+//     // formData.append("email", email);
+//     // formData.append("country", country);
+//     // formData.append("address", landAddress);
+//     // formData.append("longitude", longitude);
+//     // formData.append("latitude", latitude);
+//     // formData.append("bankAccountNumber", bankAccountNumber);
+//     // formData.append("bankName", bankName);
+//     // formData.append("bankBranch", bankBranch);
+//     // formData.append("noOfTrees", noOfTrees);
+//     // formData.append("perimeter", perimeter);
+
+//     const landData = {
+//       registerNumber: registerNumber,
+//       landOwnerName: landOwnerName,
+//       landOwnerFullname: landOwnerFullname,
+//       contactNumber: contactNumber.toString(),
+//       email: email,
+//       country: country,
+//       landAddress: landAddress,
+//       longitude: longitude,
+//       latitude: latitude,
+//       bankAccountNumber: bankAccountNumber,
+//       bankName: bankName,
+//       bankBranch: bankBranch,
+//       noOfTrees: noOfTrees,
+//       perimeter: perimeter,
+//     };
+
+//     try {
+//       await updateLandOwnerById(selectedId, landData);
+//       setIsUpdateModalVisible(false);
+//     } catch (error) {
+//       console.log(error);
+//       setIsUpdateModalVisible(false);
+//     }
+   
+//   };
+
+  const handleUpdateClick = async () => {
+    
+    const landData = {
+      landOwnerName: updateLandOwnerName,
+      landOwnerFullname: updateLandOwnerFullName,
+      contactNumber: updateContactNumber.toString(),
+      country: updateCountry,
+      landAddress: updateLandAddress,
+      longitude: updateLongitude,
+      latitude: updateLatitude,
+      bankAccountNumber: updateBankAccountNumber,
+      bankName: updateBankName,
+      bankBranch: updateBankBranch,
+    };
+
+    try {
+      await updateLandOwnerById(selectedId, landData);
+      setIsUpdateModalVisible(false);
+    } catch (error) {
+      setIsUpdateModalVisible(false);
+    }
+
+    
+  };
+
+
 
 
   const approveLandOwner = async (selectedId_) => {
@@ -242,32 +312,6 @@ function LandOwner() {
     
   };
 
-
-
-  const handleUpdateClick = async () => {
-    
-    const landData = {
-      landOwnerName: updateLandOwnerName,
-      landOwnerFullname: updateLandOwnerFullName,
-      contactNumber: updateContactNumber.toString(),
-      country: updateCountry,
-      landAddress: updateLandAddress,
-      longitude: updateLongitude,
-      latitude: updateLatitude,
-      bankAccountNumber: updateBankAccountNumber,
-      bankName: updateBankName,
-      bankBranch: updateBankBranch,
-    };
-
-    try {
-      await updateLandOwnerById(selectedId, landData);
-      setIsUpdateModalVisible(false);
-    } catch (error) {
-      setIsUpdateModalVisible(false);
-    }
-
-    
-  };
 
 
   return (
@@ -447,7 +491,7 @@ function LandOwner() {
                 title="Add New Land Owner"
                 visible={isModalVisible}
                 onCancel={handleCancel}
-                onOk={() => handleAddFormSubmit()}
+                onOk={() => {handleAddFormSubmit()}}
                 destroyOnClose={true}
               >
               <Form {...layout} autoComplete="off">
@@ -476,6 +520,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[A-Za-z]",
                       message: "Please enter land owner name"
                     },
                     {
@@ -497,6 +542,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[A-Za-z]",
                       message: "Please enter land owner full name"
                     },
                     {
@@ -518,6 +564,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[0-9]",
                       message: "Please enter contact number"
                     },
                     {
@@ -564,6 +611,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[A-Za-z]",
                       message: "Please enter country"
                     },
                     {
@@ -606,6 +654,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[0-9]",
                       message: "Please enter longitude"
                     },
                     {
@@ -626,6 +675,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[0-9]",
                       message: "Please enter latitude"
                     },
                     {
@@ -646,6 +696,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[0-9]",
                       message: "Please enter bank account number"
                     },
                     {
@@ -669,6 +720,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[A-Za-z]",
                       message: "Please enter bank name"
                     },
                     {
@@ -690,6 +742,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[A-Za-z]",
                       message: "Please enter bank branch"
                     },
                     {
@@ -711,6 +764,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[0-9]",
                       message: "Please enter number of trees"
                     },
                     {
@@ -733,6 +787,7 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
+                      pattern: "^[0-9]",
                       message: "Please enter perimeter"
                     },
                     {
@@ -754,7 +809,7 @@ function LandOwner() {
               title="Update Land Owner"
               visible={isUpdateModalVisible}
               onCancel={handleUpdateCancel}
-              onOk={handleUpdateClick}
+              onOk={() => {handleUpdateClick()}}
               destroyOnClose={true}
             >
               <Form autoComplete="off" form={form}>
