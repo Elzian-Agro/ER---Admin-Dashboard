@@ -1,6 +1,5 @@
 import ReactApexChart from "react-apexcharts";
 import { Typography } from "antd";
-import { MinusOutlined } from "@ant-design/icons";
 import mapChart2 from "./configs/mapChart2";
 import { useEffect, useState } from "react";
 
@@ -27,10 +26,6 @@ function MapChart2(props) {
     setData1(props?.data1)
     setData2(props?.data2)
   }, [props])
-
-  console.log('ssssssssssssssss', props.data1)
-  console.log('dddddddddddddddd', props.data2)
-
 
   return (
     <>

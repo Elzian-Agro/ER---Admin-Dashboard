@@ -1,12 +1,5 @@
 const mapChart1 = {
-    series: [
-      {
-        name: "Photosynthetic Biomass (g)",
-        data: [0, 20, 44, 170, 195],
-        offsetY: 0,
-      },
-    ],
-  
+    
     options: {
       chart: {
         width: "100%",

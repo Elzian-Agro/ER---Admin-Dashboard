@@ -1,16 +1,4 @@
 const mapChart2 = {
-    series: [
-      {
-        name: "Average O2 production (L)",
-        data: [0, 9, 15, 45, 58],
-        offsetY: 0,
-      },
-      {
-        name: "Average H2O production (L)",
-        data: [0, 5, 9, 16, 20],
-        offsetY: 0,
-      },
-    ],
   
     options: {
       chart: {

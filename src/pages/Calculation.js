@@ -18,7 +18,7 @@ function Calculation() {
   const [calData, setCalData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [item, setItem] = useState();
-  const [isItemExpired, setIsItemExpired] = useState(false);
+  //const [isItemExpired, setIsItemExpired] = useState(false);
   const [bioMass, setBioMass] = useState([])
   const [h2oVal, setH2oVal] = useState([])
   const [o2Val, setO2val] = useState([])
@@ -45,9 +45,9 @@ function Calculation() {
       return parseFloat(a.servicingYear) - parseFloat(b.servicingYear);
     });
     
-    let preDataForBioMass = filttedArray.map(item => parseFloat(item?.photoBiomass));
-    let preDataForH2o = filttedArray.map(item => parseFloat(item?.volofH2O));
-    let preDataForO2 = filttedArray.map(item => parseFloat(item?.volofOxygen));
+    let preDataForBioMass = sortedArray.map(item => parseFloat(item?.photoBiomass));
+    let preDataForH2o = sortedArray.map(item => parseFloat(item?.volofH2O));
+    let preDataForO2 = sortedArray.map(item => parseFloat(item?.volofOxygen));
     const startingElement = 0
     dataForBioMass = [startingElement].concat(preDataForBioMass)
     dataForH2o = [startingElement].concat(preDataForH2o)
@@ -66,7 +66,7 @@ function Calculation() {
   }
   
   const showModal = (item, isExpired) => {
-    setIsItemExpired(isExpired);
+    //setIsItemExpired(isExpired);
     setItem(item);
     getTreeDetails(item);
     setTimeout(() => {
@@ -81,12 +81,8 @@ function Calculation() {
         setPlants(res);
       }
       getAllPlants();
-    }, []);
-    
-    useEffect(() => {
-      console.log('is', isModalVisible)
-    }, [isModalVisible])
-    
+
+    });
     
     const renderPlants = (plants) => {
       let plant = plants.filter(v => v?.longitude !== null);
@@ -148,7 +144,7 @@ useEffect(() => {
     setCalData(res);
     }
   getDC();
-}, [])
+})
 
 
   return (
