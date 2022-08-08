@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/ER---Admin-Dashboard/static/css/main.666fc9d8.chunk.css",
-    "main.js": "/ER---Admin-Dashboard/static/js/main.83ebb5a1.chunk.js",
-    "main.js.map": "/ER---Admin-Dashboard/static/js/main.83ebb5a1.chunk.js.map",
+    "main.css": "/ER---Admin-Dashboard/static/css/main.f279d442.chunk.css",
+    "main.js": "/ER---Admin-Dashboard/static/js/main.a9bb8ec6.chunk.js",
+    "main.js.map": "/ER---Admin-Dashboard/static/js/main.a9bb8ec6.chunk.js.map",
     "runtime-main.js": "/ER---Admin-Dashboard/static/js/runtime-main.91c37551.js",
     "runtime-main.js.map": "/ER---Admin-Dashboard/static/js/runtime-main.91c37551.js.map",
     "static/css/2.bb0da62a.chunk.css": "/ER---Admin-Dashboard/static/css/2.bb0da62a.chunk.css",
-    "static/js/2.d176c757.chunk.js": "/ER---Admin-Dashboard/static/js/2.d176c757.chunk.js",
-    "static/js/2.d176c757.chunk.js.map": "/ER---Admin-Dashboard/static/js/2.d176c757.chunk.js.map",
+    "static/js/2.b576d1f5.chunk.js": "/ER---Admin-Dashboard/static/js/2.b576d1f5.chunk.js",
+    "static/js/2.b576d1f5.chunk.js.map": "/ER---Admin-Dashboard/static/js/2.b576d1f5.chunk.js.map",
     "index.html": "/ER---Admin-Dashboard/index.html",
     "static/css/2.bb0da62a.chunk.css.map": "/ER---Admin-Dashboard/static/css/2.bb0da62a.chunk.css.map",
-    "static/css/main.666fc9d8.chunk.css.map": "/ER---Admin-Dashboard/static/css/main.666fc9d8.chunk.css.map",
-    "static/js/2.d176c757.chunk.js.LICENSE.txt": "/ER---Admin-Dashboard/static/js/2.d176c757.chunk.js.LICENSE.txt",
-    "static/js/main.83ebb5a1.chunk.js.LICENSE.txt": "/ER---Admin-Dashboard/static/js/main.83ebb5a1.chunk.js.LICENSE.txt",
+    "static/css/main.f279d442.chunk.css.map": "/ER---Admin-Dashboard/static/css/main.f279d442.chunk.css.map",
+    "static/js/2.b576d1f5.chunk.js.LICENSE.txt": "/ER---Admin-Dashboard/static/js/2.b576d1f5.chunk.js.LICENSE.txt",
+    "static/js/main.a9bb8ec6.chunk.js.LICENSE.txt": "/ER---Admin-Dashboard/static/js/main.a9bb8ec6.chunk.js.LICENSE.txt",
     "static/media/ER LOGO.bd958cfc.png": "/ER---Admin-Dashboard/static/media/ER LOGO.bd958cfc.png",
     "static/media/LifeForce LOGO2022.1c283195.jpeg": "/ER---Admin-Dashboard/static/media/LifeForce LOGO2022.1c283195.jpeg",
     "static/media/LifeForce.32a87213.png": "/ER---Admin-Dashboard/static/media/LifeForce.32a87213.png",
@@ -29,6 +29,9 @@
     "static/media/logo-jira.a0d23481.svg": "/ER---Admin-Dashboard/static/media/logo-jira.a0d23481.svg",
     "static/media/logo-shopify.98e3f7cf.svg": "/ER---Admin-Dashboard/static/media/logo-shopify.98e3f7cf.svg",
     "static/media/logo-slack.cd48b339.svg": "/ER---Admin-Dashboard/static/media/logo-slack.cd48b339.svg",
+    "static/media/map-gold-icon.8fc1cd59.svg": "/ER---Admin-Dashboard/static/media/map-gold-icon.8fc1cd59.svg",
+    "static/media/map-green-icon.b9bbd0f9.svg": "/ER---Admin-Dashboard/static/media/map-green-icon.b9bbd0f9.svg",
+    "static/media/map-silver-icon.aa08a7a4.svg": "/ER---Admin-Dashboard/static/media/map-silver-icon.aa08a7a4.svg",
     "static/media/mastercard-logo.e1b9bed1.png": "/ER---Admin-Dashboard/static/media/mastercard-logo.e1b9bed1.png",
     "static/media/paypal-logo-2.e414836f.png": "/ER---Admin-Dashboard/static/media/paypal-logo-2.e414836f.png",
     "static/media/pencil.17725857.svg": "/ER---Admin-Dashboard/static/media/pencil.17725857.svg",
@@ -38,8 +41,8 @@
   "entrypoints": [
     "static/js/runtime-main.91c37551.js",
     "static/css/2.bb0da62a.chunk.css",
-    "static/js/2.d176c757.chunk.js",
-    "static/css/main.666fc9d8.chunk.css",
-    "static/js/main.83ebb5a1.chunk.js"
+    "static/js/2.b576d1f5.chunk.js",
+    "static/css/main.f279d442.chunk.css",
+    "static/js/main.a9bb8ec6.chunk.js"
   ]
 }
