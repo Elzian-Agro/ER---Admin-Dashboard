@@ -31,6 +31,13 @@ export default function AuditorService() {
     return data;
   }
 
+  async function getDataForCalculation() {
+    const data = await http.get("/auditings/getAuditCalculation").then((res) => res.data.Result);
+    return data;
+  }
+  
+
+
   async function updateAuditors(user) {
     const data = await http
       .put("/users/updateAll/" + user.id, user)
@@ -60,5 +67,6 @@ export default function AuditorService() {
     getAuditors,
     updateAuditors,
     deleteAuditors,
+    getDataForCalculation,
   };
 }

@@ -5,7 +5,7 @@ const openNotificationWithIcon = (type,message,title) => {
   if(type==="success"){
     notification[type]({
       message: title,
-      description:"Auditor Id : "+message,
+      description:"Landowner Id : "+message,
     });
   }else{
     notification[type]({
@@ -75,7 +75,7 @@ export default function DataService() {
       openNotificationWithIcon('success',"successfully Approved!","Success")
     } else
      {
-      openNotificationWithIcon('Error',"Error in Approve","Error")
+      openNotificationWithIcon('Error',"Error in Approving","Error")
     }
     // return data;
   }
@@ -84,10 +84,10 @@ export default function DataService() {
     const data = await http.put("/landOwners/unApproveLandowner/" + Id).then((res) => res);
     console.log(data.status === 200)
     if (data.status === 200) {
-      openNotificationWithIcon('success',"successfully Unapprove!","Success")
+      openNotificationWithIcon('success',"successfully Unapproved!","Success")
     } else
      {
-      openNotificationWithIcon('Error',"Error in Unapprove","Error")
+      openNotificationWithIcon('Error',"Error in Unapproving","Error")
     }
     // return data;
   }

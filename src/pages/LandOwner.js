@@ -12,7 +12,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
 import Typography from "@mui/material/Typography";
 import { Button, Modal, Form, Input } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 import Stack from "@mui/material/Stack";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
@@ -66,24 +65,24 @@ const useStyles = makeStyles({
 function LandOwner() {
   const classes = useStyles();
   const [data, setData] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  // const [isModalVisible, setIsModalVisible] = useState(false);
   const [deleteFeed, setDeleteFeed] = useState(false);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState("");
-  const [registerNumber, setRegisterNumber] = useState("");
-  const [landOwnerName, setLandOwnerName] = useState("");
-  const [landOwnerFullname, setLandOwnerFullName] = useState("");
-  const [contactNumber, setLandONContact] = useState("");
-  const [email, setEmail] = useState("");
-  const [country, setCountry] = useState("");
-  const [landAddress, setLandAddress] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [latitude, setLatitude] = useState("");
-  const [bankAccountNumber, setBankAccountNumber] = useState("");
-  const [bankName, setBankName] = useState("");
-  const [bankBranch, setBankBranch] = useState("");
-  const [noOfTrees, setNoTrees] = useState("");
-  const [perimeter, setPerimeter] = useState("");
+  // const [registerNumber, setRegisterNumber] = useState("");
+  // const [landOwnerName, setLandOwnerName] = useState("");
+  // const [landOwnerFullname, setLandOwnerFullName] = useState("");
+  // const [contactNumber, setLandONContact] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [country, setCountry] = useState("");
+  // const [landAddress, setLandAddress] = useState("");
+  // const [longitude, setLongitude] = useState("");
+  // const [latitude, setLatitude] = useState("");
+  // const [bankAccountNumber, setBankAccountNumber] = useState("");
+  // const [bankName, setBankName] = useState("");
+  // const [bankBranch, setBankBranch] = useState("");
+  // const [noOfTrees, setNoTrees] = useState("");
+  // const [perimeter, setPerimeter] = useState("");
   const [updateLandOwnerName, setUpdateLandOwnerName] = useState("");
   const [updateLandOwnerFullName, setUpdateLandOwnerFullName] = useState("");
   const [updateContactNumber, setUpdateLandONContact] = useState("");
@@ -101,7 +100,7 @@ function LandOwner() {
     getLandOwners,
     deleteLandOwnerById,
     updateLandOwnerById,
-    addNewLandOwner,
+    // addNewLandOwner,
     approveLandOwnerById,
     unApproveLandOwnerById,
   } = service();
@@ -122,13 +121,13 @@ function LandOwner() {
   // }
 
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
+  // const showModal = () => {
+  //   setIsModalVisible(true);
+  // };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  // const handleCancel = () => {
+  //   setIsModalVisible(false);
+  // };
 
   const showUpdateModal = () => {
     setIsUpdateModalVisible(true);
@@ -138,64 +137,64 @@ function LandOwner() {
     setIsUpdateModalVisible(false);
   };
 
-  const layout = {
-    labelCol: {
-      span: 8,
-    },
-    wrapperCol: {
-      span: 16,
-    },
-  };
+  // const layout = {
+  //   labelCol: {
+  //     span: 8,
+  //   },
+  //   wrapperCol: {
+  //     span: 16,
+  //   },
+  // };
 
 
-  const handleAddFormSubmit = async () => {
-    //   // store the states in the form data
+  // const handleAddFormSubmit = async () => {
+  //     // store the states in the form data
 
-    // const formData = new FormData();
-    // formData.append("registerNumber", registerNumber);
-    // formData.append("landOwnerName", landOwnerName);
-    // formData.append("landOwnerFullname", landOwnerFullname);
-    // formData.append("contact", contactNumber);
-    // formData.append("email", email);
-    // formData.append("country", country);
-    // formData.append("address", landAddress);
-    // formData.append("longitude", longitude);
-    // formData.append("latitude", latitude);
-    // formData.append("bankAccountNumber", bankAccountNumber);
-    // formData.append("bankName", bankName);
-    // formData.append("bankBranch", bankBranch);
-    // formData.append("noOfTrees", noOfTrees);
-    // formData.append("perimeter", perimeter);
+  //   const formData = new FormData();
+  //   formData.append("registerNumber", registerNumber);
+  //   formData.append("landOwnerName", landOwnerName);
+  //   formData.append("landOwnerFullname", landOwnerFullname);
+  //   formData.append("contact", contactNumber);
+  //   formData.append("email", email);
+  //   formData.append("country", country);
+  //   formData.append("address", landAddress);
+  //   formData.append("longitude", longitude);
+  //   formData.append("latitude", latitude);
+  //   formData.append("bankAccountNumber", bankAccountNumber);
+  //   formData.append("bankName", bankName);
+  //   formData.append("bankBranch", bankBranch);
+  //   formData.append("noOfTrees", noOfTrees);
+  //   formData.append("perimeter", perimeter);
 
     
-    const landData = {
-      registerNumber: registerNumber,
-      landOwnerName: landOwnerName,
-      landOwnerFullname: landOwnerFullname,
-      contactNumber: contactNumber.toString(),
-      email: email,
-      country: country,
-      landAddress: landAddress,
-      longitude: longitude,
-      latitude: latitude,
-      bankAccountNumber: bankAccountNumber,
-      bankName: bankName,
-      bankBranch: bankBranch,
-      noOfTrees: noOfTrees,
-      perimeter: perimeter,
-    };
+  //   const landData = {
+  //     registerNumber: registerNumber,
+  //     landOwnerName: landOwnerName,
+  //     landOwnerFullname: landOwnerFullname,
+  //     contactNumber: contactNumber.toString(),
+  //     email: email,
+  //     country: country,
+  //     landAddress: landAddress,
+  //     longitude: longitude,
+  //     latitude: latitude,
+  //     bankAccountNumber: bankAccountNumber,
+  //     bankName: bankName,
+  //     bankBranch: bankBranch,
+  //     noOfTrees: noOfTrees,
+  //     perimeter: perimeter,
+  //   };
 
-    try {
-      await addNewLandOwner(landData);
-      setIsModalVisible(false);
-    } catch (error) {
-      alert("Error Occcured");
-      setIsModalVisible(false);
-    }
+  //   try {
+  //     await addNewLandOwner(landData);
+  //     setIsModalVisible(false);
+  //   } catch (error) {
+  //     alert("Error Occcured");
+  //     setIsModalVisible(false);
+  //   }
     
     
 
-  };
+  // };
 
 //   const handleUpdateLandOwner = async () => {
 // // const formData = new FormData();
@@ -261,9 +260,7 @@ function LandOwner() {
       setIsUpdateModalVisible(false);
     } catch (error) {
       setIsUpdateModalVisible(false);
-    }
-
-    
+    }  
   };
 
 
@@ -332,9 +329,9 @@ function LandOwner() {
           className={classes.headerSearch}
           onChange={(event) => {setSearchLandOwner(event.target.value)}}
         />
-        <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
+        {/* <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
           New
-        </Button>
+        </Button> */}
 
       
 
@@ -488,7 +485,7 @@ function LandOwner() {
               </TableRow>
             ))}
 
-              <Modal
+              {/* <Modal
                 title="Add New Land Owner"
                 visible={isModalVisible}
                 onCancel={handleCancel}
@@ -803,7 +800,7 @@ function LandOwner() {
                   />
                 </Form.Item>
               </Form>
-            </Modal>
+            </Modal> */}
 
 
             <Modal
@@ -994,7 +991,6 @@ function LandOwner() {
                 >
                   <Input name="updateLatitude" onChange={(event) => setUpdateLatitude(event.target.value)}/>
                 </Form.Item>
-
               </Form>
             </Modal>
           </TableBody>
