@@ -106,13 +106,14 @@ function LandOwner() {
     unApproveLandOwnerById,
   } = service();
 
+
   useEffect(() => {
     async function getAllLandOwners() {
       const res = await getLandOwners();
       setData(res);
     }
     getAllLandOwners();
-  }, [getLandOwners]);
+  }, []);
 
   // const getAllLandOwners = async () => {
   //   const res = await getLandOwners();

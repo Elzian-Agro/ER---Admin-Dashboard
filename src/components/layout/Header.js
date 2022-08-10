@@ -260,7 +260,7 @@ function Header({
       setProfileData({ userName, email, profImage });
     }
     fetchData();
-  }, [getProfile]);
+  }, []);
 
   const showDrawer = () => setVisible(true);
   const hideDrawer = () => setVisible(false);
