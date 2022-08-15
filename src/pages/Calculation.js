@@ -92,12 +92,11 @@ function Calculation() {
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         const isExpired = (diffDays > 1460) ? (true) : (false);
         const invested = (item?.investment===1) ? (true) : (false);
-        console.log('landOwners', diffDays);
           return (
             <Marker
               eventHandlers={{
                 click: (e) => {
-                  showModal(item, isExpired, invested);
+                  showModal(item, invested, isExpired );
                 },
               }}
               position={[item?.latitude, item?.longitude]} 
