@@ -64,7 +64,7 @@ function Calculation() {
     
   }
   
-  const showModal = (item,invested) => {
+  const showModal = (item, invested) => {
     setInvested(invested);
     setItem(item);
     getTreeDetails(item);
@@ -80,7 +80,7 @@ function Calculation() {
         setPlants(res);
       }
       getAllPlants();
-
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     
   const renderPlants = (plants) => {
@@ -91,7 +91,7 @@ function Calculation() {
         const diffTime = Math.abs(today - dateofPlanting);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         const isExpired = (diffDays > 1460) ? (true) : (false);
-        const invested = item?.investment ? (true) : (false);
+        const invested = (item?.investment===1) ? (true) : (false);
         console.log('landOwners', diffDays);
           return (
             <Marker
@@ -137,6 +137,7 @@ useEffect(() => {
     setCalData(res);
   }
   getDC();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [])
 
 const displayButton = (invested) => {
