@@ -140,7 +140,7 @@ function TreeSpecies() {
       setData(res);
     }
     getTreeSpecies()
-  }, []);
+  }, [getAllTreeSpecies]);
 
   const showModal = () => {
     setIsModalVisible(true);

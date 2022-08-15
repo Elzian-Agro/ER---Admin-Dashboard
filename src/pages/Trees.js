@@ -114,7 +114,7 @@ const Trees = () => {
       );
     }
     fetchData();
-  }, []);
+  }, [getPlantedTrees]);
 
   // useEffect(() => {
   //   async function fetchData() {

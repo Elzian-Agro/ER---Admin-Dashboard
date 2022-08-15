@@ -112,8 +112,7 @@ function LandOwner() {
       setData(res);
     }
     getAllLandOwners();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getLandOwners]);
 
   // const getAllLandOwners = async () => {
   //   const res = await getLandOwners();
