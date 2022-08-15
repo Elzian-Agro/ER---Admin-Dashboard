@@ -105,6 +105,7 @@ function LandOwner() {
     unApproveLandOwnerById,
   } = service();
 
+
   useEffect(() => {
     async function getAllLandOwners() {
       const res = await getLandOwners();

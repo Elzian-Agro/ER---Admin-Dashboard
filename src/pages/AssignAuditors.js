@@ -53,7 +53,7 @@ const AssignAuditors = () => {
 
   const columns = [
     {
-      title: "LAND OWNER NAME / CONTACT NUMBER",
+      title: "LAND OWNER NAME / CONTACT",
       render: (record) => (
         <React.Fragment>
           <Avatar.Group>
@@ -76,7 +76,7 @@ const AssignAuditors = () => {
       responsive: ["xs"]
     },
     {
-      title: "ASSIGNED AUDITOR / ASSIGN AUDITOR",
+      title: "ASSIGN AUDITOR",
       render: (record) => (
         <React.Fragment>
           <Title style={styles.preventInlineText} level={5}> <Badge status="success" /> {record.assignAuditorname}</Title>
@@ -99,12 +99,15 @@ const AssignAuditors = () => {
       render: (index, record) => (
         <>
           <Avatar.Group>
+            <div style={{height:'40px',width:'40px',margin:'10px'}}>
             <Avatar
               className="shape-avatar"
               shape="square"
               size={40}
               src={null}
             ></Avatar>
+            </div>
+            
             <div className="avatar-info">
               <Title style={styles.preventInlineText} level={5}>{record.landOwnerFullname}</Title>
               <p style={styles.preventInlineText} >{record.registerNumber}</p>
@@ -180,7 +183,7 @@ const AssignAuditors = () => {
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
     };
 
-    const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landOwners/getLandOwners/getLandOwnersGapCreateDateAssignDate`, { headers });
+    const res = await axios.get(`http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/landOwners/getLandOwners/getLandOwnersGapCreateDateAssignDate`, { headers });
  
     setdata(
       res.data.Result.map((row) => ({
@@ -214,7 +217,7 @@ const AssignAuditors = () => {
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
     };
 
-    const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/`, { headers });
+    const res = await axios.get(`http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/users/`, { headers });
     setAuditorData(
       res.data.Result.map((auditor) => ({
         id: auditor.userID,
@@ -245,13 +248,11 @@ const AssignAuditors = () => {
     };
     if (auditorId !== '' && id !=='') {
       try {
-        await axios.put(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/landowners/updateAssignAuditorId/${id}`, { assignAuditorID: auditorId }, { headers })
+        await axios.put(`http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/landowners/updateAssignAuditorId/${id}`, { assignAuditorID: auditorId }, { headers })
           .then((response) => {
             if (response.status === 200) {
               openNotificationWithIcon('success',auditorId,"successfully assigned !")
               getData()
-            } else {
-              openNotificationWithIcon('Error',"Error in assigning","Error")
             }
           });
       } catch (err) {

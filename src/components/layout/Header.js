@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect ,useContext} from "react";
+import {LoginContext} from "../helper/Context"
 
 import {
   Row,
@@ -250,6 +251,8 @@ function Header({
   const [sidenavType, setSidenavType] = useState("transparent");
   const [profileData, setProfileData] = useState({});
 
+  const {setIsLoggedIn,setUser}= useContext(LoginContext);
+
   const { getProfile } = service();
 
   useEffect(() => window.scrollTo(0, 0), []);
@@ -258,9 +261,16 @@ function Header({
     async function fetchData() {
       const { userName, email, profImage } = await getProfile();
       setProfileData({ userName, email, profImage });
+      if(userName){
+        setIsLoggedIn(true)
+        setUser(userName)
+      }else{
+        setIsLoggedIn(false)
+      }
     }
     fetchData();
-  }, [getProfile]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const showDrawer = () => setVisible(true);
   const hideDrawer = () => setVisible(false);
