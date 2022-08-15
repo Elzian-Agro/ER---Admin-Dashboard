@@ -3,15 +3,15 @@ import { Menu } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 import logo from "../../assets/images/earth-restoration-logo.png";
 import {LoginContext} from "../helper/Context";
-//import userType from "../userType";
+
 
 function Sidenav({ color }) {
   const { pathname } = useLocation();
   const page = pathname.replace("/", "");
-  //const { admin } = userType();
+
  const {user}= useContext(LoginContext);
   
-  console.log(user)
+
   const dashboard = [
     <svg
       width="20"
