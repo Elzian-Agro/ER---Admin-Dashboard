@@ -8,8 +8,9 @@ function Cookie() {
   return cookie;
 }
 
+
 export const http = axios.create({
-  baseURL: "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000",
+  baseURL: "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
   headers: {
     "Content-type": "application/json",
     "x-auth-token": Cookie,

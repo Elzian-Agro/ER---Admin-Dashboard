@@ -25,13 +25,12 @@ const { Content } = Layout;
 
 export default function SignIn() {
   const { AuthSignin } = AuthService();
-  // function when validation success
+  // when validation success
   const onFinish = (values) => {
-    console.log("Success:", values);
     AuthSignin(values);
   };
 
-  // function when validation unsuccess
+  // when validation unsuccess
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };

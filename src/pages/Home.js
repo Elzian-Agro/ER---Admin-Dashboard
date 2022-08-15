@@ -38,11 +38,10 @@ import ava1 from "../assets/images/icons8-owner-64.png";
 import card from "../assets/images/LifeForce LOGO2022.jpeg";
 
 function Home() {
+  const [reverse, setReverse] = useState(false);
   const { Title, Text } = Typography;
 
   const onChange = (e) => console.log(`radio checked:${e.target.value}`);
-
-  const [reverse, setReverse] = useState(false);
 
   const profile = [
     <svg

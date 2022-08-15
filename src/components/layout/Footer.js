@@ -1,5 +1,5 @@
 import { Layout, Row, Col } from "antd";
-import { HeartFilled } from "@ant-design/icons";
+import { FaTree } from 'react-icons/fa';
 
 function Footer() {
   const { Footer: AntFooter } = Layout;
@@ -9,8 +9,8 @@ function Footer() {
       <Row className="just">
         <Col xs={24} md={12} lg={12}>
           <div className="copyright">
-            © 2022, developed by
-            {<HeartFilled />}
+            © 2022, developed by &nbsp;
+            <FaTree style={{color:'green'}}/>
             <a href="https://agro.elzian.com/" className="font-weight-bold">
               ELZIAN AGRO
             </a>

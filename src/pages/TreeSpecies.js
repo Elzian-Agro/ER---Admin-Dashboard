@@ -7,21 +7,18 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { useCookies } from "react-cookie";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
 import { Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { makeStyles } from "@mui/styles";
-import axios from "axios";
 import { useState, useEffect } from "react";
 import {
   SearchOutlined,
 } from "@ant-design/icons";
-import { treeSpeciesApi } from "../services/tree-species-service";
 
-
+import service from "./../services/tree-species-service";
 
 const useStyles = makeStyles({
   mainHeading: {
@@ -128,22 +125,22 @@ function TreeSpecies() {
   const [updateFlowerColor, setUpdateFlowerColor] = useState("");
   const [updateFruitType, setUpdateFruitType] = useState("");
   const [searchTreeSpecies, setSearchTreeSpecies] = useState("");
-  //const [isApproved] = useState(true);
+  const [form] = Form.useForm();
 
-  const cookies = useCookies(["token"]);
-
-  axios.defaults.headers = {
-    "Content-Type": "application/json",
-    "x-auth-token": cookies.token,
-  };
+  const {
+    getAllTreeSpecies,
+    deleteTreeSpeciesById,
+    updateTreeSpeciesById,
+    addNewTreeSpecies,
+  } = service();
 
   useEffect(() => {
-    treeSpeciesApi()
-      .then((res) => {
-        setData(res.data.Result);
-      })
-  }, [isUpdateModalVisible]);
-
+    const getTreeSpecies = async () => {
+      const res = await getAllTreeSpecies();
+      setData(res);
+    }
+    getTreeSpecies()
+  }, [getAllTreeSpecies]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -175,38 +172,38 @@ function TreeSpecies() {
   const handleAddFormSubmit = async () => {
     //   // store the states in the form data
 
-    const formData = new FormData();
-    formData.append("plantName", plantName);
-    formData.append("commonNames", commonNames);
-    formData.append("botanicalName", botanicalName);
-    formData.append("originofSpecies", originofSpecies);
-    formData.append("family", family);
-    formData.append("afNotationPhysiognomy", afNotationPhysiognomy);
-    formData.append("plantReference_onERPlantDatabase", plantReference_onERPlantDatabase);
-    formData.append("photosyntheticBiomassYear1", photosyntheticBiomassYear1);
-    formData.append("photosyntheticBiomassYear2", photosyntheticBiomassYear2);
-    formData.append("photosyntheticBiomassYear3", photosyntheticBiomassYear3);
-    formData.append("photosyntheticBiomassYear4", photosyntheticBiomassYear4);
-    formData.append("weightPerLeaf", weightPerLeaf);
-    formData.append("leafCycle", leafCycle);
-    formData.append("length", length);
-    formData.append("width", width);
-    formData.append("texture", texture);
-    formData.append("conservationStatus", conservationStatus);
-    formData.append("growthRate", growthRate);
-    formData.append("crownType", crownType);
-    formData.append("propagationMethod", propagationMethod);
-    formData.append("rootType", rootType);
-    formData.append("preferredSolis", preferredSolis);
-    formData.append("impactOnSoil", impactOnSoil);
-    formData.append("salinityTolerance", salinityTolerance);
-    formData.append("humanUses", humanUses);
-    formData.append("economicImportance", economicImportance);
-    formData.append("distribution", distribution);
-    formData.append("lightPreferences", lightPreferences);
-    formData.append("floweringTime", floweringTime);
-    formData.append("flowerColor", flowerColor);
-    formData.append("fruitType", fruitType);
+    // const formData = new FormData();
+    // formData.append("plantName", plantName);
+    // formData.append("commonNames", commonNames);
+    // formData.append("botanicalName", botanicalName);
+    // formData.append("originofSpecies", originofSpecies);
+    // formData.append("family", family);
+    // formData.append("afNotationPhysiognomy", afNotationPhysiognomy);
+    // formData.append("plantReference_onERPlantDatabase", plantReference_onERPlantDatabase);
+    // formData.append("photosyntheticBiomassYear1", photosyntheticBiomassYear1);
+    // formData.append("photosyntheticBiomassYear2", photosyntheticBiomassYear2);
+    // formData.append("photosyntheticBiomassYear3", photosyntheticBiomassYear3);
+    // formData.append("photosyntheticBiomassYear4", photosyntheticBiomassYear4);
+    // formData.append("weightPerLeaf", weightPerLeaf);
+    // formData.append("leafCycle", leafCycle);
+    // formData.append("length", length);
+    // formData.append("width", width);
+    // formData.append("texture", texture);
+    // formData.append("conservationStatus", conservationStatus);
+    // formData.append("growthRate", growthRate);
+    // formData.append("crownType", crownType);
+    // formData.append("propagationMethod", propagationMethod);
+    // formData.append("rootType", rootType);
+    // formData.append("preferredSolis", preferredSolis);
+    // formData.append("impactOnSoil", impactOnSoil);
+    // formData.append("salinityTolerance", salinityTolerance);
+    // formData.append("humanUses", humanUses);
+    // formData.append("economicImportance", economicImportance);
+    // formData.append("distribution", distribution);
+    // formData.append("lightPreferences", lightPreferences);
+    // formData.append("floweringTime", floweringTime);
+    // formData.append("flowerColor", flowerColor);
+    // formData.append("fruitType", fruitType);
 
     
     const treeData = {
@@ -244,57 +241,51 @@ function TreeSpecies() {
     };
 
 
-      axios({
-        method: "post",
-        url: "http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/species/add",
-        data: treeData,
-        headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjUxMzAwNDAzfQ.c2TZs11tgHna5irUHCaehVOGzup6YHE-SnTk9G25rtk" },
-      }).then((response) => {
-        const newTreeSpecies = [...data, treeData];
-        setData(newTreeSpecies);
-        console.log(response.treeData);
-      }).catch(err=>{
-        console.log(err)
-      });
-  
-    setIsModalVisible(false);
+    try {
+      await addNewTreeSpecies(treeData);
+      setIsModalVisible(false);
+    } catch (error) {
+      alert("Error Occcured");
+      setIsModalVisible(false);
+    }
+    
 
   };
 
 
-  function handleUpdateTreeSpecies() {
-    const formData = new FormData();
-    formData.append("plantName", plantName);
-    formData.append("commonNames", commonNames);
-    formData.append("botanicalName", botanicalName);
-    formData.append("originofSpecies", originofSpecies);
-    formData.append("family", family);
-    formData.append("afNotationPhysiognomy", afNotationPhysiognomy);
-    formData.append("plantReference_onERPlantDatabase", plantReference_onERPlantDatabase);
-    formData.append("photosyntheticBiomassYear1", photosyntheticBiomassYear1);
-    formData.append("photosyntheticBiomassYear2", photosyntheticBiomassYear2);
-    formData.append("photosyntheticBiomassYear3", photosyntheticBiomassYear3);
-    formData.append("photosyntheticBiomassYear4", photosyntheticBiomassYear4);
-    formData.append("weightPerLeaf", weightPerLeaf);
-    formData.append("leafCycle", leafCycle);
-    formData.append("length", length);
-    formData.append("width", width);
-    formData.append("texture", texture);
-    formData.append("conservationStatus", conservationStatus);
-    formData.append("growthRate", growthRate);
-    formData.append("crownType", crownType);
-    formData.append("propagationMethod", propagationMethod);
-    formData.append("rootType", rootType);
-    formData.append("preferredSolis", preferredSolis);
-    formData.append("impactOnSoil", impactOnSoil);
-    formData.append("salinityTolerance", salinityTolerance);
-    formData.append("humanUses", humanUses);
-    formData.append("economicImportance", economicImportance);
-    formData.append("distribution", distribution);
-    formData.append("lightPreferences", lightPreferences);
-    formData.append("floweringTime", floweringTime);
-    formData.append("flowerColor", flowerColor);
-    formData.append("fruitType", fruitType);
+  const handleUpdateTreeSpecies = async () => {
+    // const formData = new FormData();
+    // formData.append("plantName", plantName);
+    // formData.append("commonNames", commonNames);
+    // formData.append("botanicalName", botanicalName);
+    // formData.append("originofSpecies", originofSpecies);
+    // formData.append("family", family);
+    // formData.append("afNotationPhysiognomy", afNotationPhysiognomy);
+    // formData.append("plantReference_onERPlantDatabase", plantReference_onERPlantDatabase);
+    // formData.append("photosyntheticBiomassYear1", photosyntheticBiomassYear1);
+    // formData.append("photosyntheticBiomassYear2", photosyntheticBiomassYear2);
+    // formData.append("photosyntheticBiomassYear3", photosyntheticBiomassYear3);
+    // formData.append("photosyntheticBiomassYear4", photosyntheticBiomassYear4);
+    // formData.append("weightPerLeaf", weightPerLeaf);
+    // formData.append("leafCycle", leafCycle);
+    // formData.append("length", length);
+    // formData.append("width", width);
+    // formData.append("texture", texture);
+    // formData.append("conservationStatus", conservationStatus);
+    // formData.append("growthRate", growthRate);
+    // formData.append("crownType", crownType);
+    // formData.append("propagationMethod", propagationMethod);
+    // formData.append("rootType", rootType);
+    // formData.append("preferredSolis", preferredSolis);
+    // formData.append("impactOnSoil", impactOnSoil);
+    // formData.append("salinityTolerance", salinityTolerance);
+    // formData.append("humanUses", humanUses);
+    // formData.append("economicImportance", economicImportance);
+    // formData.append("distribution", distribution);
+    // formData.append("lightPreferences", lightPreferences);
+    // formData.append("floweringTime", floweringTime);
+    // formData.append("flowerColor", flowerColor);
+    // formData.append("fruitType", fruitType);
 
     
     const treeData = {
@@ -331,36 +322,26 @@ function TreeSpecies() {
       fruitType: updateFruitType
     };
 
-    axios({
-      method: "put",
-      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/species/updateSpecies/${selectedId}`,
-      data: treeData,
-      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-    }).then(() => {
-      const updateTreeSpecies = data.map((tree) => {
-        if(tree.plant_id === selectedId) {
-          return treeData
-        }
-        return tree
-      })
-      setData(updateTreeSpecies)
-    })
-    setIsUpdateModalVisible(false)
-  }
+    try {
+      await updateTreeSpeciesById(selectedId, treeData);
+      setIsUpdateModalVisible(false);
+    } catch (error) {
+      console.log(error);
+      setIsUpdateModalVisible(false);
+    }
+   
+  };
+
 
   const handleDeleteTreeSpecies = async () => {
-    axios({
-      method: "put",
-      url: `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/species/deleteSpecies/${selectedId}`,
-      headers: { "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI" },
-    }).then(()=>{
-      const deleteTrSp = data.filter((tree)=>tree.plant_id !== selectedId);
-      setData(deleteTrSp);
-    }).catch(err=>{
-      console.log(err)
-    });
-    
-    setDeleteTreeSpecies(false);
+
+    try {
+      await deleteTreeSpeciesById(selectedId);
+      setDeleteTreeSpecies(false);
+    } catch (error) {
+      console.log(error);
+      setDeleteTreeSpecies(false);
+    }
   };
 
   return (
@@ -404,14 +385,15 @@ function TreeSpecies() {
                 return row
               } else if (
                 row.plantName.toLowerCase().includes(searchTreeSpecies.toLowerCase()) ||
-                row.commonNames.toLowerCase().includes(searchTreeSpecies.toLowerCase())
+                row.commonNames.toLowerCase().includes(searchTreeSpecies.toLowerCase()) ||
+                row.originofSpecies.toLowerCase().includes(searchTreeSpecies.toLowerCase())
                 ) {
                 return row
               }
               return null
             }).map((row) => (
               <TableRow
-                key={row.id}
+                key={row.plant_id}
                 id={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
@@ -460,6 +442,40 @@ function TreeSpecies() {
                             setUpdateFloweringTime(row.floweringTime);
                             setUpdateFlowerColor(row.flowerColor);
                             setUpdateFruitType(row.fruitType);
+
+                            form.setFieldsValue({
+                              updatePlantName: row.plantName,
+                              updateCommonNames: row.commonNames,
+                              updateBotanicalName: row.botanicalName,
+                              updateOriginofSpecies: row.originofSpecies,
+                              updateFamily: row.family,
+                              updateAfNotationPhysiognomy: row.afNotationPhysiognomy,
+                              updatePlantReference_onERPlantDatabase: row.plantReference_onERPlantDatabase,
+                              updatePhotosyntheticBiomassYear1: row.photosyntheticBiomassYear1,
+                              updatePhotosyntheticBiomassYear2: row.photosyntheticBiomassYear2,
+                              updatePhotosyntheticBiomassYear3: row.photosyntheticBiomassYear3,
+                              updatePhotosyntheticBiomassYear4: row.photosyntheticBiomassYear4,
+                              updateWeightPerLeaf: row.weightPerLeaf,
+                              updateLeafCycle: row.leafCycle,
+                              updateLength: row.length,
+                              updateWidth: row.width,
+                              updateTexture: row.texture,
+                              updateConservationStatus: row.conservationStatus,
+                              updateGrowthRate: row.growthRate,
+                              updateCrownType: row.crownType,
+                              updatePropagationMethod: row.propagationMethod,
+                              updateRootType: row.rootType,
+                              updatePreferredSolis: row.preferredSolis,
+                              updateImpactOnSoil: row.impactOnSoil,
+                              updateSalinityTolerance: row.salinityTolerance,
+                              updateHumanUses: row.humanUses,
+                              updateEconomicImportance: row.economicImportance,
+                              updateDistribution: row.distribution,
+                              updateLightPreferences: row.lightPreferences,
+                              updateFloweringTime: row.floweringTime,
+                              updateFlowerColor: row.flowerColor,
+                              updateFruitType: row.fruitType,
+                            })
                           }}
                         >
                           Edit
@@ -518,6 +534,7 @@ function TreeSpecies() {
             visible={isModalVisible}
             onCancel={handleCancel}
             onOk={() => {handleAddFormSubmit()}}
+            destroyOnClose={true}
           >
           <Form {...layout}>
             <Form.Item
@@ -526,8 +543,14 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter plant name"
+                },
+                {
+                  whitespace: true
                 },
               ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -535,7 +558,19 @@ function TreeSpecies() {
                 onChange={(event) => setPlantName(event.target.value)}
               />
             </Form.Item>
-            <Form.Item name="commonNames" label="Common Names">
+            <Form.Item name="commonNames" label="Common Names" 
+               rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter common names"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
+            >
               <Input
                 type="text"
                 value={commonNames}
@@ -545,6 +580,17 @@ function TreeSpecies() {
             <Form.Item
               name="botanicalName"
               label="Botanical Name"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter botanical name"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -555,6 +601,17 @@ function TreeSpecies() {
             <Form.Item
               name="originofSpecies"
               label="Origin Of Species"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter origin of species"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -565,6 +622,17 @@ function TreeSpecies() {
             <Form.Item
               name="family"
               label="Family"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter family"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -575,6 +643,17 @@ function TreeSpecies() {
             <Form.Item
               name="afNotationPhysiognomy"
               label="af Notation Physiognomy"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter af notation physiognomy"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -585,6 +664,17 @@ function TreeSpecies() {
             <Form.Item
               name="plantReference_onERPlantDatabase"
               label="plantReference_onERPlantDatabase"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter plant preference"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -595,6 +685,17 @@ function TreeSpecies() {
             <Form.Item
               name="photosyntheticBiomassYear1"
               label="Photosynthetic Biomass Year 1"
+                rules={[
+                {
+                  required: true,
+                  pattern: "^[0-9]",
+                  message: "Please enter photosynthetic biomass year 1"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -605,6 +706,17 @@ function TreeSpecies() {
             <Form.Item
               name="photosyntheticBiomassYear2"
               label="Photosynthetic Biomass Year 2"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[0-9]",
+                  message: "Please enter photosynthetic biomass year 2"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -615,6 +727,17 @@ function TreeSpecies() {
             <Form.Item
               name="photosyntheticBiomassYear3"
               label="Photosynthetic Biomass Year 3"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[0-9]",
+                  message: "Please enter photosynthetic biomass year 3"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -625,6 +748,17 @@ function TreeSpecies() {
             <Form.Item
               name="photosyntheticBiomassYear4"
               label="Photosynthetic Biomass Year 4"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[0-9]",
+                  message: "Please enter photosynthetic biomass year 4"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -635,6 +769,17 @@ function TreeSpecies() {
             <Form.Item
               name="weightPerLeaf"
               label="Weight Per Leaf"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[0-9]",
+                  message: "Please enter weight per leaf"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -645,6 +790,17 @@ function TreeSpecies() {
             <Form.Item
               name="leafCycle"
               label="Leaf Cycle"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter leaf cycle"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -655,6 +811,17 @@ function TreeSpecies() {
             <Form.Item
               name="length"
               label="Length"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[0-9]",
+                  message: "Please enter length"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -665,6 +832,17 @@ function TreeSpecies() {
             <Form.Item
               name="width"
               label="Width"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[0-9]",
+                  message: "Please enter width"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -675,6 +853,17 @@ function TreeSpecies() {
             <Form.Item
               name="texture"
               label="Texture"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter texture"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -685,6 +874,17 @@ function TreeSpecies() {
             <Form.Item
               name="conservationStatus"
               label="Conservation Status"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter conservation status"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -695,6 +895,17 @@ function TreeSpecies() {
             <Form.Item
               name="growthRate"
               label="Growth Rate"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[0-9]",
+                  message: "Please enter growth rate"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -705,6 +916,17 @@ function TreeSpecies() {
             <Form.Item
               name="crownType"
               label="Crown Type"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter crown type"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -715,6 +937,17 @@ function TreeSpecies() {
             <Form.Item
               name="propagationMethod"
               label="Propagation Method"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter propagation method"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -725,6 +958,17 @@ function TreeSpecies() {
             <Form.Item
               name="rootType"
               label="Root Type"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter root type"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -735,6 +979,17 @@ function TreeSpecies() {
             <Form.Item
               name="preferredSolis"
               label="Preferred Solis"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter preferred soils"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -745,6 +1000,17 @@ function TreeSpecies() {
             <Form.Item
               name="impactOnSoil"
               label="Impact On Soil"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter impact on soil"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -755,6 +1021,17 @@ function TreeSpecies() {
             <Form.Item
               name="salinityTolerance"
               label="Salinity Tolerance"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter salinity tolerance"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -765,6 +1042,17 @@ function TreeSpecies() {
             <Form.Item
               name="humanUses"
               label="Human Uses"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter human uses"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -775,6 +1063,17 @@ function TreeSpecies() {
             <Form.Item
               name="economicImportance"
               label="Economic Importance"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter economic distribution"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -785,6 +1084,17 @@ function TreeSpecies() {
             <Form.Item
               name="distribution"
               label="Distribution"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter distribution"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -795,6 +1105,17 @@ function TreeSpecies() {
             <Form.Item
               name="lightPreferences"
               label="Light Preferences"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter light preferences"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -805,6 +1126,17 @@ function TreeSpecies() {
             <Form.Item
               name="floweringTime"
               label="Flowering Time"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[0-9]",
+                  message: "Please enter flowering time"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -815,6 +1147,17 @@ function TreeSpecies() {
             <Form.Item
               name="flowerColor"
               label="Flower Color"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter flower color"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -825,6 +1168,17 @@ function TreeSpecies() {
             <Form.Item
               name="fruitType"
               label="Fruit Type"
+              rules={[
+                {
+                  required: true,
+                  pattern: "^[A-Za-z]",
+                  message: "Please enter fruit type"
+                },
+                {
+                  whitespace: true
+                },
+              ]}
+              hasFeedback
             >
               <Input
                 type="text"
@@ -844,10 +1198,10 @@ function TreeSpecies() {
             onOk={() => {handleUpdateTreeSpecies()}}
             destroyOnClose={true}
           >
-            <Form autoComplete="off">
+            <Form autoComplete="off" form={form}>
 
             <Form.Item
-              name="Plant Name"
+              name="updatePlantName"
               label="Plant Name"
               rules={[
                 {
@@ -861,11 +1215,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePlantName" defaultValue={updatePlantName} onChange={(event) => setUpdatePlantName( event.target.value)}/>
+              <Input name="updatePlantName" onChange={(event) => setUpdatePlantName( event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Common Names"
+              name="updateCommonNames"
               label="Common Names"
               rules={[
                 {
@@ -879,11 +1233,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateCommonNames" defaultValue={updateCommonNames} onChange={(event) => setUpdateCommonNames(event.target.value)}/>
+              <Input name="updateCommonNames" onChange={(event) => setUpdateCommonNames(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Botanical Name"
+              name="updateBotanicalName"
               label="Botanical Name"
               rules={[
                 {
@@ -897,11 +1251,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateBotanicalName" defaultValue={updateBotanicalName} onChange={(event) => setUpdateBotanicalName(event.target.value)}/>
+              <Input name="updateBotanicalName" onChange={(event) => setUpdateBotanicalName(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Origin Of Species"
+              name="updateOriginofSpecies"
               label="Origin Of Species"
               rules={[
                 {
@@ -910,17 +1264,15 @@ function TreeSpecies() {
                 },
                 {
                   whitespace: true
-                },
-                { min: 10},
-                { max: 10}
+                }
               ]}
               hasFeedback
             >
-              <Input name="updateOriginofSpecies" defaultValue={updateOriginofSpecies} onChange={(event) => setUpdateOriginofSpecies(event.target.value)}/>
+              <Input name="updateOriginofSpecies" onChange={(event) => setUpdateOriginofSpecies(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Family"
+              name="updateFamily"
               label="Family"
               rules={[
                 {
@@ -934,11 +1286,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateFamily" defaultValue={updateFamily} onChange={(event) => setUpdateFamily({email: event.target.value})}/>
+              <Input name="updateFamily" onChange={(event) => setUpdateFamily({email: event.target.value})}/>
             </Form.Item>
 
             <Form.Item
-              name="Af Notation Physiognomy"
+              name="updateAfNotationPhysiognomy"
               label="Af Notation Physiognomy"
               rules={[
                 {
@@ -951,11 +1303,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateAfNotationPhysiognomy" defaultValue={updateAfNotationPhysiognomy} onChange={(event) => setUpdateAfNotationPhysiognomy(event.target.value)}/>
+              <Input name="updateAfNotationPhysiognomy" onChange={(event) => setUpdateAfNotationPhysiognomy(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Plant Reference_on ER Plant Database"
+              name="updatePlantReference_onERPlantDatabase"
               label="Plant Reference_on ER Plant Database"
               rules={[
                 {
@@ -968,11 +1320,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePlantReference_onERPlantDatabase" defaultValue={updatePlantReference_onERPlantDatabase} onChange={(event) => setUpdatePlantReference_onERPlantDatabase(event.target.value)}/>
+              <Input name="updatePlantReference_onERPlantDatabase" onChange={(event) => setUpdatePlantReference_onERPlantDatabase(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Photosynthetic Biomass Year 1"
+              name="updatePhotosyntheticBiomassYear1"
               label="Photosynthetic Biomass Year 1"
               rules={[
                 {
@@ -985,11 +1337,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePhotosyntheticBiomassYear1" defaultValue={updatePhotosyntheticBiomassYear1} onChange={(event) => setUpdatePhotosyntheticBiomassYear1(event.target.value)}/>
+              <Input name="updatePhotosyntheticBiomassYear1" onChange={(event) => setUpdatePhotosyntheticBiomassYear1(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Photosynthetic Biomass Year 2"
+              name="updatePhotosyntheticBiomassYear2"
               label="Photosynthetic Biomass Year 2"
               rules={[
                 {
@@ -1002,11 +1354,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePhotosyntheticBiomassYear2" defaultValue={updatePhotosyntheticBiomassYear2} onChange={(event) => setUpdatePhotosyntheticBiomassYear2(event.target.value)}/>
+              <Input name="updatePhotosyntheticBiomassYear2" onChange={(event) => setUpdatePhotosyntheticBiomassYear2(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Photosynthetic Biomass Year 3"
+              name="updatePhotosyntheticBiomassYear3"
               label="Photosynthetic Biomass Year 3"
               rules={[
                 {
@@ -1019,11 +1371,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePhotosyntheticBiomassYear3" defaultValue={updatePhotosyntheticBiomassYear3} onChange={(event) => setUpdatePhotosyntheticBiomassYear3(event.target.value)}/>
+              <Input name="updatePhotosyntheticBiomassYear3" onChange={(event) => setUpdatePhotosyntheticBiomassYear3(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Photosynthetic Biomass Year 4"
+              name="updatePhotosyntheticBiomassYear4"
               label="Photosynthetic Biomass Year 4"
               rules={[
                 {
@@ -1036,11 +1388,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePhotosyntheticBiomassYear4" defaultValue={updatePhotosyntheticBiomassYear4} onChange={(event) => setUpdatePhotosyntheticBiomassYear4(event.target.value)}/>
+              <Input name="updatePhotosyntheticBiomassYear4" onChange={(event) => setUpdatePhotosyntheticBiomassYear4(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Weight Per Leaf"
+              name="updateWeightPerLeaf"
               label="Weight Per Leaf"
               rules={[
                 {
@@ -1053,11 +1405,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateWeightPerLeaf" defaultValue={updateWeightPerLeaf} onChange={(event) => setUpdateWeightPerLeaf(event.target.value)}/>
+              <Input name="updateWeightPerLeaf" onChange={(event) => setUpdateWeightPerLeaf(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Leaf Cycle"
+              name="updateLeafCycle"
               label="Leaf Cycle"
               rules={[
                 {
@@ -1070,11 +1422,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateLeafCycle" defaultValue={updateLeafCycle} onChange={(event) => setUpdateLeafCycle(event.target.value)}/>
+              <Input name="updateLeafCycle" onChange={(event) => setUpdateLeafCycle(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Length"
+              name="updateLength"
               label="Length"
               rules={[
                 {
@@ -1088,11 +1440,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateLength" defaultValue={updateLength} onChange={(event) => setUpdateLength(event.target.value)}/>
+              <Input name="updateLength" onChange={(event) => setUpdateLength(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Width"
+              name="updateWidth"
               label="Width"
               rules={[
                 {
@@ -1105,11 +1457,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateWidth" defaultValue={updateWidth} onChange={(event) => setUpdateWidth(event.target.value)}/>
+              <Input name="updateWidth" onChange={(event) => setUpdateWidth(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Texture"
+              name="updateTexture"
               label="Texture"
               rules={[
                 {
@@ -1122,11 +1474,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateTexture" defaultValue={updateTexture} onChange={(event) => setUpdateTexture(event.target.value)}/>
+              <Input name="updateTexture" onChange={(event) => setUpdateTexture(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Conservation Status"
+              name="updateConservationStatus"
               label="Conservation Status"
               rules={[
                 {
@@ -1139,11 +1491,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateConservationStatus" defaultValue={updateConservationStatus} onChange={(event) => setUpdateConservationStatus(event.target.value)}/>
+              <Input name="updateConservationStatus" onChange={(event) => setUpdateConservationStatus(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Growth Rate"
+              name="updateGrowthRate"
               label="Growth Rate"
               rules={[
                 {
@@ -1156,11 +1508,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateGrowthRate" defaultValue={updateGrowthRate} onChange={(event) => setUpdateGrowthRate(event.target.value)}/>
+              <Input name="updateGrowthRate" onChange={(event) => setUpdateGrowthRate(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Crown Type"
+              name="updateCrownType"
               label="Crown Type"
               rules={[
                 {
@@ -1173,11 +1525,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateCrownType" defaultValue={updateCrownType} onChange={(event) => setUpdateCrownType(event.target.value)}/>
+              <Input name="updateCrownType" onChange={(event) => setUpdateCrownType(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Propagation Method"
+              name="updatePropagationMethod"
               label="Propagation Method"
               rules={[
                 {
@@ -1190,11 +1542,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePropagationMethod" defaultValue={updatePropagationMethod} onChange={(event) => setUpdatePropagationMethod(event.target.value)}/>
+              <Input name="updatePropagationMethod" onChange={(event) => setUpdatePropagationMethod(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Root Type"
+              name="updateRootType"
               label="Root Type"
               rules={[
                 {
@@ -1207,11 +1559,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateRootType" defaultValue={updateRootType} onChange={(event) => setUpdateRootType(event.target.value)}/>
+              <Input name="updateRootType" onChange={(event) => setUpdateRootType(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Preferred Soils"
+              name="updatePreferredSolis"
               label="Preferred Soils"
               rules={[
                 {
@@ -1224,11 +1576,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updatePreferredSolis" defaultValue={updatePreferredSolis} onChange={(event) => setUpdatePreferredSolis(event.target.value)}/>
+              <Input name="updatePreferredSolis" onChange={(event) => setUpdatePreferredSolis(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Impact On Soil"
+              name="updateImpactOnSoil"
               label="Impact On Soil"
               rules={[
                 {
@@ -1241,11 +1593,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateImpactOnSoil" defaultValue={updateImpactOnSoil} onChange={(event) => setUpdateImpactOnSoil(event.target.value)}/>
+              <Input name="updateImpactOnSoil" onChange={(event) => setUpdateImpactOnSoil(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Salinity Tolerance"
+              name="updateSalinityTolerance"
               label="Salinity Tolerance"
               rules={[
                 {
@@ -1258,11 +1610,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateSalinityTolerance" defaultValue={updateSalinityTolerance} onChange={(event) => setUpdateSalinityTolerance(event.target.value)}/>
+              <Input name="updateSalinityTolerance" onChange={(event) => setUpdateSalinityTolerance(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Human Uses"
+              name="updateHumanUses"
               label="Human Uses"
               rules={[
                 {
@@ -1275,11 +1627,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateHumanUses" defaultValue={updateHumanUses} onChange={(event) => setUpdateHumanUses(event.target.value)}/>
+              <Input name="updateHumanUses" onChange={(event) => setUpdateHumanUses(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Economic Importance"
+              name="updateEconomicImportance"
               label="Economic Importance"
               rules={[
                 {
@@ -1292,11 +1644,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateEconomicImportance" defaultValue={updateEconomicImportance} onChange={(event) => setUpdateEconomicImportance(event.target.value)}/>
+              <Input name="updateEconomicImportance" onChange={(event) => setUpdateEconomicImportance(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Distribution"
+              name="updateDistribution"
               label="Distribution"
               rules={[
                 {
@@ -1309,11 +1661,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateDistribution" defaultValue={updateDistribution} onChange={(event) => setUpdateDistribution(event.target.value)}/>
+              <Input name="updateDistribution" onChange={(event) => setUpdateDistribution(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Light Preferences"
+              name="updateLightPreferences"
               label="Light Preferences"
               rules={[
                 {
@@ -1326,11 +1678,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateLightPreferences" defaultValue={updateLightPreferences} onChange={(event) => setUpdateLightPreferences(event.target.value)}/>
+              <Input name="updateLightPreferences" onChange={(event) => setUpdateLightPreferences(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Flowering Time"
+              name="updateFloweringTime"
               label="Flowering Time"
               rules={[
                 {
@@ -1343,11 +1695,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateFloweringTime" defaultValue={updateFloweringTime} onChange={(event) => setUpdateFloweringTime(event.target.value)}/>
+              <Input name="updateFloweringTime" onChange={(event) => setUpdateFloweringTime(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Flower Color"
+              name="updateFlowerColor"
               label="Flower Color"
               rules={[
                 {
@@ -1360,11 +1712,11 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateFlowerColor" defaultValue={updateFlowerColor} onChange={(event) => setUpdateFlowerColor(event.target.value)}/>
+              <Input name="updateFlowerColor" onChange={(event) => setUpdateFlowerColor(event.target.value)}/>
             </Form.Item>
 
             <Form.Item
-              name="Fruit Type"
+              name="updateFruitType"
               label="Fruit Type"
               rules={[
                 {
@@ -1377,7 +1729,7 @@ function TreeSpecies() {
               ]}
               hasFeedback
             >
-              <Input name="updateFruitType" defaultValue={updateFruitType} onChange={(event) => setUpdateFruitType(event.target.value)}/>
+              <Input name="updateFruitType" onChange={(event) => setUpdateFruitType(event.target.value)}/>
             </Form.Item>
 
             </Form>

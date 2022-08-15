@@ -1,23 +1,11 @@
-/*!
-=========================================================
-* Muse Ant Design Dashboard - v1.0.0
-=========================================================
-* Product Page: https://www.creative-tim.com/product/muse-ant-design-dashboard
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/muse-ant-design-dashboard/blob/main/LICENSE.md)
-* Coded by Creative Tim
-=========================================================
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import React , {useState , useEffect } from 'react';
-import { Table, Row, Col } from 'antd';
-import axios from 'axios';
 import 'antd/dist/antd.css';
-import { Modal, Button, Card, Form, Input, Avatar, Typography, Select } from 'antd';
+import { Modal, Button, Card, Form, Input, Avatar, Typography, Select, Table, Row, Col } from 'antd';
 
 import { MdEmail, MdPhone }  from "react-icons/md";
 import { makeStyles } from "@mui/styles";
+
+import service from "./../services/auditor-service";
 
 import {
   SearchOutlined,
@@ -40,6 +28,7 @@ const Auditor = () =>{
   const [data, setdata] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [modaldata, setmodaldata] = useState({});
+  const [form] = Form.useForm();
 
   const columns = [
     {
@@ -49,7 +38,7 @@ const Auditor = () =>{
       width: "22%",
       render: (index, record) => (
         <>
-                    <Avatar.Group>
+                    <Avatar.Group key = {index}>
                       <Avatar
                         className="shape-avatar"
                         shape="square"
@@ -71,8 +60,10 @@ const Auditor = () =>{
       dataIndex: "contact",
       render: (index, record) => (
         <>
+        <div key = {index}>
             <Title level={5}> <MdPhone /> {record.contactNumber}</Title>
             <Title level={5}> <MdEmail /> {record.email}</Title>
+            </div>
         </>
       ),
     },
@@ -82,7 +73,7 @@ const Auditor = () =>{
       dataIndex: "address",
       render: (index, record) => (
         <>
-            <Title level={5}>{record.address}</Title>
+            <Title level={5} key = {index}>{record.address}</Title>
         </>
       ),
     },
@@ -92,7 +83,7 @@ const Auditor = () =>{
         dataIndex: "type",
         render: (index, record) => (
           <>
-              <Title level={5}>{record.type}</Title>
+              <Title level={5} key = {index}>{record.type}</Title>
           </>
         ),
       },
@@ -101,28 +92,46 @@ const Auditor = () =>{
       dataIndex: 'id',
       key: 'id',
       render: (index, record) => (
-        <Button type="primary" onClick={() => {
+        <Button key = {index} type="primary" onClick={() => {
           showModal(record)
-          }}>
+
+          form.setFieldsValue({
+            id: record.id,
+            fullName: record.fullName,
+            qualification: record.qualification,
+            imageUri: record.imageUri,
+            contactNumber: record.contactNumber,
+            email: record.email,
+            address: record.address,
+            userType: record.type
+          })
+        }}>
           Edit
         </Button>
       ),
     },
   ];
 
+  const {
+    getAuditors,
+    updateAuditors,
+    deleteAuditors,
+  } = service();
+
+  const getData = async() =>  {
+    const res = await getAuditors();
+    setAllData(res);
+  };
+
   useEffect(() => {
     getData();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
-  const getData = async () => {
-    const headers = {
-      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
-    };
-    
-    const res = await axios.get(`http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/`, {headers});
-    console.log(res)
+  const setAllData = (res) => {
     setdata(
-      res.data.Result.map((row) => ({
+      res.map((row) => ({
+        key: row.userID,
         id: row.userID,
         fullName: row.fullName,
         qualification: row.qualification,
@@ -131,11 +140,10 @@ const Auditor = () =>{
         email: row.email,
         address: row.address,
         type: row.userType,
-        userName: row.userName,
-        DOB: row.DOB,
       }))
     );
-    setTableData(res.data.Result.map((row) => ({
+    setTableData(res.map((row) => ({
+      key: row.userID,
       id: row.userID,
       fullName: row.fullName,
       qualification: row.qualification,
@@ -144,28 +152,18 @@ const Auditor = () =>{
       email: row.email,
       address: row.address,
       type: row.userType,
-      userName: row.userName,
-      DOB: row.DOB,
     })));
-  };
+  }
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [setLoading] = useState(false);
-
-  const [fullName,setFullName] = useState("");
 
   const showModal = (record) => {
-    console.log(record);
-    setFullName(record.fullName);
     setmodaldata(record);
-    console.log(modaldata, fullName);
     setIsModalVisible(true);
   };
 
   const handleOk = () => {
-    setLoading(true);
     setTimeout(() => {
-      setLoading(false);
       setIsModalVisible(false);
     }, 3000);
   };
@@ -183,29 +181,14 @@ const Auditor = () =>{
   };
 
   const handleDeleteClick = (auditorID) => {
-    const user = {}
-    console.log(auditorID)
-    const headers = {
-      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
-    };
-    axios.put(
-      `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/deleteUser/${auditorID}`, user, {headers}
-    ).then((req,res) => {
-      getData()
-      setIsModalVisible(false)
-    });
+    deleteAuditors(auditorID);
+    getData();
+    setIsModalVisible(false);
   };
 
   const handleUpdatelick = (auditorID) => {
-    console.log(auditorID)
-    const headers = {
-      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
-    };
-
-    console.log(typeof(modaldata.contactNumber))
-
     const user = {
-      id: modaldata.userID,
+      id: modaldata.id,
         fullName: modaldata.fullName,
         qualification: modaldata.qualification,
         imageUri: modaldata.imageUri,
@@ -215,14 +198,9 @@ const Auditor = () =>{
         userType: modaldata.type.toString(),
   }
 
-  console.log(user);
-
-  axios.put(
-    `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/users/updateAll/${auditorID}`,user,{headers}
-  ).then((req,res) => {
-    getData();
-    setIsModalVisible(false);
-  });
+  updateAuditors(user);
+  getData();
+  setIsModalVisible(false);
 
   };
 
@@ -240,7 +218,8 @@ const Auditor = () =>{
                   item.address.toLowerCase().includes(searchKey)
                   );
         })
-      setdata(filteredData);
+        console.log(filteredData)
+        setdata(filteredData);
     }
   };
 
@@ -289,7 +268,7 @@ const Auditor = () =>{
           </Button>,
         ]}
       >
-        <Form {...layout}>
+        <Form {...layout} form={form}>
                 <Form.Item
                   name="fullName"
                   label="Full Name"
@@ -305,7 +284,7 @@ const Auditor = () =>{
                   ]}
                   hasFeedback
                 >
-                  <Input name="fullName" placeholder={modaldata.fullName} defaultValue={modaldata.fullName}
+                  <Input name="fullName"
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
@@ -328,7 +307,7 @@ const Auditor = () =>{
                   ]}
                   hasFeedback
                 >
-                  <Input name="qualification" placeholder={modaldata.qualification} defaultValue={modaldata.qualification}
+                  <Input name="qualification"
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
@@ -352,7 +331,7 @@ const Auditor = () =>{
                   ]}
                   hasFeedback
                 >
-                  <Input name="contactNumber" placeholder={modaldata.contactNumber} defaultValue={modaldata.contactNumber}
+                  <Input name="contactNumber"
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
@@ -375,7 +354,7 @@ const Auditor = () =>{
                   ]}
                   hasFeedback
                 >
-                  <Input name="address" placeholder={modaldata.address} defaultValue={modaldata.address}
+                  <Input name="address"
                   onChange={(event) => {
                     setmodaldata({
                       ...modaldata,
