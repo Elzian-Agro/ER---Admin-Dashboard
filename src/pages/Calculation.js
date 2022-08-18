@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Polygon} from 'react-leaflet';
 import { Row, Col, Space } from "antd";
 import L from "leaflet";
 import greenIcon from "../assets/images/map-green-icon.svg";
@@ -43,7 +43,6 @@ function Calculation() {
     const sortedArray = filttedArray.sort((a, b) => {
       return parseFloat(a.servicingYear) - parseFloat(b.servicingYear);
     });
-    
     let preDataForBioMass = sortedArray.map(item => parseFloat(item?.photoBiomass));
     let preDataForH2o = sortedArray.map(item => parseFloat(item?.volofH2O));
     let preDataForO2 = sortedArray.map(item => parseFloat(item?.volofOxygen));
@@ -54,6 +53,8 @@ function Calculation() {
     const landOwnerName = filttedArray.map(item => item?.landOwnerName);
     const contactNumber = filttedArray.map(item => item?.contactNumber);
     const email = filttedArray.map(item => item?.email);
+    const peri = filttedArray.map(item => parseFloat(item?.perimeter));
+    console.log('#################', peri);
     
     setBioMass(dataForBioMass);
     setH2oVal(dataForH2o);
@@ -104,6 +105,28 @@ function Calculation() {
           )
       })
   };
+
+  const renderLand = (calData) => {
+    let land = calData.filter(l => l?.perimeter !==null);
+      return land?.map((land) => {
+        const peri = land?.perimeter;
+        const arr = peri.split(',').map(element => {
+          return Number(element);
+        });
+
+        const polygon = [
+          [arr[0], arr[1]],
+          [arr[2], arr[3]],
+          [arr[4], arr[5]],
+          [arr[6], arr[7]],
+        ]
+        const greenOptions = { color: 'green' , opacity: '0.2' }
+    
+        return(
+          <Polygon pathOptions={greenOptions} positions={polygon} />
+        )
+      }) 
+  }
         
 const markerIconGreen = new L.Icon({
   iconUrl : greenIcon,
@@ -188,6 +211,7 @@ const displayButton = (invested) => {
     }
   }
 
+
   return (
     <MapContainer center={[6.8259, 80.9982]} zoom={11} scrollWheelZoom={true}>
       <TileLayer
@@ -195,6 +219,8 @@ const displayButton = (invested) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {renderPlants(plants)}
+
+      {renderLand(calData)}
     
       <Modal 
         title= {[ <b>{item?.treeSpecies} </b>,<br/>, '( ',item?.treeID, ' )']}
