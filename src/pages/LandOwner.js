@@ -18,9 +18,7 @@ import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import { makeStyles } from "@mui/styles";
 import { useState, useEffect } from "react";
-import {
-  SearchOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 
 import service from "./../services/landowner-service";
 
@@ -40,7 +38,7 @@ const useStyles = makeStyles({
 
   featuredButton: {
     fontSize: "12px",
-    width: "80px"
+    width: "80px",
   },
 
   approveButton: {
@@ -58,31 +56,16 @@ const useStyles = makeStyles({
     width: "300px",
     borderRadius: "5px",
     marginRight: "10px",
-    marginLeft: "10px"
-  }
+    marginLeft: "10px",
+  },
 });
 
 function LandOwner() {
   const classes = useStyles();
   const [data, setData] = useState([]);
-  // const [isModalVisible, setIsModalVisible] = useState(false);
   const [deleteFeed, setDeleteFeed] = useState(false);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState("");
-  // const [registerNumber, setRegisterNumber] = useState("");
-  // const [landOwnerName, setLandOwnerName] = useState("");
-  // const [landOwnerFullname, setLandOwnerFullName] = useState("");
-  // const [contactNumber, setLandONContact] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [country, setCountry] = useState("");
-  // const [landAddress, setLandAddress] = useState("");
-  // const [longitude, setLongitude] = useState("");
-  // const [latitude, setLatitude] = useState("");
-  // const [bankAccountNumber, setBankAccountNumber] = useState("");
-  // const [bankName, setBankName] = useState("");
-  // const [bankBranch, setBankBranch] = useState("");
-  // const [noOfTrees, setNoTrees] = useState("");
-  // const [perimeter, setPerimeter] = useState("");
   const [updateLandOwnerName, setUpdateLandOwnerName] = useState("");
   const [updateLandOwnerFullName, setUpdateLandOwnerFullName] = useState("");
   const [updateContactNumber, setUpdateLandONContact] = useState("");
@@ -100,11 +83,9 @@ function LandOwner() {
     getLandOwners,
     deleteLandOwnerById,
     updateLandOwnerById,
-    // addNewLandOwner,
     approveLandOwnerById,
     unApproveLandOwnerById,
   } = service();
-
 
   useEffect(() => {
     async function getAllLandOwners() {
@@ -114,21 +95,6 @@ function LandOwner() {
     getAllLandOwners();
   }, [getLandOwners]);
 
-  // const getAllLandOwners = async () => {
-  //   const res = await getLandOwners();
-  //   console.log("response data ",{res})
-  //   setData(res);
-  // }
-
-
-  // const showModal = () => {
-  //   setIsModalVisible(true);
-  // };
-
-  // const handleCancel = () => {
-  //   setIsModalVisible(false);
-  // };
-
   const showUpdateModal = () => {
     setIsUpdateModalVisible(true);
   };
@@ -137,111 +103,7 @@ function LandOwner() {
     setIsUpdateModalVisible(false);
   };
 
-  // const layout = {
-  //   labelCol: {
-  //     span: 8,
-  //   },
-  //   wrapperCol: {
-  //     span: 16,
-  //   },
-  // };
-
-
-  // const handleAddFormSubmit = async () => {
-  //     // store the states in the form data
-
-  //   const formData = new FormData();
-  //   formData.append("registerNumber", registerNumber);
-  //   formData.append("landOwnerName", landOwnerName);
-  //   formData.append("landOwnerFullname", landOwnerFullname);
-  //   formData.append("contact", contactNumber);
-  //   formData.append("email", email);
-  //   formData.append("country", country);
-  //   formData.append("address", landAddress);
-  //   formData.append("longitude", longitude);
-  //   formData.append("latitude", latitude);
-  //   formData.append("bankAccountNumber", bankAccountNumber);
-  //   formData.append("bankName", bankName);
-  //   formData.append("bankBranch", bankBranch);
-  //   formData.append("noOfTrees", noOfTrees);
-  //   formData.append("perimeter", perimeter);
-
-    
-  //   const landData = {
-  //     registerNumber: registerNumber,
-  //     landOwnerName: landOwnerName,
-  //     landOwnerFullname: landOwnerFullname,
-  //     contactNumber: contactNumber.toString(),
-  //     email: email,
-  //     country: country,
-  //     landAddress: landAddress,
-  //     longitude: longitude,
-  //     latitude: latitude,
-  //     bankAccountNumber: bankAccountNumber,
-  //     bankName: bankName,
-  //     bankBranch: bankBranch,
-  //     noOfTrees: noOfTrees,
-  //     perimeter: perimeter,
-  //   };
-
-  //   try {
-  //     await addNewLandOwner(landData);
-  //     setIsModalVisible(false);
-  //   } catch (error) {
-  //     alert("Error Occcured");
-  //     setIsModalVisible(false);
-  //   }
-    
-    
-
-  // };
-
-//   const handleUpdateLandOwner = async () => {
-// // const formData = new FormData();
-//     // formData.append("registerNumber", registerNumber);
-//     // formData.append("landOwnerName", landOwnerName);
-//     // formData.append("landOwnerFullname", landOwnerFullname);
-//     // formData.append("contact", contactNumber);
-//     // formData.append("email", email);
-//     // formData.append("country", country);
-//     // formData.append("address", landAddress);
-//     // formData.append("longitude", longitude);
-//     // formData.append("latitude", latitude);
-//     // formData.append("bankAccountNumber", bankAccountNumber);
-//     // formData.append("bankName", bankName);
-//     // formData.append("bankBranch", bankBranch);
-//     // formData.append("noOfTrees", noOfTrees);
-//     // formData.append("perimeter", perimeter);
-
-//     const landData = {
-//       registerNumber: registerNumber,
-//       landOwnerName: landOwnerName,
-//       landOwnerFullname: landOwnerFullname,
-//       contactNumber: contactNumber.toString(),
-//       email: email,
-//       country: country,
-//       landAddress: landAddress,
-//       longitude: longitude,
-//       latitude: latitude,
-//       bankAccountNumber: bankAccountNumber,
-//       bankName: bankName,
-//       bankBranch: bankBranch,
-//       noOfTrees: noOfTrees,
-//       perimeter: perimeter,
-//     };
-
-//     try {
-//       await updateLandOwnerById(selectedId, landData);
-//       setIsUpdateModalVisible(false);
-//     } catch (error) {
-//       console.log(error);
-//       setIsUpdateModalVisible(false);
-//     }
-   
-//   };
-
   const handleUpdateClick = async () => {
-    
     const landData = {
       landOwnerName: updateLandOwnerName,
       landOwnerFullname: updateLandOwnerFullName,
@@ -260,22 +122,18 @@ function LandOwner() {
       setIsUpdateModalVisible(false);
     } catch (error) {
       setIsUpdateModalVisible(false);
-    }  
+    }
   };
-
-
-
 
   const approveLandOwner = async (selectedId_) => {
     try {
       await approveLandOwnerById(selectedId_);
-        console.log(`${selectedId} landOwners approved`);
+      console.log(`${selectedId} landOwners approved`);
     } catch (error) {
       console.log(error);
     }
   };
 
-  
   const unApproveLandOwner = async (selectedId_) => {
     try {
       await unApproveLandOwnerById(selectedId_);
@@ -285,32 +143,22 @@ function LandOwner() {
     }
   };
 
-
   async function handleApprove(row) {
-    if(row.validated===1) {
-       await unApproveLandOwner(row.landOwnerID);
-    }
-    else {
+    if (row.validated === 1) {
+      await unApproveLandOwner(row.landOwnerID);
+    } else {
       await approveLandOwner(row.landOwnerID);
     }
-    
   }
 
-
-
   const handleDeleteClick = async () => {
-
     try {
       await deleteLandOwnerById(selectedId);
       setDeleteFeed(false);
     } catch (error) {
       setDeleteFeed(false);
     }
-
-    
   };
-
-
 
   return (
     <div>
@@ -327,118 +175,133 @@ function LandOwner() {
           placeholder="Search Land Owners..."
           prefix={<SearchOutlined />}
           className={classes.headerSearch}
-          onChange={(event) => {setSearchLandOwner(event.target.value)}}
+          onChange={(event) => {
+            setSearchLandOwner(event.target.value);
+          }}
         />
         {/* <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
           New
         </Button> */}
-
-      
-
       </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 450 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-            <TableCell className={classes.tableHeading}>Register Number</TableCell>
-              <TableCell className={classes.tableHeading}>Land Owner Name</TableCell>
+              <TableCell className={classes.tableHeading}>
+                Register Number
+              </TableCell>
+              <TableCell className={classes.tableHeading}>
+                Land Owner Name
+              </TableCell>
               <TableCell className={classes.tableHeading}>Contact</TableCell>
               <TableCell className={classes.tableHeading}>Address</TableCell>
               <TableCell className={classes.tableHeading}>Country</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {
-            
-            data.filter(row => {
-              if (searchLandOwner === '') {
-                return row;
-              } else if (
-                row.landOwnerName?.toLowerCase().includes(searchLandOwner.toLowerCase()) ||
-                row.registerNumber?.toLowerCase().includes(searchLandOwner.toLowerCase())
+            {data
+              .filter((row) => {
+                if (searchLandOwner === "") {
+                  return row;
+                } else if (
+                  row.landOwnerName
+                    ?.toLowerCase()
+                    .includes(searchLandOwner.toLowerCase()) ||
+                  row.registerNumber
+                    ?.toLowerCase()
+                    .includes(searchLandOwner.toLowerCase())
                 ) {
-                return row;
-              }
-              return null;
-            }).map((row) => (
-              <TableRow
-                key={row.landOwnerID}
-                id={row.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                 <TableCell>{row.registerNumber}</TableCell>
-                <TableCell>
-                  <Stack direction="row" alignItems="center" gap={1} mb={1}>
-                    <PersonOutlineIcon />
-                    <Typography variant="body1">{row.landOwnerName}</Typography>
-                  </Stack>
-                </TableCell>
-                <TableCell>
-                  <Stack direction="row" alignItems="center" gap={1} mb={1}>
-                    <CallOutlinedIcon />
-                    <Typography variant="body1">{row.contactNumber}</Typography>
-                  </Stack>
-                  <Stack direction="row" alignItems="center" gap={1}>
-                    <EmailOutlinedIcon />
-                    <Typography variant="body1">{row.email}</Typography>
-                  </Stack>
-                </TableCell>
-               
-                <TableCell>{row.landAddress}</TableCell>
-                <TableCell>{row.country}</TableCell>
-                <TableCell align="center">
-                  <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 2 }}>
-                    <Grid item md={12} lg={6} xl={4}>
-                      <Button
-                        type="primary"
-                        className={classes.approveButton}
-                        //color change
-                        color={row.validated === 0 ? "primary" : "danger"}
-                        onClick={() => {
-                          setSelectedId(row.landOwnerID);
-                          handleApprove(row);
-                        }}
-                      >
-                        {row.validated === 0 ? "Approve" : "UnApprove"}
-                      </Button>
-                    </Grid>
-                    <Grid item md={12} lg={6} xl={4}>
-                      <Button
-                        className={classes.featuredButton}
-                        type="primary"
-                        onClick={() => {
-                          showUpdateModal();
-                          setSelectedId(row.landOwnerID);
-                          setUpdateLandOwnerName(row.landOwnerName);
-                          setUpdateLandOwnerFullName(row.landOwnerFullname);
-                          setUpdateLandONContact(row.contactNumber);
-                          setUpdateCountry(row.country);
-                          setUpdateLandAddress(row.landAddress);
-                          setUpdateBankName(row.bankName);
-                          setUpdateBankAccountNumber(row.bankAccountNumber);
-                          setUpdateBankBranch(row.bankBranch);
-                          setUpdateLongitude(row.longitude);
-                          setUpdateLatitude(row.latitude);
+                  return row;
+                }
+                return null;
+              })
+              .map((row) => (
+                <TableRow
+                  key={row.landOwnerID}
+                  id={row.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell>{row.registerNumber}</TableCell>
+                  <TableCell>
+                    <Stack direction="row" alignItems="center" gap={1} mb={1}>
+                      <PersonOutlineIcon />
+                      <Typography variant="body1">
+                        {row.landOwnerName}
+                      </Typography>
+                    </Stack>
+                  </TableCell>
+                  <TableCell>
+                    <Stack direction="row" alignItems="center" gap={1} mb={1}>
+                      <CallOutlinedIcon />
+                      <Typography variant="body1">
+                        {row.contactNumber}
+                      </Typography>
+                    </Stack>
+                    <Stack direction="row" alignItems="center" gap={1}>
+                      <EmailOutlinedIcon />
+                      <Typography variant="body1">{row.email}</Typography>
+                    </Stack>
+                  </TableCell>
 
-                          form.setFieldsValue({
-                            updateLandOwnerName: row.landOwnerName,
-                            updateLandOwnerFullName: row.landOwnerFullname,
-                            updateContactNumber: row.contactNumber,
-                            updateCountry: row.country,
-                            updateLandAddress: row.landAddress,
-                            updateBankName: row.bankName,
-                            updateBankAccountNumber: row.bankAccountNumber,
-                            updateBankBranch: row.bankBranch,
-                            updateLongitude: row.longitude,
-                            updateLatitude: row.latitude,
-                          })
-                        }}
-                      >
-                        Edit
-                      </Button>
-                    </Grid>
-                    <Grid item md={12} lg={12} xl={4}>
-                      <Button
+                  <TableCell>{row.landAddress}</TableCell>
+                  <TableCell>{row.country}</TableCell>
+                  <TableCell align="center">
+                    <Grid
+                      container
+                      rowSpacing={1}
+                      columnSpacing={{ xs: 1, sm: 2, md: 2 }}
+                    >
+                      <Grid item md={12} lg={6} xl={4}>
+                        <Button
+                          type="primary"
+                          className={classes.approveButton}
+                          //color change
+                          color={row.validated === 0 ? "primary" : "danger"}
+                          onClick={() => {
+                            setSelectedId(row.landOwnerID);
+                            handleApprove(row);
+                          }}
+                        >
+                          {row.validated === 0 ? "Approve" : "UnApprove"}
+                        </Button>
+                      </Grid>
+                      <Grid item md={12} lg={6} xl={4}>
+                        <Button
+                          className={classes.featuredButton}
+                          type="primary"
+                          onClick={() => {
+                            showUpdateModal();
+                            setSelectedId(row.landOwnerID);
+                            setUpdateLandOwnerName(row.landOwnerName);
+                            setUpdateLandOwnerFullName(row.landOwnerFullname);
+                            setUpdateLandONContact(row.contactNumber);
+                            setUpdateCountry(row.country);
+                            setUpdateLandAddress(row.landAddress);
+                            setUpdateBankName(row.bankName);
+                            setUpdateBankAccountNumber(row.bankAccountNumber);
+                            setUpdateBankBranch(row.bankBranch);
+                            setUpdateLongitude(row.longitude);
+                            setUpdateLatitude(row.latitude);
+
+                            form.setFieldsValue({
+                              updateLandOwnerName: row.landOwnerName,
+                              updateLandOwnerFullName: row.landOwnerFullname,
+                              updateContactNumber: row.contactNumber,
+                              updateCountry: row.country,
+                              updateLandAddress: row.landAddress,
+                              updateBankName: row.bankName,
+                              updateBankAccountNumber: row.bankAccountNumber,
+                              updateBankBranch: row.bankBranch,
+                              updateLongitude: row.longitude,
+                              updateLatitude: row.latitude,
+                            });
+                          }}
+                        >
+                          Edit
+                        </Button>
+                      </Grid>
+                      <Grid item md={12} lg={12} xl={4}>
+                        <Button
                           className={classes.featuredButton}
                           type="primary"
                           danger
@@ -448,44 +311,47 @@ function LandOwner() {
                           }}
                         >
                           Delete
-                      </Button>
+                        </Button>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </TableCell>
+                  </TableCell>
 
-                <Dialog
-                  aria-labelledby="dialog-title"
-                  open={deleteFeed}
-                  onClose={() => setDeleteFeed(false)}
-                  hideBackdrop
-                  PaperProps={{
-                    elevation: 0,
-                    sx: {
-                      boxShadow: "0 2px 8px rgb(0 0 0 / 0.1)",
-                    },
-                  }}
-                >
-                  <DialogTitle id="dialog-title">
-                    Do you really want to delete?
-                  </DialogTitle>
-                  <DialogActions>
-                    <Button type="primary" onClick={() => setDeleteFeed(false)}>
-                      Cancel
-                    </Button>
-                    <Button
-                      type="primary"
-                      danger
-                      onClick={() => handleDeleteClick()}
-                      color="error"
-                    >
-                      Delete
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              </TableRow>
-            ))}
+                  <Dialog
+                    aria-labelledby="dialog-title"
+                    open={deleteFeed}
+                    onClose={() => setDeleteFeed(false)}
+                    hideBackdrop
+                    PaperProps={{
+                      elevation: 0,
+                      sx: {
+                        boxShadow: "0 2px 8px rgb(0 0 0 / 0.1)",
+                      },
+                    }}
+                  >
+                    <DialogTitle id="dialog-title">
+                      Do you really want to delete?
+                    </DialogTitle>
+                    <DialogActions>
+                      <Button
+                        type="primary"
+                        onClick={() => setDeleteFeed(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="primary"
+                        danger
+                        onClick={() => handleDeleteClick()}
+                        color="error"
+                      >
+                        Delete
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </TableRow>
+              ))}
 
-              {/* <Modal
+            {/* <Modal
                 title="Add New Land Owner"
                 visible={isModalVisible}
                 onCancel={handleCancel}
@@ -802,32 +668,61 @@ function LandOwner() {
               </Form>
             </Modal> */}
 
-
             <Modal
               title="Update Land Owner"
               visible={isUpdateModalVisible}
               onCancel={handleUpdateCancel}
-              onOk={() => {handleUpdateClick()}}
-              destroyOnClose={true}
+              onOk={() => {
+                handleUpdateClick();
+              }}
+              destroyOnClose
+              footer={[
+                <Button key="back" onClick={handleUpdateCancel}>
+                  Cancel
+                </Button>,
+                <Button
+                  disabled={
+                    !updateLandOwnerName ||
+                    !updateLandOwnerFullName ||
+                    !updateContactNumber ||
+                    !updateCountry ||
+                    !updateLandAddress ||
+                    !updateLongitude ||
+                    !updateLatitude ||
+                    !updateBankAccountNumber ||
+                    !updateBankName ||
+                    !updateBankBranch
+                  }
+                  key="submit"
+                  type="primary"
+                  onClick={() => handleUpdateClick()}
+                >
+                  Save
+                </Button>,
+              ]}
             >
               <Form autoComplete="off" form={form}>
-
                 <Form.Item
                   name="updateLandOwnerName"
                   label="Land Owner Name"
                   rules={[
                     {
                       required: true,
-                      message: "Please enter land owner name"
+                      message: "Please enter land owner name",
                     },
                     {
-                      whitespace: true
+                      whitespace: true,
                     },
-                    { min: 5},
+                    { min: 5 },
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateLandOwnerName" onChange={(event) => setUpdateLandOwnerName(event.target.value)}/>
+                  <Input
+                    name="updateLandOwnerName"
+                    onChange={(event) =>
+                      setUpdateLandOwnerName(event.target.value)
+                    }
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -836,16 +731,21 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
-                      message: "Please enter land owner full name"
+                      message: "Please enter land owner full name",
                     },
                     {
-                      whitespace: true
+                      whitespace: true,
                     },
-                    { min: 5},
+                    { min: 5 },
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateLandOwnerFullName" onChange={(event) => setUpdateLandOwnerFullName(event.target.value)}/>
+                  <Input
+                    name="updateLandOwnerFullName"
+                    onChange={(event) =>
+                      setUpdateLandOwnerFullName(event.target.value)
+                    }
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -854,17 +754,25 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
-                      message: "Please contact number"
+
+                      message: "Please Enter Contact Number",
                     },
                     {
-                      whitespace: true
+                      whitespace: true,
                     },
-                    { min: 10},
-                    { max: 10}
+                    { min: 10 },
+                    { max: 10 },
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateContactNumber" onChange={(event) => setUpdateLandONContact(event.target.value.toString())}/>
+                  <Input
+                    type="number"
+                    pattern="[0-9]*"
+                    name="updateContactNumber"
+                    onChange={(event) =>
+                      setUpdateLandONContact(event.target.value.toString())
+                    }
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -873,16 +781,19 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
-                      message: "Please enter country"
+                      message: "Please enter country",
                     },
                     {
-                      whitespace: true
+                      whitespace: true,
                     },
-                    {min: 5}
+                    { min: 5 },
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateCountry" onChange={(event) => setUpdateCountry(event.target.value)}/>
+                  <Input
+                    name="updateCountry"
+                    onChange={(event) => setUpdateCountry(event.target.value)}
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -891,16 +802,21 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
-                      message: "Please enter land address"
+                      message: "Please enter land address",
                     },
                     {
-                      whitespace: true
+                      whitespace: true,
                     },
-                    {min: 5}
+                    { min: 5 },
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateLandAddress" onChange={(event) => setUpdateLandAddress(event.target.value)}/>
+                  <Input
+                    name="updateLandAddress"
+                    onChange={(event) =>
+                      setUpdateLandAddress(event.target.value)
+                    }
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -909,17 +825,23 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
-                      message: "Please enter bank account number"
+                      message: "Please enter bank account number",
                     },
                     {
-                      whitespace: true
+                      whitespace: true,
                     },
-                    { min: 7},
-                    { max: 10}
+                    { min: 7 },
+                    { max: 10 },
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateBankAccountNumber" onChange={(event) => setUpdateBankAccountNumber(event.target.value)}/>
+                  <Input
+                    type="number"
+                    name="updateBankAccountNumber"
+                    onChange={(event) =>
+                      setUpdateBankAccountNumber(event.target.value)
+                    }
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -928,16 +850,19 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
-                      message: "Please enter bank name"
+                      message: "Please enter bank name",
                     },
                     {
-                      whitespace: true
+                      whitespace: true,
                     },
-                    {min: 5}
+                    { min: 5 },
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateBankName" onChange={(event) => setUpdateBankName(event.target.value)}/>
+                  <Input
+                    name="updateBankName"
+                    onChange={(event) => setUpdateBankName(event.target.value)}
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -946,16 +871,21 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
-                      message: "Please enter bank branch"
+                      message: "Please enter the Bank Branch",
                     },
                     {
-                      whitespace: true
+                      whitespace: true,
                     },
-                    {min: 5}
+                    { min: 5 },
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateBankBranch" onChange={(event) => setUpdateBankBranch(event.target.value)}/>
+                  <Input
+                    name="updateBankBranch"
+                    onChange={(event) =>
+                      setUpdateBankBranch(event.target.value)
+                    }
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -964,15 +894,19 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
-                      message: "Please enter longitude"
+                      message: "Please enter longitude",
                     },
                     {
-                      whitespace: true
-                    }
+                      whitespace: true,
+                    },
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateLongitude" onChange={(event) => setUpdateLongitude(event.target.value)}/>
+                  <Input
+                    type="number"
+                    name="updateLongitude"
+                    onChange={(event) => setUpdateLongitude(event.target.value)}
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -981,15 +915,18 @@ function LandOwner() {
                   rules={[
                     {
                       required: true,
-                      message: "Please enter latitude"
+                      message: "Please enter latitude",
                     },
                     {
-                      whitespace: true
-                    }
+                      whitespace: true,
+                    },
                   ]}
                   hasFeedback
                 >
-                  <Input name="updateLatitude" onChange={(event) => setUpdateLatitude(event.target.value)}/>
+                  <Input
+                    name="updateLatitude"
+                    onChange={(event) => setUpdateLatitude(event.target.value)}
+                  />
                 </Form.Item>
               </Form>
             </Modal>
