@@ -11,12 +11,14 @@ import "antd/dist/antd.css";
 import MapChart1 from '../components/chart/MapChart1';
 import MapChart2 from '../components/chart/MapChart2';
 import AuditorService from '../services/auditor-service';
+import LandService from "./../services/landowner-service";
 import { useHistory } from "react-router-dom";
 
 function Calculation() {
 
   const [plants, setPlants] = useState([]);
   const [calData, setCalData] = useState([]);
+  const [lands, setLands] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [item, setItem] = useState();
   const [invested, setInvested] = useState(false);
@@ -37,6 +39,10 @@ function Calculation() {
   const {
     getDataForCalculation,
   } = AuditorService();
+
+  const {
+    getLandOwners,
+  } = LandService();
   
   const getTreeDetails = (item) => { 
     const filttedArray = calData.filter(calData => calData.treeID === item.treeID);
@@ -53,8 +59,6 @@ function Calculation() {
     const landOwnerName = filttedArray.map(item => item?.landOwnerName);
     const contactNumber = filttedArray.map(item => item?.contactNumber);
     const email = filttedArray.map(item => item?.email);
-    const peri = filttedArray.map(item => parseFloat(item?.perimeter));
-    console.log('#################', peri);
     
     setBioMass(dataForBioMass);
     setH2oVal(dataForH2o);
@@ -62,7 +66,6 @@ function Calculation() {
     setLandOWner(landOwnerName[0]);
     setContactNum(contactNumber[0]);
     setEmail(email[0]);
-    
   }
   
   const showModal = (item, invested) => {
@@ -84,6 +87,15 @@ function Calculation() {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     
+  useEffect(() => {
+      async function getAllLands() {
+        const res = await getLandOwners();
+        setLands(res);
+      }
+      getAllLands();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
   const renderPlants = (plants) => {
     let plant = plants.filter(v => v?.longitude !== null);
       return plant?.map((item) => {
@@ -106,14 +118,14 @@ function Calculation() {
       })
   };
 
-  const renderLand = (calData) => {
-    let land = calData.filter(l => l?.perimeter !==null);
+  const renderLand = (lands) => {
+    let land = lands.filter(l => l?.perimeter !==null);
       return land?.map((land) => {
         const peri = land?.perimeter;
         const arr = peri.split(',').map(element => {
           return Number(element);
         });
-
+        
         const polygon = [
           [arr[0], arr[1]],
           [arr[2], arr[3]],
@@ -220,7 +232,7 @@ const displayButton = (invested) => {
       />
       {renderPlants(plants)}
 
-      {renderLand(calData)}
+      {renderLand(lands)}
     
       <Modal 
         title= {[ <b>{item?.treeSpecies} </b>,<br/>, '( ',item?.treeID, ' )']}
