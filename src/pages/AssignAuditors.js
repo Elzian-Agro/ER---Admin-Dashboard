@@ -183,7 +183,7 @@ const AssignAuditors = () => {
       'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
     };
 
-    const res = await axios.get(`http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/landOwners/getLandOwners/getLandOwnersGapCreateDateAssignDate`, { headers });
+    const res = await axios.get(`http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/landOwners/getLandOwners/getLandOwnersGapCreateLastAuditorDate`, { headers });
  
     setdata(
       res.data.Result.map((row) => ({
