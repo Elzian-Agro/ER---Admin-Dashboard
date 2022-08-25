@@ -22,12 +22,12 @@ function Calculation() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [item, setItem] = useState();
   const [invested, setInvested] = useState(false);
-  const [bioMass, setBioMass] = useState([])
-  const [h2oVal, setH2oVal] = useState([])
-  const [o2Val, setO2val] = useState([])
-  const [landOWner, setLandOWner] = useState()
-  const [contactNum, setContactNum] = useState()
-  const [email, setEmail] = useState()
+  const [bioMass, setBioMass] = useState([]);
+  const [h2oVal, setH2oVal] = useState([]);
+  const [o2Val, setO2val] = useState([]);
+  const [landOWner, setLandOWner] = useState();
+  const [contactNum, setContactNum] = useState();
+  const [email, setEmail] = useState();
   
   let dataForBioMass = [];
   let dataForH2o = [];
@@ -125,21 +125,32 @@ function Calculation() {
         const arr = peri.split(',').map(element => {
           return Number(element);
         });
-        
-        const polygon = [
-          [arr[0], arr[1]],
-          [arr[2], arr[3]],
-          [arr[4], arr[5]],
-          [arr[6], arr[7]],
-        ]
-        const greenOptions = { color: 'green' , opacity: '0.2' }
-    
-        return(
-          <Polygon pathOptions={greenOptions} positions={polygon} />
-        )
-      }) 
-  }
-        
+
+      const perChunk = 2    
+          
+      const result = arr.reduce((resultArray, item, index) => { 
+      const chunkIndex = Math.floor(index/perChunk)
+            
+      if(!resultArray[chunkIndex]) {
+          resultArray[chunkIndex] = []
+        }
+            
+      resultArray[chunkIndex].push(item)
+            
+      return resultArray
+      }, [])
+          
+      result.map((row) => [row[1], row[0]])
+         
+          
+      const greenOptions = { color: 'green' , opacity: '0.2' }
+          
+      return(
+        <Polygon pathOptions={greenOptions} positions={result} />
+      )
+    }) 
+};
+      
 const markerIconGreen = new L.Icon({
   iconUrl : greenIcon,
   iconSize : [35, 45],
@@ -225,7 +236,7 @@ const displayButton = (invested) => {
 
 
   return (
-    <MapContainer center={[6.8259, 80.9982]} zoom={11} scrollWheelZoom={true}>
+    <MapContainer center={[6.8259, 80.9982]} zoom={14} scrollWheelZoom={true}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
