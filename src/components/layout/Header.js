@@ -1,5 +1,5 @@
 import { useState, useEffect ,useContext} from "react";
-import {LoginContext} from "../helper/Context"
+//import {LoginContext} from "../helper/Context"
 
 import {
   Row,
@@ -22,6 +22,7 @@ import { useCookies } from "react-cookie";
 import styled from "styled-components";
 import service from "./../../services/data-service";
 import avtar from "../../assets/images/team-2.jpg";
+import {LoginContext} from"../helper/Context";
 
 const ButtonContainer = styled.div`
   .ant-btn-primary {
@@ -251,7 +252,7 @@ function Header({
   const [sidenavType, setSidenavType] = useState("transparent");
   const [profileData, setProfileData] = useState({});
 
-  const {setIsLoggedIn,setUser}= useContext(LoginContext);
+ // const {setIsLoggedIn,setUser}= useContext(LoginContext);
 
   const { getProfile } = service();
 
@@ -261,12 +262,12 @@ function Header({
     async function fetchData() {
       const { userName, email, profImage } = await getProfile();
       setProfileData({ userName, email, profImage });
-      if(userName){
-        setIsLoggedIn(true)
-        setUser(userName)
-      }else{
-        setIsLoggedIn(false)
-      }
+      // if(userName){
+      //   setIsLoggedIn(true)
+      //   setUser(userName)
+      // }else{
+      //   setIsLoggedIn(false)
+      // }
     }
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -275,7 +276,14 @@ function Header({
   const showDrawer = () => setVisible(true);
   const hideDrawer = () => setVisible(false);
   const handleProfileVisible = (flag) => setProfileVisible(flag);
-  const signout = () => removeCookie("token");
+  const {setIsLoggedIn,setUser}= useContext(LoginContext);
+  const signout = () => {
+    removeCookie("token")
+    setIsLoggedIn(false)
+    setUser("")
+    localStorage.removeItem("token")
+    localStorage.removeItem("refreshToken")
+  }
 
   const profileMenu = (
     <List
