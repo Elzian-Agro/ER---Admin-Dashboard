@@ -93,7 +93,7 @@ function LandOwner() {
       setData(res);
     }
     getAllLandOwners();
-  }, [getLandOwners]);
+  }, []);
 
   const showUpdateModal = () => {
     setIsUpdateModalVisible(true);

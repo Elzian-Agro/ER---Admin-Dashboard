@@ -140,7 +140,7 @@ function TreeSpecies() {
       setData(res);
     }
     getTreeSpecies()
-  }, [getAllTreeSpecies]);
+  }, []);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -378,9 +378,7 @@ function TreeSpecies() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {
-            
-            data.filter(row => {
+            {data && data.filter(row => {
               if(searchTreeSpecies === '') {
                 return row
               } else if (
