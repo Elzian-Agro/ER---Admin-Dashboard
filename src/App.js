@@ -40,7 +40,7 @@ function App() {
           <ProtectedRoute path="/auditor" component={Auditor} auth={isLoggedin}/>
           <ProtectedRoute path="/assign-Auditors" component={AssignAuditors} auth={isLoggedin}/>        
           <ProtectedRoute path="/profile" component={Profile} auth={isLoggedin}/>
-          <ProtectedRoute path="/calculation" component={Calculation} auth={isLoggedin}/>
+          <ProtectedRoute path="/blockView" component={Calculation} auth={isLoggedin}/>
           <ProtectedRoute path="/treeSpecies" component={TreeSpecies} auth={isLoggedin}/>
           {user==='Admin'?<Redirect from="*" to="/dashboard" />: <Redirect from="*" to="/billing" />}
         </Main>
