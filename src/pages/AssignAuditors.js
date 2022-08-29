@@ -11,7 +11,6 @@
 */
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import 'antd/dist/antd.css';
 import { Modal, Button, Card, Form, Input, Avatar, Typography, Select, Space, Badge, Table, Row, Col, notification } from 'antd';
 
@@ -21,7 +20,7 @@ import { makeStyles } from "@mui/styles";
 import { SearchOutlined } from "@ant-design/icons";
 
 import useMediaQuery from '../components/customHooks/useMediaQuery';
-
+import AssignAuditorServices from "../services/assign-auditor-service";
 
 const { Title } = Typography;
 
@@ -48,7 +47,7 @@ const AssignAuditors = () => {
   const [tableData, setTableData] = useState([]);
   const [modaldata, setmodaldata] = useState({});
   const [getAuditorId, setGetAuditorId] = useState("");
-
+  const {getLandOwnersGapCreateLastAuditorDate,getusers,assigningAuditors}= AssignAuditorServices()
   const match=useMediaQuery('(max-width: 991px)')
 
   const columns = [
@@ -179,12 +178,7 @@ const AssignAuditors = () => {
   }, []);
 
   const getData = async () => {
-    const headers = {
-      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI3MDZmOGI0Mi02YzM1LTQxOWEtOTY0MC1kNjhmNDAzZmQ5ZDIiLCJpc0FkbWluIjoxLCJpYXQiOjE2NTQyMjU1NTd9.lD86WyFQ0EZByllBFAdprwTVnTy8rRaEkgr4u4UdmWI',
-    };
-
-    const res = await axios.get(`http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/landOwners/getLandOwners/getLandOwnersGapCreateLastAuditorDate`, { headers });
- 
+    const res = await getLandOwnersGapCreateLastAuditorDate();
     setdata(
       res.data.Result.map((row) => ({
         id: row.landOwnerID,
@@ -213,11 +207,8 @@ const AssignAuditors = () => {
   };
 
   const getAuditorData = async () => {
-    const headers = {
-      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
-    };
-
-    const res = await axios.get(`http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/users/`, { headers });
+  
+    const res = await getusers();
     setAuditorData(
       res.data.Result.map((auditor) => ({
         id: auditor.userID,
@@ -243,28 +234,19 @@ const AssignAuditors = () => {
   };
   // assign auditor
   const updateAssignAuditorId = async (auditorId, id) => {
-    const headers = {
-      'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ1NTU1NTEzfQ.Kv2cEkCU-F9w_Gd_ajB2zfiUW66G6WPg7dPznedIRC0',
-    };
+  
     if (auditorId !== '' && id !=='') {
       try {
-        await axios.put(`http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/landowners/updateAssignAuditorId/${id}`, { assignAuditorID: auditorId }, { headers })
-          .then((response) => {
-            if (response.status === 200) {
-              openNotificationWithIcon('success',auditorId,"successfully assigned !")
-              getData()
-            }
-          });
-      } catch (err) {
-        if (err) {
-          openNotificationWithIcon('Error',"Error in assigning ","Error")
+       const response= await assigningAuditors(id,auditorId)
+        if (response.status === 200) {
+          openNotificationWithIcon('success',auditorId,"successfully assigned !")
+          getData()
         }
+      } catch (err) {
+        if (err) { openNotificationWithIcon('Error',"Error in assigning ","Error")} 
       }
-    } else {
-      openNotificationWithIcon('warning',"Please select a auditor !","Warning")
-    }
+    } else {openNotificationWithIcon('warning',"Please select a auditor !","Warning")}
   }
-
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [setLoading] = useState(false);
