@@ -25,6 +25,7 @@ function App() {
   const [user, setUser] = useState("")
   const [accessTokenMemory, setAccessTokenMemory] = useState("");
   return (
+
     <LoginContext.Provider
       value={{
         isLoggedin,
@@ -55,6 +56,7 @@ function App() {
           </Main>
         </Switch>
       </div>
+
     </LoginContext.Provider>
   );
 }

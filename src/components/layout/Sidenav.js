@@ -379,7 +379,7 @@ function Sidenav({ color }) {
           </NavLink>
         </Menu.Item>}
         {user==="Admin" &&  <Menu.Item key="m14">
-          <NavLink to="/calculation">
+          <NavLink to="/blockView">
             <span
               className="icon"
               style={{
@@ -388,11 +388,11 @@ function Sidenav({ color }) {
             >
               {calculation}
             </span>
-            <span className="label">Calculations</span>
+            <span className="label">LifeForce Block View</span>
           </NavLink>
         </Menu.Item>}
         {user==="Investor" &&  <Menu.Item key="m14">
-          <NavLink to="/calculation">
+          <NavLink to="/blockView">
             <span
               className="icon"
               style={{
@@ -401,7 +401,7 @@ function Sidenav({ color }) {
             >
               {calculation}
             </span>
-            <span className="label">Calculations</span>
+            <span className="label">LifeForce Block View</span>
           </NavLink>
         </Menu.Item>}
 
