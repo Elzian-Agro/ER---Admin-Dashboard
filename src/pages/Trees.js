@@ -6,7 +6,7 @@ import { Modal, Button, Card, Typography } from "antd";
 
 import service from "./../services/data-service";
 import Map from "../components/map";
-import userType from "../components/userType";
+//import userType from "../components/userType";
 
 const { Title } = Typography;
 
@@ -26,7 +26,7 @@ const Trees = () => {
     // getAuditorById,
   } = service();
 
-  const { admin } = userType();
+  //const { admin } = userType();
 
   const columns = [
     {

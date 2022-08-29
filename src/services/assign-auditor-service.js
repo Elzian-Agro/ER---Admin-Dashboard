@@ -1,11 +1,11 @@
-import {useContext} from 'react'
+//import {useContext} from 'react'
 import axios from "axios";
 import Tokenservice from "./token-service";
-import {LoginContext} from "../components/helper/Context"
+//import {LoginContext} from "../components/helper/Context"
 
 export default function AuditorService() {
   const{getLocalRefreshToken,getLocalAccessToken,updateNewAccessToken}=Tokenservice()
-  const {setAccessTokenMemory ,accessTokenMemory}= useContext(LoginContext);
+ // const {setAccessTokenMemory ,accessTokenMemory}= useContext(LoginContext);
   const http = axios.create({
     baseURL:
       "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
