@@ -107,7 +107,7 @@ function Feed() {
 
   const GetAllFeeds = async () => {
     const result = await axios.get(
-      "http://localhost:4000/feeds/"
+      "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/feeds/"
     );
     setFeedData(result.data.Result);
   };
