@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/ER---Admin-Dashboard/static/css/main.f279d442.chunk.css",
-    "main.js": "/ER---Admin-Dashboard/static/js/main.927a18cd.chunk.js",
-    "main.js.map": "/ER---Admin-Dashboard/static/js/main.927a18cd.chunk.js.map",
+    "main.js": "/ER---Admin-Dashboard/static/js/main.1bbc255b.chunk.js",
+    "main.js.map": "/ER---Admin-Dashboard/static/js/main.1bbc255b.chunk.js.map",
     "runtime-main.js": "/ER---Admin-Dashboard/static/js/runtime-main.91c37551.js",
     "runtime-main.js.map": "/ER---Admin-Dashboard/static/js/runtime-main.91c37551.js.map",
     "static/css/2.bb0da62a.chunk.css": "/ER---Admin-Dashboard/static/css/2.bb0da62a.chunk.css",
-    "static/js/2.b4d7ce10.chunk.js": "/ER---Admin-Dashboard/static/js/2.b4d7ce10.chunk.js",
-    "static/js/2.b4d7ce10.chunk.js.map": "/ER---Admin-Dashboard/static/js/2.b4d7ce10.chunk.js.map",
+    "static/js/2.83063ec8.chunk.js": "/ER---Admin-Dashboard/static/js/2.83063ec8.chunk.js",
+    "static/js/2.83063ec8.chunk.js.map": "/ER---Admin-Dashboard/static/js/2.83063ec8.chunk.js.map",
     "index.html": "/ER---Admin-Dashboard/index.html",
     "static/css/2.bb0da62a.chunk.css.map": "/ER---Admin-Dashboard/static/css/2.bb0da62a.chunk.css.map",
     "static/css/main.f279d442.chunk.css.map": "/ER---Admin-Dashboard/static/css/main.f279d442.chunk.css.map",
-    "static/js/2.b4d7ce10.chunk.js.LICENSE.txt": "/ER---Admin-Dashboard/static/js/2.b4d7ce10.chunk.js.LICENSE.txt",
-    "static/js/main.927a18cd.chunk.js.LICENSE.txt": "/ER---Admin-Dashboard/static/js/main.927a18cd.chunk.js.LICENSE.txt",
+    "static/js/2.83063ec8.chunk.js.LICENSE.txt": "/ER---Admin-Dashboard/static/js/2.83063ec8.chunk.js.LICENSE.txt",
+    "static/js/main.1bbc255b.chunk.js.LICENSE.txt": "/ER---Admin-Dashboard/static/js/main.1bbc255b.chunk.js.LICENSE.txt",
     "static/media/ER LOGO.bd958cfc.png": "/ER---Admin-Dashboard/static/media/ER LOGO.bd958cfc.png",
     "static/media/LifeForce LOGO2022.1c283195.jpeg": "/ER---Admin-Dashboard/static/media/LifeForce LOGO2022.1c283195.jpeg",
     "static/media/LifeForce.32a87213.png": "/ER---Admin-Dashboard/static/media/LifeForce.32a87213.png",
@@ -41,8 +41,8 @@
   "entrypoints": [
     "static/js/runtime-main.91c37551.js",
     "static/css/2.bb0da62a.chunk.css",
-    "static/js/2.b4d7ce10.chunk.js",
+    "static/js/2.83063ec8.chunk.js",
     "static/css/main.f279d442.chunk.css",
-    "static/js/main.927a18cd.chunk.js"
+    "static/js/main.1bbc255b.chunk.js"
   ]
 }
