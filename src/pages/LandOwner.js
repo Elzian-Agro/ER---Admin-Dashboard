@@ -250,7 +250,7 @@ function LandOwner() {
                       <Grid item md={12} lg={6} xl={4}>
                         <Button
                           type="primary"
-                          //color change
+                          // button background color change
                           style={{ backgroundColor: row.validated === 0 ? "#00e600" : "	#e6ac00"
                           
                          }}
