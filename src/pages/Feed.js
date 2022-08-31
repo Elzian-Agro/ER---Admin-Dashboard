@@ -18,7 +18,7 @@ import DialogActions from "@mui/material/DialogActions";
 import { Card, Button, Modal, Form, Input, notification} from "antd";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
-import { useCookies } from "react-cookie";
+//import { useCookies } from "react-cookie";
 // import React, { useState, useEffect } from 'react';
 // import { Token } from "@mui/icons-material";
 
@@ -44,11 +44,12 @@ function Feed() {
   const [insertTag, setInsertTag] = useState("");
   const [focused, setFocused] = useState(true);
 
-  const cookies = useCookies(["token"]);
+  //const cookies = useCookies(["token"]);
 
   axios.defaults.headers = {
     "Content-Type": "application/json",
-    "x-auth-token": cookies[0].token,
+    //"x-auth-token": cookies[0].token,
+    "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ3MzY4ODg4fQ.2o7M2RV88a7shoCmcEcgS0AXfjXAYrC14KynieCBuvA"
   };
   
   const showModal = () => {
@@ -121,7 +122,7 @@ function Feed() {
 
     try {await axios
       .delete(
-                `http://localhost:4000/feeds/deleteFeed/${selectedId}`
+                `http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
               ).then((res) => res);
       setDeleteFeed(false);
     } catch (error) {
@@ -152,7 +153,7 @@ function Feed() {
     formData.append("published", "Yes");
     try {
       await axios.post(
-        "http://localhost:4000/feeds/add",
+        "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/feeds/add",
         formData
       );
       openNotificationWithIcon('success',"Feed Added Successfully")
@@ -172,7 +173,7 @@ function Feed() {
     try {
       await axios
         .put(
-          `http://localhost:4000/feeds/updateFeed/${selectedId}`,
+          `http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/feeds/updateFeed/${selectedId}`,
           formData,
           {
             imageUrl: selectedFile,
