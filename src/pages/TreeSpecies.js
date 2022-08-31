@@ -20,6 +20,7 @@ import {
 
 import service from "./../services/tree-species-service";
 
+
 const useStyles = makeStyles({
   mainHeading: {
     fontWeight: "bold",
@@ -52,7 +53,8 @@ const useStyles = makeStyles({
     borderRadius: "5px",
     marginRight: "10px",
     marginLeft: "10px"
-  }
+  },
+
 });
 
 function TreeSpecies() {
@@ -126,6 +128,13 @@ function TreeSpecies() {
   const [updateFruitType, setUpdateFruitType] = useState("");
   const [searchTreeSpecies, setSearchTreeSpecies] = useState("");
   const [form] = Form.useForm();
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [buttonDisabled2, setButtonDisabled2] = useState(true);
+  const [value, setValue] = useState('fruit');
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
 
   const {
     getAllTreeSpecies,
@@ -344,6 +353,7 @@ function TreeSpecies() {
     }
   };
 
+
   return (
     <div>
       <Box
@@ -529,12 +539,62 @@ function TreeSpecies() {
 
           <Modal
             title="Add New Tree Species"
+           
             visible={isModalVisible}
             onCancel={handleCancel}
             onOk={() => {handleAddFormSubmit()}}
+            okButtonProps={{ disabled:  buttonDisabled  }}
             destroyOnClose={true}
           >
-          <Form {...layout}>
+          <Form {...layout}
+           form={form}
+           onFieldsChange={() =>{
+            if(!plantName || 
+              !commonNames || 
+              !botanicalName ||
+              !plantName ||
+              !commonNames ||
+              !botanicalName ||
+              !originofSpecies ||
+              !family ||
+              !afNotationPhysiognomy ||
+              !plantReference_onERPlantDatabase ||
+              !photosyntheticBiomassYear1 ||
+              !photosyntheticBiomassYear2 ||
+              !photosyntheticBiomassYear3 ||
+              !photosyntheticBiomassYear4 ||
+              !weightPerLeaf ||
+              !leafCycle ||
+              !length ||
+              !width ||
+              !texture ||
+              !conservationStatus ||
+              !growthRate ||
+              !crownType ||
+              !propagationMethod ||
+              !rootType ||
+              !preferredSolis ||
+              !impactOnSoil ||
+              !salinityTolerance ||
+              !humanUses ||
+              !economicImportance ||
+              !distribution ||
+              !lightPreferences ||
+              !floweringTime ||
+              !flowerColor ||
+              !fruitType
+              ) {
+              setButtonDisabled(true);
+            }
+            else if (form.getFieldsError().some((field) => field.errors.length > 0)){
+              setButtonDisabled(true)
+            }else{
+              setButtonDisabled(false)
+            }
+           }
+           }
+          >
+            
             <Form.Item
               name="plantName"
               label="Plant Name"
@@ -547,6 +607,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 5},
               ]}
               hasFeedback
             >
@@ -566,6 +627,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 5},
               ]}
               hasFeedback
             >
@@ -587,6 +649,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 5},
               ]}
               hasFeedback
             >
@@ -608,6 +671,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 5},
               ]}
               hasFeedback
             >
@@ -629,6 +693,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 5},
               ]}
               hasFeedback
             >
@@ -650,6 +715,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 2},
               ]}
               hasFeedback
             >
@@ -665,7 +731,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
-                  pattern: "^[A-Za-z]",
+                  pattern: "^[0-9]",
                   message: "Please enter plant preference"
                 },
                 {
@@ -776,6 +842,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { max: 5},
               ]}
               hasFeedback
             >
@@ -797,6 +864,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 5},
               ]}
               hasFeedback
             >
@@ -818,6 +886,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 3},
               ]}
               hasFeedback
             >
@@ -854,12 +923,13 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
-                  pattern: "^[A-Za-z]",
+                  pattern: "^[A-Za-z-]",
                   message: "Please enter texture"
                 },
                 {
                   whitespace: true
                 },
+                
               ]}
               hasFeedback
             >
@@ -875,7 +945,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
-                  pattern: "^[A-Za-z]",
+                  pattern: "^[A-Za-z-]",
                   message: "Please enter conservation status"
                 },
                 {
@@ -896,12 +966,13 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
-                  pattern: "^[0-9]",
+                  pattern: "^[A-Za-z]",
                   message: "Please enter growth rate"
                 },
                 {
                   whitespace: true
                 },
+                { min: 4},
               ]}
               hasFeedback
             >
@@ -923,6 +994,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 5},
               ]}
               hasFeedback
             >
@@ -944,6 +1016,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 4},
               ]}
               hasFeedback
             >
@@ -965,6 +1038,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 4},
               ]}
               hasFeedback
             >
@@ -986,6 +1060,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 4},
               ]}
               hasFeedback
             >
@@ -1007,6 +1082,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 3},
               ]}
               hasFeedback
             >
@@ -1022,7 +1098,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
-                  pattern: "^[A-Za-z]",
+                  pattern: "^[A-Za-z-]",
                   message: "Please enter salinity tolerance"
                 },
                 {
@@ -1043,12 +1119,13 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
-                  pattern: "^[A-Za-z]",
+                  pattern: "^[A-Za-z-]",
                   message: "Please enter human uses"
                 },
                 {
                   whitespace: true
                 },
+                
               ]}
               hasFeedback
             >
@@ -1070,6 +1147,8 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 3},
+
               ]}
               hasFeedback
             >
@@ -1091,6 +1170,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 3},
               ]}
               hasFeedback
             >
@@ -1112,6 +1192,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                
               ]}
               hasFeedback
             >
@@ -1127,12 +1208,13 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
-                  pattern: "^[0-9]",
+                  pattern: "^[A-Za-z]",
                   message: "Please enter flowering time"
                 },
                 {
                   whitespace: true
                 },
+                { min: 5},
               ]}
               hasFeedback
             >
@@ -1154,6 +1236,7 @@ function TreeSpecies() {
                 {
                   whitespace: true
                 },
+                { min: 3},
               ]}
               hasFeedback
             >
@@ -1162,6 +1245,51 @@ function TreeSpecies() {
                 value={flowerColor}
                 onChange={(event) => setFlowerColor(event.target.value)}
               />
+           
+
+           {/* Try Some Dropdown to select color */}
+              {/* <select style={{width:"236px",
+              padding:"5px",
+              borderRadius:"5px",
+              marginRight: "0px",
+              marginLeft: "0px",
+              height:"40px",
+              borderColor : "#C8C8C8",
+              background: "transparent",
+              cursor: "pointer"
+            }} onChange={(e) => {  
+                  const selectedcolor = e.target.value;
+                  setFlowerColor(selectedcolor)
+              }}>
+                <option value="">---Select Color---</option>
+                <option value="Green">green</option>
+                <option value="blue">blue</option>
+                <option value="Red">red</option>
+                <option value="Green">green</option>
+                <option value="blue">blue</option>
+                <option value="Red">red</option>
+                <option value="Green">green</option>
+                <option value="blue">blue</option>
+                <option value="Red">red</option>
+                <option value="Green">green</option>
+                <option value="blue">blue</option>
+                <option value="Red">red</option>
+                <option value="Green">green</option>
+                <option value="blue">blue</option>
+                <option value="Red">red</option>
+                <option value="Green">green</option>
+                <option value="blue">blue</option>
+                <option value="Red">red</option>
+                <option value="Green">green</option>
+                <option value="blue">blue</option>
+                <option value="Red">red</option>
+                <option value="Green">green</option>
+                <option value="blue">blue</option>
+                <option value="Red">red</option>
+                <option value="Green">green</option>
+                <option value="blue">blue</option>
+              </select> */}
+  
             </Form.Item>
             <Form.Item
               name="fruitType"
@@ -1183,6 +1311,7 @@ function TreeSpecies() {
                 value={fruitType}
                 onChange={(event) => setFruitType(event.target.value)}
               />
+              
             </Form.Item>
           </Form>
           </Modal>
@@ -1194,9 +1323,19 @@ function TreeSpecies() {
             visible={isUpdateModalVisible}
             onCancel={handleUpdateCancel}
             onOk={() => {handleUpdateTreeSpecies()}}
+            okButtonProps={{ disabled:  buttonDisabled2  }}
             destroyOnClose={true}
           >
-            <Form autoComplete="off" form={form}>
+            <Form autoComplete="off" 
+            form={form}
+            onFieldsChange={() =>{
+              if (form.getFieldsError().some((field) => field.errors.length > 0)) {
+                setButtonDisabled2(true)
+              }else{
+                setButtonDisabled2(false)
+              } 
+             }}
+            >
 
             <Form.Item
               name="updatePlantName"
@@ -1204,12 +1343,14 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "[A-Za-z]",
                   message: "Please enter plant name"
+                  
                 },
                 {
                   whitespace: true
                 },
-                { min: 4},
+                { min: 5},
               ]}
               hasFeedback
             >
@@ -1222,6 +1363,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "[A-Za-z]",
                   message: "Please enter common name"
                 },
                 {
@@ -1240,6 +1382,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "[A-Za-z]",
                   message: "Please enter botanical name"
                 },
                 {
@@ -1258,11 +1401,14 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "[A-Za-z]",
                   message: "Please enter origin of species"
                 },
                 {
                   whitespace: true
-                }
+                },
+                { min: 5},
+
               ]}
               hasFeedback
             >
@@ -1275,6 +1421,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "[A-Za-z]",
                   message: "Please enter family"
                 },
                 {
@@ -1293,11 +1440,14 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter Af Notation Physiognomy"
                 },
                 {
                   whitespace: true
-                }
+                },
+                { min: 2},
+
               ]}
               hasFeedback
             >
@@ -1310,6 +1460,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter plant reference"
                 },
                 {
@@ -1327,6 +1478,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter photosynthetic biomass year 1"
                 },
                 {
@@ -1344,6 +1496,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter photosynthetic biomass year 2"
                 },
                 {
@@ -1361,6 +1514,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter photosynthetic biomass year 3"
                 },
                 {
@@ -1378,6 +1532,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter photosynthetic biomass year 4"
                 },
                 {
@@ -1395,6 +1550,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter weight per leaf"
                 },
                 {
@@ -1412,11 +1568,13 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter leaf cycle"
                 },
                 {
                   whitespace: true
                 },
+                { min: 5},
               ]}
               hasFeedback
             >
@@ -1429,12 +1587,13 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter length"
                 },
                 {
                   whitespace: true
                 },
-                { min: 5},
+                { min: 3},
               ]}
               hasFeedback
             >
@@ -1447,6 +1606,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[0-9]",
                   message: "Please enter width"
                 },
                 {
@@ -1464,6 +1624,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z-]",
                   message: "Please enter texture"
                 },
                 {
@@ -1481,6 +1642,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter perimeter"
                 },
                 {
@@ -1498,11 +1660,13 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter growth rate"
                 },
                 {
                   whitespace: true
-                }
+                },
+                { min: 4},
               ]}
               hasFeedback
             >
@@ -1515,11 +1679,14 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter crown type"
                 },
                 {
                   whitespace: true
-                }
+                },
+                { min: 5},
+
               ]}
               hasFeedback
             >
@@ -1532,11 +1699,14 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter propagation method"
                 },
                 {
                   whitespace: true
-                }
+                },
+                { min: 4},
+
               ]}
               hasFeedback
             >
@@ -1549,11 +1719,13 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter root type"
                 },
                 {
                   whitespace: true
-                }
+                },
+                { min: 4},
               ]}
               hasFeedback
             >
@@ -1566,11 +1738,13 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter preferred soils"
                 },
                 {
                   whitespace: true
-                }
+                },
+                { min: 4}
               ]}
               hasFeedback
             >
@@ -1583,11 +1757,13 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter impact on soil"
                 },
                 {
                   whitespace: true
-                }
+                },
+                { min: 3},
               ]}
               hasFeedback
             >
@@ -1600,6 +1776,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter salinity tolerance"
                 },
                 {
@@ -1617,11 +1794,12 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z-]",
                   message: "Please enter human uses"
                 },
                 {
                   whitespace: true
-                }
+                },
               ]}
               hasFeedback
             >
@@ -1634,11 +1812,13 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter economic importance"
                 },
                 {
                   whitespace: true
-                }
+                },
+                { min: 3},
               ]}
               hasFeedback
             >
@@ -1651,11 +1831,13 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter distribution"
                 },
                 {
                   whitespace: true
-                }
+                },
+                { min: 3},
               ]}
               hasFeedback
             >
@@ -1668,6 +1850,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter light preferences"
                 },
                 {
@@ -1685,11 +1868,13 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter flowering time"
                 },
                 {
                   whitespace: true
-                }
+                },
+                { min: 5},
               ]}
               hasFeedback
             >
@@ -1702,11 +1887,13 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter flower color"
                 },
                 {
                   whitespace: true
-                }
+                },
+                { min: 3},
               ]}
               hasFeedback
             >
@@ -1719,6 +1906,7 @@ function TreeSpecies() {
               rules={[
                 {
                   required: true,
+                  pattern: "^[A-Za-z]",
                   message: "Please enter fruit type"
                 },
                 {
