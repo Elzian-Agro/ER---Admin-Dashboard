@@ -45,10 +45,6 @@ const useStyles = makeStyles({
     backgroundColor: "green",
   },
 
-  unapproveButton: {
-    backgroundColor: "red",
-  },
-
   formTextField: {
     marginBottom: "20px",
     marginRight: "10px",
@@ -81,7 +77,6 @@ function LandOwner() {
   const [updateBankName, setUpdateBankName] = useState("");
   const [updateBankBranch, setUpdateBankBranch] = useState("");
   const [searchLandOwner, setSearchLandOwner] = useState("");
-  const [color, setcolor] = useState("green");
 
   const [form] = Form.useForm();
 
@@ -260,13 +255,10 @@ function LandOwner() {
                       <Grid item md={12} lg={6} xl={4}>
                         <Button
                           type="primary"
-                          className={color}
                           //color change
                           style={{ backgroundColor: row.validated === 0 ? "#00e600" : "	#e6ac00"
                           
                          }}
-                          //color={row.validated === 0 ? "#F00" : "#00F"}
-                          //backgroundColor={row.validated === 0 ? "#ffffff" : "#e60000"}
                           onClick={() => {
                             setSelectedId(row.landOwnerID);
                             handleApprove(row);
