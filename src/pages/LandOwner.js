@@ -40,11 +40,6 @@ const useStyles = makeStyles({
     fontSize: "12px",
     width: "80px",
   },
-
-  approveButton: {
-    backgroundColor: "green",
-  },
-
   formTextField: {
     marginBottom: "20px",
     marginRight: "10px",
@@ -262,7 +257,6 @@ function LandOwner() {
                           onClick={() => {
                             setSelectedId(row.landOwnerID);
                             handleApprove(row);
-
                           }}
                         >
                           {row.validated === 0 ? "Approve" : "UnApprove"}
