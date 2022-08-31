@@ -1,23 +1,26 @@
-//import {useContext} from 'react'
+import {useContext} from 'react'
 import axios from "axios";
 import Tokenservice from "./token-service";
-//import {LoginContext} from "../components/helper/Context"
+import {LoginContext} from "../components/helper/Context"
 
 export default function AuditorService() {
-  const{getLocalRefreshToken,getLocalAccessToken,updateNewAccessToken}=Tokenservice()
- // const {setAccessTokenMemory ,accessTokenMemory}= useContext(LoginContext);
+  const{getLocalRefreshToken}=Tokenservice()
+  const {accessTokenMemory,setAccessTokenMemory}= useContext(LoginContext);
+
+  let accessTokenMemoryTmp=accessTokenMemory;
+
   const http = axios.create({
     baseURL:
       "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
     headers: {
       "Content-type": "application/json",
-      "x-auth-token":getLocalAccessToken(),
+      "x-auth-token":accessTokenMemoryTmp,
     },
   });
 
   http.interceptors.request.use(
     (config) => {
-      const token = getLocalAccessToken();
+      const token = accessTokenMemoryTmp;
       if (token) {
         config.headers["x-auth-token"] =token;
       }
@@ -43,7 +46,9 @@ export default function AuditorService() {
               refreshToken: getLocalRefreshToken(),
             });
             const { accessToken } = rs.data;
-            updateNewAccessToken(accessToken);
+            accessTokenMemoryTmp=accessToken;
+            setAccessTokenMemory(accessTokenMemoryTmp)
+            //updateNewAccessToken(accessToken);
             return http(originalConfig);
           } catch (_error) {
             return Promise.reject(_error);
