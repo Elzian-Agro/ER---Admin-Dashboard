@@ -118,13 +118,23 @@ function Calculation() {
       })
   };
 
+  const createString = (res) => { 
+    const replacedObject = res.toString()
+    const replacedObject2 = replacedObject.replaceAll('|', ',');
+    const replacedObject3 = replacedObject2.replaceAll('[', '');
+    const replacedObject4 = replacedObject3.replaceAll(']', '');
+    return replacedObject4;
+   }
+  
   const renderLand = (lands) => {
     let land = lands.filter(l => l?.perimeter !==null);
-      return land?.map((land) => {
-        const peri = land?.perimeter;
-        const arr = peri.split(',').map(element => {
-          return Number(element);
-        });
+    return land?.map((land) => {
+      let peri = land?.perimeter;
+        
+      const periNew = createString(peri);
+      const arr = periNew.split(',').map(element => {
+        return Number(element);
+      });
 
       const perChunk = 2    
           
@@ -140,14 +150,13 @@ function Calculation() {
       return resultArray
       }, [])
           
-      result.map((row) => [row[1], row[0]])
-         
+       result.map((row) => [row[1], row[0]])
           
-      const greenOptions = { color: 'green' , opacity: '0.2' }
+       const greenOptions = { color: 'green' , opacity: '0.2' }
           
-      return(
-        <Polygon pathOptions={greenOptions} positions={result} />
-      )
+       return(
+         <Polygon pathOptions={greenOptions} positions={result} />
+       )
     }) 
 };
       
