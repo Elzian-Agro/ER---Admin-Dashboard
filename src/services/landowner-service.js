@@ -1,7 +1,8 @@
 //import { useCookies } from "react-cookie";
 import axios from "axios";
 import { notification} from 'antd';
-
+import {useContext} from 'react'
+import {LoginContext} from "../components/helper/Context"
 import Tokenservice from "./token-service";
 
 
@@ -20,8 +21,10 @@ const openNotificationWithIcon = (type,message,title) => {
 }
 
 export default function DataService() {
+  const {accessTokenMemory,setAccessTokenMemory}= useContext(LoginContext);
+  let accessTokenMemoryTmp=accessTokenMemory;
 
-  const{getLocalRefreshToken,getLocalAccessToken,updateNewAccessToken}=Tokenservice()
+  const{getLocalRefreshToken}=Tokenservice()
   //const [cookies] = useCookies(["token"]);
 
   const http = axios.create({
@@ -29,12 +32,12 @@ export default function DataService() {
       "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
     headers: {
       "Content-type": "application/json",
-      "x-auth-token":getLocalAccessToken(),
+      "x-auth-token":accessTokenMemoryTmp
     },
   });
   http.interceptors.request.use(
     (config) => {
-      const token = getLocalAccessToken();
+      const token = accessTokenMemoryTmp
       if (token) {
         config.headers["x-auth-token"] = token;
       }
@@ -63,7 +66,9 @@ export default function DataService() {
             //console.log("response", rs);
             const { accessToken } = rs.data;
             //console.log("NewAccessToken", accessToken);
-            updateNewAccessToken(accessToken);
+            accessTokenMemoryTmp=accessToken;
+            setAccessTokenMemory(accessTokenMemoryTmp)
+            //updateNewAccessToken(accessToken);
             return http(originalConfig);
           } catch (_error) {
             return Promise.reject(_error);
