@@ -168,18 +168,12 @@ function Feed() {
     formData.append("imageUrl", updateSelectedFile);
     formData.append("message", updateDescription);
     formData.append("tags", updateTag);
-    formData.append("published", "Yes");
 
     try {
       await axios
         .put(
           `http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/feeds/updateFeed/${selectedId}`,
           formData,
-          {
-            imageUrl: selectedFile,
-            message: updateDescription,
-            tags: updateTag,
-          },
           {
             headers: {
               "x-auth-token":
@@ -188,8 +182,9 @@ function Feed() {
           }
         )
         .then((response) => {
-          openNotificationWithIcon('success',"Feed Added Successfully")
-          setFeedData(response.data);
+          openNotificationWithIcon('success',"Feed updated Feed Successfully")
+          //setFeedData(response.data);
+          GetAllFeeds()
         });
     } catch (error) {
       setIsUpdateModalVisible(false);
@@ -361,10 +356,11 @@ function Feed() {
                 name={["user", "image"]} 
                 label="Image">
                   <Input
-                    type="file"
-                    value={updateSelectedFile}
+                    type="file" 
+                    accept = "image/*"
+                   
                     onChange={(event) =>
-                      setUpdateSelectedFile(event.target.value)
+                      setUpdateSelectedFile(event.target.files[0])
                     }
                   />
                   <img src={selectedFile} alt="img" />
