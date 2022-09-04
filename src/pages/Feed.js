@@ -322,6 +322,7 @@ function Feed() {
               visible={isUpdateModalVisible}
               onCancel={handleUpdateCancel}
               onOk={UpdateFeedHandler}
+              destroyOnClose={true}
             >
               <Form {...layout}>
                 <Form.Item
