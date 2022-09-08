@@ -114,7 +114,8 @@ const Trees = () => {
       );
     }
     fetchData();
-  }, [getPlantedTrees]);
+    // eslint-disable-next-time react-hook/exhaustive-deps
+  }, []);
 
   // useEffect(() => {
   //   async function fetchData() {
