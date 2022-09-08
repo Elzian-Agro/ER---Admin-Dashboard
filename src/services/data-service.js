@@ -1,25 +1,26 @@
 //import { useCookies } from "react-cookie";
 import axios from "axios";
 import Tokenservice from "./token-service";
-import {useContext} from 'react'
-import {LoginContext} from "../components/helper/Context"
+import { useContext } from "react";
+import { LoginContext } from "../components/helper/Context";
+
 export default function DataService() {
   //const [cookies] = useCookies(["token"]);
-  const { getLocalRefreshToken} = Tokenservice();
+  const { getLocalRefreshToken } = Tokenservice();
 
-  const {accessTokenMemory,setAccessTokenMemory}= useContext(LoginContext);
-  let accessTokenMemoryTmp=accessTokenMemory;
+  const { accessTokenMemory, setAccessTokenMemory } = useContext(LoginContext);
+  let accessTokenMemoryTmp = accessTokenMemory;
   const http = axios.create({
     baseURL:
       "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
     headers: {
       "Content-type": "application/json",
-      "x-auth-token": accessTokenMemoryTmp
+      "x-auth-token": accessTokenMemoryTmp,
     },
   });
   http.interceptors.request.use(
     (config) => {
-      const token = accessTokenMemoryTmp
+      const token = accessTokenMemoryTmp;
       if (token) {
         config.headers["x-auth-token"] = token;
       }
@@ -46,9 +47,9 @@ export default function DataService() {
               refreshToken: getLocalRefreshToken(),
             });
             const { accessToken } = rs.data;
-            accessTokenMemoryTmp=accessToken;
-            setAccessTokenMemory(accessTokenMemoryTmp)
-           // updateNewAccessToken(accessToken);
+            accessTokenMemoryTmp = accessToken;
+            setAccessTokenMemory(accessTokenMemoryTmp);
+            // updateNewAccessToken(accessToken);
             return http(originalConfig);
           } catch (_error) {
             return Promise.reject(_error);
@@ -61,7 +62,7 @@ export default function DataService() {
   );
   async function getPlantedTrees() {
     const data = await http.get("/trees").then((res) => res.data.Result);
-    console.log(data)
+    console.log(data);
     return data;
   }
 

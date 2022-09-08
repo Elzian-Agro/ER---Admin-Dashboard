@@ -37,10 +37,12 @@ import profilavatar from "../assets/images/face-1.jpg";
 import project1 from "../assets/images/qr-code.png";
 import project2 from "../assets/images/qr-code.png";
 import project3 from "../assets/images/qr-code.png";
+import DataService from "../services/data-service";
 
 function Profile() {
   const [imageURL, setImageURL] = useState(false);
   const [setLoading] = useState(false);
+  const [data, setdata] = useState({});
 
   const getBase64 = (img, callback) => {
     const reader = new FileReader();
@@ -126,8 +128,25 @@ function Profile() {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const showModal = () => {
+  const showModal = (data) => {
+    setModaldata(data);
     setIsModalVisible(true);
+  };
+
+  const handleUpdatelick = () => {
+    const admin = {
+      // id: modaldata.id,
+      fullName: modaldata.fullName,
+      mobile: modaldata.mobile.toString(),
+      // profImage: "jjj",
+      profImage: modaldata.profImage,
+      location: modaldata.location,
+    };
+    console.log(admin);
+
+    updateAdminDetails(admin);
+    getProfile();
+    setIsModalVisible(false);
   };
 
   const handleOk = () => {
@@ -159,8 +178,7 @@ function Profile() {
     console.log(values);
   };
 
-  const handleSubmit = () => {
-  }
+  const handleSubmit = () => {};
 
   return (
     <>
@@ -176,11 +194,11 @@ function Profile() {
           <Row justify="space-between" align="middle" gutter={[24, 0]}>
             <Col span={24} md={12} className="col-info">
               <Avatar.Group>
-                <Avatar size={74} shape="square" src={profilavatar} />
+                <Avatar size={74} shape="square" src={profImage} />
 
                 <div className="avatar-info">
-                  <h4 className="font-semibold m-0">Sarah Jacob</h4>
-                  <p>CEO / Co-Founder</p>
+                  <h4 className="font-semibold m-0">{fullName}</h4>
+                  <p>{userName}</p>
                 </div>
               </Avatar.Group>
             </Col>
@@ -193,13 +211,32 @@ function Profile() {
                 justifyContent: "flex-end",
               }}
             >
-              <Button type="primary" onClick={showModal}>
+              <Button
+                type="primary"
+                onClick={() => {
+                  showModal(data);
+
+                  form.setFieldsValue({
+                    id: data.id,
+                    fullName: data.fullName,
+                    mobile: data.mobile,
+                    email: data.email,
+                    location: data.location,
+                  });
+                }}
+              >
                 Update Profile
               </Button>
-              <Modal title="Personal Information" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} footer={null}>
-                <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+              <Modal
+                title="Update Personal Information"
+                visible={isModalVisible}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                footer={null}
+              >
+                <Form {...layout} form={form}>
                   <Form.Item
-                    name={["user", "name"]}
+                    name="fullName"
                     label="Name"
                     rules={[
                       {
@@ -207,18 +244,29 @@ function Profile() {
                       },
                     ]}
                   >
-                    <Input />
+                    <Input
+                      name="fullName"
+                      onChange={(event) => {
+                        setModaldata({
+                          ...modaldata,
+                          fullName: event.target.value,
+                        });
+                      }}
+                    />
+                  </Form.Item>
+                  <Form.Item name="mobile" label="Mobile No." rules={[]}>
+                    <Input
+                      name="mobile"
+                      onChange={(event) => {
+                        setModaldata({
+                          ...modaldata,
+                          mobile: event.target.value,
+                        });
+                      }}
+                    />
                   </Form.Item>
                   <Form.Item
-                    name={["user", "mobileNo"]}
-                    label="Mobile No."
-                    rules={[
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    name={["user", "email"]}
+                    name="email"
                     label="Email"
                     rules={[
                       {
@@ -226,19 +274,39 @@ function Profile() {
                       },
                     ]}
                   >
-                    <Input />
+                    <Input
+                      name="email"
+                      onChange={(event) => {
+                        setModaldata({
+                          ...modaldata,
+                          email: event.target.value,
+                        });
+                      }}
+                    />
                   </Form.Item>
-                  <Form.Item name={["user", "location"]} label="Location">
-                    <Input />
+                  <Form.Item name="location" label="Location">
+                    <Input
+                      name="location"
+                      onChange={(event) => {
+                        setModaldata({
+                          ...modaldata,
+                          location: event.target.value,
+                        });
+                      }}
+                    />
                   </Form.Item>
-                  <Form.Item
+                  {/* <Form.Item
                     name={["user", "profileinfo"]}
                     label="Profile Information"
                   >
                     <Input.TextArea />
-                  </Form.Item>
+                  </Form.Item> */}
                   <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                    <Button type="primary" onClick={handleSubmit}>
+                    <Button
+                      key="submit"
+                      type="submit"
+                      onClick={() => handleUpdatelick(modaldata)}
+                    >
                       Submit
                     </Button>
                   </Form.Item>
@@ -266,27 +334,33 @@ function Profile() {
               equality).{" "}
             </p>
             <hr className="my-25" />
-            <Descriptions title="Oliver Liam">
+            <Descriptions title={userName}>
               <Descriptions.Item label="Full Name" span={3}>
-                Sarah Emily Jacob
+                {fullName}
               </Descriptions.Item>
               <Descriptions.Item label="Mobile" span={3}>
-                (44) 123 1234 123
+                {mobile}
               </Descriptions.Item>
               <Descriptions.Item label="Email" span={3}>
-                sarahjacob@mail.com
+                {email}
               </Descriptions.Item>
               <Descriptions.Item label="Location" span={3}>
-                USA
+                {location}
               </Descriptions.Item>
               <Descriptions.Item label="Social" span={3}>
                 <a href="#pablo" className="mx-5 px-5">
+                  {" "}
+                  {twitterLink}
                   {<TwitterOutlined />}
                 </a>
                 <a href="#pablo" className="mx-5 px-5">
+                  {" "}
+                  {facebookLink}
                   {<FacebookOutlined style={{ color: "#344e86" }} />}
                 </a>
                 <a href="#pablo" className="mx-5 px-5">
+                  {" "}
+                  {instragramLink}
                   {<InstagramOutlined style={{ color: "#e1306c" }} />}
                 </a>
               </Descriptions.Item>
@@ -299,7 +373,9 @@ function Profile() {
         className="header-solid mb-24"
         title={
           <>
-            <h6 className="font-semibold">Blockchain Secured C-PES Production Verification System</h6>
+            <h6 className="font-semibold">
+              Blockchain Secured C-PES Production Verification System
+            </h6>
           </>
         }
       >
