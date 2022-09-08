@@ -9,7 +9,7 @@
   =========================================================
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
   Row,
@@ -43,6 +43,40 @@ function Profile() {
   const [imageURL, setImageURL] = useState(false);
   const [setLoading] = useState(false);
   const [data, setdata] = useState({});
+
+  const [userName, setUserName] = useState("");
+  const [userType, setUserType] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [email, setEmail] = useState("");
+  const [twitterLink, setTwitterLink] = useState("");
+  const [facebookLink, setFacebookLink] = useState("");
+  const [instragramLink, setInstragramLink] = useState("");
+  const [location, setLocation] = useState("");
+  const [profImage, setProfImage] = useState("");
+  const [modaldata, setModaldata] = useState({});
+  const [form] = Form.useForm();
+
+  const { getProfile, updateAdminDetails } = DataService();
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await getProfile();
+      setUserName(res.userName);
+      setUserType(res.userType);
+      setFullName(res.fullName);
+      setMobile(res.mobile);
+      setEmail(res.email);
+      setTwitterLink(res.twitterLink);
+      setFacebookLink(res.facebookLink);
+      setInstragramLink(res.instragramLink);
+      setLocation(res.location);
+      setProfImage(res.profImage);
+      setdata(res);
+    }
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getBase64 = (img, callback) => {
     const reader = new FileReader();

@@ -4,6 +4,21 @@ import Tokenservice from "./token-service";
 import { useContext } from "react";
 import { LoginContext } from "../components/helper/Context";
 
+import { notification } from "antd";
+const openNotificationWithIcon = (type, message, title) => {
+  if (type === "success") {
+    notification[type]({
+      message: title,
+      description: "Admin Id : " + message,
+    });
+  } else {
+    notification[type]({
+      message: title,
+      description: message,
+    });
+  }
+};
+
 export default function DataService() {
   //const [cookies] = useCookies(["token"]);
   const { getLocalRefreshToken } = Tokenservice();
@@ -105,6 +120,19 @@ export default function DataService() {
     return data[0];
   }
 
+  async function updateAdminDetails(admin) {
+    console.log(admin);
+    const data = await http
+      .put("/admin/updateProfile", admin)
+      .then((res) => res);
+
+    if (data.status === 200) {
+      openNotificationWithIcon("success", "successfully Updated!", "Success");
+    } else {
+      openNotificationWithIcon("Error", "Error in Updating", "Error");
+    }
+  }
+
   return {
     getPlantedTrees,
     updatePlantedTree,
@@ -112,5 +140,6 @@ export default function DataService() {
     getLandOwnerById,
     getAuditorById,
     getProfile,
+    updateAdminDetails,
   };
 }
