@@ -15,13 +15,13 @@ import { PlusOutlined } from "@ant-design/icons";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
-import { Card, Button, Modal, Form, Input, notification} from "antd";
+import { Card, Button, Modal, Form, Input, notification } from "antd";
 import { makeStyles } from "@mui/styles";
-import axios from "axios";
+// import axios from "axios";
 //import { useCookies } from "react-cookie";
 // import React, { useState, useEffect } from 'react';
 // import { Token } from "@mui/icons-material";
-
+import FeedService from '../services/feed-service';
 const { Meta } = Card;
 const useStyles = makeStyles({
   featuredButton: {
@@ -45,13 +45,16 @@ function Feed() {
   const [focused, setFocused] = useState(true);
 
   //const cookies = useCookies(["token"]);
+  const { updateFeedById, getFeedData,
+    deleteFeedbyId,
+    addFeedData } = FeedService()
 
-  axios.defaults.headers = {
-    "Content-Type": "application/json",
-    //"x-auth-token": cookies[0].token,
-    "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ3MzY4ODg4fQ.2o7M2RV88a7shoCmcEcgS0AXfjXAYrC14KynieCBuvA"
-  };
-  
+  // axios.defaults.headers = {
+  //   "Content-Type": "application/json",
+  //   //"x-auth-token": cookies[0].token,
+  //   "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ3MzY4ODg4fQ.2o7M2RV88a7shoCmcEcgS0AXfjXAYrC14KynieCBuvA"
+  // };
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -69,22 +72,22 @@ function Feed() {
     setFocused(true);
   }
 
- 
 
-  const openNotificationWithIcon = (type,message,title) => {
 
-    if(type==="success"){
+  const openNotificationWithIcon = (type, message, title) => {
+
+    if (type === "success") {
       notification[type]({
         message: title,
         description: message,
       });
-    }else{
+    } else {
       notification[type]({
         message: title,
-        description:message,
+        description: message,
       });
     }
-    
+
   };
 
   const layout = {
@@ -107,9 +110,7 @@ function Feed() {
   }, [isModalVisible, isUpdateModalVisible, deleteFeed]);
 
   const GetAllFeeds = async () => {
-    const result = await axios.get(
-      "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/feeds/"
-    );
+    const result = await getFeedData();
     setFeedData(result.data.Result);
   };
 
@@ -120,10 +121,8 @@ function Feed() {
 
   const handleDeleteClick = async () => {
 
-    try {await axios
-      .delete(
-                `http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
-              ).then((res) => res);
+    try {
+      await deleteFeedbyId(selectedId)
       setDeleteFeed(false);
     } catch (error) {
       setDeleteFeed(false);
@@ -151,15 +150,13 @@ function Feed() {
     formData.append("message", insertMessage);
     formData.append("tags", insertTag);
     formData.append("published", "Yes");
+    console.log(formData)
     try {
-      await axios.post(
-        "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/feeds/add",
-        formData
-      );
-      openNotificationWithIcon('success',"Feed Added Successfully")
+     await addFeedData(formData)
+      openNotificationWithIcon('success', "Feed Added Successfully")
       setIsModalVisible(false);
     } catch (error) {
-      openNotificationWithIcon('error',"Something Went Wrong Please Check","Error")
+      openNotificationWithIcon('error', "Something Went Wrong Please Check", "Error")
     }
   };
 
@@ -168,27 +165,17 @@ function Feed() {
     formData.append("imageUrl", updateSelectedFile);
     formData.append("message", updateDescription);
     formData.append("tags", updateTag);
-
+    console.log(formData)
     try {
-      await axios
-        .put(
-          `http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/feeds/updateFeed/${selectedId}`,
-          formData,
-          {
-            headers: {
-              "x-auth-token":
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ3MzY4ODg4fQ.2o7M2RV88a7shoCmcEcgS0AXfjXAYrC14KynieCBuvA",
-            },
-          }
-        )
+      await updateFeedById(selectedId,formData) 
         .then((response) => {
-          openNotificationWithIcon('success',"Feed updated Feed Successfully")
+          openNotificationWithIcon('success', "Feed updated Feed Successfully")
           //setFeedData(response.data);
           GetAllFeeds()
         });
     } catch (error) {
       setIsUpdateModalVisible(false);
-      openNotificationWithIcon('error',"Something Went Wrong Please Check","Error")
+      openNotificationWithIcon('error', "Something Went Wrong Please Check", "Error")
       // alert("err");
     }
   };
@@ -205,11 +192,11 @@ function Feed() {
                 icon={<PlusOutlined />}
                 onClick={showModal}
                 style={{ color: "white" }}
-                
+
               >
                 Add Feed
               </Button>
-              
+
               <Modal
                 title="Add New Feed"
                 visible={isModalVisible}
@@ -221,12 +208,12 @@ function Feed() {
                   <Form.Item
                     name="name"
                     label="Title"
-                    
+
                     rules={[
                       {
                         required: true,
-                        pattern : "^[A-Za-z0-9].{2,16}$",
-                        message : "Title Should be 3-16 characters and shouldn't include any special character!", 
+                        pattern: "^[A-Za-z0-9].{2,16}$",
+                        message: "Title Should be 3-16 characters and shouldn't include any special character!",
                       },
                     ]}
                   >
@@ -234,20 +221,20 @@ function Feed() {
                       type="text"
                       value={insertMessage}
                       onChange={(event) => setInsertMessage(event.target.value)}
-                      onBlur = {handleFocus}
-                focused = {focused.toString()}
+                      onBlur={handleFocus}
+                      focused={focused.toString()}
                     />
                   </Form.Item>
-                  <Form.Item 
-                  name={["user", "tag"]} 
-                  label="Tag" 
-                  rules={[
-                    {
-                      required: true,
-                      message: "Tag Cannot be Empty"
-                    },
-                  ]}
-                  
+                  <Form.Item
+                    name={["user", "tag"]}
+                    label="Tag"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Tag Cannot be Empty"
+                      },
+                    ]}
+
                   >
                     <Input
                       type="text"
@@ -255,13 +242,13 @@ function Feed() {
                       onChange={(event) => setInsertTag(event.target.value)}
                     />
                   </Form.Item>
-                  <Form.Item 
-                  name={["user", "image"]} 
-                  label="Image">
-                    <Input 
-                    type="file" 
-                    accept = "image/*"
-                    onChange={fileHandler} />
+                  <Form.Item
+                    name={["user", "image"]}
+                    label="Image">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={fileHandler} />
                     <img src={selectedFile} alt="img" />
                   </Form.Item>
                 </Form>
@@ -296,7 +283,7 @@ function Feed() {
                           setSelectedFile(item.selectedFile);
                           setSelectedId(item.id);
                         }}
-                        // onClick={}
+                      // onClick={}
                       >
                         Update
                       </Button>
@@ -331,8 +318,8 @@ function Feed() {
                   rules={[
                     {
                       required: true,
-                      pattern : "^[A-Za-z0-9].{2,16}$",
-                      message:"Title Should be 3-16 characters and shouldn't include any special character!", 
+                      pattern: "^[A-Za-z0-9].{2,16}$",
+                      message: "Title Should be 3-16 characters and shouldn't include any special character!",
                     },
                   ]}
                 >
@@ -344,22 +331,22 @@ function Feed() {
                     }
                   />
                 </Form.Item>
-                <Form.Item 
-                name={["user", "tag"]} 
-                label="Tag">
+                <Form.Item
+                  name={["user", "tag"]}
+                  label="Tag">
                   <Input
                     type="text"
                     value={updateTag}
                     onChange={(event) => setUpdateTag(event.target.value)}
                   />
                 </Form.Item>
-                <Form.Item 
-                name={["user", "image"]} 
-                label="Image">
+                <Form.Item
+                  name={["user", "image"]}
+                  label="Image">
                   <Input
-                    type="file" 
-                    accept = "image/*"
-                   
+                    type="file"
+                    accept="image/*"
+
                     onChange={(event) =>
                       setUpdateSelectedFile(event.target.files[0])
                     }
@@ -381,9 +368,9 @@ function Feed() {
                 },
               }}
             >
-              
-            
-            <DialogTitle id="dialog-title">
+
+
+              <DialogTitle id="dialog-title">
                 Do you really want to delete?
               </DialogTitle>
 
