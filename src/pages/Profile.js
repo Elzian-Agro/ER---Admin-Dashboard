@@ -172,9 +172,12 @@ function Profile() {
       // id: modaldata.id,
       fullName: modaldata.fullName,
       mobile: modaldata.mobile.toString(),
-      // profImage: "jjj",
       profImage: modaldata.profImage,
       location: modaldata.location,
+      twitterLink: modaldata.twitterLink,
+      facebookLink: modaldata.facebookLink,
+      instragramLink: modaldata.instragramLink,
+
     };
     console.log(admin);
 
@@ -299,25 +302,7 @@ function Profile() {
                       }}
                     />
                   </Form.Item>
-                  <Form.Item
-                    name="email"
-                    label="Email"
-                    rules={[
-                      {
-                        type: "email",
-                      },
-                    ]}
-                  >
-                    <Input
-                      name="email"
-                      onChange={(event) => {
-                        setModaldata({
-                          ...modaldata,
-                          email: event.target.value,
-                        });
-                      }}
-                    />
-                  </Form.Item>
+                
                   <Form.Item name="location" label="Location">
                     <Input
                       name="location"
@@ -325,6 +310,48 @@ function Profile() {
                         setModaldata({
                           ...modaldata,
                           location: event.target.value,
+                        });
+                      }}
+                    />
+                  </Form.Item>
+                  {/* <Form.Item 
+                  name={["user", "image"]} 
+                  label="Image">
+                    <Input 
+                    type="file" 
+                    accept = "image/*"
+                    onChange={fileHandler} />
+                    <img src={selectedFile} alt="img" />
+                  </Form.Item> */}
+                  <Form.Item name="twitterLink" label="twitterLink">
+                    <Input
+                      name="twitterLink"
+                      onChange={(event) => {
+                        setModaldata({
+                          ...modaldata,
+                          twitterLink: event.target.value,
+                        });
+                      }}
+                    />
+                  </Form.Item>
+                  <Form.Item name="facebookLink" label="facebookLink">
+                    <Input
+                      name="facebookLink"
+                      onChange={(event) => {
+                        setModaldata({
+                          ...modaldata,
+                          facebookLink: event.target.value,
+                        });
+                      }}
+                    />
+                  </Form.Item>
+                  <Form.Item name="instragramLink" label="instragramLink">
+                    <Input
+                      name="instragramLink"
+                      onChange={(event) => {
+                        setModaldata({
+                          ...modaldata,
+                          instragramLink: event.target.value,
                         });
                       }}
                     />
@@ -362,10 +389,7 @@ function Profile() {
           >
             <p className="text-dark">
               {" "}
-              Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer
-              is no. If two equally difficult paths, choose the one more painful
-              in the short term (pain avoidance is creating an illusion of
-              equality).{" "}
+              {" "}
             </p>
             <hr className="my-25" />
             <Descriptions title={userName}>
