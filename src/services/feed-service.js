@@ -6,7 +6,7 @@ import {LoginContext} from "../components/helper/Context"
 
  const{getLocalRefreshToken}=Tokenservice()
 
-export default function DataService() {
+export default function FeedService() {
   // const [cookies] = useCookies(["token"]);
   const {accessTokenMemory,setAccessTokenMemory}= useContext(LoginContext);
   let accessTokenMemoryTmp=accessTokenMemory;
@@ -63,34 +63,33 @@ export default function DataService() {
       return Promise.reject(err);
     }
   );
-  // async function deleteLandOwnerById(Id) {
-  //   const data = await http.put("/landOwners/deleteLandowner/" + Id).then((res) => res);
-  //   console.log(
-  //     data.status === 200
-  //       ? data.data.message
-  //       : "Oops! something went wrong when deleting Tree"
-  //   );
-  //   // return data;
-  // }
-
-  async function updateFeedById(Id, formData) {
-    const data = await http.put("/feeds/updateFeed/" + Id, formData).then((res) => res);
+  async function addFeedData(formData) {
+    const data = await http.post("/feeds/add/", formData).then((res) => res);
     console.log(data);
-    // return data;
   }
 
-//   async function addNewLandOwner(landData) {
-//     const data = await http.post("/landOwners/add", landData).then((res) => res);
-//     console.log(data);
-//     // return data;
-//   }
+
+  async function getFeedData() {
+    const data = await http.get("/feeds/").then((res) => res);
+    return data;
+  }
+
+  async function deleteFeedbyId(id) {
+    const data=await http.delete(`/feeds/deleteFeed/${id}`).then((res) => res);
+    return data;
+
+  }
+
+  async function updateFeedById(Id, formData) {
+    const data = await http.put(`/feeds/updateFeed/${Id}`, formData).then((res) => res);
+    console.log(data);
+  }
 
   return {
-    // getLandOwners,
-    // deleteLandOwnerById,
     updateFeedById,
-    // addNewLandOwner,
-    // approveLandOwnerById,
-    // unApproveLandOwnerById,
+    getFeedData,
+    deleteFeedbyId,
+    addFeedData
+  
   };
 }

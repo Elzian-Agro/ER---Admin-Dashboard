@@ -9,7 +9,7 @@
   =========================================================
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 import {
   Card,
@@ -37,11 +37,43 @@ import LineChart from "../components/chart/LineChart";
 import ava1 from "../assets/images/icons8-owner-64.png";
 import card from "../assets/images/LifeForce LOGO2022.jpeg";
 
+import memberService from './../services/getmembers';
+
+
 function Home() {
   const [reverse, setReverse] = useState(false);
   const { Title, Text } = Typography;
 
   const onChange = (e) => console.log(`radio checked:${e.target.value}`);
+
+  const [invester, setinvester] = useState("");
+  const [landowners, setlandowners] = useState("");
+  const [auditors, setauditors] = useState("");
+  const [fieldEgent, setfieldEgent] = useState("");
+
+  const {
+    getlandowners,
+    getauditors,
+    getfieldagents,
+    getinvesters,
+  } = memberService();
+
+
+  useEffect(() => {
+    const ShowDashboardCounts = async () => {
+      const res1 = await getinvesters();
+      const res2 = await getlandowners();
+      const res3 = await getauditors();
+      const res4 = await getfieldagents();
+
+      setinvester(res1);
+      setlandowners(res2);
+      setauditors(res3);
+      setfieldEgent(res4);
+    }
+    ShowDashboardCounts()
+  }, []);
+
 
   const profile = [
     <svg
@@ -72,22 +104,26 @@ function Home() {
   ];
   const count = [
     {
-      today: "Number of Investors",
+      today: `Number of Investors : ${invester}
+      `,
       icon: profile,
       bnb: "bnb2",
     },
     {
-      today: "Number of LandOwners",
+      today: `Number of LandOwners : ${landowners}
+      `,
       icon: profile,
       bnb: "bnb2",
     },
     {
-      today: "Number of Auditors",
+      today: `Number of Auditors : ${auditors}
+      `,
       icon: profile,
       bnb: "redtext",
     },
     {
-      today: "Number of Active Investors",
+      today: `Number of Field Agents : ${fieldEgent}
+      `,
       icon: profile,
       bnb: "bnb2",
     },
