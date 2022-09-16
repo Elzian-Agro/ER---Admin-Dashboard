@@ -14,6 +14,7 @@ import { Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { makeStyles } from "@mui/styles";
 import { useState, useEffect } from "react";
+import emailNotification from './../services/emailnotification';
 import {
   SearchOutlined,
 } from "@ant-design/icons";
@@ -132,6 +133,8 @@ function TreeSpecies() {
   const [buttonDisabled2, setButtonDisabled2] = useState(true);
   const [value, setValue] = useState('fruit');
 
+  const {Modify} = emailNotification();
+
   const handleChange = (event) => {
     setValue(event.target.value);
   };
@@ -149,7 +152,7 @@ function TreeSpecies() {
       setData(res);
     }
     getTreeSpecies()
-  }, [getAllTreeSpecies]);
+  }, []);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -165,6 +168,9 @@ function TreeSpecies() {
 
   const handleUpdateCancel = () =>  {
     setIsUpdateModalVisible(false);
+  }
+  const emailnoti=(e)=>{
+    Modify(e);
   }
 
   const layout = {
@@ -542,7 +548,10 @@ function TreeSpecies() {
            
             visible={isModalVisible}
             onCancel={handleCancel}
-            onOk={() => {handleAddFormSubmit()}}
+            onOk={() => {
+              handleAddFormSubmit();
+              emailnoti("Add New Tree Species");
+            } }
             okButtonProps={{ disabled:  buttonDisabled  }}
             destroyOnClose={true}
           >
@@ -1322,7 +1331,10 @@ function TreeSpecies() {
             title="Update Tree Species"
             visible={isUpdateModalVisible}
             onCancel={handleUpdateCancel}
-            onOk={() => {handleUpdateTreeSpecies()}}
+            onOk={() => {
+              handleUpdateTreeSpecies();
+              emailnoti("Update Tree Species");
+            }}
             okButtonProps={{ disabled:  buttonDisabled2  }}
             destroyOnClose={true}
           >
