@@ -398,6 +398,7 @@ function Billing() {
                       <Col xs={24} md={12} className="d-flex">
                       <Button type="primary" onClick={() => {} }>ADD NEW CARD</Button>
                       {/* <Button type="primary" onClick={() => {emailnoti("Payment Successfull");} }>ADD NEW CARD</Button> */}
+                      
                       </Col>
                     </Row>
                   </>

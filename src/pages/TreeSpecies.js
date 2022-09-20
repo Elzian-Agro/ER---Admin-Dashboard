@@ -550,7 +550,7 @@ function TreeSpecies() {
             onCancel={handleCancel}
             onOk={() => {
               handleAddFormSubmit();
-              emailnoti("Add New Tree Species");
+              // emailnoti("Add New Tree Species");
             } }
             okButtonProps={{ disabled:  buttonDisabled  }}
             destroyOnClose={true}
@@ -1333,7 +1333,7 @@ function TreeSpecies() {
             onCancel={handleUpdateCancel}
             onOk={() => {
               handleUpdateTreeSpecies();
-              emailnoti("Update Tree Species");
+              // emailnoti("Update Tree Species");
             }}
             okButtonProps={{ disabled:  buttonDisabled2  }}
             destroyOnClose={true}
