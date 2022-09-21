@@ -177,13 +177,13 @@ function Profile() {
       twitterLink: modaldata.twitterLink,
       facebookLink: modaldata.facebookLink,
       instragramLink: modaldata.instragramLink,
-
     };
-    console.log(admin);
+    console.log(admin.fullName);
 
     updateAdminDetails(admin);
     getProfile();
     setIsModalVisible(false);
+    
   };
 
   const handleOk = () => {
@@ -254,11 +254,13 @@ function Profile() {
                   showModal(data);
 
                   form.setFieldsValue({
-                    id: data.id,
+                    // id: data.id,
                     fullName: data.fullName,
                     mobile: data.mobile,
-                    email: data.email,
                     location: data.location,
+                    twitterLink: data.twitterLink,
+                    facebookLink: data.facebookLink,
+                    instragramLink: data.instragramLink,
                   });
                 }}
               >
@@ -291,7 +293,17 @@ function Profile() {
                       }}
                     />
                   </Form.Item>
-                  <Form.Item name="mobile" label="Mobile No." rules={[]}>
+                  <Form.Item
+                    name="mobile"
+                    label="Mobile No."
+                    rules={[
+                      {
+                        required: true,
+                        pattern: "[0-9]{10}",
+                        message: "Mobile no Should be 10 characters and shouldn't include any special character!",
+                      },
+                    ]}
+                  >
                     <Input
                       name="mobile"
                       onChange={(event) => {
@@ -302,7 +314,7 @@ function Profile() {
                       }}
                     />
                   </Form.Item>
-                
+
                   <Form.Item name="location" label="Location">
                     <Input
                       name="location"
@@ -387,10 +399,7 @@ function Profile() {
             extra={<Button type="link">{pencil}</Button>}
             bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
           >
-            <p className="text-dark">
-              {" "}
-              {" "}
-            </p>
+            <p className="text-dark"> </p>
             <hr className="my-25" />
             <Descriptions title={userName}>
               <Descriptions.Item label="Full Name" span={3}>
@@ -406,19 +415,13 @@ function Profile() {
                 {location}
               </Descriptions.Item>
               <Descriptions.Item label="Social" span={3}>
-                <a href="#pablo" className="mx-5 px-5">
-                  {" "}
-                  {twitterLink}
+                <a href="{twitterLink}" className="mx-5 px-5">
                   {<TwitterOutlined />}
                 </a>
-                <a href="#pablo" className="mx-5 px-5">
-                  {" "}
-                  {facebookLink}
+                <a href="{facebookLink}" className="mx-5 px-5">
                   {<FacebookOutlined style={{ color: "#344e86" }} />}
                 </a>
-                <a href="#pablo" className="mx-5 px-5">
-                  {" "}
-                  {instragramLink}
+                <a href="{instragramLink}" className="mx-5 px-5">
                   {<InstagramOutlined style={{ color: "#e1306c" }} />}
                 </a>
               </Descriptions.Item>
