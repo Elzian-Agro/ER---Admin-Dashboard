@@ -5,7 +5,7 @@ import {useContext} from 'react'
 import {LoginContext} from "../components/helper/Context"
 
 import Tokenservice from "./token-service";
-
+import { useCallback } from "react";
 
 const openNotificationWithIcon = (type, message, title) => {
   if (type === "success") {
@@ -81,10 +81,10 @@ export default function DataService() {
     }
   );
 
-  async function getAllTreeSpecies() {
+  const getAllTreeSpecies = useCallback (async function getAllTreeSpecies() {
     const data = await http.get("/species").then((res) => res.data.Result);
     return data;
-  }
+  } ,[])
 
   async function deleteTreeSpeciesById(Id) {
     const data = await http
