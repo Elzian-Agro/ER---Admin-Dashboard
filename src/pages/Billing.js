@@ -25,6 +25,7 @@ import { PlusOutlined, ExclamationOutlined } from "@ant-design/icons";
 import mastercard from "../assets/images/mastercard-logo.png";
 import paypal from "../assets/images/paypal-logo-2.png";
 import visa from "../assets/images/visa-logo.png";
+import email from './../services/emailnotification';
 
 function Billing() {
   const data = [
@@ -317,6 +318,10 @@ function Billing() {
       amountcolor: "text-warning-b",
     },
   ];
+  const {billing} = email();
+  const emailnoti=(e)=>{
+    billing(e);
+  }
 
   return (
     <>
@@ -391,7 +396,9 @@ function Billing() {
                         <h6 className="font-semibold m-0">Payment Methods</h6>
                       </Col>
                       <Col xs={24} md={12} className="d-flex">
-                        <Button type="primary">ADD NEW CARD</Button>
+                      <Button type="primary" onClick={() => {} }>ADD NEW CARD</Button>
+                      {/* <Button type="primary" onClick={() => {emailnoti("Payment Successfull");} }>ADD NEW CARD</Button> */}
+                      
                       </Col>
                     </Row>
                   </>

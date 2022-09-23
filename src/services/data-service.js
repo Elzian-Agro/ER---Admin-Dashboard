@@ -120,6 +120,7 @@ export default function DataService() {
     return data[0];
   }
 
+  //update Profile========================================
   async function updateAdminDetails(admin) {
     console.log(admin);
     const data = await http
@@ -132,6 +133,7 @@ export default function DataService() {
       openNotificationWithIcon("Error", "Error in Updating", "Error");
     }
   }
+
 
   return {
     getPlantedTrees,
