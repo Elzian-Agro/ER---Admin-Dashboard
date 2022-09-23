@@ -21,6 +21,7 @@ import {
 import service from "./../services/tree-species-service";
 import MapChart1 from '../components/chart/MapChart1';
 import MapChart2 from '../components/chart/MapChart2';
+import { useCallback } from "react";
 
 const useStyles = makeStyles({
   mainHeading: {
@@ -131,19 +132,12 @@ function TreeSpecies() {
   const [form] = Form.useForm();
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [buttonDisabled2, setButtonDisabled2] = useState(true);
-  const [value, setValue] = useState('fruit');
-
-
 
   const [isModalVisibleModel, setIsModalVisibleModel] = useState(false);
   const [modelData, setModeldata] = useState({})
   const [imagePath,setImagePath]=useState();
   const [updsteImagePath,setUpdsteImagePath]=useState();
   const [checkTempupdsteImagePath,setCheckTempUpdsteImagePath]=useState();
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
 
   const {
     getAllTreeSpecies,
@@ -152,14 +146,15 @@ function TreeSpecies() {
     addNewTreeSpecies,
     getTreeSpeciesById
   } = service();
-  const getTreeSpecies = async () => {
+  
+  const getTreeSpecies = useCallback( async () => {
     const res = await getAllTreeSpecies();
     setData(res);
-  }
+  },[getAllTreeSpecies])
   useEffect(() => {
   
     getTreeSpecies()
-  }, []);
+  }, [getTreeSpecies]);
 
   const showModal = () => {
     setIsModalVisible(true);

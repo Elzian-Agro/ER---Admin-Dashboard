@@ -90,7 +90,6 @@ export default function DataService() {
     const data = await http
       .put("/species/deleteSpecies/" + Id)
       .then((res) => res);
-    console.log(data.status === 200);
     if (data.status === 200) {
       openNotificationWithIcon("success", "successfully Deleted!", "Success");
     } else {
@@ -106,7 +105,6 @@ export default function DataService() {
     const data = await http
       .put("/species/updateSpecies/" + Id, treeData)
       .then((res) => res);
-    console.log(data.status === 200);
     if (data.status === 200) {
       openNotificationWithIcon("success", "successfully Updated!", "Success");
     } else {
@@ -116,7 +114,6 @@ export default function DataService() {
 
   async function addNewTreeSpecies(treeData) {
     const data = await http.post("/species/add", treeData).then((res) => res);
-    console.log(data.status === 200);
     if (data.status === 200) {
       openNotificationWithIcon("success", "successfully Added!", "Success");
     } else {
