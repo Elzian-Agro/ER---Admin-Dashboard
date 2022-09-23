@@ -55,6 +55,7 @@ export default function DataService() {
     async (err) => {
       const originalConfig = err.config;
       if (err) {
+       // console.log(err.response.status)
         // access token expired
         if (err && !originalConfig._retry) {
           // handle infinite loop
@@ -63,7 +64,7 @@ export default function DataService() {
             const rs = await http.post("/admin/getNewAccessToken", {
               refreshToken: getLocalRefreshToken(),
             });
-            console.log("response", rs);
+            //console.log("response", rs);
             const { accessToken } = rs.data;
            // console.log("NewAccessToken", accessToken);
            accessTokenMemoryTmp=accessToken;
@@ -96,6 +97,10 @@ export default function DataService() {
       openNotificationWithIcon("Error", "Error in Deleting", "Error");
     }
   }
+  async function getTreeSpeciesById(Id) {
+    const data = await http.get(`/species/${Id}`).then((res) => res);
+    return data;
+  }
 
   async function updateTreeSpeciesById(Id, treeData) {
     const data = await http
@@ -124,5 +129,6 @@ export default function DataService() {
     deleteTreeSpeciesById,
     updateTreeSpeciesById,
     addNewTreeSpecies,
+    getTreeSpeciesById
   };
 }
