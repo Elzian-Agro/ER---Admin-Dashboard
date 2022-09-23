@@ -1,4 +1,4 @@
-import emailjs from '@emailjs/browser';
+//import emailjs from '@emailjs/browser';
 import { useState , useEffect } from 'react';
 import axios, { Axios } from 'axios';
 import {useContext} from 'react'
@@ -99,12 +99,12 @@ export default function Emailnoti() {
           from_name: "Elzian Agro",
           message : props,
      };
-       emailjs.send('service_wfb9w2h','template_aez5yxb',templateParams, 'DMhiQgPxi2zys5qiw')
-           .then((result) => {
-               console.log(result.text + element.email);
-           }, (error) => {
-               console.log(error.text);
-           });   
+      //  emailjs.send('service_wfb9w2h','template_aez5yxb',templateParams, 'DMhiQgPxi2zys5qiw')
+      //      .then((result) => {
+      //          console.log(result.text + element.email);
+      //      }, (error) => {
+      //          console.log(error.text);
+      //      });   
   }
   
 }; 
@@ -124,12 +124,12 @@ export default function Emailnoti() {
           from_name: "Elzian Agro",
           message : props,
      };
-       emailjs.send('service_wfb9w2h', 'template_aez5yxb',templateParams, 'DMhiQgPxi2zys5qiw')
-           .then((result) => {
-               console.log(result.text + email);
-           }, (error) => {
-               console.log(error.text);
-           });
+      //  emailjs.send('service_wfb9w2h', 'template_aez5yxb',templateParams, 'DMhiQgPxi2zys5qiw')
+      //      .then((result) => {
+      //          console.log(result.text + email);
+      //      }, (error) => {
+      //          console.log(error.text);
+      //      });
 
     for (let index = 0; index < AllAdminEmails.length; index++) {
       const element = AllAdminEmails[index];
@@ -139,12 +139,12 @@ export default function Emailnoti() {
         from_name: "Elzian Agro",
         message : props,
    };
-     emailjs.send('service_wfb9w2h', 'template_aez5yxb',templateParams, 'DMhiQgPxi2zys5qiw')
-         .then((result) => {
-             console.log(result.text + element.email);
-         }, (error) => {
-             console.log(error.text);
-         });
+    //  emailjs.send('service_wfb9w2h', 'template_aez5yxb',templateParams, 'DMhiQgPxi2zys5qiw')
+    //      .then((result) => {
+    //          console.log(result.text + element.email);
+    //      }, (error) => {
+    //          console.log(error.text);
+    //      });
     }
 
   }
