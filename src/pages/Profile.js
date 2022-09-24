@@ -55,6 +55,8 @@ function Profile() {
   const [location, setLocation] = useState("");
   const [profImage, setProfImage] = useState("");
   const [modaldata, setModaldata] = useState({});
+  const [profileInfo, setProfileInfo] = useState("");
+
   const [form] = Form.useForm();
 
   const { getProfile, updateAdminDetails } = DataService();
@@ -65,49 +67,52 @@ function Profile() {
       setUserName(res.userName);
       setUserType(res.userType);
       setFullName(res.fullName);
-      setMobile(res.mobile);
+      setMobile(res.mobile.toString());
       setEmail(res.email);
       setTwitterLink(res.twitterLink);
       setFacebookLink(res.facebookLink);
       setInstragramLink(res.instragramLink);
       setLocation(res.location);
       setProfImage(res.profImage);
+      setProfileInfo(res.profileInfo);
       setdata(res);
     }
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getBase64 = (img, callback) => {
-    const reader = new FileReader();
-    reader.addEventListener("load", () => callback(reader.result));
-    reader.readAsDataURL(img);
-  };
+  // const getBase64 = (img, callback) => {
+  //   const reader = new FileReader();
+  //   reader.addEventListener("load", () => callback(reader.result));
+  //   reader.readAsDataURL(img);
+  // };
 
-  const beforeUpload = (file) => {
-    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-    if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error("Image must smaller than 2MB!");
-    }
-    return isJpgOrPng && isLt2M;
-  };
+  // const beforeUpload = (file) => {
+  //   const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+  //   if (!isJpgOrPng) {
+  //     message.error("You can only upload JPG/PNG file!");
+  //   }
+  //   const isLt2M = file.size / 1024 / 1024 < 2;
+  //   if (!isLt2M) {
+  //     message.error("Image must smaller than 2MB!");
+  //   }
+  //   return isJpgOrPng && isLt2M;
+  // };
 
-  const handleChange = (info) => {
-    if (info.file.status === "uploading") {
-      setLoading(false);
-      return;
-    }
-    if (info.file.status === "done") {
-      getBase64(info.file.originFileObj, (imageUrl) => {
-        setLoading(false);
-        setImageURL(false);
-      });
-    }
-  };
+  // const handleChange = (info) => {
+  //   if (info.file.status === "uploading") {
+  //     setLoading(false);
+  //     return;
+  //   }
+  //   if (info.file.status === "done") {
+  //     getBase64(info.file.originFileObj, (imageUrl) => {
+  //       setLoading(false);
+  //       setImageURL(false);
+  //     });
+  //   }
+  // };
+
+  // console.log(imageURL);
 
   const pencil = [
     <svg
@@ -172,12 +177,12 @@ function Profile() {
       // id: modaldata.id,
       fullName: modaldata.fullName,
       mobile: modaldata.mobile.toString(),
-      profImage: modaldata.profImage,
+      image: modaldata.profImage,
       location: modaldata.location,
       twitterLink: modaldata.twitterLink,
       facebookLink: modaldata.facebookLink,
       instragramLink: modaldata.instragramLink,
-
+      profileInfomation: modaldata.profileInfo,
     };
     console.log(admin);
 
@@ -254,11 +259,15 @@ function Profile() {
                   showModal(data);
 
                   form.setFieldsValue({
-                    id: data.id,
+                    // id: data.id,
                     fullName: data.fullName,
                     mobile: data.mobile,
-                    email: data.email,
                     location: data.location,
+                    twitterLink: data.twitterLink,
+                    facebookLink: data.facebookLink,
+                    instragramLink: data.instragramLink,
+                    profileInfo: data.profileInfo,
+                    // profImage: data.profImage,
                   });
                 }}
               >
@@ -274,11 +283,16 @@ function Profile() {
                 <Form {...layout} form={form}>
                   <Form.Item
                     name="fullName"
-                    label="Name"
+                    label="Full Name"
                     rules={[
                       {
-                        required: true,
+                        pattern: "^[A-Za-z]",
+                        message: "Please enter Full name",
                       },
+                      {
+                        whitespace: true,
+                      },
+                      { min: 3 },
                     ]}
                   >
                     <Input
@@ -291,7 +305,21 @@ function Profile() {
                       }}
                     />
                   </Form.Item>
-                  <Form.Item name="mobile" label="Mobile No." rules={[]}>
+                  <Form.Item
+                    name="mobile"
+                    label="Mobile Number"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please Enter Mobile Number",
+                      },
+                      {
+                        whitespace: true,
+                      },
+                      { min: 10 },
+                      { max: 10 },
+                    ]}
+                  >
                     <Input
                       name="mobile"
                       onChange={(event) => {
@@ -302,8 +330,21 @@ function Profile() {
                       }}
                     />
                   </Form.Item>
-                
-                  <Form.Item name="location" label="Location">
+
+                  <Form.Item
+                    name="location"
+                    label="Location"
+                    rules={[
+                      {
+                        pattern: "^[A-Za-z]",
+                        message: "Please enter Location",
+                      },
+                      {
+                        whitespace: true,
+                      },
+                      { min: 4 },
+                    ]}
+                  >
                     <Input
                       name="location"
                       onChange={(event) => {
@@ -314,16 +355,44 @@ function Profile() {
                       }}
                     />
                   </Form.Item>
-                  {/* <Form.Item 
-                  name={["user", "image"]} 
-                  label="Image">
-                    <Input 
-                    type="file" 
-                    accept = "image/*"
-                    onChange={fileHandler} />
-                    <img src={selectedFile} alt="img" />
-                  </Form.Item> */}
-                  <Form.Item name="twitterLink" label="twitterLink">
+                  <Form.Item name="profImage" label="Profile Image">
+                    <Input
+                      type="file"
+                      accept="image/jpeg"
+                      onChange={(event) => {
+                        setModaldata({
+                          ...modaldata,
+                          profImage: event.target.files[0],
+                        });
+                      }}
+                    />
+                    {/* <img src={selectedFile} alt="img" /> */}
+                  </Form.Item>
+                  <Form.Item
+                    name="profileInfo"
+                    label="Profile Infomation"
+                    rules={[
+                      {
+                        pattern: "^[A-Za-z]",
+                        message: "Please enter Profile Infomation",
+                      },
+                      {
+                        whitespace: true,
+                      },
+                      { min: 5 },
+                    ]}
+                  >
+                    <Input
+                      name="profileInfo"
+                      onChange={(event) => {
+                        setModaldata({
+                          ...modaldata,
+                          profileInfo: event.target.value,
+                        });
+                      }}
+                    />
+                  </Form.Item>
+                  <Form.Item name="twitterLink" label="Twitter Link">
                     <Input
                       name="twitterLink"
                       onChange={(event) => {
@@ -334,7 +403,7 @@ function Profile() {
                       }}
                     />
                   </Form.Item>
-                  <Form.Item name="facebookLink" label="facebookLink">
+                  <Form.Item name="facebookLink" label="Facebook Link">
                     <Input
                       name="facebookLink"
                       onChange={(event) => {
@@ -345,7 +414,7 @@ function Profile() {
                       }}
                     />
                   </Form.Item>
-                  <Form.Item name="instragramLink" label="instragramLink">
+                  <Form.Item name="instragramLink" label="Instragram Link">
                     <Input
                       name="instragramLink"
                       onChange={(event) => {
@@ -384,13 +453,10 @@ function Profile() {
             bordered={false}
             title={<h6 className="font-semibold m-0">Profile Information</h6>}
             className="header-solid h-full card-profile-information"
-            extra={<Button type="link">{pencil}</Button>}
+            // extra={<Button type="link">{pencil}</Button>}
             bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
           >
-            <p className="text-dark">
-              {" "}
-              {" "}
-            </p>
+            <p className="text-dark">{profileInfo}</p>
             <hr className="my-25" />
             <Descriptions title={userName}>
               <Descriptions.Item label="Full Name" span={3}>
@@ -406,19 +472,13 @@ function Profile() {
                 {location}
               </Descriptions.Item>
               <Descriptions.Item label="Social" span={3}>
-                <a href="#pablo" className="mx-5 px-5">
-                  {" "}
-                  {twitterLink}
+                <a href="{twitterLink}" className="mx-5 px-5">
                   {<TwitterOutlined />}
                 </a>
-                <a href="#pablo" className="mx-5 px-5">
-                  {" "}
-                  {facebookLink}
+                <a href="{facebookLink}" className="mx-5 px-5">
                   {<FacebookOutlined style={{ color: "#344e86" }} />}
                 </a>
-                <a href="#pablo" className="mx-5 px-5">
-                  {" "}
-                  {instragramLink}
+                <a href="{instragramLink}" className="mx-5 px-5">
                   {<InstagramOutlined style={{ color: "#e1306c" }} />}
                 </a>
               </Descriptions.Item>
@@ -463,8 +523,8 @@ function Profile() {
               className="avatar-uploader projects-uploader"
               showUploadList={false}
               action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              beforeUpload={beforeUpload}
-              onChange={handleChange}
+              // beforeUpload={beforeUpload}
+              // onChange={handleChange}
             >
               {imageURL ? (
                 <img src={imageURL} alt="avatar" style={{ width: "100%" }} />

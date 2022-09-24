@@ -5,7 +5,7 @@ import {useContext} from 'react'
 import {LoginContext} from "../components/helper/Context"
 
 import Tokenservice from "./token-service";
-
+import { useCallback } from "react";
 
 const openNotificationWithIcon = (type, message, title) => {
   if (type === "success") {
@@ -55,6 +55,7 @@ export default function DataService() {
     async (err) => {
       const originalConfig = err.config;
       if (err) {
+       // console.log(err.response.status)
         // access token expired
         if (err && !originalConfig._retry) {
           // handle infinite loop
@@ -63,7 +64,7 @@ export default function DataService() {
             const rs = await http.post("/admin/getNewAccessToken", {
               refreshToken: getLocalRefreshToken(),
             });
-            console.log("response", rs);
+            //console.log("response", rs);
             const { accessToken } = rs.data;
            // console.log("NewAccessToken", accessToken);
            accessTokenMemoryTmp=accessToken;
@@ -80,28 +81,30 @@ export default function DataService() {
     }
   );
 
-  async function getAllTreeSpecies() {
+  const getAllTreeSpecies = useCallback (async function getAllTreeSpecies() {
     const data = await http.get("/species").then((res) => res.data.Result);
     return data;
-  }
+  } ,[])
 
   async function deleteTreeSpeciesById(Id) {
     const data = await http
       .put("/species/deleteSpecies/" + Id)
       .then((res) => res);
-    console.log(data.status === 200);
     if (data.status === 200) {
       openNotificationWithIcon("success", "successfully Deleted!", "Success");
     } else {
       openNotificationWithIcon("Error", "Error in Deleting", "Error");
     }
   }
+  async function getTreeSpeciesById(Id) {
+    const data = await http.get(`/species/${Id}`).then((res) => res);
+    return data;
+  }
 
   async function updateTreeSpeciesById(Id, treeData) {
     const data = await http
       .put("/species/updateSpecies/" + Id, treeData)
       .then((res) => res);
-    console.log(data.status === 200);
     if (data.status === 200) {
       openNotificationWithIcon("success", "successfully Updated!", "Success");
     } else {
@@ -111,7 +114,6 @@ export default function DataService() {
 
   async function addNewTreeSpecies(treeData) {
     const data = await http.post("/species/add", treeData).then((res) => res);
-    console.log(data.status === 200);
     if (data.status === 200) {
       openNotificationWithIcon("success", "successfully Added!", "Success");
     } else {
@@ -124,5 +126,6 @@ export default function DataService() {
     deleteTreeSpeciesById,
     updateTreeSpeciesById,
     addNewTreeSpecies,
+    getTreeSpeciesById
   };
 }
