@@ -9,7 +9,7 @@
   =========================================================
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 
 import {
   Row,
@@ -56,6 +56,19 @@ function Profile() {
   const [profImage, setProfImage] = useState("");
   const [modaldata, setModaldata] = useState({});
   const [profileInfo, setProfileInfo] = useState("");
+  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+  const [updateFullname, setupdateFullname] = useState("");
+  const [updateMobile, setupdateMobile] = useState("");
+  const [updateLocation, setupdateLocation] = useState("");
+  const [updateTwitterLink, setupdateTwitterLink] = useState("");
+  const [updateFacebookLink, setupdateFacebookLink] = useState("");
+  const [updateInstagramLink, setupdateInstagramLink] = useState("");
+  const [updateProfileinfo, setupdateProfileinfo] = useState("");
+  const [updateImagePath, setUpdateImagePath] = useState();
+  const [checkTempupdateImagePath, setCheckTempUpdateImagePath] = useState();
+  const [buttonDisabled2, setButtonDisabled2] = useState(true);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
 
   const [form] = Form.useForm();
 
@@ -79,7 +92,7 @@ function Profile() {
     }
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [ignored]);
 
   // const getBase64 = (img, callback) => {
   //   const reader = new FileReader();
@@ -165,30 +178,31 @@ function Profile() {
     },
   ];
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const showModal = (data) => {
-    setModaldata(data);
-    setIsModalVisible(true);
-  };
 
-  const handleUpdatelick = () => {
-    const admin = {
-      // id: modaldata.id,
-      fullName: modaldata.fullName,
-      mobile: modaldata.mobile.toString(),
-      image: modaldata.profImage,
-      location: modaldata.location,
-      twitterLink: modaldata.twitterLink,
-      facebookLink: modaldata.facebookLink,
-      instragramLink: modaldata.instragramLink,
-      profileInfomation: modaldata.profileInfo,
-    };
-    console.log(admin);
+  const handleUpdatelick = async () => {
+    const formData = new FormData();
 
-    updateAdminDetails(admin);
-    getProfile();
-    setIsModalVisible(false);
+    formData.append("fullName", updateFullname);
+    formData.append("mobile", updateMobile);
+    formData.append("location", updateLocation);
+    formData.append("twitterLink", updateTwitterLink);
+    formData.append("facebookLink", updateFacebookLink);
+    formData.append("instragramLink", updateInstagramLink);
+    formData.append("profileInfomation", updateProfileinfo);
+    formData.append("image", updateImagePath);
+    
+
+    try {
+      await updateAdminDetails(formData);
+      setIsUpdateModalVisible(false);
+      getProfile();
+      forceUpdate();
+
+    } catch (error) {
+      console.log(error);
+      setIsUpdateModalVisible(false);
+    }
   };
 
   const handleOk = () => {
@@ -199,6 +213,13 @@ function Profile() {
     setIsModalVisible(false);
   };
 
+  const showUpdateModal = () => {
+    setIsUpdateModalVisible(true);
+  };
+
+  const handleUpdateCancel = () => {
+    setIsUpdateModalVisible(false);
+  };
   const layout = {
     labelCol: {
       span: 6,
@@ -220,7 +241,7 @@ function Profile() {
     console.log(values);
   };
 
-  const handleSubmit = () => {};
+
 
   return (
     <>
@@ -256,18 +277,26 @@ function Profile() {
               <Button
                 type="primary"
                 onClick={() => {
-                  showModal(data);
+                  showUpdateModal();
+                  setupdateFullname(fullName);
+                  setupdateMobile(mobile);
+                  setupdateLocation(location);
+                  setupdateFacebookLink(facebookLink);
+                  setupdateTwitterLink(twitterLink);
+                  setupdateInstagramLink(instragramLink)
+                  setupdateProfileinfo(profileInfo)
+                  setUpdateImagePath(profImage);
+                  setCheckTempUpdateImagePath(profImage);
 
                   form.setFieldsValue({
-                    // id: data.id,
-                    fullName: data.fullName,
-                    mobile: data.mobile,
-                    location: data.location,
-                    twitterLink: data.twitterLink,
-                    facebookLink: data.facebookLink,
-                    instragramLink: data.instragramLink,
-                    profileInfo: data.profileInfo,
-                    // profImage: data.profImage,
+                    updateFullname: fullName,
+                    updateMobile: mobile,
+                    updateLocation: location,
+                    updateTwitterLink: twitterLink,
+                    updateFacebookLink: facebookLink,
+                    updateInstagramLink: instragramLink,
+                    updateProfileinfo: profileInfo,
+                    updateImagePath: profImage,
                   });
                 }}
               >
@@ -275,17 +304,35 @@ function Profile() {
               </Button>
               <Modal
                 title="Update Personal Information"
-                visible={isModalVisible}
-                onOk={handleOk}
-                onCancel={handleCancel}
-                footer={null}
+                visible={isUpdateModalVisible}
+                onOk={() => {
+                  handleUpdatelick();
+                }}
+                onCancel={handleUpdateCancel}
+                okButtonProps={{ disabled: buttonDisabled2 }}
+                destroyOnClose={true}
               >
-                <Form {...layout} form={form}>
+                <Form
+                  autoComplete="off"
+                  form={form}
+                  onFieldsChange={() => {
+                    if (
+                      form
+                        .getFieldsError()
+                        .some((field) => field.errors.length > 0)
+                    ) {
+                      setButtonDisabled2(true);
+                    } else {
+                      setButtonDisabled2(false);
+                    }
+                  }}
+                >
                   <Form.Item
-                    name="fullName"
+                    name="updateFullname"
                     label="Full Name"
                     rules={[
                       {
+                       
                         pattern: "^[A-Za-z]",
                         message: "Please enter Full name",
                       },
@@ -294,23 +341,21 @@ function Profile() {
                       },
                       { min: 3 },
                     ]}
+                    hasFeedback
                   >
                     <Input
-                      name="fullName"
-                      onChange={(event) => {
-                        setModaldata({
-                          ...modaldata,
-                          fullName: event.target.value,
-                        });
-                      }}
+                      name="updateFullname"
+                      onChange={(event) =>
+                        setupdateFullname(event.target.value)
+                      }
                     />
                   </Form.Item>
                   <Form.Item
-                    name="mobile"
+                    name="updateMobile"
                     label="Mobile Number"
                     rules={[
                       {
-                        required: true,
+                        
                         message: "Please Enter Mobile Number",
                       },
                       {
@@ -319,23 +364,20 @@ function Profile() {
                       { min: 10 },
                       { max: 10 },
                     ]}
+                    hasFeedback
                   >
                     <Input
-                      name="mobile"
-                      onChange={(event) => {
-                        setModaldata({
-                          ...modaldata,
-                          mobile: event.target.value,
-                        });
-                      }}
+                      name="updateMobile"
+                      onChange={(event) => setupdateMobile(event.target.value)}
                     />
                   </Form.Item>
 
                   <Form.Item
-                    name="location"
+                    name="updateLocation"
                     label="Location"
                     rules={[
                       {
+                        
                         pattern: "^[A-Za-z]",
                         message: "Please enter Location",
                       },
@@ -344,35 +386,46 @@ function Profile() {
                       },
                       { min: 4 },
                     ]}
+                    hasFeedback
                   >
                     <Input
-                      name="location"
-                      onChange={(event) => {
-                        setModaldata({
-                          ...modaldata,
-                          location: event.target.value,
-                        });
-                      }}
+                      name="updateLocation"
+                      onChange={(event) =>
+                        setupdateLocation(event.target.value)
+                      }
                     />
                   </Form.Item>
-                  <Form.Item name="profImage" label="Profile Image">
+                  <Form.Item name={["user", "image"]} label="Profile Image"
+                   rules={[
+                    {
+                      // required: true,
+                      message: "Profile Image Cannot be Empty"
+                    },
+                  ]}>
                     <Input
                       type="file"
-                      accept="image/jpeg"
-                      onChange={(event) => {
-                        setModaldata({
-                          ...modaldata,
-                          profImage: event.target.files[0],
-                        });
-                      }}
+                      accept="image/*"
+                      onChange={(event) =>
+                        setUpdateImagePath(event.target.files[0])
+                      }
                     />
-                    {/* <img src={selectedFile} alt="img" /> */}
+                    <br />
+
+                    {updateImagePath === checkTempupdateImagePath ? (
+                      <img src={updateImagePath} alt="img" />
+                    ) : (
+                      <img
+                        src={URL.createObjectURL(updateImagePath)}
+                        alt="img"
+                      />
+                    )}
                   </Form.Item>
                   <Form.Item
-                    name="profileInfo"
+                    name="updateProfileinfo"
                     label="Profile Infomation"
                     rules={[
                       {
+                        
                         pattern: "^[A-Za-z]",
                         message: "Please enter Profile Infomation",
                       },
@@ -381,64 +434,77 @@ function Profile() {
                       },
                       { min: 5 },
                     ]}
+                    hasFeedback
                   >
                     <Input
-                      name="profileInfo"
-                      onChange={(event) => {
-                        setModaldata({
-                          ...modaldata,
-                          profileInfo: event.target.value,
-                        });
-                      }}
+                      name="updateProfileinfo"
+                      onChange={(event) =>
+                        setupdateProfileinfo(event.target.value)
+                      }
                     />
                   </Form.Item>
-                  <Form.Item name="twitterLink" label="Twitter Link">
-                    <Input
-                      name="twitterLink"
-                      onChange={(event) => {
-                        setModaldata({
-                          ...modaldata,
-                          twitterLink: event.target.value,
-                        });
-                      }}
-                    />
-                  </Form.Item>
-                  <Form.Item name="facebookLink" label="Facebook Link">
-                    <Input
-                      name="facebookLink"
-                      onChange={(event) => {
-                        setModaldata({
-                          ...modaldata,
-                          facebookLink: event.target.value,
-                        });
-                      }}
-                    />
-                  </Form.Item>
-                  <Form.Item name="instragramLink" label="Instragram Link">
-                    <Input
-                      name="instragramLink"
-                      onChange={(event) => {
-                        setModaldata({
-                          ...modaldata,
-                          instragramLink: event.target.value,
-                        });
-                      }}
-                    />
-                  </Form.Item>
-                  {/* <Form.Item
-                    name={["user", "profileinfo"]}
-                    label="Profile Information"
+                  <Form.Item
+                    name="updateTwitterLink"
+                    label="Twitter Link"
+                    rules={[
+                      {
+                        
+                        message: "Please enter Twitter Link",
+                      },
+                      {
+                        whitespace: true,
+                      },
+                      { min: 5 },
+                    ]}
+                    hasFeedback
                   >
-                    <Input.TextArea />
-                  </Form.Item> */}
-                  <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                    <Button
-                      key="submit"
-                      type="submit"
-                      onClick={() => handleUpdatelick(modaldata)}
-                    >
-                      Submit
-                    </Button>
+                    <Input
+                      name="updateTwitterLink"
+                      onChange={(event) =>
+                        setupdateTwitterLink(event.target.value)
+                      }
+                    />
+                  </Form.Item>
+                  <Form.Item name="updateFacebookLink" label="Facebook Link"
+                   rules={[
+                    {
+                     
+                      message: "Please enter Facebook Link",
+                    },
+                    {
+                      whitespace: true,
+                    },
+                    { min: 5 },
+                  ]}
+                  hasFeedback
+                  >
+                    <Input
+                      name="updateFacebookLink"
+                      onChange={(event) =>
+                        setupdateFacebookLink(event.target.value)
+                      }
+                    />
+                  </Form.Item>
+                  <Form.Item name="updateInstagramLink" label="Instragram Link"
+                  rules={[
+                    {
+                      
+
+                      message: "Please enter Instragram Link",
+                    },
+                    {
+                      whitespace: true,
+                    },
+                    { min: 5 },
+                  ]}
+                  hasFeedback
+                  >
+                    <Input
+                      name="updateInstagramLink"
+                      onChange={(event) =>
+                        setupdateInstagramLink(event.target.value)
+                      }
+                    />
                   </Form.Item>
                 </Form>
               </Modal>
