@@ -9,7 +9,6 @@
   =========================================================
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
 import {
   Row,
   Col,
@@ -19,20 +18,151 @@ import {
   List,
   Descriptions,
   Avatar,
+  notification,
+  Form,
+  Modal,
+  Input,
+  Select,
 } from "antd";
 
 import { PlusOutlined, ExclamationOutlined } from "@ant-design/icons";
 import mastercard from "../assets/images/mastercard-logo.png";
 import paypal from "../assets/images/paypal-logo-2.png";
 import visa from "../assets/images/visa-logo.png";
-import email from './../services/emailnotification';
+import email from "./../services/emailnotification";
+import { useEffect, useState } from "react";
+import BillingService from "../services/billing-service";
 
 function Billing() {
+  const [fullName, setFullName] = useState("");
+  const [cardNumber, setCardnumber] = useState("");
+  const [expiry, setExpiry] = useState("");
+  const [cvv, setCVV] = useState("");
+  // const [cardType, setcardType] = useState("");
+  const [displayLast, setDisplayLast] = useState("");
+  const [lastDigits, setLastDigits] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible2, setIsModalVisible2] = useState(false);
+  const [cardData, setCardData] = useState("");
+  const { addBillingData, getCardDetails, addLastDigitData, getLastDigit } =
+    BillingService();
+  const [focused, setFocused] = useState(true);
+  const [modaldata, setModalData] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [form] = Form.useForm();
+
+  //Set card number splits on input field
+  const formatAndSetCcNumber = (e) => {
+    const inputVal = e.target.value.replace(/ /g, ""); //remove all the empty spaces in the input
+    let inputNumbersOnly = inputVal.replace(/\D/g, ""); // Get only digits
+
+    if (inputNumbersOnly.length > 16) {
+      //If entered value has a length greater than 16 then take only the first 16 digits
+      inputNumbersOnly = inputNumbersOnly.substr(0, 16);
+    }
+
+    // Get nd array of 4 digits per an element EX: ["4242", "4242", ...]
+    const splits = inputNumbersOnly.match(/.{1,4}/g);
+
+    let spacedNumber = "";
+    if (splits) {
+      spacedNumber = splits.join(" "); // Join all the splits with an empty space
+    }
+    setCardnumber(spacedNumber);
+  };
+
+  const openNotificationWithIcon = (type, message, title) => {
+    if (type === "success") {
+      notification[type]({
+        message: title,
+        description: message,
+      });
+    } else {
+      notification[type]({
+        message: title,
+        description: message,
+      });
+    }
+  };
+
+  const layout = {
+    labelCol: {
+      span: 6,
+    },
+    wrapperCol: {
+      span: 16,
+    },
+  };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const showModal2 = () => {
+    setIsModalVisible2(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setIsModalVisible2(false);
+  };
+
+  const handleFocus = (e) => {
+    setFocused(true);
+  };
+
+  const handleChange = async (e) => {
+    setCardnumber(e.target.value);
+  };
+
+  useEffect(() => {
+    const ShowCardDetails = async () => {
+      const data = await getLastDigit();
+      setDisplayLast(data);
+    };
+  }, []);
+
+  //Adding Card Information.........................................
+
+  const addCardHandler = async (event) => {
+    const CardData = {
+      fullName: fullName,
+      cardNumber: cardNumber,
+      expiry: expiry,
+      cvv: cvv,
+      cardType: modaldata.type,
+    };
+    try {
+      await addBillingData(CardData);
+      openNotificationWithIcon("success", "Card Details Added Successfully");
+      setIsModalVisible(false);
+    } catch (error) {
+      openNotificationWithIcon("error", "Something Went Wrong", "Error");
+      setIsModalVisible(false);
+    }
+  };
+
+  //Add Last Digits
+
+  const addLastDigithandler = async () => {
+    const LastData = {
+      lastDigits: lastDigits.toString(),
+    };
+    try {
+      await addLastDigitData(LastData);
+      openNotificationWithIcon("success", "Last Digits Added Successfully");
+      setIsModalVisible(false);
+    } catch (error) {
+      openNotificationWithIcon("error", "Something Went Wrong", "Error");
+      setIsModalVisible(false);
+    }
+  };
+
   const data = [
     {
       title: "March, 01, 2021",
       description: "#MS-415646",
-      amount: "$180",
+      amount: "$250",
     },
     {
       title: "February, 12, 2021",
@@ -318,10 +448,10 @@ function Billing() {
       amountcolor: "text-warning-b",
     },
   ];
-  const {billing} = email();
-  const emailnoti=(e)=>{
+  const { billing } = email();
+  const emailnoti = (e) => {
     billing(e);
-  }
+  };
 
   return (
     <>
@@ -334,16 +464,16 @@ function Billing() {
                 bordered={false}
                 className="card-credit header-solid h-ful"
               >
-                <h5 className="card-number">4562 1122 4594 7852</h5>
+                <h5 className="card-number"></h5>
 
                 <div className="card-footer">
                   <div className="mr-30">
                     <p>Card Holder</p>
-                    <h6>Jack Peterson</h6>
+                    <h6></h6>
                   </div>
                   <div className="mr-30">
                     <p>Expires</p>
-                    <h6>11/22</h6>
+                    <h6></h6>
                   </div>
                   <div className="card-footer-col col-logo ml-auto">
                     <img src={mastercard} alt="mastercard" />
@@ -353,7 +483,7 @@ function Billing() {
             </Col>
             <Col xs={12} xl={6} className="mb-24">
               <Card bordered={false} className="widget-2 h-full">
-                <Statistic
+                {/* <Statistic
                   title={
                     <>
                       <div className="icon">{angle}</div>
@@ -363,12 +493,12 @@ function Billing() {
                   }
                   value={"$2,000"}
                   prefix={<PlusOutlined />}
-                />
+                /> */}
               </Card>
             </Col>
             <Col xs={12} xl={6} className="mb-24">
               <Card bordered={false} className="widget-2 h-full">
-                <Statistic
+                {/* <Statistic
                   title={
                     <>
                       <div className="icon">
@@ -380,7 +510,7 @@ function Billing() {
                   }
                   value={"$49,000"}
                   prefix={<PlusOutlined />}
-                />
+                /> */}
               </Card>
             </Col>
             <Col xs={24} className="mb-24">
@@ -396,16 +526,182 @@ function Billing() {
                         <h6 className="font-semibold m-0">Payment Methods</h6>
                       </Col>
                       <Col xs={24} md={12} className="d-flex">
-                      <Button type="primary" onClick={() => {} }>ADD NEW CARD</Button>
-                      {/* <Button type="primary" onClick={() => {emailnoti("Payment Successfull");} }>ADD NEW CARD</Button> */}
-                      
+                        <Button
+                          destroyOnClose={true}
+                          type="primary"
+                          onClick={showModal}
+                        >
+                          ADD NEW CARD
+                        </Button>
+                        <Modal
+                          title="Add New Card"
+                          visible={isModalVisible}
+                          onCancel={handleCancel}
+                          onOk={addCardHandler}
+                          okButtonProps={{ disabled: buttonDisabled }}
+                        >
+                          <Form
+                            {...layout}
+                            form={form}
+                            onFieldsChange={() => {
+                              if (!fullName || !cardNumber || !expiry || !cvv) {
+                                setButtonDisabled(true);
+                              } else if (
+                                form
+                                  .getFieldsError()
+                                  .some((field) => field.errors.length > 0)
+                              ) {
+                                setButtonDisabled(true);
+                              } else {
+                                setButtonDisabled(false);
+                              }
+                            }}
+                          >
+                            <Form.Item
+                              name="fullName"
+                              label="Full Name"
+                              rules={[
+                                {
+                                  required: true,
+                                  pattern: "^[A-Za-z]",
+                                  message:
+                                    "FullName Should be 5-16 characters and shouldn't include any special characters or numbers!",
+                                },
+                                {
+                                  whitespace: true,
+                                },
+                                { min: 5 },
+                              ]}
+                              hasFeedback
+                            >
+                              <Input
+                                type="text"
+                                value={fullName}
+                                onChange={(event) => {
+                                  setFullName(event.target.value);
+                                }}
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              name="cardNumber"
+                              label="Card Number"
+                              rules={[
+                                {
+                                  required: true,
+                                  pattern: "^[0-9]",
+                                  message:
+                                    "Card Number Should be 16 characters and should include only Numbers",
+                                },
+                                {
+                                  whitespace: true,
+                                },
+                                { min: 16 },
+                                { max: 16 },
+                              ]}
+                              hasFeedback
+                            >
+                              <Input
+                                type="text"
+                                value={cardNumber}
+                                onChange={formatAndSetCcNumber}
+                                onBlur={handleFocus}
+                                focused={focused.toString()}
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              name="expiry"
+                              label="Expiry Date"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please select expiry date",
+                                },
+                                {
+                                  whitespace: true,
+                                },
+                              ]}
+                              hasFeedback
+                            >
+                              <Input
+                                type="month"
+                                pattern="\d\d/\d\d"
+                                value={expiry}
+                                onChange={(event) =>
+                                  setExpiry(event.target.value)
+                                }
+                                onBlur={handleFocus}
+                                focused={focused.toString()}
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              name="cvv"
+                              label="CVV"
+                              rules={[
+                                {
+                                  required: true,
+                                  pattern: "^[0-9]",
+                                  message: "CVV should only be 3 numbers",
+                                },
+                                {
+                                  whitespace: true,
+                                },
+                                {
+                                  min: 3,
+                                },
+                                {
+                                  max: 3,
+                                },
+                              ]}
+                              hasFeedback
+                            >
+                              <Input
+                                type="number"
+                                value={cvv}
+                                onChange={(event) => setCVV(event.target.value)}
+                                onBlur={handleFocus}
+                                focused={focused.toString()}
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              name="type"
+                              label="Card Type"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please enter the Card Type",
+                                },
+                                {
+                                  whitespace: true,
+                                },
+                              ]}
+                            >
+                              <Select
+                                name="type"
+                                onChange={(value) => {
+                                  setModalData({
+                                    ...modaldata,
+                                    type: value,
+                                  });
+                                }}
+                              >
+                                <Select.Option value="Visa" selected>
+                                  Visa
+                                </Select.Option>
+                                <Select.Option value="MasterCard">
+                                  MasterCard
+                                </Select.Option>
+                              </Select>
+                            </Form.Item>
+                          </Form>
+                        </Modal>
+                        {/* <Button type="primary" onClick={() => {emailnoti("Payment Successfull");} }>ADD NEW CARD</Button> */}
                       </Col>
                     </Row>
                   </>
                 }
               >
                 <Row gutter={[24, 0]}>
-                  <Col span={24} md={12}>
+                  {/* <Col span={24} md={12}>
                     <Card className="payment-method-card">
                       <img src={mastercard} alt="mastercard" />
                       <h6 className="card-number">**** **** **** 7362</h6>
@@ -413,14 +709,52 @@ function Billing() {
                         {pencil}
                       </Button>
                     </Card>
-                  </Col>
+                  </Col> */}
                   <Col span={24} md={12}>
                     <Card className="payment-method-card">
                       <img src={visa} alt="visa" />
-                      <h6 className="card-number">**** **** **** 3288</h6>
-                      <Button type="link" className="ant-edit-link">
+                      <h6 className="card-number">
+                        **** **** **** {lastDigits}
+                      </h6>
+                      <Button
+                        type="link"
+                        className="ant-edit-link"
+                        onClick={showModal2}
+                      >
                         {pencil}
                       </Button>
+                      <Modal
+                        title="Enter Last 4 Digits of Card"
+                        visible={isModalVisible2}
+                        onCancel={handleCancel}
+                        onOk={addLastDigithandler}
+                        destroyOnClose={true}
+                      >
+                        <Form {...layout}>
+                          <Form.Item
+                            name="number"
+                            label="4 Digits"
+                            rules={[
+                              {
+                                required: true,
+                                pattern: "^[A-Za-z0-9].{1,9}$",
+                                message:
+                                  "Should Only include the last 4 digits of the Card",
+                              },
+                            ]}
+                          >
+                            <Input
+                              type="number"
+                              value={lastDigits}
+                              onChange={(event) =>
+                                setLastDigits(event.target.value)
+                              }
+                              // onBlur={handleFocus}
+                              // focused={focused.toString()}
+                            />
+                          </Form.Item>
+                        </Form>
+                      </Modal>
                     </Card>
                   </Col>
                 </Row>
@@ -445,7 +779,7 @@ function Billing() {
               dataSource={data}
               renderItem={(item) => (
                 <List.Item
-                  actions={[<Button type="link">{download} PDF</Button>]}
+                // actions={[<Button type="link">{download} PDF</Button>]}
                 >
                   <List.Item.Meta
                     title={item.title}
@@ -460,7 +794,7 @@ function Billing() {
       </Row>
       <Row gutter={[24, 0]}>
         <Col span={24} md={16} className="mb-24">
-          <Card
+          {/* <Card
             className="header-solid h-full"
             bordered={false}
             title={[<h6 className="font-semibold m-0">Billing Information</h6>]}
@@ -496,7 +830,7 @@ function Billing() {
                 </Col>
               ))}
             </Row>
-          </Card>
+          </Card> */}
         </Col>
         <Col span={24} md={8} className="mb-24">
           <Card
