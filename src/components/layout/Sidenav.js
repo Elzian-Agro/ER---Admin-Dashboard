@@ -269,7 +269,7 @@ function Sidenav({ color }) {
           </NavLink>
         </Menu.Item>}
        
-        {user==="Admin" && <Menu.Item key="m2">
+        {/* {user==="Admin" && <Menu.Item key="m2">
           <NavLink to="/tables">
             <span
               className="icon"
@@ -281,7 +281,7 @@ function Sidenav({ color }) {
             </span>
             <span className="label">Tables</span>
           </NavLink>
-        </Menu.Item> }     
+        </Menu.Item> }      */}
         
         {user==="Admin" && <Menu.Item key="m3">
             <NavLink to="/trees">
