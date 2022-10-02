@@ -135,9 +135,31 @@ function TreeSpecies() {
 
   const [isModalVisibleModel, setIsModalVisibleModel] = useState(false);
   const [modelData, setModeldata] = useState({})
+
   const [imagePath,setImagePath]=useState();
+  const [imagePath1,setImagePath1]=useState();
+  const [imagePath2,setImagePath2]=useState();
+  const [imagePath3,setImagePath3]=useState();
+
   const [updsteImagePath,setUpdsteImagePath]=useState();
   const [checkTempupdsteImagePath,setCheckTempUpdsteImagePath]=useState();
+
+  const [updsteImagePath1,setUpdsteImagePath1]=useState();
+  const [checkTempupdsteImagePath1,setCheckTempUpdsteImagePath1]=useState();
+
+  const [updsteImagePath2,setUpdsteImagePath2]=useState();
+  const [checkTempupdsteImagePath2,setCheckTempUpdsteImagePath2]=useState();
+
+  const [updsteImagePath3,setUpdsteImagePath3]=useState();
+  const [checkTempupdsteImagePath3,setCheckTempUpdsteImagePath3]=useState();
+
+ let imageFlag1=0
+ let imageFlag2=0
+ let imageFlag3=0
+ let imageFlag4=0
+ 
+
+
 
   const {
     getAllTreeSpecies,
@@ -151,6 +173,7 @@ function TreeSpecies() {
     const res = await getAllTreeSpecies();
     setData(res);
   },[getAllTreeSpecies])
+  
   useEffect(() => {
   
     getTreeSpecies()
@@ -171,6 +194,10 @@ function TreeSpecies() {
   };
 
   const handleUpdateCancel = () => {
+    imageFlag1 = 0
+    imageFlag2 = 0
+    imageFlag3 = 0
+    imageFlag4 = 0
     setIsUpdateModalVisible(false);
   }
 
@@ -226,6 +253,9 @@ function TreeSpecies() {
     formData.append("flowerColor", flowerColor);
     formData.append("fruitType", fruitType);
     formData.append("image", imagePath);
+    formData.append("image", imagePath1);
+    formData.append("image", imagePath2);
+    formData.append("image", imagePath3);
 
     try {
       await addNewTreeSpecies(formData);
@@ -242,6 +272,10 @@ function TreeSpecies() {
 
 
   const handleUpdateTreeSpecies = async () => {
+    if (updsteImagePath !== checkTempupdsteImagePath) { imageFlag1 = 1 } else { imageFlag1 = 0 }
+    if (updsteImagePath1 !== checkTempupdsteImagePath1) { imageFlag2 = 1 } else { imageFlag2 = 0 }
+    if (updsteImagePath2 !== checkTempupdsteImagePath2) { imageFlag3 = 1 } else { imageFlag3 = 0 }
+    if (updsteImagePath3 !== checkTempupdsteImagePath3) { imageFlag4 = 1 } else { imageFlag4 = 0 }
     const formData = new FormData();
     formData.append("plantName", updatePlantName);
     formData.append("commonNames", updateCommonNames);
@@ -275,7 +309,13 @@ function TreeSpecies() {
     formData.append("flowerColor", updateFlowerColor);
     formData.append("fruitType", updateFruitType);
     formData.append("image", updsteImagePath);
-
+    formData.append("image", updsteImagePath1);
+    formData.append("image", updsteImagePath2);
+    formData.append("image", updsteImagePath3);
+    formData.append("imageFlag1", imageFlag1);
+    formData.append("imageFlag2", imageFlag2);
+    formData.append("imageFlag3", imageFlag3);
+    formData.append("imageFlag4", imageFlag4);
     try {
       await updateTreeSpeciesById(selectedId, formData);
       setIsUpdateModalVisible(false);
@@ -362,14 +402,34 @@ function TreeSpecies() {
           </Button>,
         ]}
       >
-        <div style={{marginBottom:'40px'}}>
-          <Row >
-            <Col span={24} style={{ textAlign: 'center' }}>
+        <div style={{ marginBottom: '40px' }}>
+          <Row align="center ">
+          <Space size={[8, 16]} wrap>
+            <Col>
               <Image
-                width={300}
+                width={150}
                 src={modelData.imageUrl}
               />
             </Col>
+            <Col  >
+              <Image
+                width={150}
+                src={modelData.imageUrl1}
+              />
+            </Col>
+            <Col  >
+              <Image
+                width={150}
+                src={modelData.imageUrl2}
+              />
+            </Col>
+            <Col  >
+              <Image
+                width={150}
+                src={modelData.imageUrl3}
+              />
+            </Col>
+            </Space>
           </Row>
         </div>
         <div style={{marginBottom:'40px'}}>
@@ -594,7 +654,13 @@ function TreeSpecies() {
                           setUpdateFlowerColor(row.flowerColor);
                           setUpdateFruitType(row.fruitType);
                           setUpdsteImagePath(row.imageUrl)
-                          setCheckTempUpdsteImagePath(row.imageUrl)
+                          setUpdsteImagePath1(row.imageUrl1)
+                          setUpdsteImagePath2(row.imageUrl2)
+                          setUpdsteImagePath3(row.imageUrl3)
+                          setCheckTempUpdsteImagePath(row.imageUrl);
+                          setCheckTempUpdsteImagePath1(row.imageUrl1)
+                          setCheckTempUpdsteImagePath2(row.imageUrl2)
+                          setCheckTempUpdsteImagePath3(row.imageUrl3)
                           
                          
 
@@ -730,7 +796,7 @@ function TreeSpecies() {
                     !lightPreferences ||
                     !floweringTime ||
                     !flowerColor ||
-                    !fruitType || !updsteImagePath
+                    !fruitType 
                   ) {
                     setButtonDisabled(true);
                   }
@@ -744,7 +810,7 @@ function TreeSpecies() {
               >
                 <Form.Item
                   name={["user", "image"]}
-                  label="Image">
+                  label="Image 1">
                   <Input
                     type="file"
                     accept="image/*"
@@ -756,6 +822,54 @@ function TreeSpecies() {
                   <br/>
                   
                   {imagePath &&  <img src={URL.createObjectURL(imagePath)} alt="img" />}
+                 
+                </Form.Item>
+                <Form.Item
+                  name={["user", "image"]}
+                  label="Image 2">
+                  <Input
+                    type="file"
+                    accept="image/*"
+
+                    onChange={(event) =>
+                      setImagePath1(event.target.files[0])
+                    }
+                  />
+                  <br/>
+                  
+                  {imagePath1 &&  <img src={URL.createObjectURL(imagePath1)} alt="img" />}
+                 
+                </Form.Item>
+                <Form.Item
+                  name={["user", "image"]}
+                  label="Image 3">
+                  <Input
+                    type="file"
+                    accept="image/*"
+
+                    onChange={(event) =>
+                      setImagePath2(event.target.files[0])
+                    }
+                  />
+                  <br/>
+                  
+                  {imagePath2 &&  <img src={URL.createObjectURL(imagePath2)} alt="img" />}
+                 
+                </Form.Item>
+                <Form.Item
+                  name={["user", "image"]}
+                  label="Image 4">
+                  <Input
+                    type="file"
+                    accept="image/*"
+
+                    onChange={(event) =>
+                      setImagePath3(event.target.files[0])
+                    }
+                  />
+                  <br/>
+                  
+                  {imagePath3 &&  <img src={URL.createObjectURL(imagePath3)} alt="img" />}
                  
                 </Form.Item>
                 <Form.Item
@@ -1492,6 +1606,8 @@ function TreeSpecies() {
               <Form autoComplete="off"
                 form={form}
                 onFieldsChange={() => {
+                 
+            
                   if (form.getFieldsError().some((field) => field.errors.length > 0)) {
                     setButtonDisabled2(true)
                   } else {
@@ -1506,8 +1622,10 @@ function TreeSpecies() {
                     type="file"
                     accept="image/*"
 
-                    onChange={(event) =>
+                    onChange={(event) => {
                       setUpdsteImagePath(event.target.files[0])
+                      setButtonDisabled2(false)
+                    }
                     }
                   />
                   <br/>
@@ -1515,6 +1633,64 @@ function TreeSpecies() {
                   {updsteImagePath === checkTempupdsteImagePath ? <img src={updsteImagePath} alt="img" />: <img src={URL.createObjectURL(updsteImagePath)} alt="img" />}
                  
                 </Form.Item>
+
+                 <Form.Item
+                  name={["user", "image"]}
+                  label="Image">
+                  <Input
+                    type="file"
+                    accept="image/*"
+
+                    onChange={(event) =>{
+                      setUpdsteImagePath1(event.target.files[0])
+                      setButtonDisabled2(false)
+                    }
+                     
+                    }
+                  />
+                  <br/>
+                  
+                  {updsteImagePath1 === checkTempupdsteImagePath1 ? <img src={updsteImagePath1} alt="img" />: <img src={URL.createObjectURL(updsteImagePath1)} alt="img" />}
+                 
+                </Form.Item>
+                <Form.Item
+                  name={["user", "image"]}
+                  label="Image">
+                  <Input
+                    type="file"
+                    accept="image/*"
+
+                    onChange={(event) =>{
+                      setUpdsteImagePath2(event.target.files[0])
+                      setButtonDisabled2(false)
+                    }
+                      
+                    }
+                  />
+                  <br/>
+                  
+                  {updsteImagePath2 === checkTempupdsteImagePath2 ? <img src={updsteImagePath2} alt="img" />: <img src={URL.createObjectURL(updsteImagePath2)} alt="img" />}
+                 
+                </Form.Item>
+                <Form.Item
+                  name={["user", "image"]}
+                  label="Image">
+                  <Input
+                    type="file"
+                    accept="image/*"
+
+                    onChange={(event) =>{
+                      setUpdsteImagePath3(event.target.files[0])
+                      setButtonDisabled2(false)
+                    }
+                      
+                    }
+                  />
+                  <br/>
+                  
+                  {updsteImagePath3 === checkTempupdsteImagePath3 ? <img src={updsteImagePath3} alt="img" />: <img src={URL.createObjectURL(updsteImagePath3)} alt="img" />}
+                 
+                </Form.Item> 
                 <Form.Item
                   name="updatePlantName"
                   label="Plant Name"

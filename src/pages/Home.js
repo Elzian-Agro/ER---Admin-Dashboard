@@ -33,10 +33,8 @@ import Paragraph from "antd/lib/typography/Paragraph";
 
 import Echart from "../components/chart/EChart";
 import LineChart from "../components/chart/LineChart";
-
 import ava1 from "../assets/images/icons8-owner-64.png";
 import card from "../assets/images/LifeForce LOGO2022.jpeg";
-
 import memberService from './../services/getmembers';
 
 
@@ -53,23 +51,24 @@ function Home() {
 
   const {
     getlandowners,
-    getauditors,
-    getfieldagents,
-    getinvesters,
+    // getauditors,
+    // getfieldagents,
+    // getinvesters,
   } = memberService();
 
 
   useEffect(() => {
     const ShowDashboardCounts = async () => {
-      const res1 = await getinvesters();
+      
       const res2 = await getlandowners();
-      const res3 = await getauditors();
-      const res4 = await getfieldagents();
+       console.log(res2.data.Investor)
+      setinvester(res2.data.Investor);
+      setlandowners(res2.data.landowners);
+     
+      console.log(landowners)
 
-      setinvester(res1);
-      setlandowners(res2);
-      setauditors(res3);
-      setfieldEgent(res4);
+      setauditors(res2.data.Auditor);
+      setfieldEgent(res2.data.fieldAgent)
     }
     ShowDashboardCounts()
   }, []);
@@ -104,25 +103,25 @@ function Home() {
   ];
   const count = [
     {
-      today: `Number of Investors : ${invester}
+      today: `Number of Investors :${invester}
       `,
       icon: profile,
       bnb: "bnb2",
     },
     {
-      today: `Number of LandOwners : ${landowners}
+      today: `Number of LandOwners :${landowners} 
       `,
       icon: profile,
       bnb: "bnb2",
     },
     {
-      today: `Number of Auditors : ${auditors}
+      today: `Number of Auditors :${auditors} 
       `,
       icon: profile,
       bnb: "redtext",
     },
     {
-      today: `Number of Field Agents : ${fieldEgent}
+      today: `Number of Field Agents :${fieldEgent} 
       `,
       icon: profile,
       bnb: "bnb2",
