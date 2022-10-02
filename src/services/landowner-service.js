@@ -29,6 +29,7 @@ export default function DataService() {
 
   const http = axios.create({
     baseURL:
+    //"http://localhost:4000",
       "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
     headers: {
       "Content-type": "application/json",
@@ -82,6 +83,19 @@ export default function DataService() {
   async function getLandOwners() {
     const data = await http.get("/landOwners").then((res) => res.data.Result);
     return data;
+  }
+
+  async function getLandOwnerById(id) {
+    const data = await http.get("/landOwners/getSelectLandowner/" + id).then((res) =>res);
+    //console.log(data)
+    // console.log(data.status === 200)
+    // if (data.status === 200) {
+    //   return data;
+    // } else
+    //  {
+    //   openNotificationWithIcon('Error',"Error get","Error")
+    // }
+  return data;
   }
 
   async function deleteLandOwnerById(Id) {
@@ -146,6 +160,7 @@ export default function DataService() {
 
   return {
     getLandOwners,
+    getLandOwnerById,
     deleteLandOwnerById,
     updateLandOwnerById,
     addNewLandOwner,
