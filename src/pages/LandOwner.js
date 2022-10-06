@@ -14,6 +14,7 @@ import {
   Col,
   Image,
   Space,
+  Badge,
 } from "antd";
 
 import { MdEmail, MdPerson, MdPhone } from "react-icons/md";
@@ -69,78 +70,126 @@ function LandOwner(){
     getLandOwnerById,
   } = service();
 
+  const styles={
+    preventInlineText:{
+      whiteSpace:'pre-line',
+    }
+  }
+
   const columns = [
+    {
+      title: "RegNo/Name/Contact",
+      width: "44%",
+      render: (record) => (
+        <React.Fragment>
+            <div className="avatar-info">
+              
+              <Title style={styles.preventInlineText} level={5}>{record.registerNumber}</Title>
+              <Title style={styles.preventInlineText} level={5}>{record.landOwnerName}</Title>
+              
+            </div>
+          <br /> 
+          <Title style={styles.preventInlineText} level={5} > <MdPhone /> {record.contactNumber}</Title>
+          
+        </React.Fragment>
+      ),
+      responsive: ["xs"]
+    },
+    {
+      title: "Email/Address/Country",
+      width: "55%",
+      render: (record) => (
+        <React.Fragment>
+          <br></br>
+          <Title style={styles.preventInlineText} level={5} > <MdEmail /> {record.email}</Title>
+          <Title style={styles.preventInlineText} level={5}> {record.landAddress}</Title>
+          <Title style={styles.preventInlineText} level={5}> {record.country}</Title>
+          <br />
+          
+        </React.Fragment>
+      ),
+      responsive: ["xs"]
+    },
     {
       title: "Register Number",
       dataIndex: "number",
       key: "number",
-      width: "22%",
+      width: "15%",
       render: (index, record) => (
         <>
           <Avatar.Group key={index}>
             <div className="avatar-info">
-              <Title level={5}>{record.registerNumber}</Title>
+              <Title style={styles.preventInlineText} level={5}>{record.registerNumber}</Title>
             </div>
           </Avatar.Group>
         </>
       ),
+      responsive: ["sm"]
     },
 
     {
       title: "Land Owner Name",
       key: "Name",
       dataIndex: "Name",
+      width: "15%",
       render: (index, record) => (
         <>
           <div key={index}>
-            <Title level={5}>
+            <Title style={styles.preventInlineText} level={5}>
               {" "}
               <MdPerson /> {record.landOwnerName}
             </Title>
           </div>
         </>
       ),
+      responsive: ["sm"]
     },
     {
       title: "Contact",
       key: "contact",
       dataIndex: "contact",
+      width: "20%",
       render: (index, record) => (
         <div key={index}>
-            <Title level={5}>
+            <Title style={styles.preventInlineText} level={5}>
               {" "}
               <MdPhone /> {record.contactNumber}
             </Title>
-            <Title level={5}>
+            <Title style={styles.preventInlineText} level={5}>
               {" "}
               <MdEmail /> {record.email}
             </Title>
           </div>
       ),
+      responsive: ["sm"]
     },
     {
       title: "Address",
       key: "address",
       dataIndex: "address",
+      width: "20%",
       render: (index, record) => (
         <>
-          <Title level={5} key={index}>
+          <Title  style={styles.preventInlineText} level={5} key={index}>
             {record.landAddress}
           </Title>
         </>
       ),
+      responsive: ["sm"]
     },
     {
       title: "Country",
       dataIndex: "country",
       key: "country",
+      width: "15%",
       render: (index, record) => (
         <>
-          <Title level={5} key={index}>
+          <Title style={styles.preventInlineText} level={5} key={index}>
             {record.country}
           </Title>
         </>
       ),
+      responsive: ["sm"]
     },
   ];
 
@@ -192,57 +241,13 @@ function LandOwner(){
         bankBranch: row.bankBranch,
       }))
     );
-    //await setAllData(res);
+    
   };
 
   useEffect(() => {
     getData();
   }, []);
 
-  // const setAllData = (res) => {
-  //   setdata(
-  //     res.map((row) => ({
-  //       key: row.landOwnerID,
-  //       landOwnerID: row.landOwnerID,
-  //       profImage : row.profImage,
-  //       qrImage : row.qrImage,
-  //       landOwnerName: row.landOwnerName,
-  //       registerNumber: row.registerNumber,
-  //       contactNumber: row.contactNumber,
-  //       landAddress: row.landAddress,
-  //       country: row.country,
-  //       email: row.email,
-  //       validated: row.validated,
-  //       landOwnerFullname: row.landOwnerFullname,
-  //       longitude: row.longitude,
-  //       latitude: row.latitude,
-  //       bankAccountNumber: row.bankAccountNumber,
-  //       bankName: row.bankName,
-  //       bankBranch: row.bankBranch,
-  //     }))
-  //   );
-  //   setTableData(
-  //     res.map((row) => ({
-  //       key: row.landOwnerID,
-  //       landOwnerID: row.landOwnerID,
-  //       profImage : row.profImage,
-  //       qrImage : row.qrImage,
-  //       landOwnerName: row.landOwnerName,
-  //       registerNumber: row.registerNumber,
-  //       contactNumber: row.contactNumber,
-  //       landAddress: row.landAddress,
-  //       country: row.country,
-  //       email: row.email,
-  //       validated: row.validated,
-  //       landOwnerFullname: row.landOwnerFullname,
-  //       longitude: row.longitude,
-  //       latitude: row.latitude,
-  //       bankAccountNumber: row.bankAccountNumber,
-  //       bankName: row.bankName,
-  //       bankBranch: row.bankBranch,
-  //     }))
-  //   );
-  // };
   
   const approveLandOwner = async (selectedId_) => {
     try {
@@ -352,28 +357,26 @@ function LandOwner(){
     }
   };
 
-
-  
-
   const handleonChange = (e) => {
     const searchKey = e.target.value.toLowerCase();
-
     if (searchKey === "") {
       setdata(tableData);
+      console.log(tableData);
     } else {
       const filteredData = tableData.filter((item) => {
         return (
           item.registerNumber.toLowerCase().includes(searchKey) ||
-          item.landOwnerName.toLowerCase().includes(searchKey) ||
-          item.contactNumber.toLowerCase().includes(searchKey) ||
-          item.email.toLowerCase().includes(searchKey) ||
-          item.landAddress.toLowerCase().includes(searchKey)
+           item.landOwnerName.toLowerCase().includes(searchKey) ||
+           item.contactNumber.toLowerCase().includes(searchKey) ||
+           item.email.toLowerCase().includes(searchKey) ||
+           item.landAddress.toLowerCase().includes(searchKey)
+          
         );
       });
-      console.log(filteredData);
       setdata(filteredData);
-    }
+     }
   };
+
 
   // const downloadFile = (props) => {
   //   window.location.href = props
@@ -409,7 +412,7 @@ function LandOwner(){
             <Card
               bordered={false}
               className="criclebox tablespace mb-24"
-              title="Auditors"
+              title="LandOwners"
               extra={
                 <>
                   <Input
@@ -422,7 +425,7 @@ function LandOwner(){
               }
             >
               <div className="table-responsive">
-                <Table dataSource={data} columns={columns} onRow={(record) => {
+                <Table scroll={{y:375}} className="table-responsive" dataSource={data} columns={columns} onRow={(record) => {
                   return {
                     onClick: () => {
                       //setmodaldata(record);
@@ -453,7 +456,7 @@ function LandOwner(){
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
-        width={600}
+        width={530}
         destroyOnClose
         footer={[
           <Button
@@ -527,15 +530,15 @@ function LandOwner(){
       </Button>,
         ]}
       >
-      <div style={{marginBottom:'40px',marginLeft:'20px'}}>
+      <div style={{marginBottom:'40px'}}>
       <Row gutter={[16, 16]}>
-        <Col>
+        <Col style={{ textAlign: 'center' }}>
           <Image
             width={200}
             src={modaldata.profImage} 
           />
         </Col>
-        <Col style={{marginTop:'0px',fontSize:'14px',textAlign:'left',marginLeft:"40px",width:'290px'}}>
+        <Col md={12} xs={24} style={{fontSize:'14px',textAlign:'left',width:'270px'}}>
               <div >
               <b>RegisterNumber</b> : {modaldata.registerNumber}
               </div>
@@ -563,23 +566,23 @@ function LandOwner(){
         </Col>
       </Row>
       </div>
-      <div style={{marginBottom:'40px',marginLeft:'20px'}}>
-      <Row gutter={[16, 16]}>
-        <Col>
+      <div style={{marginBottom:'40px'}}>
+      <Row gutter={[22, 22]}>
+        <Col style={{marginTop:'0px',fontSize:'14px',textAlign:'left',width:'260px'}}>
           <Image
                width={200}
                 src={modaldata.qrImage} 
             />
         </Col>
-        <Col>
-        <Row style={{marginBottom:'20px',marginLeft:'40px',fontSize:'16px',textAlign:'center',marginTop:'40px'}}>
+        <Col >
+        <Row style={{marginBottom:'20px',fontSize:'16px',textAlign:'center',marginTop:'20px',marginLeft:'0px'}}>
               <div>
               <b>{modaldata.landOwnerName} QR CODE</b>
               </div>
         </Row>
-        <Row style={{marginBottom:'40px',marginLeft:'40px',fontSize:'16px',textAlign:'center'}}>
+        <Row style={{marginBottom:'40px',fontSize:'16px',textAlign:'center',marginLeft:'0px'}}>
           <Button key="back" type="primary" onClick={e => download(e)} >
-            Downlode
+            Download
           </Button>  
         </Row>
         </Col>
