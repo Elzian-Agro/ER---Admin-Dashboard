@@ -30,7 +30,7 @@ export default function DataService() {
   const http = axios.create({
     baseURL:
     //"http://localhost:4000",
-      "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
+    "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
     headers: {
       "Content-type": "application/json",
       "x-auth-token":accessTokenMemoryTmp
@@ -87,15 +87,12 @@ export default function DataService() {
 
   async function getLandOwnerById(id) {
     const data = await http.get("/landOwners/getSelectLandowner/" + id).then((res) =>res);
-    //console.log(data)
-    // console.log(data.status === 200)
-    // if (data.status === 200) {
-    //   return data;
-    // } else
-    //  {
-    //   openNotificationWithIcon('Error',"Error get","Error")
-    // }
-  return data;
+    if (data.status === 200) {
+      return data;
+    } else
+     {
+      openNotificationWithIcon('Error',"Error get","Error")
+    }
   }
 
   async function deleteLandOwnerById(Id) {
@@ -107,7 +104,6 @@ export default function DataService() {
      {
       openNotificationWithIcon('Error',"Error in Deleting","Error")
     }
-    // return data;
   }
 
   async function updateLandOwnerById(Id, landData) {
@@ -119,7 +115,6 @@ export default function DataService() {
      {
       openNotificationWithIcon('Error',"Error in Updating","Error")
     }
-    // return data;
   }
 
   async function addNewLandOwner(landData) {
@@ -131,7 +126,6 @@ export default function DataService() {
      {
       openNotificationWithIcon('Error',"Error in Adding","Error")
     }
-    // return data;
   }
 
   async function approveLandOwnerById(Id) {
