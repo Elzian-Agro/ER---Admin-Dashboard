@@ -46,7 +46,7 @@ const http = axios.create({
         else{setIsLoggedIn(false)}
 
         setAccessTokenMemory(res.data.token)
-        localStorage.setItem("token", res.data.token)
+        //localStorage.setItem("token", res.data.token)
         localStorage.setItem("refreshToken", res.data.refreshToken)
         history.push("/");
       })

@@ -9,7 +9,8 @@ export default function BillingService() {
   const { accessTokenMemory, setAccessTokenMemory } = useContext(LoginContext);
   let accessTokenMemoryTmp = accessTokenMemory;
   const http = axios.create({
-    baseURL: "http://localhost:4000",
+    baseURL:
+      "http://localhost:4000",
     // "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
 
     headers: {
@@ -21,14 +22,20 @@ export default function BillingService() {
   //Add Billing ========================================
   async function addBillingData(formData) {
     const data = await http
-      .post("http://localhost:4000/billing/add", formData)
+      .post(
+        "http://localhost:4000/billing/add",
+        formData
+      )
       .then((res) => res);
     console.log(data);
   }
 
   async function addLastDigitData(formData) {
     const data = await http
-      .post("http://localhost:4000/billing/addLastDigit", formData)
+      .post(
+        "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/billing/addLastDigit",
+        formData
+      )
       .then((res) => res);
     console.log(data);
   }

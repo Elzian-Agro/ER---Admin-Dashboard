@@ -20,7 +20,7 @@ const Trees = () => {
 
   const {
     getPlantedTrees,
-    deletePlantedTree,
+    //deletePlantedTree,
     // updatePlantedTree,
     // getLandOwnerById,
     // getAuditorById,
@@ -114,8 +114,8 @@ const Trees = () => {
       );
     }
     fetchData();
-    // eslint-disable-next-time react-hook/exhaustive-deps
-  }, [getPlantedTrees]);
+    // eetPlantedTreesslint-disable-next-time react-hook/exhaustive-deps
+  }, []);
 
   // useEffect(() => {
   //   async function fetchData() {
@@ -144,15 +144,15 @@ const Trees = () => {
     setIsModalVisible(false);
   };
 
-  const handleConfirmDelete = async () => {
-    await deletePlantedTree(treeID);
-    handleDeleteModalCancel();
-    handleCancel();
-  };
+  // const handleConfirmDelete = async () => {
+  //   await deletePlantedTree(treeID);
+  //   handleDeleteModalCancel();
+  //   handleCancel();
+  // };
 
-  const handleDeleteModalCancel = () => {
-    setIsDeleteModalVisible(false);
-  };
+  // const handleDeleteModalCancel = () => {
+  //   setIsDeleteModalVisible(false);
+  // };
 
 
   //if (!admin) return null;
@@ -191,13 +191,13 @@ const Trees = () => {
         destroyOnClose
         width={1000}
         footer={[
-          <Button
-            key="delete"
-            type="danger"
-            onClick={() => setIsDeleteModalVisible(true)}
-          >
-            Delete
-          </Button>,
+          // <Button
+          //   key="delete"
+          //   type="danger"
+          //   onClick={() => setIsDeleteModalVisible(true)}
+          // >
+          //   Delete
+          // </Button>,
           <Button key="back" onClick={handleCancel}>
             Cancel
           </Button>,
@@ -242,7 +242,7 @@ const Trees = () => {
       </Modal>
 
       {/* Delete Modal */}
-      <Modal
+      {/* <Modal
         visible={isDeleteModalVisible}
         onCancel={() => setIsDeleteModalVisible(false)}
         destroyOnClose
@@ -258,7 +258,7 @@ const Trees = () => {
       >
         Are you sure You want to delete <b>{treeID}</b> ?
       </Modal>       
-   
+    */}
     </>
   );
 };

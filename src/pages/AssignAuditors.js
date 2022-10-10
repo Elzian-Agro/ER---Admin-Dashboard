@@ -48,8 +48,17 @@ const AssignAuditors = () => {
   const [modaldata, setmodaldata] = useState({});
   const [getAuditorId, setGetAuditorId] = useState("");
   const {getLandOwnersGapCreateLastAuditorDate,getusers,assigningAuditors}= AssignAuditorServices()
+  const [currentDate,setCurrentDate]=useState();
   const match=useMediaQuery('(max-width: 991px)')
 
+  const getDifferenceOfDates = (assignDate,currentDate) => {
+    const date1 = new Date(assignDate);
+    const date2 = new Date(currentDate);
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
+  
   const columns = [
     {
       title: "LAND OWNER NAME / CONTACT",
@@ -149,8 +158,16 @@ const AssignAuditors = () => {
       width: "15%",
       render: (index, record) => (
         <>
-          <Title style={styles.preventInlineText} level={5}> <Badge status="success" /> {record.assignAuditorname}</Title>
-         <p  style={{fontSize:'12px',whiteSpace:'pre-line'}}> {record.assignAuditorid}</p>
+          <Title style={styles.preventInlineText} level={5}> 
+          {record.auditedOrNot===0 && getDifferenceOfDates(record.assignDate, currentDate) > 90 
+            ? <Badge status="error" />
+              : record.auditedOrNot===0 && getDifferenceOfDates(record.assignDate, currentDate) > 60
+                ? <Badge status="warning" /> 
+                  : record.auditedOrNot===0 && getDifferenceOfDates(record.assignDate, currentDate) < 60
+                    && <Badge status="success" />}  
+          {record.assignAuditorname}
+          </Title>
+          <p style={{ fontSize: '12px', whiteSpace: 'pre-line' }}> {record.assignAuditorid}</p>
         </>
       ),
       responsive: ["sm"]
@@ -172,8 +189,15 @@ const AssignAuditors = () => {
   ].filter(item => !item.hidden);
 
   useEffect(() => {
+    const getCurrentDateTime = () => {
+      let today = new Date().toISOString().slice(0, 10);
+      setCurrentDate(today)
+    };
+    getDifferenceOfDates()
+    getCurrentDateTime();
     getData();
     getAuditorData();
+  
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -189,7 +213,9 @@ const AssignAuditors = () => {
         email: row.email,
         landAddress: row.landAddress,
         assignAuditorid: row.userID,
-        assignAuditorname: row.fullName
+        assignAuditorname: row.fullName,
+        assignDate:row.assignDate,
+        auditedOrNot:row.auditedOrNot
 
       }))
     );
@@ -202,7 +228,9 @@ const AssignAuditors = () => {
       email: row.email,
       landAddress: row.landAddress,
       assignAuditorid: row.userID,
-      assignAuditorname: row.fullName
+      assignAuditorname: row.fullName,
+      assignDate:row.assignDate,
+      auditedOrNot:row.auditedOrNot
     })));
   };
 

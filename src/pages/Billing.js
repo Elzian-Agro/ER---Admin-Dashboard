@@ -464,19 +464,19 @@ function Billing() {
                 bordered={false}
                 className="card-credit header-solid h-ful"
               >
-                <h5 className="card-number"></h5>
+                <h5 className="card-number">{cardNumber}</h5>
 
                 <div className="card-footer">
                   <div className="mr-30">
                     <p>Card Holder</p>
-                    <h6></h6>
+                    <h6>{fullName}</h6>
                   </div>
                   <div className="mr-30">
                     <p>Expires</p>
-                    <h6></h6>
+                    <h6>{expiry}</h6>
                   </div>
                   <div className="card-footer-col col-logo ml-auto">
-                    <img src={mastercard} alt="mastercard" />
+                    <img src={visa} alt="mastercard" />
                   </div>
                 </div>
               </Card>
@@ -729,19 +729,42 @@ function Billing() {
                         onCancel={handleCancel}
                         onOk={addLastDigithandler}
                         destroyOnClose={true}
+                        okButtonProps={{ disabled: buttonDisabled }}
                       >
-                        <Form {...layout}>
+                        <Form
+                          {...layout}
+                          form={form}
+                          onFieldsChange={() => {
+                            if (!lastDigits) {
+                              setButtonDisabled(true);
+                            } else if (
+                              form
+                                .getFieldsError()
+                                .some((field) => field.errors.length > 0)
+                            ) {
+                              setButtonDisabled(true);
+                            } else {
+                              setButtonDisabled(false);
+                            }
+                          }}
+                        >
                           <Form.Item
                             name="number"
                             label="4 Digits"
                             rules={[
                               {
                                 required: true,
-                                pattern: "^[A-Za-z0-9].{1,9}$",
+                                pattern: "^[0-9]",
                                 message:
                                   "Should Only include the last 4 digits of the Card",
                               },
+                              {
+                                whitespace: true,
+                              },
+                              { min: 3 },
+                              { max: 3 },
                             ]}
+                            hasFeedback
                           >
                             <Input
                               type="number"
