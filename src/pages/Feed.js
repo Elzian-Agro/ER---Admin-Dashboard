@@ -281,9 +281,10 @@ function Feed() {
                   hoverable
                   style={{
                     minWidth: 380,
+                    maxWidth: 500,
                   }}
                   cover={
-                    <img height="300px" alt="example" src={item.imageUrl} />
+                    <img height="300px"  alt="example" src={item.imageUrl} />
                   }
                 >
                   <Meta title={item.tags} description={item.message} />
