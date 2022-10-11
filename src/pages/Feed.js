@@ -10,6 +10,7 @@
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 import { useState, useEffect } from "react";
+import { useCallback } from "react";
 import Grid from "@mui/material/Grid";
 import { PlusOutlined } from "@ant-design/icons";
 import Dialog from "@mui/material/Dialog";
@@ -30,6 +31,7 @@ const useStyles = makeStyles({
   },
 });
 function Feed() {
+  const [data, setData] = useState([]);
   const classes = useStyles();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [deleteFeed, setDeleteFeed] = useState(false);
@@ -43,11 +45,17 @@ function Feed() {
   const [insertMessage, setInsertMessage] = useState("");
   const [insertTag, setInsertTag] = useState("");
   const [focused, setFocused] = useState(true);
+  const [imagePath, setImagePath] = useState();
+  const [form] = Form.useForm();
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [buttonDisabled2, setButtonDisabled2] = useState(true);
+  const [updateImagePath, setUpdsteImagePath] = useState();
+  const [checkTempupdateImagePath, setCheckTempUpdateImagePath] = useState();
 
   //const cookies = useCookies(["token"]);
-  const { updateFeedById, getFeedData,
-    deleteFeedbyId,
-    addFeedData } = FeedService()
+
+  const { updateFeedById, getFeedData, deleteFeedbyId, addFeedData } =
+    FeedService();
 
   // axios.defaults.headers = {
   //   "Content-Type": "application/json",
@@ -70,12 +78,9 @@ function Feed() {
 
   const handleFocus = (e) => {
     setFocused(true);
-  }
-
-
+  };
 
   const openNotificationWithIcon = (type, message, title) => {
-
     if (type === "success") {
       notification[type]({
         message: title,
@@ -87,7 +92,6 @@ function Feed() {
         description: message,
       });
     }
-
   };
 
   const layout = {
@@ -99,84 +103,76 @@ function Feed() {
     },
   };
 
+  const GetAllFeeds = useCallback(async () => {
+    const res = await getFeedData();
+    setData(res);
+  }, [getFeedData]);
   useEffect(() => {
     GetAllFeeds();
-    // const fetchFeeds = async () => {
-    //   const res = await fetch("http://localhost:4000/feeds/");
-    //   const data = await res.json();
-    //   console.log(data);
-    // }
-    // fetchFeeds();
-  }, [isModalVisible, isUpdateModalVisible, deleteFeed]);
-
-  const GetAllFeeds = async () => {
-    const result = await getFeedData();
-    setFeedData(result.data.Result);
-  };
+  }, [GetAllFeeds]);
 
   const fileHandler = (event) => {
     setSelectedFile(event.target.files[0]);
   };
 
-
   const handleDeleteClick = async () => {
-
     try {
-      await deleteFeedbyId(selectedId)
+      await deleteFeedbyId(selectedId);
+      GetAllFeeds();
+      openNotificationWithIcon("success", "Feed Delete Successfully");
       setDeleteFeed(false);
     } catch (error) {
+      openNotificationWithIcon(
+        "error",
+        "Something Went Wrong Please Check",
+        "Error"
+      );
       setDeleteFeed(false);
     }
   };
 
-  // const handleDeleteClick = async () => {
-  //   try {
-  //     await axios
-  //       .delete(
-  //         `http://ec2-13-229-44-15.ap-southeast-1.compute.amazonaws.com:4000/feeds/deleteFeed/${selectedId}`
-  //       )
-  //       .then((res) => res);
-  //     setDeleteFeed(false);
-  //   } catch (error) {
-  //     alert("err");
-  //     setDeleteFeed(false);
-  //   }
-  // };
-
   //Add Feed
-  const AddFeedHandler = async () => {
+  const handleAddFormSubmit = async () => {
     const formData = new FormData();
-    formData.append("imageUrl", selectedFile);
+    formData.append("image", imagePath);
     formData.append("message", insertMessage);
     formData.append("tags", insertTag);
     formData.append("published", "Yes");
-    console.log(formData)
+    // console.log(formData)
     try {
-     await addFeedData(formData)
-      openNotificationWithIcon('success', "Feed Added Successfully")
+      await addFeedData(formData);
+      GetAllFeeds();
+      openNotificationWithIcon("success", "Feed Added Successfully");
       setIsModalVisible(false);
     } catch (error) {
-      openNotificationWithIcon('error', "Something Went Wrong Please Check", "Error")
+      openNotificationWithIcon(
+        "error",
+        "Something Went Wrong Please Check",
+        "Error"
+      );
     }
   };
 
+  //Update Feed
   const UpdateFeedHandler = async () => {
     const formData = new FormData();
-    formData.append("imageUrl", updateSelectedFile);
+    formData.append("image", updateImagePath);
     formData.append("message", updateDescription);
     formData.append("tags", updateTag);
-    console.log(formData)
+    console.log(formData);
+
     try {
-      await updateFeedById(selectedId,formData) 
-        .then((response) => {
-          openNotificationWithIcon('success', "Feed updated Feed Successfully")
-          //setFeedData(response.data);
-          GetAllFeeds()
-        });
-    } catch (error) {
+      await updateFeedById(selectedId, formData);
+      GetAllFeeds();
+      openNotificationWithIcon("success", "Feed Updated Successfully");
       setIsUpdateModalVisible(false);
-      openNotificationWithIcon('error', "Something Went Wrong Please Check", "Error")
-      // alert("err");
+    } catch (error) {
+      openNotificationWithIcon(
+        "error",
+        "Something Went Wrong Please Check",
+        "Error"
+      );
+      setIsUpdateModalVisible(false);
     }
   };
 
@@ -192,7 +188,6 @@ function Feed() {
                 icon={<PlusOutlined />}
                 onClick={showModal}
                 style={{ color: "white" }}
-
               >
                 Add Feed
               </Button>
@@ -201,19 +196,37 @@ function Feed() {
                 title="Add New Feed"
                 visible={isModalVisible}
                 onCancel={handleCancel}
-                onOk={AddFeedHandler}
+                onOk={() => {
+                  handleAddFormSubmit();
+                }}
                 destroyOnClose={true}
+                okButtonProps={{ disabled: buttonDisabled }}
               >
-                <Form {...layout}>
+                <Form
+                  {...layout}
+                  autoComplete="off"
+                  form={form}
+                  onFieldsChange={() => {
+                    if (
+                      form
+                        .getFieldsError()
+                        .some((field) => field.errors.length > 0)
+                    ) {
+                      setButtonDisabled(true);
+                    } else {
+                      setButtonDisabled(false);
+                    }
+                  }}
+                >
                   <Form.Item
                     name="name"
-                    label="Title"
-
+                    label="Description"
                     rules={[
                       {
                         required: true,
-                        pattern: "^[A-Za-z0-9].{2,16}$",
-                        message: "Title Should be 3-16 characters and shouldn't include any special character!",
+                        pattern: "^[A-Za-z0-9].{2,60}$",
+                        message:
+                          "Description Should be 3-60 characters and shouldn't include any special character!",
                       },
                     ]}
                   >
@@ -227,14 +240,15 @@ function Feed() {
                   </Form.Item>
                   <Form.Item
                     name={["user", "tag"]}
-                    label="Tag"
+                    label="Tag Name"
                     rules={[
                       {
                         required: true,
-                        message: "Tag Cannot be Empty"
+                        message: "Tag Cannot be Empty",
                       },
+                      { min: 3 },
+                      { max: 10 },
                     ]}
-
                   >
                     <Input
                       type="text"
@@ -242,14 +256,17 @@ function Feed() {
                       onChange={(event) => setInsertTag(event.target.value)}
                     />
                   </Form.Item>
-                  <Form.Item
-                    name={["user", "image"]}
-                    label="Image">
+                  <Form.Item name={["user", "image"]} label="Image">
                     <Input
                       type="file"
                       accept="image/*"
-                      onChange={fileHandler} />
-                    <img src={selectedFile} alt="img" />
+                      onChange={(event) => setImagePath(event.target.files[0])}
+                    />
+                    <br />
+
+                    {imagePath && (
+                      <img src={URL.createObjectURL(imagePath)} alt="img" />
+                    )}
                   </Form.Item>
                 </Form>
               </Modal>
@@ -258,7 +275,7 @@ function Feed() {
         </Grid>
         <Grid item>
           <Grid container spacing={3} justifyContent="center">
-            {feedData.map((item) => (
+            {data.map((item) => (
               <Grid item key={item.id} id={item.id}>
                 <Card
                   hoverable
@@ -275,15 +292,20 @@ function Feed() {
                       <Button
                         className={classes.featuredButton}
                         type="primary"
-                        color="primary"
                         onClick={() => {
                           showUpdateModal();
-                          setUpdateTag(item.insertTag);
-                          setUpdateDescription(item.insertMessage);
-                          setSelectedFile(item.selectedFile);
                           setSelectedId(item.id);
+                          setUpdateTag(item.tags);
+                          setUpdateDescription(item.message);
+                          setUpdsteImagePath(item.imageUrl);
+                          setCheckTempUpdateImagePath(item.imageUrl);
+
+                          form.setFieldsValue({
+                            updateTag: item.tags,
+                            updateDescription: item.message,
+                            updateImagePath: item.imageUrl,
+                          });
                         }}
-                      // onClick={}
                       >
                         Update
                       </Button>
@@ -305,53 +327,90 @@ function Feed() {
               </Grid>
             ))}
             <Modal
-              title="Update Feed"
+              title="Update The Feed"
               visible={isUpdateModalVisible}
               onCancel={handleUpdateCancel}
-              onOk={UpdateFeedHandler}
+              onOk={() => {
+                UpdateFeedHandler();
+              }}
+              okButtonProps={{ disabled: buttonDisabled2 }}
               destroyOnClose={true}
             >
-              <Form {...layout}>
+              <Form
+                autoComplete="off"
+                form={form}
+                onFieldsChange={() => {
+                  if (
+                    form
+                      .getFieldsError()
+                      .some((field) => field.errors.length > 0)
+                  ) {
+                    setButtonDisabled2(true);
+                  } else {
+                    setButtonDisabled2(false);
+                  }
+                }}
+              >
                 <Form.Item
-                  name={["user", "name"]}
-                  label="Title"
+                  name="updateTag"
+                  label="Tag Name"
                   rules={[
                     {
-                      required: true,
-                      pattern: "^[A-Za-z0-9].{2,16}$",
-                      message: "Title Should be 3-16 characters and shouldn't include any special character!",
+                      
+                      pattern: "[A-Za-z]",
+                      message: "Please enter plant name",
                     },
+                    {
+                      whitespace: true,
+                    },
+                    { min: 5 },
                   ]}
+                  hasFeedback
                 >
                   <Input
-                    type="text"
-                    value={updateDescription}
+                    name="updateTag"
+                    onChange={(event) => setUpdateTag(event.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item
+                  name="updateDescription"
+                  label="Description"
+                  rules={[
+                    {
+                      
+                      pattern: "^[A-Za-z0-9].{2,70}$",
+                      message: "Description Should be 3-70 characters and shouldn't include any special character!",
+                    },
+                    {
+                      whitespace: true,
+                    },
+                    
+                  ]}
+                  hasFeedback
+                >
+                  <Input
+                    name="updateDescription"
+                    onBlur={handleFocus}
                     onChange={(event) =>
                       setUpdateDescription(event.target.value)
                     }
                   />
                 </Form.Item>
-                <Form.Item
-                  name={["user", "tag"]}
-                  label="Tag">
-                  <Input
-                    type="text"
-                    value={updateTag}
-                    onChange={(event) => setUpdateTag(event.target.value)}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name={["user", "image"]}
-                  label="Image">
+                <Form.Item name={["user", "image"]} label="Image">
                   <Input
                     type="file"
                     accept="image/*"
-
                     onChange={(event) =>
-                      setUpdateSelectedFile(event.target.files[0])
+                      setUpdsteImagePath(event.target.files[0])
                     }
                   />
-                  <img src={selectedFile} alt="img" />
+                  <br />
+
+                  {updateImagePath === checkTempupdateImagePath ? (
+                    <img src={updateImagePath} alt="img" />
+                  ) : (
+                    <img src={URL.createObjectURL(updateImagePath)} alt="img" />
+                  )}
                 </Form.Item>
               </Form>
             </Modal>
@@ -368,8 +427,6 @@ function Feed() {
                 },
               }}
             >
-
-
               <DialogTitle id="dialog-title">
                 Do you really want to delete?
               </DialogTitle>
@@ -381,7 +438,7 @@ function Feed() {
                 <Button
                   type="primary"
                   danger
-                  onClick={() => handleDeleteClick()}
+                  onClick={handleDeleteClick}
                   color="error"
                 >
                   Delete

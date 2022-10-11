@@ -450,6 +450,9 @@ function TreeSpecies() {
                 <b>Plant ID</b> : {modelData.plant_id}
               </div>
               <div>
+                <b>Plant Name</b> : {modelData.plantName}
+              </div>
+              <div>
                 <b>Common Name(s)</b> : {modelData.commonNames}
               </div>
               <div>
