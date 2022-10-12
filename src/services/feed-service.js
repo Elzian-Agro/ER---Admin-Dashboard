@@ -79,7 +79,6 @@ export default function FeedService() {
   const getFeedData = useCallback (async function getFeedData() {
     const data = await http.get("/feeds").then((res) => res.data.Result);
     return data;
-    // eslint-disable-next-line 
   } ,[])
 
   
