@@ -84,7 +84,6 @@ export default function DataService() {
   const getAllTreeSpecies = useCallback (async function getAllTreeSpecies() {
     const data = await http.get("/species").then((res) => res.data.Result);
     return data;
-    // eslint-disable-next-line 
   } ,[])
 
   async function deleteTreeSpeciesById(Id) {
