@@ -36,12 +36,9 @@ function Feed() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [deleteFeed, setDeleteFeed] = useState(false);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
-  const [feedData, setFeedData] = useState([]);
   const [selectedId, setSelectedId] = useState("");
-  const [updateSelectedFile, setUpdateSelectedFile] = useState("");
   const [updateDescription, setUpdateDescription] = useState("");
   const [updateTag, setUpdateTag] = useState("");
-  const [selectedFile, setSelectedFile] = useState();
   const [insertMessage, setInsertMessage] = useState("");
   const [insertTag, setInsertTag] = useState("");
   const [focused, setFocused] = useState(true);
@@ -111,9 +108,9 @@ function Feed() {
     GetAllFeeds();
   }, [GetAllFeeds]);
 
-  const fileHandler = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
+  // const fileHandler = (event) => {
+  //   setSelectedFile(event.target.files[0]);
+  // };
 
   const handleDeleteClick = async () => {
     try {
@@ -224,9 +221,9 @@ function Feed() {
                     rules={[
                       {
                         required: true,
-                        pattern: "^[A-Za-z0-9].{2,60}$",
+                        pattern: "^[A-Za-z0-9].{2,255}$",
                         message:
-                          "Description Should be 3-60 characters and shouldn't include any special character!",
+                          "Description Should be 3-255 characters and shouldn't include any special character!",
                       },
                     ]}
                   >
@@ -244,10 +241,9 @@ function Feed() {
                     rules={[
                       {
                         required: true,
-                        message: "Tag Cannot be Empty",
+                        pattern: "^[A-Za-z0-9].{2,55}$",
+                        message: "Tag Should be 3-55 characters!",
                       },
-                      { min: 3 },
-                      { max: 10 },
                     ]}
                   >
                     <Input
@@ -274,20 +270,27 @@ function Feed() {
           </Grid>
         </Grid>
         <Grid item>
-          <Grid container spacing={3} justifyContent="center">
+          <Grid container spacing={6} justifyContent="center">
             {data.map((item) => (
               <Grid item key={item.id} id={item.id}>
                 <Card
                   hoverable
                   style={{
-                    minWidth: 380,
-                    maxWidth: 500,
+                    // minWidth: 380,
+                    // maxWidth: 500,
+                    width: 420,
+                    height: 465,
+                    justifyContent: "center",
                   }}
                   cover={
-                    <img height="300px"  alt="example" src={item.imageUrl} />
+                    <img height="245px" alt="example" src={item.imageUrl} />
                   }
                 >
-                  <Meta title={item.tags} description={item.message} />
+                  <Meta
+                    title={item.tags}
+                    description={item.message}
+                    style={{ height: "160px" }}
+                  />
                   <Grid container justifyContent="flex-end" spacing={1}>
                     <Grid item>
                       <Button
@@ -357,14 +360,12 @@ function Feed() {
                   label="Tag Name"
                   rules={[
                     {
-                      
-                      pattern: "[A-Za-z]",
-                      message: "Please enter plant name",
+                      pattern: "^[A-Za-z0-9].{2,55}$",
+                      message: "Tag Should be 3-55 characters!",
                     },
                     {
                       whitespace: true,
                     },
-                    { min: 5 },
                   ]}
                   hasFeedback
                 >
@@ -378,14 +379,13 @@ function Feed() {
                   label="Description"
                   rules={[
                     {
-                      
-                      pattern: "^[A-Za-z0-9].{2,70}$",
-                      message: "Description Should be 3-70 characters and shouldn't include any special character!",
+                      pattern: "^[A-Za-z0-9].{2,255}$",
+                      message:
+                        "Description Should be 3-255 characters and shouldn't include any special character!",
                     },
                     {
                       whitespace: true,
                     },
-                    
                   ]}
                   hasFeedback
                 >
@@ -401,9 +401,10 @@ function Feed() {
                   <Input
                     type="file"
                     accept="image/*"
-                    onChange={(event) =>
-                      setUpdsteImagePath(event.target.files[0])
-                    }
+                    onChange={(event) => {
+                      setUpdsteImagePath(event.target.files[0]);
+                      setButtonDisabled2(false);
+                    }}
                   />
                   <br />
 
