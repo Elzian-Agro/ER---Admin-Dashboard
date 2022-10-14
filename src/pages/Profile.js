@@ -54,7 +54,6 @@ function Profile() {
   const [instragramLink, setInstragramLink] = useState("");
   const [location, setLocation] = useState("");
   const [profImage, setProfImage] = useState("");
-  const [modaldata, setModaldata] = useState({});
   const [profileInfo, setProfileInfo] = useState("");
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateFullname, setupdateFullname] = useState("");
@@ -395,18 +394,15 @@ function Profile() {
                       }
                     />
                   </Form.Item>
-                  <Form.Item name={["user", "image"]} label="Profile Image"
-                   rules={[
-                    {
-                      // required: true,
-                      message: "Profile Image Cannot be Empty"
-                    },
-                  ]}>
+                  <Form.Item name={["user", "image"]} label="Profile Image">
                     <Input
                       type="file"
                       accept="image/*"
                       onChange={(event) =>
-                        setUpdateImagePath(event.target.files[0])
+                        {setUpdateImagePath(event.target.files[0])
+                          setButtonDisabled2(false)
+                        }
+                        
                       }
                     />
                     <br />
