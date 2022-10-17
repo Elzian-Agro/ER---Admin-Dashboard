@@ -201,10 +201,11 @@ function Feed() {
               >
                 <Form
                   {...layout}
-                  autoComplete="off"
                   form={form}
                   onFieldsChange={() => {
-                    if (
+                    if (!insertMessage || !insertTag) {
+                      setButtonDisabled(true);
+                    } else if (
                       form
                         .getFieldsError()
                         .some((field) => field.errors.length > 0)
@@ -221,9 +222,9 @@ function Feed() {
                     rules={[
                       {
                         required: true,
-                        pattern: "^[A-Za-z0-9].{2,255}$",
+                        pattern: "^[A-Za-z0-9].{2,310}$",
                         message:
-                          "Description Should be 3-255 characters and shouldn't include any special character!",
+                          "Description Should be 3-310 characters and shouldn't include any special character!",
                       },
                     ]}
                   >
@@ -232,7 +233,6 @@ function Feed() {
                       value={insertMessage}
                       onChange={(event) => setInsertMessage(event.target.value)}
                       onBlur={handleFocus}
-                      focused={focused.toString()}
                     />
                   </Form.Item>
                   <Form.Item
@@ -241,7 +241,7 @@ function Feed() {
                     rules={[
                       {
                         required: true,
-                        pattern: "^[A-Za-z0-9].{2,55}$",
+                        pattern: "^[A-Za-z0-9].{3,55}$",
                         message: "Tag Should be 3-55 characters!",
                       },
                     ]}
@@ -252,11 +252,24 @@ function Feed() {
                       onChange={(event) => setInsertTag(event.target.value)}
                     />
                   </Form.Item>
-                  <Form.Item name={["user", "image"]} label="Image">
+                  <Form.Item
+                    name={["user", "image"]}
+                    label="Image"
+                    rules={[
+                      {
+                        required: true,
+                      },
+                    ]}
+                  >
                     <Input
                       type="file"
                       accept="image/*"
-                      onChange={(event) => setImagePath(event.target.files[0])}
+                      // onChange={(event) => setImagePath(event.target.files[0])
+                      // }
+                      onChange={(event) => {
+                        setImagePath(event.target.files[0]);
+                        
+                      }}
                     />
                     <br />
 
@@ -360,7 +373,8 @@ function Feed() {
                   label="Tag Name"
                   rules={[
                     {
-                      pattern: "^[A-Za-z0-9].{2,55}$",
+                      required: true,
+                      pattern: "^[A-Za-z0-9].{3,55}$",
                       message: "Tag Should be 3-55 characters!",
                     },
                     {
@@ -379,9 +393,10 @@ function Feed() {
                   label="Description"
                   rules={[
                     {
-                      pattern: "^[A-Za-z0-9].{2,255}$",
+                      required: true,
+                      pattern: "^[A-Za-z0-9].{2,310}$",
                       message:
-                        "Description Should be 3-255 characters and shouldn't include any special character!",
+                        "Description Should be 3-310 characters and shouldn't include any special character!",
                     },
                     {
                       whitespace: true,
