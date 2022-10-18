@@ -3,6 +3,7 @@ import axios from "axios";
 import Tokenservice from "./token-service";
 import {useContext} from 'react'
 import {LoginContext} from "../components/helper/Context"
+import { useCallback } from "react";
 
  const{getLocalRefreshToken}=Tokenservice()
 
@@ -68,12 +69,20 @@ export default function FeedService() {
     console.log(data);
   }
 
+  //Get all feeds 
 
-  async function getFeedData() {
-    const data = await http.get("/feeds/").then((res) => res);
+  // async function getFeedData() {
+  //   const data = await http.get("/feeds/").then((res) => res);
+  //   return data;
+  // }
+
+  const getFeedData = useCallback (async function getFeedData() {
+    const data = await http.get("/feeds").then((res) => res.data.Result);
     return data;
-  }
+    // eslint-disable-next-line
+  } ,[])
 
+  
   async function deleteFeedbyId(id) {
     const data=await http.delete(`/feeds/deleteFeed/${id}`).then((res) => res);
     return data;
@@ -85,6 +94,7 @@ export default function FeedService() {
     console.log(data);
   }
 
+  
   return {
     updateFeedById,
     getFeedData,

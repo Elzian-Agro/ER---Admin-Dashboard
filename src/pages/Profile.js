@@ -54,7 +54,6 @@ function Profile() {
   const [instragramLink, setInstragramLink] = useState("");
   const [location, setLocation] = useState("");
   const [profImage, setProfImage] = useState("");
-  const [modaldata, setModaldata] = useState({});
   const [profileInfo, setProfileInfo] = useState("");
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateFullname, setupdateFullname] = useState("");
@@ -66,7 +65,7 @@ function Profile() {
   const [updateProfileinfo, setupdateProfileinfo] = useState("");
   const [updateImagePath, setUpdateImagePath] = useState();
   const [checkTempupdateImagePath, setCheckTempUpdateImagePath] = useState();
-  const [buttonDisabled2, setButtonDisabled2] = useState(true);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
 
@@ -80,7 +79,7 @@ function Profile() {
       setUserName(res.userName);
       setUserType(res.userType);
       setFullName(res.fullName);
-      setMobile(res.mobile.toString());
+      setMobile(res.mobile);
       setEmail(res.email);
       setTwitterLink(res.twitterLink);
       setFacebookLink(res.facebookLink);
@@ -309,30 +308,38 @@ function Profile() {
                   handleUpdatelick();
                 }}
                 onCancel={handleUpdateCancel}
-                okButtonProps={{ disabled: buttonDisabled2 }}
+                okButtonProps={{ disabled: buttonDisabled }}
                 destroyOnClose={true}
               >
                 <Form
                   autoComplete="off"
                   form={form}
                   onFieldsChange={() => {
-                    if (
-                      form
-                        .getFieldsError()
-                        .some((field) => field.errors.length > 0)
+                    if (!updateFullname ||
+                      !updateMobile ||
+                      !updateLocation||
+                      !updateProfileinfo||
+                      !updateTwitterLink||
+                      !updateInstagramLink||
+                      !updateFacebookLink
+
                     ) {
-                      setButtonDisabled2(true);
-                    } else {
-                      setButtonDisabled2(false);
+                      setButtonDisabled(true);
                     }
-                  }}
+                    else if (form.getFieldsError().some((field) => field.errors.length > 0)) {
+                      setButtonDisabled(true)
+                    } else {
+                      setButtonDisabled(false)
+                    }
+                  }
+                  }
                 >
                   <Form.Item
                     name="updateFullname"
                     label="Full Name"
                     rules={[
                       {
-                       
+                        required: true,
                         pattern: "^[A-Za-z]",
                         message: "Please enter Full name",
                       },
@@ -355,8 +362,9 @@ function Profile() {
                     label="Mobile Number"
                     rules={[
                       {
-                        
-                        message: "Please Enter Mobile Number",
+                        required: true,
+                        pattern: "^[0-9]{10}$",
+                        message: "Please Enter valid Mobile Number",
                       },
                       {
                         whitespace: true,
@@ -377,7 +385,7 @@ function Profile() {
                     label="Location"
                     rules={[
                       {
-                        
+                        required: true,
                         pattern: "^[A-Za-z]",
                         message: "Please enter Location",
                       },
@@ -395,18 +403,15 @@ function Profile() {
                       }
                     />
                   </Form.Item>
-                  <Form.Item name={["user", "image"]} label="Profile Image"
-                   rules={[
-                    {
-                      // required: true,
-                      message: "Profile Image Cannot be Empty"
-                    },
-                  ]}>
+                  <Form.Item name={["user", "image"]} label="Profile Image">
                     <Input
                       type="file"
                       accept="image/*"
                       onChange={(event) =>
-                        setUpdateImagePath(event.target.files[0])
+                        {setUpdateImagePath(event.target.files[0])
+                        setButtonDisabled(false)
+                        }
+                        
                       }
                     />
                     <br />
@@ -425,7 +430,7 @@ function Profile() {
                     label="Profile Infomation"
                     rules={[
                       {
-                        
+                        required: true,
                         pattern: "^[A-Za-z]",
                         message: "Please enter Profile Infomation",
                       },
@@ -448,7 +453,7 @@ function Profile() {
                     label="Twitter Link"
                     rules={[
                       {
-                        
+                        required: true,
                         message: "Please enter Twitter Link",
                       },
                       {
@@ -468,7 +473,7 @@ function Profile() {
                   <Form.Item name="updateFacebookLink" label="Facebook Link"
                    rules={[
                     {
-                     
+                      required: true,
                       message: "Please enter Facebook Link",
                     },
                     {
@@ -489,7 +494,7 @@ function Profile() {
                   rules={[
                     {
                       
-
+                      required: true,
                       message: "Please enter Instragram Link",
                     },
                     {
