@@ -28,8 +28,8 @@ export default function DataService() {
 
   const http = axios.create({
     baseURL:
-      //"http://localhost:4000",
-      "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
+      // "http://localhost:4000",
+    "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
     headers: {
       "Content-type": "application/json",
       "x-auth-token": accessTokenMemoryTmp,
@@ -95,15 +95,29 @@ export default function DataService() {
     }
   }
 
-  //Get Trees by Landowner Register Number
+  //Get Trees by Landowner ID
   async function getTreeSpeciesByRegNo(id) {
     const data = await http
-      .get("/landOwners/getTreesByRegNumber/" + id)
+      .get("/landOwners/getTreeSpeciesByID/" + id)
       .then((res) => res);
+    console.log(data.status === 200);
     if (data.status === 200) {
       return data;
     } else {
       openNotificationWithIcon("Error", "Error get", "Error");
+    }
+  }
+
+  //Get Stage by ExistingBioDiversity
+  async function getStageByExistingBioDiversity(id) {
+    const data = await http
+      .get("/landOwners/getStageByExistingBioDiversity/" + id)
+      .then((res) => res);
+    console.log(data.status === 200);
+    if (data.status === 200) {
+      return data;
+    } else {
+      openNotificationWithIcon("Erro", "Error get", "Error")
     }
   }
 
@@ -182,5 +196,6 @@ export default function DataService() {
     approveLandOwnerById,
     unApproveLandOwnerById,
     getTreeSpeciesByRegNo,
+    getStageByExistingBioDiversity,
   };
 }

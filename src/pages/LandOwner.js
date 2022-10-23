@@ -8,13 +8,10 @@ import {
   Input,
   Avatar,
   Typography,
-  Select,
   Table,
   Row,
   Col,
   Image,
-  Space,
-  Badge,
 } from "antd";
 
 import { MdEmail, MdPerson, MdPhone } from "react-icons/md";
@@ -29,9 +26,8 @@ import DialogActions from "@mui/material/DialogActions";
 
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
-import { canvas } from "leaflet";
-import { height } from "@mui/system";
-import { Padding } from "@mui/icons-material";
+// import { fontSize, height } from "@mui/system";
+// import { Padding } from "@mui/icons-material";
 import signinbg from "../assets/logos/LifeForce.png";
 import logo from "../assets/images/earth-restoration-logo.png";
 
@@ -66,14 +62,14 @@ const useStyles = makeStyles({
     alignItems: "flex-end",
     justifyItems: "flex-end",
   },
-  
 
-  leftContainer:{
+
+  leftContainer: {
     marginTop: "40px",
     marginLeft: "10px",
   },
- 
-  imageContainer:{
+
+  imageContainer: {
     marginTop: "50px",
     height: "100px",
   },
@@ -94,10 +90,7 @@ function LandOwner() {
   const [tableData, setTableData] = useState([]);
   const [modaldata, setmodaldata] = useState({});
   const [selectedId, setSelectedId] = useState("");
-  const [selectedRegNo, setSelectedRegNo] = useState("");
   const [form] = Form.useForm();
-  const [tree, setTree] = useState(""); //TreeSpecies
-  const [users, setUsers] = useState("");
 
   //Add new consts here
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
@@ -115,6 +108,8 @@ function LandOwner() {
   const [deleteFeed, setDeleteFeed] = useState(false);
   const [isContractModalVisible, setIsContractModalVisible] = useState(false);
   const [idCardModalVisible, setIdCardModalVisible] = useState(false);
+  const [treedata, setTreeData] = useState([]);
+  const [stageData, setStageData] = useState([]);
 
   const {
     getLandOwners,
@@ -124,6 +119,7 @@ function LandOwner() {
     unApproveLandOwnerById,
     getLandOwnerById,
     getTreeSpeciesByRegNo,
+    getStageByExistingBioDiversity,
   } = service();
 
   const showContract = () => {
@@ -148,6 +144,16 @@ function LandOwner() {
     },
   };
 
+  const styles2 = {
+    rightAlign: {
+      alignSelf: "flex-end",
+    },
+  };
+
+  //Getting Current Date
+  const current = new Date();
+  const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
+
   //Contract PDF download Function
   const handleDownloadPdf = async () => {
     const element = printRef.current;
@@ -156,7 +162,7 @@ function LandOwner() {
 
     const pdf = new jsPDF("p", "pt", "letter");
     pdf.addImage(data, 100, 0);
-    pdf.save("contract.pdf");
+    pdf.save(`${modaldata.landOwnerName} Contract.pdf`);
   };
 
   // ID image download function
@@ -178,7 +184,6 @@ function LandOwner() {
       window.open(data);
     }
   };
-
 
   const columns = [
     {
@@ -311,28 +316,6 @@ function LandOwner() {
     },
   ];
 
-  const getTreeData = async () => {
-    const res = await getTreeSpeciesByRegNo();
-    console.log(res);
-    console.log("get Data");
-    setdata(
-      res.map((row) => ({
-        treeSpecies: row.treeSpecies,
-      }))
-    );
-    setTableData(
-      res.map((row) => ({
-        treeSpecies: row.treeSpecies,
-      }))
-    );
-  };
-
-  const fetchData = async () => {
-    const res = await fetch(getTreeSpeciesByRegNo);
-    const data = await res.json();
-    setUsers(data);
-  };
-
   const getData = async () => {
     const res = await getLandOwners();
     console.log(res);
@@ -356,6 +339,7 @@ function LandOwner() {
         bankAccountNumber: row.bankAccountNumber,
         bankName: row.bankName,
         bankBranch: row.bankBranch,
+        existingBiodiversity: row.existingBiodiversity
       }))
     );
     setTableData(
@@ -377,15 +361,67 @@ function LandOwner() {
         bankAccountNumber: row.bankAccountNumber,
         bankName: row.bankName,
         bankBranch: row.bankBranch,
+        existingBiodiversity: row.existingBiodiversity
       }))
     );
   };
 
-  useEffect(() => {
-    getData();
+  //Getting Tree Species
+  const getTreeData = async () => {
+    const res = await getTreeSpeciesByRegNo(selectedId);
+    console.log(res.data.result);
+    console.log("Showing TreeData");
+    setTreeData(res.data.Result)
+  }
+
+  //Getting Stage data from ExistingBioDiversity
+  const getStageData = async () => {
+    const res = await getStageByExistingBioDiversity(selectedId)
+    console.log(res.data.result);
+    console.log("Showing Stage");
+    setStageData(res.data.Result);
+  };
+
+  const showTreeData = () => {
     getTreeData();
-    fetchData();
+  }
+
+  const showStageData = () => {
+    getStageData();
+  }
+
+
+  useEffect(() => {
+    showStageData();
+    getData();
+    showTreeData();
   }, []);
+
+  const stageList = stageData.map((item, index) =>
+    <div key={index}>{item.stage}</div>
+  );
+
+
+  const renderList = treedata.map((item, index) =>
+    <div key={index}>
+      <ul>
+        <Row style={{ fontSize: "14px" }}>
+
+          <Col span={8}>
+            <li><span><b>{item.treeSpecies}</b></span></li>
+          </Col>
+          <Col span={4}>
+            <span><b>{modaldata.longitude}</b></span>
+          </Col>
+          <Col span={4}>
+            <span><b>{modaldata.latitude}</b></span>
+          </Col>
+        </Row>
+      </ul>
+    </div>
+  );
+
+
 
   const approveLandOwner = async (selectedId_) => {
     try {
@@ -435,21 +471,22 @@ function LandOwner() {
 
   const handleOk = () => {
     setTimeout(() => {
-      setIsModalVisible(false);
+      setIsModalVisible(true);
     }, 3000);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-  const layout = {
-    labelCol: {
-      span: 6,
-    },
-    wrapperCol: {
-      span: 16,
-    },
-  };
+
+  // const layout = {
+  //   labelCol: {
+  //     span: 6,
+  //   },
+  //   wrapperCol: {
+  //     span: 16,
+  //   },
+  // };
 
   const handleDeleteClick = async () => {
     try {
@@ -570,9 +607,8 @@ function LandOwner() {
                   onRow={(record) => {
                     return {
                       onClick: () => {
-                        //setmodaldata(record);
-                        setSelectedId(record.landOwnerID);
                         showModal(record);
+                        setSelectedId(record.landOwnerID);
                         form.setFieldsValue({
                           key: record.landOwnerID,
                           id: record.landOwnerID,
@@ -678,7 +714,7 @@ function LandOwner() {
             <Col style={{ textAlign: "center" }}>
               <Image width={200} src={modaldata.profImage} />
             </Col>
-            <Col 
+            <Col
               md={12}
               xs={24}
               style={{ fontSize: "14px", textAlign: "left", width: "270px" }}
@@ -750,7 +786,11 @@ function LandOwner() {
                 <Button
                   type="link"
                   className="ant-edit-link"
-                  onClick={showContract}
+                  onClick={() => {
+                    showContract();
+                    showTreeData();
+                    showStageData();
+                  }}
                 >
                   View Contract
                 </Button>
@@ -768,7 +808,7 @@ function LandOwner() {
                     </Button>,
                   ]}
                 >
-                  <div style={{ marginBottom: "40px", marginLeft: "20px" }}>
+                  <div style={{ marginBottom: "40px", marginLeft: "auto", marginRight: "auto" }}>
                     <Row gutter={[16, 16]}>
                       <Col
                         style={{
@@ -781,6 +821,17 @@ function LandOwner() {
                       >
                         <div ref={printRef}>
                           <center>Land Owner Contract</center>
+                          <br />
+                          <div>
+                            <img
+                              width="50px"
+                              src={logo}
+                              alt="ER Logo" />
+                            <img align="right"
+                              width="50px"
+                              src={signinbg}
+                              alt="Life Force Logo" />
+                          </div>
                           <br></br>
                           <div>
                             This contract is entered into between{" "}
@@ -802,19 +853,19 @@ function LandOwner() {
                             UNITS.
                           </div>
                           <br></br>
-                          <div>
-                            {users.length > 0 && (
-                              <ul>
-                                {users.map((user) => (
-                                  <li key={user.id}>{user.name}</li>
-                                ))}
-                              </ul>
-                            )}
-                          </div>
-                          {/* <div>2.</div>
-                          <div>3.</div>
-                          <div>4.</div> */}
+                          {renderList}
                           <br></br>
+                          <div>
+                            <Row>
+                              <Col span={8}>
+                                ExistingBioDiversity :
+                              </Col>
+                              <Col span={8}>
+                                <b>{stageList}</b>
+                              </Col>
+                            </Row>
+                          </div>
+                          <br />
                           <div>
                             On my property in a design developed jointly with ER
                             for a period of 4 years.
@@ -826,6 +877,16 @@ function LandOwner() {
                             Ecosystem Services (PES) of these ER units to the
                             investor named in this contract.
                           </div>
+                          <br />
+                          <br />
+                          <p style={{ textAlign: "left" }}>
+                            .........................................
+                            <span style={{ float: "right" }}>
+                              <b>{date}</b>
+                            </span>
+                            <br />
+                            <b><p style={{ display: "inline-flex", textAlign: "center" }} width={30}>Producer</p></b>
+                          </p>
                         </div>
                       </Col>
                     </Row>
@@ -852,57 +913,57 @@ function LandOwner() {
                     </Button>,
                   ]}
                 >
-                <div style={{ margin: "20px" }}>
-                  <div ref={printRef2} className={classes.card}>
+                  <div style={{ margin: "20px" }}>
+                    <div ref={printRef2} className={classes.card}>
                       <Row className={classes.upperContainer}>
-                        <Col 
+                        <Col
                           span={8}
                           style={{
                             marginTop: "2px",
-                            }}
+                          }}
                         >
-                          <Image width={50} src={logo} alt="lifeforce logo" className={classes.logoContainer1} preview={false}/>                       
+                          <Image width={50} src={logo} alt="lifeforce logo" className={classes.logoContainer1} preview={false} />
                         </Col>
 
-                        <Col 
+                        <Col
                           span={8}
                           style={{
                             marginTop: "15px",
-                            }}
+                          }}
                         >
                           <span><b>Earth Restoration</b></span>
                         </Col>
 
-                        <Col 
+                        <Col
                           span={8}
                           style={{
                             marginTop: "4px",
-                            }}
+                          }}
                         >
                           {/* <Image width={50} src={signinbg} alt="lifeforce logo" className={classes.logoContainer2} preview={false}/> */}
                         </Col>
                       </Row>
                       <Row>
-                        <Col 
+                        <Col
                           span={8}
                           style={{
                             backgroundColor: "#008000",
                             height: "180px",
-                            }}
+                          }}
                         >
                           <div className={classes.leftContainer}>
                             <center>
-                              <Image width={100} src={modaldata.qrImage} preview={false}/>
+                              <Image width={100} src={modaldata.qrImage} preview={false} />
                             </center>
                           </div>
-                          </Col>
-                          <Col 
-                            span={16}
-                            style={{
-                              backgroundColor: "#008000",
-                              height: "180px",
-                              }}
-                          >
+                        </Col>
+                        <Col
+                          span={16}
+                          style={{
+                            backgroundColor: "#008000",
+                            height: "180px",
+                          }}
+                        >
                           <div className={classes.rightContaine}>
                             <div>
                               <b>Name :</b> {modaldata.landOwnerName}
@@ -918,21 +979,20 @@ function LandOwner() {
                             </div>
                           </div>
                         </Col>
-                        </Row>
-                        <Row>
-                          <Col 
-                            span={24}
-                            style={{
-                              backgroundColor: "#f6ffed",
-                              height: "20px",
-                              fontSize: "8px",
-                              marginTop:"5px",
-                              }}
-                          >
-                            <div><center>© Earth Restoration Pvt.Ltd Designed by ELZIAN AGRO</center></div>
-                          </Col>
-                        </Row>
-                      
+                      </Row>
+                      <Row>
+                        <Col
+                          span={24}
+                          style={{
+                            backgroundColor: "#f6ffed",
+                            height: "20px",
+                            fontSize: "8px",
+                            marginTop: "5px",
+                          }}
+                        >
+                          <div><center>© Earth Restoration Pvt.Ltd Designed by ELZIAN AGRO</center></div>
+                        </Col>
+                      </Row>
                     </div>
                   </div>
 
