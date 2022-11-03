@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Polygon,useMap} from 'react-leaflet';
-import { Row, Col, Space, Input } from "antd";
+import React, { useState, useEffect,useCallback } from 'react';
+import { MapContainer, TileLayer, Marker,Popup, Polygon, useMap} from 'react-leaflet';
+import { Row, Col, Space,Input } from "antd";
 import L from "leaflet";
 import greenIcon from "../assets/images/map-green-icon.svg";
 import goldIcon from "../assets/images/map-gold-icon.svg";
@@ -18,12 +18,19 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import { Box } from '@mui/system';
+import { makeStyles } from "@mui/styles";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogActions from "@mui/material/DialogActions";
+
+
 
 function Calculation() {
   const [plants, setPlants] = useState([]);
   const [calData, setCalData] = useState([]);
   const [lands, setLands] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [TreeIdEroor, setTreeIdEroor] = useState(false);
   const [item, setItem] = useState();
   const [invested, setInvested] = useState(false);
   const [bioMass, setBioMass] = useState([]);
@@ -41,6 +48,9 @@ function Calculation() {
     shadowUrl: "https://unpkg.com/leaflet@1.6/dist/images/marker-shadow.png",
   });
 
+  const [map, setMap] = useState(null);
+  
+  
   let dataForBioMass = [];
   let dataForH2o = [];
   let dataForO2 = [];
@@ -120,32 +130,34 @@ function Calculation() {
     }, []);
 
   const renderPlants = (plants) => {
-    let plant = plants.filter((v) => v?.longitude !== null);
-    return plant?.map((item) => {
-      var today = new Date();
-      var dateofPlanting = new Date(item?.dateofPlanting);
-      const diffTime = Math.abs(today - dateofPlanting);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      const isExpired = diffDays > 1460 ? true : false;
-      const invested = item?.investment === 1 ? true : false;
-      return (
-        <Marker
-          eventHandlers={{
-            click: (e) => {
-              showModal(item, invested, isExpired);
-            },
-          }}
-          position={[item?.latitude, item?.longitude]}
-          icon={
-            isExpired
-              ? markerIconGold
-              : item?.investment
-              ? markerIconSilver
-              : markerIconGreen
-          }
-        />
-      );
-    });
+    let plant = plants.filter(v => v?.longitude !== null);
+      return plant?.map((item) => {
+        var today = new Date();
+        var dateofPlanting = new Date(item?.dateofPlanting);
+        const diffTime = Math.abs(today - dateofPlanting);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const isExpired = (diffDays > 1460) ? (true) : (false);
+        const invested = (item?.investment===1) ? (true) : (false);
+          return (
+        
+            <Marker
+              eventHandlers={{
+                mouseover: (event) => event.target.openPopup(),
+                mouseout: (event) => event.target.closePopup(),
+                click: (e) => {
+                  showModal(item, invested, isExpired );
+                },
+              }}
+              position={[item?.latitude, item?.longitude]} 
+              icon={(isExpired) ? (markerIconGold) :  (item?.investment) ? (markerIconSilver) : (markerIconGreen)}>
+              <Popup>
+                  <h1>{item.treeSpecies}</h1>
+                  <h1>{item.treeID}</h1>
+              </Popup>
+              </Marker>
+     
+          )
+      })
   };
 
   //map geo-search============================================
@@ -206,6 +218,9 @@ function Calculation() {
 
       return <Polygon pathOptions={greenOptions} positions={result} />;
     });
+  };
+const handleCancel2 = () => {
+  setTreeIdEroor(false);
   };
 
   const markerIconGreen = new L.Icon({
@@ -302,13 +317,121 @@ function Calculation() {
 
   //     </Box>
 
+  const useStyles = makeStyles({
+    headerSearch: {
+      width: "220px",
+      borderRadius: "7px",
+      marginRight: "10px",
+      marginLeft: "10px",
+    },
+})
+
+  const classes = useStyles();
+  
+
+  function DisplayPosition({ map }) {
+    const [position, setPosition] = useState(() => map.getCenter())
+    const [searchTreeId, setsearchTreeId] = useState();
+
+    const SearchTree=(event)=> {
+      setsearchTreeId(event.target.value);
+      
+    }
+
+    const checkTreeID=()=>{
+      let plant = plants.filter(v => v?.longitude !== null);
+      var setcount = 0
+        return plant?.map((item) => {
+          const invested = (item?.investment===1) ? (true) : (false);
+          if (searchTreeId === item?.treeID) {
+            // return (
+              const latitude = item?.latitude
+              const longitude = item?.longitude
+              const area = [latitude,longitude]
+              
+              onClick(area)
+              setPosition(area)  
+          }
+          else{
+            setcount = setcount+1
+          }
+
+          if (plants.length === setcount ) {
+
+             setTreeIdEroor(true)
+          }
+        })
+    }
+  
+    const onClick = (area) => {
+      map.flyTo(area, 22)
+      //const circle = L.marker(event, radius);
+      //circle.addTo(map);
+    }
+  
+    const onMove = useCallback(() => {
+      setPosition(map.getCenter())
+    }, [map])
+  
+    useEffect(() => {
+      map.on('move', onMove)
+      return () => {
+        map.off('move', onMove)
+      }
+    }, [map, onMove])
+  
+    return (
+      <>
+      <p>
+        <Input
+          className={classes.headerSearch}
+          placeholder="Tree ID"
+          onChange={SearchTree}
+        />
+        <Button onClick={checkTreeID}>Search</Button>
+      </p>
+
+    
+        <Dialog
+        aria-labelledby="dialog-title"
+        open={TreeIdEroor}
+        onClose={() => handleCancel2(false)}
+        hideBackdrop
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            boxShadow: "0 2px 8px rgb(0 0 0 / 0.1)",
+          },
+        }}
+      >
+        <DialogTitle id="dialog-title">
+          Tree ID Is not valid. Please Enter valid ID 
+        </DialogTitle>
+        <DialogActions>
+          <Button type="primary" onClick={() => handleCancel2(false)}>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+      </>   
+    )
+  }     
+ 
+
   return (
-    <MapContainer center={[6.8259, 80.9982]} zoom={14} scrollWheelZoom={true}>
-      <LeafletgeoSearch />
+  <>
+  <div align="right">
+  {map ? <DisplayPosition map={map} /> : null}
+  </div>
+  
+       
+  
+    <MapContainer center={[6.8259, 80.9982]} zoom={14} scrollWheelZoom={true}  maxZoom={25} ref={setMap}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+   
       {renderPlants(plants)}
 
       {renderLand(lands)}
@@ -359,7 +482,9 @@ function Calculation() {
         </Row>
       </Modal>
     </MapContainer>
-  );
+   
+    </>
+  )
 }
 
 export default Calculation;
