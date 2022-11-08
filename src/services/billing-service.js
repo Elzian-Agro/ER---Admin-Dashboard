@@ -1,12 +1,12 @@
 import axios from "axios";
-import Tokenservice from "./token-service";
+// import Tokenservice from "./token-service";
 import { useContext } from "react";
 import { LoginContext } from "../components/helper/Context";
 
 export default function BillingService() {
-  const { getLocalRefreshToken } = Tokenservice();
+  // const { getLocalRefreshToken } = Tokenservice();
 
-  const { accessTokenMemory, setAccessTokenMemory } = useContext(LoginContext);
+  const { accessTokenMemory} = useContext(LoginContext);
   let accessTokenMemoryTmp = accessTokenMemory;
   const http = axios.create({
     baseURL:

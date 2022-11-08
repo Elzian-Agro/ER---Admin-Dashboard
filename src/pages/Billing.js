@@ -13,10 +13,10 @@ import {
   Row,
   Col,
   Card,
-  Statistic,
+  // Statistic,
   Button,
   List,
-  Descriptions,
+  // Descriptions,
   Avatar,
   notification,
   Form,
@@ -26,10 +26,10 @@ import {
 } from "antd";
 
 import { PlusOutlined, ExclamationOutlined } from "@ant-design/icons";
-import mastercard from "../assets/images/mastercard-logo.png";
-import paypal from "../assets/images/paypal-logo-2.png";
+// import mastercard from "../assets/images/mastercard-logo.png";
+// import paypal from "../assets/images/paypal-logo-2.png";
 import visa from "../assets/images/visa-logo.png";
-import email from "./../services/emailnotification";
+// import email from "./../services/emailnotification";
 import { useEffect, useState } from "react";
 import BillingService from "../services/billing-service";
 
@@ -39,12 +39,12 @@ function Billing() {
   const [expiry, setExpiry] = useState("");
   const [cvv, setCVV] = useState("");
   // const [cardType, setcardType] = useState("");
-  const [displayLast, setDisplayLast] = useState("");
+  // const [displayLast, setDisplayLast] = useState("");
   const [lastDigits, setLastDigits] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisible2, setIsModalVisible2] = useState(false);
-  const [cardData, setCardData] = useState("");
-  const { addBillingData, getCardDetails, addLastDigitData, getLastDigit } =
+  // const [cardData, setCardData] = useState("");
+  const { addBillingData, addLastDigitData} =
     BillingService();
   const [focused, setFocused] = useState(true);
   const [modaldata, setModalData] = useState("");
@@ -111,15 +111,15 @@ function Billing() {
     setFocused(true);
   };
 
-  const handleChange = async (e) => {
-    setCardnumber(e.target.value);
-  };
+  // const handleChange = async (e) => {
+  //   setCardnumber(e.target.value);
+  // };
 
   useEffect(() => {
-    const ShowCardDetails = async () => {
-      const data = await getLastDigit();
-      setDisplayLast(data);
-    };
+    // const ShowCardDetails = async () => {
+    //   const data = await getLastDigit();
+    //   setDisplayLast(data);
+    // };
   }, []);
 
   //Adding Card Information.........................................
@@ -241,50 +241,50 @@ function Billing() {
     </svg>,
   ];
 
-  const angle = [
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="22"
-      height="22"
-      viewBox="0 0 22 22"
-      key={0}
-    >
-      <g id="bank" transform="translate(0.75 0.75)">
-        <path
-          id="Shape"
-          transform="translate(0.707 9.543)"
-          fill="none"
-          stroke="#fff"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeMiterlimit="10"
-          strokeWidth="1.5"
-        ></path>
-        <path
-          id="Path"
-          d="M10.25,0,20.5,9.19H0Z"
-          fill="none"
-          stroke="#fff"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeMiterlimit="10"
-          strokeWidth="1.5"
-        ></path>
-        <path
-          id="Path-2"
-          data-name="Path"
-          d="M0,.707H20.5"
-          transform="translate(0 19.793)"
-          fill="none"
-          stroke="#fff"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeMiterlimit="10"
-          strokeWidth="1.5"
-        ></path>
-      </g>
-    </svg>,
-  ];
+  // const angle = [
+  //   <svg
+  //     xmlns="http://www.w3.org/2000/svg"
+  //     width="22"
+  //     height="22"
+  //     viewBox="0 0 22 22"
+  //     key={0}
+  //   >
+  //     <g id="bank" transform="translate(0.75 0.75)">
+  //       <path
+  //         id="Shape"
+  //         transform="translate(0.707 9.543)"
+  //         fill="none"
+  //         stroke="#fff"
+  //         strokeLinecap="round"
+  //         strokeLinejoin="round"
+  //         strokeMiterlimit="10"
+  //         strokeWidth="1.5"
+  //       ></path>
+  //       <path
+  //         id="Path"
+  //         d="M10.25,0,20.5,9.19H0Z"
+  //         fill="none"
+  //         stroke="#fff"
+  //         strokeLinecap="round"
+  //         strokeLinejoin="round"
+  //         strokeMiterlimit="10"
+  //         strokeWidth="1.5"
+  //       ></path>
+  //       <path
+  //         id="Path-2"
+  //         data-name="Path"
+  //         d="M0,.707H20.5"
+  //         transform="translate(0 19.793)"
+  //         fill="none"
+  //         stroke="#fff"
+  //         strokeLinecap="round"
+  //         strokeLinejoin="round"
+  //         strokeMiterlimit="10"
+  //         strokeWidth="1.5"
+  //       ></path>
+  //     </g>
+  //   </svg>,
+  // ];
 
   const pencil = [
     <svg
@@ -305,61 +305,61 @@ function Billing() {
       ></path>
     </svg>,
   ];
-  const download = [
-    <svg
-      width="15"
-      height="15"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      key="0"
-    >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M3 17C3 16.4477 3.44772 16 4 16H16C16.5523 16 17 16.4477 17 17C17 17.5523 16.5523 18 16 18H4C3.44772 18 3 17.5523 3 17ZM6.29289 9.29289C6.68342 8.90237 7.31658 8.90237 7.70711 9.29289L9 10.5858L9 3C9 2.44772 9.44771 2 10 2C10.5523 2 11 2.44771 11 3L11 10.5858L12.2929 9.29289C12.6834 8.90237 13.3166 8.90237 13.7071 9.29289C14.0976 9.68342 14.0976 10.3166 13.7071 10.7071L10.7071 13.7071C10.5196 13.8946 10.2652 14 10 14C9.73478 14 9.48043 13.8946 9.29289 13.7071L6.29289 10.7071C5.90237 10.3166 5.90237 9.68342 6.29289 9.29289Z"
-        fill="#111827"
-      ></path>
-    </svg>,
-  ];
-  const deletebtn = [
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      key={0}
-    >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M9 2C8.62123 2 8.27497 2.214 8.10557 2.55279L7.38197 4H4C3.44772 4 3 4.44772 3 5C3 5.55228 3.44772 6 4 6L4 16C4 17.1046 4.89543 18 6 18H14C15.1046 18 16 17.1046 16 16V6C16.5523 6 17 5.55228 17 5C17 4.44772 16.5523 4 16 4H12.618L11.8944 2.55279C11.725 2.214 11.3788 2 11 2H9ZM7 8C7 7.44772 7.44772 7 8 7C8.55228 7 9 7.44772 9 8V14C9 14.5523 8.55228 15 8 15C7.44772 15 7 14.5523 7 14V8ZM12 7C11.4477 7 11 7.44772 11 8V14C11 14.5523 11.4477 15 12 15C12.5523 15 13 14.5523 13 14V8C13 7.44772 12.5523 7 12 7Z"
-        fill="#111827"
-        className="fill-danger"
-      ></path>
-    </svg>,
-  ];
+  // const download = [
+  //   <svg
+  //     width="15"
+  //     height="15"
+  //     viewBox="0 0 20 20"
+  //     fill="none"
+  //     xmlns="http://www.w3.org/2000/svg"
+  //     key="0"
+  //   >
+  //     <path
+  //       fillRule="evenodd"
+  //       clipRule="evenodd"
+  //       d="M3 17C3 16.4477 3.44772 16 4 16H16C16.5523 16 17 16.4477 17 17C17 17.5523 16.5523 18 16 18H4C3.44772 18 3 17.5523 3 17ZM6.29289 9.29289C6.68342 8.90237 7.31658 8.90237 7.70711 9.29289L9 10.5858L9 3C9 2.44772 9.44771 2 10 2C10.5523 2 11 2.44771 11 3L11 10.5858L12.2929 9.29289C12.6834 8.90237 13.3166 8.90237 13.7071 9.29289C14.0976 9.68342 14.0976 10.3166 13.7071 10.7071L10.7071 13.7071C10.5196 13.8946 10.2652 14 10 14C9.73478 14 9.48043 13.8946 9.29289 13.7071L6.29289 10.7071C5.90237 10.3166 5.90237 9.68342 6.29289 9.29289Z"
+  //       fill="#111827"
+  //     ></path>
+  //   </svg>,
+  // ];
+  // const deletebtn = [
+  //   <svg
+  //     width="16"
+  //     height="16"
+  //     viewBox="0 0 20 20"
+  //     fill="none"
+  //     xmlns="http://www.w3.org/2000/svg"
+  //     key={0}
+  //   >
+  //     <path
+  //       fillRule="evenodd"
+  //       clipRule="evenodd"
+  //       d="M9 2C8.62123 2 8.27497 2.214 8.10557 2.55279L7.38197 4H4C3.44772 4 3 4.44772 3 5C3 5.55228 3.44772 6 4 6L4 16C4 17.1046 4.89543 18 6 18H14C15.1046 18 16 17.1046 16 16V6C16.5523 6 17 5.55228 17 5C17 4.44772 16.5523 4 16 4H12.618L11.8944 2.55279C11.725 2.214 11.3788 2 11 2H9ZM7 8C7 7.44772 7.44772 7 8 7C8.55228 7 9 7.44772 9 8V14C9 14.5523 8.55228 15 8 15C7.44772 15 7 14.5523 7 14V8ZM12 7C11.4477 7 11 7.44772 11 8V14C11 14.5523 11.4477 15 12 15C12.5523 15 13 14.5523 13 14V8C13 7.44772 12.5523 7 12 7Z"
+  //       fill="#111827"
+  //       className="fill-danger"
+  //     ></path>
+  //   </svg>,
+  // ];
 
-  const information = [
-    {
-      title: "Oliver Liam",
-      description: "Viking Burrito",
-      address: "oliver@burrito.com",
-      vat: "FRB1235476",
-    },
-    {
-      title: "Lucas Harper",
-      description: "Stone Tech Zone",
-      address: "lucas@syone-tech.com",
-      vat: "FRB1235476",
-    },
-    {
-      title: "Oliver Liam",
-      description: "ethan@fiber.com",
-      vat: "NumberFRB1235476",
-    },
-  ];
+  // const information = [
+  //   {
+  //     title: "Oliver Liam",
+  //     description: "Viking Burrito",
+  //     address: "oliver@burrito.com",
+  //     vat: "FRB1235476",
+  //   },
+  //   {
+  //     title: "Lucas Harper",
+  //     description: "Stone Tech Zone",
+  //     address: "lucas@syone-tech.com",
+  //     vat: "FRB1235476",
+  //   },
+  //   {
+  //     title: "Oliver Liam",
+  //     description: "ethan@fiber.com",
+  //     vat: "NumberFRB1235476",
+  //   },
+  // ];
   const calender = [
     <svg
       width="18"
@@ -448,10 +448,10 @@ function Billing() {
       amountcolor: "text-warning-b",
     },
   ];
-  const { billing } = email();
-  const emailnoti = (e) => {
-    billing(e);
-  };
+  // const { billing } = email();
+  // const emailnoti = (e) => {
+  //   billing(e);
+  // };
 
   return (
     <>

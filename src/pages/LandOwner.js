@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "antd/dist/antd.css";
+import "../assets/styles/main.css";
+
+
 import {
   Modal,
   Button,
@@ -30,6 +33,7 @@ import { jsPDF } from "jspdf";
 // import { Padding } from "@mui/icons-material";
 import signinbg from "../assets/logos/LifeForce.png";
 import logo from "../assets/images/earth-restoration-logo.png";
+import elzianLogo from "../assets/images/elzianLogo.png";
 
 const { Title } = Typography;
 
@@ -63,6 +67,9 @@ const useStyles = makeStyles({
     justifyItems: "flex-end",
   },
 
+  logoRightAling: {
+    align: "right"
+  },
 
   leftContainer: {
     marginTop: "40px",
@@ -80,6 +87,9 @@ const useStyles = makeStyles({
     marginBottom: "10px",
     color: "#FFFFFF",
   },
+
+
+
 });
 
 function LandOwner() {
@@ -104,7 +114,7 @@ function LandOwner() {
   const [updateBankAccountNumber, setUpdateBankAccountNumber] = useState("");
   const [updateBankName, setUpdateBankName] = useState("");
   const [updateBankBranch, setUpdateBankBranch] = useState("");
-  const [searchLandOwner, setSearchLandOwner] = useState("");
+  // const [searchLandOwner, setSearchLandOwner] = useState("");
   const [deleteFeed, setDeleteFeed] = useState(false);
   const [isContractModalVisible, setIsContractModalVisible] = useState(false);
   const [idCardModalVisible, setIdCardModalVisible] = useState(false);
@@ -144,12 +154,6 @@ function LandOwner() {
     },
   };
 
-  const styles2 = {
-    rightAlign: {
-      alignSelf: "flex-end",
-    },
-  };
-
   //Getting Current Date
   const current = new Date();
   const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
@@ -168,14 +172,15 @@ function LandOwner() {
   // ID image download function
   const handleDownloadID = async () => {
     const element = printRef2.current;
-    const canvas = await html2canvas(element);
+    const canvas = await html2canvas(element, { useCORS: true, scale: 2 });
 
     const data = canvas.toDataURL('image/jpg');
     const link = document.createElement('a');
 
     if (typeof link.download === 'string') {
       link.href = data;
-      link.download = 'image.jpg';
+      link.download = (`${modaldata.landOwnerName} ID.jpg`);
+
 
       document.body.appendChild(link);
       link.click();
@@ -404,21 +409,18 @@ function LandOwner() {
 
   const renderList = treedata.map((item, index) =>
     <div key={index}>
-      <ul>
-        <Row style={{ fontSize: "14px" }}>
-
-          <Col span={8}>
-            <li><span><b>{item.treeSpecies}</b></span></li>
-          </Col>
-          <Col span={4}>
-            <span><b>{modaldata.longitude}</b></span>
-          </Col>
-          <Col span={4}>
-            <span><b>{modaldata.latitude}</b></span>
-          </Col>
-        </Row>
-      </ul>
-    </div>
+      <Row style={{ fontSize: "14px" }}>
+        <Col span={7}>
+          <li><span><b>{item.treeSpecies}</b></span></li>
+        </Col>
+        <Col span={6}>
+          <b>{modaldata.latitude}</b>
+        </Col>
+        <Col span={6}>
+          <b>&nbsp;&nbsp;{modaldata.longitude}</b>
+        </Col>
+      </Row>
+    </div >
   );
 
 
@@ -795,6 +797,7 @@ function LandOwner() {
                   View Contract
                 </Button>
                 <Modal
+                  width="800px"
                   title="LandOwner Contract Details"
                   visible={isContractModalVisible}
                   onCancel={handleContractCancel}
@@ -808,7 +811,7 @@ function LandOwner() {
                     </Button>,
                   ]}
                 >
-                  <div style={{ marginBottom: "40px", marginLeft: "auto", marginRight: "auto" }}>
+                  <div style={{ marginBottom: "40px", marginLeft: "60px", marginRight: "60px" }}>
                     <Row gutter={[16, 16]}>
                       <Col
                         style={{
@@ -820,13 +823,14 @@ function LandOwner() {
                         }}
                       >
                         <div ref={printRef}>
-                          <center>Land Owner Contract</center>
                           <br />
-                          <div>
+                          <div style={{ textAlign: "center", verticalAlign: "middle" }}>
                             <img
+                              align="left"
                               width="50px"
                               src={logo}
                               alt="ER Logo" />
+                            <span>LandOwner Contract</span>
                             <img align="right"
                               width="50px"
                               src={signinbg}
@@ -853,7 +857,7 @@ function LandOwner() {
                             UNITS.
                           </div>
                           <br></br>
-                          {renderList}
+                          <center>{renderList}</center>
                           <br></br>
                           <div>
                             <Row>
@@ -879,14 +883,11 @@ function LandOwner() {
                           </div>
                           <br />
                           <br />
-                          <p style={{ textAlign: "left" }}>
-                            .........................................
-                            <span style={{ float: "right" }}>
-                              <b>{date}</b>
-                            </span>
-                            <br />
-                            <b><p style={{ display: "inline-flex", textAlign: "center" }} width={30}>Producer</p></b>
-                          </p>
+                          <h4>
+                            <span className="signature">Producer</span>
+                            <div style={{ float: "right" }}>{date}</div>
+                            <div style={{ clear: "left" }}></div>
+                          </h4>
                         </div>
                       </Col>
                     </Row>
@@ -900,6 +901,7 @@ function LandOwner() {
                   View Landowner ID
                 </Button>
                 <Modal
+                  width="590px"
                   title="LandOwner ID Card"
                   visible={idCardModalVisible}
                   onCancel={handleIdCardCancel}
@@ -908,100 +910,54 @@ function LandOwner() {
                     <Button type="back" onClick={handleIdCardCancel}>
                       Cancel
                     </Button>,
-                    <Button type="primary" onClick={handleDownloadID} disabled>
+                    <Button type="primary" onClick={handleDownloadID}>
                       Download
                     </Button>,
                   ]}
                 >
-                  <div style={{ margin: "20px" }}>
-                    <div ref={printRef2} className={classes.card}>
-                      <Row className={classes.upperContainer}>
-                        <Col
-                          span={8}
-                          style={{
-                            marginTop: "2px",
-                          }}
-                        >
-                          <Image width={50} src={logo} alt="lifeforce logo" className={classes.logoContainer1} preview={false} />
-                        </Col>
-
-                        <Col
-                          span={8}
-                          style={{
-                            marginTop: "15px",
-                          }}
-                        >
-                          <span><b>Earth Restoration</b></span>
-                        </Col>
-
-                        <Col
-                          span={8}
-                          style={{
-                            marginTop: "4px",
-                          }}
-                        >
-                          {/* <Image width={50} src={signinbg} alt="lifeforce logo" className={classes.logoContainer2} preview={false}/> */}
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col
-                          span={8}
-                          style={{
-                            backgroundColor: "#008000",
-                            height: "180px",
-                          }}
-                        >
-                          <div className={classes.leftContainer}>
-                            <center>
-                              <Image width={100} src={modaldata.qrImage} preview={false} />
-                            </center>
+                  <div ref={printRef2}>
+                    <div className="container">
+                      <div className="padding">
+                        <div className="font">
+                          <div className="top">
+                            <Image width={200} src={modaldata.profImage} />
                           </div>
-                        </Col>
-                        <Col
-                          span={16}
-                          style={{
-                            backgroundColor: "#008000",
-                            height: "180px",
-                          }}
-                        >
-                          <div className={classes.rightContaine}>
-                            <div>
-                              <b>Name :</b> {modaldata.landOwnerName}
-                            </div>
-                            <div>
-                              <b>Land address :</b> {modaldata.landAddress}
-                            </div>
-                            <div>
-                              <b>Email :</b> {modaldata.email}
-                            </div>
-                            <div>
-                              <b>Contact Number :</b>  {modaldata.contactNumber}
-                            </div>
+                          <div className="bottom">
+                            <p>{modaldata.landOwnerFullname}</p>
+                            <p className="idNumber"><b>{modaldata.registerNumber}</b></p>
+                            <p className="idNumber"><b>Address:</b>&nbsp;{modaldata.landAddress}</p>
+                            <p className="idNumber"><b>Email:</b>&nbsp;{modaldata.email}</p>
+                            <p className="idNumber"><b>Contact No:</b>&nbsp;{modaldata.contactNumber}</p>
+                            <p className="idNumber"><b>Country:</b>&nbsp;{modaldata.country}</p>
+                            <br></br>
                           </div>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col
-                          span={24}
-                          style={{
-                            backgroundColor: "#f6ffed",
-                            height: "20px",
-                            fontSize: "8px",
-                            marginTop: "5px",
-                          }}
-                        >
-                          <div><center>© Earth Restoration Pvt.Ltd Designed by ELZIAN AGRO</center></div>
-                        </Col>
-                      </Row>
+                        </div>
+                      </div>
+                      <div className="back">
+                        <div style={{ marginTop: "10px" }}>
+                          <img src={logo} width="40px" alt="LifeForce Logo"></img>
+                          <img src={signinbg} width="40px" align="right" alt="ER Logo"></img>
+                        </div>
+                        <h1 className="Details"><b>QR Code</b></h1>
+                        {/* <hr className="hr"></hr> */}
+                        <div className="details-info">
+                          <div className="qr">
+                            <Image src={modaldata.qrImage} alt="QR Code" />
+                          </div>
+                          <div className="footer">
+                            <Image src={elzianLogo} alt="Elzian Agro Logo"></Image>
+                            <p style={{ fontSize: "8px" }}>© Earth Restoration Pvt.Ltd Designed by ELZIAN AGRO</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-
                 </Modal>
               </Row>
             </Col>
           </Row>
-        </div>
-      </Modal>
+        </div >
+      </Modal >
       <Modal
         title="Update Land Owner"
         visible={isUpdateModalVisible}
