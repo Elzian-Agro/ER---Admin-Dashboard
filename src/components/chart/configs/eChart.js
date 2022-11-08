@@ -1,21 +1,19 @@
 const eChart = {
-  series: [
-    {
-      name: "Sales",
-      data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
-      color: "#fff",
-    },
-  ],
-
   options: {
     chart: {
       type: "bar",
       width: "100%",
-      height: "auto",
-
+      height: "350",
       toolbar: {
         show: false,
       },
+      // type: 'bar',
+      // height: 350,
+      stacked: false,
+     
+      zoom: {
+        enabled: false,
+      }
     },
     plotOptions: {
       bar: {
@@ -27,18 +25,25 @@ const eChart = {
     dataLabels: {
       enabled: false,
     },
+
     stroke: {
       show: true,
       width: 1,
       colors: ["transparent"],
     },
+
+   
+    
     grid: {
       show: true,
       borderColor: "#ccc",
       strokeDashArray: 2,
     },
+
+  
     xaxis: {
       categories: [
+        "Jan",
         "Feb",
         "Mar",
         "Apr",
@@ -48,6 +53,10 @@ const eChart = {
         "Aug",
         "Sep",
         "Oct",
+        "Nov",
+        "Dec",
+      
+        
       ],
       labels: {
         show: true,
@@ -55,6 +64,8 @@ const eChart = {
         minWidth: 0,
         maxWidth: 160,
         style: {
+          fontSize: "14px",
+            fontWeight: 600,
           colors: [
             "#fff",
             "#fff",
@@ -66,6 +77,9 @@ const eChart = {
             "#fff",
             "#fff",
             "#fff",
+            "#fff",
+            "#fff",
+            
           ],
         },
       },
@@ -77,6 +91,8 @@ const eChart = {
         minWidth: 0,
         maxWidth: 160,
         style: {
+          fontSize: "14px",
+            fontWeight: 600,
           colors: [
             "#fff",
             "#fff",
@@ -88,6 +104,9 @@ const eChart = {
             "#fff",
             "#fff",
             "#fff",
+            "#fff",
+            "#fff",
+            
           ],
         },
       },
@@ -96,7 +115,7 @@ const eChart = {
     tooltip: {
       y: {
         formatter: function (val) {
-          return "$ " + val + " thousands";
+          return + val + " Investors";
         },
       },
     },

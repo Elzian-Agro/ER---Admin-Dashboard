@@ -10,19 +10,20 @@
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 import { useState,useEffect } from "react";
+import { Table} from 'antd';
 
 import {
   Card,
   Col,
   Row,
   Typography,
-  Tooltip,
+  // Tooltip,
   Progress,
   Upload,
   message,
   Button,
   Timeline,
-  Radio,
+  // Radio,
 } from "antd";
 import {
   ToTopOutlined,
@@ -33,24 +34,28 @@ import Paragraph from "antd/lib/typography/Paragraph";
 
 import Echart from "../components/chart/EChart";
 import LineChart from "../components/chart/LineChart";
-import ava1 from "../assets/images/icons8-owner-64.png";
+// import ava1 from "../assets/images/icons8-owner-64.png";
 import card from "../assets/images/LifeForce LOGO2022.jpeg";
 import memberService from './../services/getmembers';
 
 
 function Home() {
   const [reverse, setReverse] = useState(false);
+  // const [page,setPage] = useState(6);
   const { Title, Text } = Typography;
 
-  const onChange = (e) => console.log(`radio checked:${e.target.value}`);
+  // const onChange = (e) => console.log(`radio checked:${e.target.value}`);
 
   const [invester, setinvester] = useState("");
   const [landowners, setlandowners] = useState("");
   const [auditors, setauditors] = useState("");
   const [fieldEgent, setfieldEgent] = useState("");
 
+  const [landownersStatus, setlandownersStatus] = useState([]);
+
   const {
     getlandowners,
+    getLandownersState,
     // getauditors,
     // getfieldagents,
     // getinvesters,
@@ -61,14 +66,16 @@ function Home() {
     const ShowDashboardCounts = async () => {
       
       const res2 = await getlandowners();
-       console.log(res2.data.Investor)
+      // console.log(res2.data.Investor)
       setinvester(res2.data.Investor);
       setlandowners(res2.data.landowners);
-     
-      console.log(landowners)
-
+      // console.log(landowners)
       setauditors(res2.data.Auditor);
-      setfieldEgent(res2.data.fieldAgent)
+      setfieldEgent(res2.data.fieldAgent);
+
+      const res3 = await getLandownersState();
+      setlandownersStatus(res3);
+      console.log(res3);
     }
     ShowDashboardCounts()
   }, []);
@@ -135,95 +142,6 @@ function Home() {
     // },
   ];
 
-  const list = [
-    {
-      img: ava1,
-      Title: "Land Owner 1",
-      bud: "$14,000",
-      progress: <Progress percent={60} size="small" />,
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            ER-001
-          </Tooltip>
-        </div>
-      ),
-    },
-    {
-      img: ava1,
-      Title: "Land Owner 2",
-      bud: "$3,000",
-      progress: <Progress percent={10} size="small" />,
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            ER-002
-          </Tooltip>
-        </div>
-      ),
-    },
-    {
-      img: ava1,
-      Title: "Land Owner 3",
-      bud: "Not Set",
-      progress: <Progress percent={100} size="small" status="active" />,
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            ER-003
-          </Tooltip>
-        </div>
-      ),
-    },
-    {
-      img: ava1,
-      Title: "Land Owner 4",
-      bud: "$20,600",
-      progress: <Progress percent={100} size="small" status="active" />,
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            ER-004
-          </Tooltip>
-        </div>
-      ),
-    },
-    {
-      img: ava1,
-      Title: "Land Owner 5",
-      bud: "$4,000",
-      progress: <Progress percent={80} size="small" />,
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            ER-005
-          </Tooltip>
-        </div>
-      ),
-    },
-
-    {
-      img: ava1,
-      Title: "Land Owner 6",
-      bud: "$2,000",
-      progress: (
-        <Progress
-          percent={100}
-          size="small"
-          status="exception"
-          format={() => "Cancel"}
-        />
-      ),
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            ER-006
-          </Tooltip>
-        </div>
-      ),
-    },
-  ];
-
   const timelineList = [
     {
       title: "$2,400 - Redesign store",
@@ -271,6 +189,17 @@ function Home() {
       }
     },
   };
+
+  const { Column} = Table;
+  const orgData = landownersStatus.map((d, index ) => { 
+    return {
+      key: index,
+      landownername: d.landOwnerName,
+      landownerid: d.registerNumber,
+      budget:d.budget,
+      completion: <Progress percent={d.cal_completed_year} size="small"/>,
+    }
+  });
 
   return (
     <>
@@ -328,7 +257,7 @@ function Home() {
                     done this month<span className="blue">40%</span>
                   </Paragraph> */}
                 </div>
-                <div className="ant-filtertabs">
+                {/* <div className="ant-filtertabs">
                   <div className="antd-pro-pages-dashboard-analysis-style-salesExtra">
                     <Radio.Group onChange={onChange} defaultValue="a">
                       <Radio.Button value="a">ALL</Radio.Button>
@@ -336,45 +265,27 @@ function Home() {
                       <Radio.Button value="c">STORES</Radio.Button>
                     </Radio.Group>
                   </div>
-                </div>
+                </div> */}
               </div>
-              <div className="ant-list-box table-responsive">
-                <table className="width-100">
-                  <thead>
-                    <tr>
-                      <th>LandOwner Names</th>
-                      <th>LandOwner ID</th>
-                      <th>BUDGET</th>
-                      <th>COMPLETION</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {list.map((d, index) => (
-                      <tr key={index}>
-                        <td>
-                          <h6>
-                            <img
-                              src={d.img}
-                              alt=""
-                              className="avatar-sm mr-10"
-                            />{" "}
-                            {d.Title}
-                          </h6>
-                        </td>
-                        <td>{d.member}</td>
-                        <td>
-                          <span className="text-xs font-weight-bold">
-                            {d.bud}{" "}
-                          </span>
-                        </td>
-                        <td>
-                          <div className="percent-progress">{d.progress}</div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+
+        <Table dataSource={orgData}
+                pagination ={{
+   
+                pageSize:6,
+                position:["bottomCenter"],
+                responsive: ["xs"],
+                }}
+              >
+  
+                <Column title="LANDOWNER NAMES" dataIndex="landownername" key="landownername" />
+                <Column title="REGISTER NUMBER" dataIndex="landownerid" key="landownerid" />
+                <Column title="BUDGET" dataIndex="budget" key="budget" />
+                <Column title="COMPLETION" dataIndex="completion" key="completion" />
+  
+        </Table>
+
+
+
               <div className="uploadfile shadow-none">
                 <Upload {...uploadProps}>
                   <Button
