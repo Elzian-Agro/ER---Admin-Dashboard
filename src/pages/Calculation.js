@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useCallback } from 'react';
+import React, { useState, useEffect} from 'react';
 import { MapContainer, TileLayer, Marker,Popup, Polygon, useMap} from 'react-leaflet';
 import { Row, Col, Space,Input } from "antd";
 import L from "leaflet";
@@ -14,15 +14,10 @@ import AuditorService from '../services/auditor-service';
 import LandService from "./../services/landowner-service";
 import { useHistory } from "react-router-dom";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
-import {
-  SearchOutlined,
-} from "@ant-design/icons";
-import { Box } from '@mui/system';
 import { makeStyles } from "@mui/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
-
 
 
 function Calculation() {
@@ -50,14 +45,12 @@ function Calculation() {
 
   const [map, setMap] = useState(null);
   
-  
   let dataForBioMass = [];
   let dataForH2o = [];
   let dataForO2 = [];
 
   const { getPlantedTrees } = service();
   const { getDataForCalculation } = AuditorService();
-
   const { getLandOwners } = LandService();
 
   const getTreeDetails = (item) => {
@@ -105,20 +98,7 @@ function Calculation() {
     getAllPlants();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // console.log(plants);
 
-  const onSearch = async (e) => {
-    if (plants) {
-      var temp = [];
-      for (let i = 0; i < plants.length; i++) {
-        temp.push({
-          id: plants[i].plant_id,
-        });
-      }
-    } else {
-      console.log("Tehere is no data");
-    }
-  };
 
   useEffect(() => {
       async function getAllLands() {
@@ -175,7 +155,7 @@ function Calculation() {
 
       map.addControl(searchControl);
       return () => map.removeControl(searchControl);
-    }, []);
+    }, [map]);
 
     return null;
   }
@@ -202,20 +182,16 @@ function Calculation() {
 
       const result = arr.reduce((resultArray, item, index) => {
         const chunkIndex = Math.floor(index / perChunk);
-
         if (!resultArray[chunkIndex]) {
           resultArray[chunkIndex] = [];
         }
-
         resultArray[chunkIndex].push(item);
-
         return resultArray;
       }, []);
-
       result.map((row) => [row[1], row[0]]);
 
-      const greenOptions = { color: "green", opacity: "0.2" };
 
+      const greenOptions = { color: "green", opacity: "0.2" };
       return <Polygon pathOptions={greenOptions} positions={result} />;
     });
   };
@@ -290,32 +266,6 @@ const handleCancel2 = () => {
     }
   };
 
-  // <Input
-  //         placeholder="Search Plant by ID..."
-  //         prefix={<SearchOutlined />}
-
-  //         // onChange={(event) => { setSearchTreeSpecies(event.target.value) }}
-  //         onChange={onSearch}
-  //       />
-
-  // <Box
-  //       component="span"
-  //       display="flex"
-  //       justifyContent="space-between"
-  //       alignItems="center"
-  //       mb={2}
-  //       mt={1}
-  //     >
-  //       {/* <h1 className={classes.mainHeading}>Tree Species</h1> */}
-  //       <Input
-  //         placeholder="Search Plant by ID..."
-  //         prefix={<SearchOutlined />}
-
-  //         // onChange={(event) => { setSearchTreeSpecies(event.target.value) }}
-  //         onChange={onSearch}
-  //       />
-
-  //     </Box>
 
   const useStyles = makeStyles({
     headerSearch: {
@@ -330,7 +280,6 @@ const handleCancel2 = () => {
   
 
   function DisplayPosition({ map }) {
-    const [position, setPosition] = useState(() => map.getCenter())
     const [searchTreeId, setsearchTreeId] = useState();
 
     const SearchTree=(event)=> {
@@ -342,7 +291,6 @@ const handleCancel2 = () => {
       let plant = plants.filter(v => v?.longitude !== null);
       var setcount = 0
         return plant?.map((item) => {
-          const invested = (item?.investment===1) ? (true) : (false);
           if (searchTreeId === item?.treeID) {
             // return (
               const latitude = item?.latitude
@@ -350,16 +298,16 @@ const handleCancel2 = () => {
               const area = [latitude,longitude]
               
               onClick(area)
-              setPosition(area)  
+             
           }
           else{
             setcount = setcount+1
           }
-
           if (plants.length === setcount ) {
 
              setTreeIdEroor(true)
           }
+          return null;
         })
     }
   
@@ -369,17 +317,7 @@ const handleCancel2 = () => {
       //circle.addTo(map);
     }
   
-    const onMove = useCallback(() => {
-      setPosition(map.getCenter())
-    }, [map])
-  
-    useEffect(() => {
-      map.on('move', onMove)
-      return () => {
-        map.off('move', onMove)
-      }
-    }, [map, onMove])
-  
+
     return (
       <>
       <p>
@@ -431,6 +369,7 @@ const handleCancel2 = () => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+      <LeafletgeoSearch/>
    
       {renderPlants(plants)}
 

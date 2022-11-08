@@ -1,10 +1,10 @@
 //import emailjs from '@emailjs/browser';
-import { useState , useEffect } from 'react';
-import axios, { Axios } from 'axios';
+//import { useState , useEffect } from 'react';
+import axios from 'axios';
 import {useContext} from 'react'
 import Tokenservice from './token-service';
 import { LoginContext } from '../components/helper/Context';
-import service from "./data-service";
+//import service from "./data-service";
 
 
 
@@ -12,14 +12,14 @@ export default function Emailnoti() {
 
   
   const { getLocalRefreshToken} = Tokenservice();
-  const { getProfile } = service();
+  //const { getProfile } = service();
 
   const {accessTokenMemory,setAccessTokenMemory}= useContext(LoginContext);
   let accessTokenMemoryTmp=accessTokenMemory;
   const http = axios.create({
     baseURL:
-    "http://localhost:4000",
-    //"http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
+    //"http://localhost:4000",
+    "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
     headers: {
       "Content-type": "application/json",
       "x-auth-token": accessTokenMemoryTmp
@@ -72,7 +72,7 @@ export default function Emailnoti() {
     const data2 = {
       values : e.values,
   };
-  const data = await http.put("/email/setmail",data2).then((res) => res);
+  await http.put("/email/setmail",data2).then((res) => res);
   }
 
 
@@ -90,15 +90,15 @@ export default function Emailnoti() {
   const AdminMail = await getAdmin();
 
   for (let index = 0; index < AdminMail.length; index++) {
-    const element = AdminMail[index];
+    //const element = AdminMail[index];
     
 
        // console.log("email Sent to" +" "+ element.email)
-        var templateParams = {
-          to_name: element.email,
-          from_name: "Elzian Agro",
-          message : props,
-     };
+    //     var templateParams = {
+    //       to_name: element.email,
+    //       from_name: "Elzian Agro",
+    //       message : props,
+    //  };
       //  emailjs.send('service_wfb9w2h','template_aez5yxb',templateParams, 'DMhiQgPxi2zys5qiw')
       //      .then((result) => {
       //          console.log(result.text + element.email);
@@ -115,15 +115,15 @@ export default function Emailnoti() {
  // This method for Investor Payment . this method send msg to particuler Inverter and all Admins after invester payment successfull..
   async function billing(props){
   console.log(props)
-  const {email} = await getProfile();
+  //const {email} = await getProfile();
   const AllAdminEmails = await getAllAdmins();
 
   //console.log("email Sent to"+" "+email)
-        var templateParams = {
-          to_name: email,
-          from_name: "Elzian Agro",
-          message : props,
-     };
+    //     var templateParams = {
+    //       to_name: email,
+    //       from_name: "Elzian Agro",
+    //       message : props,
+    //  };
       //  emailjs.send('service_wfb9w2h', 'template_aez5yxb',templateParams, 'DMhiQgPxi2zys5qiw')
       //      .then((result) => {
       //          console.log(result.text + email);
@@ -132,13 +132,13 @@ export default function Emailnoti() {
       //      });
 
     for (let index = 0; index < AllAdminEmails.length; index++) {
-      const element = AllAdminEmails[index];
+      //const element = AllAdminEmails[index];
       //console.log("email Sent to " +" "+ element.email)
-      var templateParams = {
-        to_name: element.email,
-        from_name: "Elzian Agro",
-        message : props,
-   };
+  //     var templateParams = {
+  //       to_name: element.email,
+  //       from_name: "Elzian Agro",
+  //       message : props,
+  //  };
     //  emailjs.send('service_wfb9w2h', 'template_aez5yxb',templateParams, 'DMhiQgPxi2zys5qiw')
     //      .then((result) => {
     //          console.log(result.text + element.email);
