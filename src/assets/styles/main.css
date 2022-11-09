@@ -3298,11 +3298,6 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
 .leaflet-control-geosearch button.reset:hover {
   background: #f5f5f5;
 }
-* {
-  margin: 00px;
-  padding: 00px;
-  box-sizing: content-box;
-}
 
 .container {
   height: 65vh;
