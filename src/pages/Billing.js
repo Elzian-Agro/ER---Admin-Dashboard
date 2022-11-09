@@ -9,29 +9,160 @@
   =========================================================
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
 import {
   Row,
   Col,
   Card,
-  Statistic,
+  // Statistic,
   Button,
   List,
-  Descriptions,
+  // Descriptions,
   Avatar,
+  notification,
+  Form,
+  Modal,
+  Input,
+  Select,
 } from "antd";
 
 import { PlusOutlined, ExclamationOutlined } from "@ant-design/icons";
-import mastercard from "../assets/images/mastercard-logo.png";
-import paypal from "../assets/images/paypal-logo-2.png";
+// import mastercard from "../assets/images/mastercard-logo.png";
+// import paypal from "../assets/images/paypal-logo-2.png";
 import visa from "../assets/images/visa-logo.png";
+// import email from "./../services/emailnotification";
+import { useEffect, useState } from "react";
+import BillingService from "../services/billing-service";
 
 function Billing() {
+  const [fullName, setFullName] = useState("");
+  const [cardNumber, setCardnumber] = useState("");
+  const [expiry, setExpiry] = useState("");
+  const [cvv, setCVV] = useState("");
+  // const [cardType, setcardType] = useState("");
+  // const [displayLast, setDisplayLast] = useState("");
+  const [lastDigits, setLastDigits] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible2, setIsModalVisible2] = useState(false);
+  // const [cardData, setCardData] = useState("");
+  const { addBillingData, addLastDigitData} =
+    BillingService();
+  const [focused, setFocused] = useState(true);
+  const [modaldata, setModalData] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [form] = Form.useForm();
+
+  //Set card number splits on input field
+  const formatAndSetCcNumber = (e) => {
+    const inputVal = e.target.value.replace(/ /g, ""); //remove all the empty spaces in the input
+    let inputNumbersOnly = inputVal.replace(/\D/g, ""); // Get only digits
+
+    if (inputNumbersOnly.length > 16) {
+      //If entered value has a length greater than 16 then take only the first 16 digits
+      inputNumbersOnly = inputNumbersOnly.substr(0, 16);
+    }
+
+    // Get nd array of 4 digits per an element EX: ["4242", "4242", ...]
+    const splits = inputNumbersOnly.match(/.{1,4}/g);
+
+    let spacedNumber = "";
+    if (splits) {
+      spacedNumber = splits.join(" "); // Join all the splits with an empty space
+    }
+    setCardnumber(spacedNumber);
+  };
+
+  const openNotificationWithIcon = (type, message, title) => {
+    if (type === "success") {
+      notification[type]({
+        message: title,
+        description: message,
+      });
+    } else {
+      notification[type]({
+        message: title,
+        description: message,
+      });
+    }
+  };
+
+  const layout = {
+    labelCol: {
+      span: 6,
+    },
+    wrapperCol: {
+      span: 16,
+    },
+  };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const showModal2 = () => {
+    setIsModalVisible2(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setIsModalVisible2(false);
+  };
+
+  const handleFocus = (e) => {
+    setFocused(true);
+  };
+
+  // const handleChange = async (e) => {
+  //   setCardnumber(e.target.value);
+  // };
+
+  useEffect(() => {
+    // const ShowCardDetails = async () => {
+    //   const data = await getLastDigit();
+    //   setDisplayLast(data);
+    // };
+  }, []);
+
+  //Adding Card Information.........................................
+
+  const addCardHandler = async (event) => {
+    const CardData = {
+      fullName: fullName,
+      cardNumber: cardNumber,
+      expiry: expiry,
+      cvv: cvv,
+      cardType: modaldata.type,
+    };
+    try {
+      await addBillingData(CardData);
+      openNotificationWithIcon("success", "Card Details Added Successfully");
+      setIsModalVisible(false);
+    } catch (error) {
+      openNotificationWithIcon("error", "Something Went Wrong", "Error");
+      setIsModalVisible(false);
+    }
+  };
+
+  //Add Last Digits
+
+  const addLastDigithandler = async () => {
+    const LastData = {
+      lastDigits: lastDigits.toString(),
+    };
+    try {
+      await addLastDigitData(LastData);
+      openNotificationWithIcon("success", "Last Digits Added Successfully");
+      setIsModalVisible(false);
+    } catch (error) {
+      openNotificationWithIcon("error", "Something Went Wrong", "Error");
+      setIsModalVisible(false);
+    }
+  };
+
   const data = [
     {
       title: "March, 01, 2021",
       description: "#MS-415646",
-      amount: "$180",
+      amount: "$250",
     },
     {
       title: "February, 12, 2021",
@@ -110,50 +241,50 @@ function Billing() {
     </svg>,
   ];
 
-  const angle = [
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="22"
-      height="22"
-      viewBox="0 0 22 22"
-      key={0}
-    >
-      <g id="bank" transform="translate(0.75 0.75)">
-        <path
-          id="Shape"
-          transform="translate(0.707 9.543)"
-          fill="none"
-          stroke="#fff"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeMiterlimit="10"
-          strokeWidth="1.5"
-        ></path>
-        <path
-          id="Path"
-          d="M10.25,0,20.5,9.19H0Z"
-          fill="none"
-          stroke="#fff"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeMiterlimit="10"
-          strokeWidth="1.5"
-        ></path>
-        <path
-          id="Path-2"
-          data-name="Path"
-          d="M0,.707H20.5"
-          transform="translate(0 19.793)"
-          fill="none"
-          stroke="#fff"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeMiterlimit="10"
-          strokeWidth="1.5"
-        ></path>
-      </g>
-    </svg>,
-  ];
+  // const angle = [
+  //   <svg
+  //     xmlns="http://www.w3.org/2000/svg"
+  //     width="22"
+  //     height="22"
+  //     viewBox="0 0 22 22"
+  //     key={0}
+  //   >
+  //     <g id="bank" transform="translate(0.75 0.75)">
+  //       <path
+  //         id="Shape"
+  //         transform="translate(0.707 9.543)"
+  //         fill="none"
+  //         stroke="#fff"
+  //         strokeLinecap="round"
+  //         strokeLinejoin="round"
+  //         strokeMiterlimit="10"
+  //         strokeWidth="1.5"
+  //       ></path>
+  //       <path
+  //         id="Path"
+  //         d="M10.25,0,20.5,9.19H0Z"
+  //         fill="none"
+  //         stroke="#fff"
+  //         strokeLinecap="round"
+  //         strokeLinejoin="round"
+  //         strokeMiterlimit="10"
+  //         strokeWidth="1.5"
+  //       ></path>
+  //       <path
+  //         id="Path-2"
+  //         data-name="Path"
+  //         d="M0,.707H20.5"
+  //         transform="translate(0 19.793)"
+  //         fill="none"
+  //         stroke="#fff"
+  //         strokeLinecap="round"
+  //         strokeLinejoin="round"
+  //         strokeMiterlimit="10"
+  //         strokeWidth="1.5"
+  //       ></path>
+  //     </g>
+  //   </svg>,
+  // ];
 
   const pencil = [
     <svg
@@ -174,61 +305,61 @@ function Billing() {
       ></path>
     </svg>,
   ];
-  const download = [
-    <svg
-      width="15"
-      height="15"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      key="0"
-    >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M3 17C3 16.4477 3.44772 16 4 16H16C16.5523 16 17 16.4477 17 17C17 17.5523 16.5523 18 16 18H4C3.44772 18 3 17.5523 3 17ZM6.29289 9.29289C6.68342 8.90237 7.31658 8.90237 7.70711 9.29289L9 10.5858L9 3C9 2.44772 9.44771 2 10 2C10.5523 2 11 2.44771 11 3L11 10.5858L12.2929 9.29289C12.6834 8.90237 13.3166 8.90237 13.7071 9.29289C14.0976 9.68342 14.0976 10.3166 13.7071 10.7071L10.7071 13.7071C10.5196 13.8946 10.2652 14 10 14C9.73478 14 9.48043 13.8946 9.29289 13.7071L6.29289 10.7071C5.90237 10.3166 5.90237 9.68342 6.29289 9.29289Z"
-        fill="#111827"
-      ></path>
-    </svg>,
-  ];
-  const deletebtn = [
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      key={0}
-    >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M9 2C8.62123 2 8.27497 2.214 8.10557 2.55279L7.38197 4H4C3.44772 4 3 4.44772 3 5C3 5.55228 3.44772 6 4 6L4 16C4 17.1046 4.89543 18 6 18H14C15.1046 18 16 17.1046 16 16V6C16.5523 6 17 5.55228 17 5C17 4.44772 16.5523 4 16 4H12.618L11.8944 2.55279C11.725 2.214 11.3788 2 11 2H9ZM7 8C7 7.44772 7.44772 7 8 7C8.55228 7 9 7.44772 9 8V14C9 14.5523 8.55228 15 8 15C7.44772 15 7 14.5523 7 14V8ZM12 7C11.4477 7 11 7.44772 11 8V14C11 14.5523 11.4477 15 12 15C12.5523 15 13 14.5523 13 14V8C13 7.44772 12.5523 7 12 7Z"
-        fill="#111827"
-        className="fill-danger"
-      ></path>
-    </svg>,
-  ];
+  // const download = [
+  //   <svg
+  //     width="15"
+  //     height="15"
+  //     viewBox="0 0 20 20"
+  //     fill="none"
+  //     xmlns="http://www.w3.org/2000/svg"
+  //     key="0"
+  //   >
+  //     <path
+  //       fillRule="evenodd"
+  //       clipRule="evenodd"
+  //       d="M3 17C3 16.4477 3.44772 16 4 16H16C16.5523 16 17 16.4477 17 17C17 17.5523 16.5523 18 16 18H4C3.44772 18 3 17.5523 3 17ZM6.29289 9.29289C6.68342 8.90237 7.31658 8.90237 7.70711 9.29289L9 10.5858L9 3C9 2.44772 9.44771 2 10 2C10.5523 2 11 2.44771 11 3L11 10.5858L12.2929 9.29289C12.6834 8.90237 13.3166 8.90237 13.7071 9.29289C14.0976 9.68342 14.0976 10.3166 13.7071 10.7071L10.7071 13.7071C10.5196 13.8946 10.2652 14 10 14C9.73478 14 9.48043 13.8946 9.29289 13.7071L6.29289 10.7071C5.90237 10.3166 5.90237 9.68342 6.29289 9.29289Z"
+  //       fill="#111827"
+  //     ></path>
+  //   </svg>,
+  // ];
+  // const deletebtn = [
+  //   <svg
+  //     width="16"
+  //     height="16"
+  //     viewBox="0 0 20 20"
+  //     fill="none"
+  //     xmlns="http://www.w3.org/2000/svg"
+  //     key={0}
+  //   >
+  //     <path
+  //       fillRule="evenodd"
+  //       clipRule="evenodd"
+  //       d="M9 2C8.62123 2 8.27497 2.214 8.10557 2.55279L7.38197 4H4C3.44772 4 3 4.44772 3 5C3 5.55228 3.44772 6 4 6L4 16C4 17.1046 4.89543 18 6 18H14C15.1046 18 16 17.1046 16 16V6C16.5523 6 17 5.55228 17 5C17 4.44772 16.5523 4 16 4H12.618L11.8944 2.55279C11.725 2.214 11.3788 2 11 2H9ZM7 8C7 7.44772 7.44772 7 8 7C8.55228 7 9 7.44772 9 8V14C9 14.5523 8.55228 15 8 15C7.44772 15 7 14.5523 7 14V8ZM12 7C11.4477 7 11 7.44772 11 8V14C11 14.5523 11.4477 15 12 15C12.5523 15 13 14.5523 13 14V8C13 7.44772 12.5523 7 12 7Z"
+  //       fill="#111827"
+  //       className="fill-danger"
+  //     ></path>
+  //   </svg>,
+  // ];
 
-  const information = [
-    {
-      title: "Oliver Liam",
-      description: "Viking Burrito",
-      address: "oliver@burrito.com",
-      vat: "FRB1235476",
-    },
-    {
-      title: "Lucas Harper",
-      description: "Stone Tech Zone",
-      address: "lucas@syone-tech.com",
-      vat: "FRB1235476",
-    },
-    {
-      title: "Oliver Liam",
-      description: "ethan@fiber.com",
-      vat: "NumberFRB1235476",
-    },
-  ];
+  // const information = [
+  //   {
+  //     title: "Oliver Liam",
+  //     description: "Viking Burrito",
+  //     address: "oliver@burrito.com",
+  //     vat: "FRB1235476",
+  //   },
+  //   {
+  //     title: "Lucas Harper",
+  //     description: "Stone Tech Zone",
+  //     address: "lucas@syone-tech.com",
+  //     vat: "FRB1235476",
+  //   },
+  //   {
+  //     title: "Oliver Liam",
+  //     description: "ethan@fiber.com",
+  //     vat: "NumberFRB1235476",
+  //   },
+  // ];
   const calender = [
     <svg
       width="18"
@@ -317,6 +448,10 @@ function Billing() {
       amountcolor: "text-warning-b",
     },
   ];
+  // const { billing } = email();
+  // const emailnoti = (e) => {
+  //   billing(e);
+  // };
 
   return (
     <>
@@ -329,26 +464,26 @@ function Billing() {
                 bordered={false}
                 className="card-credit header-solid h-ful"
               >
-                <h5 className="card-number">4562 1122 4594 7852</h5>
+                <h5 className="card-number">{cardNumber}</h5>
 
                 <div className="card-footer">
                   <div className="mr-30">
                     <p>Card Holder</p>
-                    <h6>Jack Peterson</h6>
+                    <h6>{fullName}</h6>
                   </div>
                   <div className="mr-30">
                     <p>Expires</p>
-                    <h6>11/22</h6>
+                    <h6>{expiry}</h6>
                   </div>
                   <div className="card-footer-col col-logo ml-auto">
-                    <img src={mastercard} alt="mastercard" />
+                    <img src={visa} alt="mastercard" />
                   </div>
                 </div>
               </Card>
             </Col>
             <Col xs={12} xl={6} className="mb-24">
               <Card bordered={false} className="widget-2 h-full">
-                <Statistic
+                {/* <Statistic
                   title={
                     <>
                       <div className="icon">{angle}</div>
@@ -358,12 +493,12 @@ function Billing() {
                   }
                   value={"$2,000"}
                   prefix={<PlusOutlined />}
-                />
+                /> */}
               </Card>
             </Col>
             <Col xs={12} xl={6} className="mb-24">
               <Card bordered={false} className="widget-2 h-full">
-                <Statistic
+                {/* <Statistic
                   title={
                     <>
                       <div className="icon">
@@ -375,7 +510,7 @@ function Billing() {
                   }
                   value={"$49,000"}
                   prefix={<PlusOutlined />}
-                />
+                /> */}
               </Card>
             </Col>
             <Col xs={24} className="mb-24">
@@ -391,14 +526,182 @@ function Billing() {
                         <h6 className="font-semibold m-0">Payment Methods</h6>
                       </Col>
                       <Col xs={24} md={12} className="d-flex">
-                        <Button type="primary">ADD NEW CARD</Button>
+                        <Button
+                          destroyOnClose={true}
+                          type="primary"
+                          onClick={showModal}
+                        >
+                          ADD NEW CARD
+                        </Button>
+                        <Modal
+                          title="Add New Card"
+                          visible={isModalVisible}
+                          onCancel={handleCancel}
+                          onOk={addCardHandler}
+                          okButtonProps={{ disabled: buttonDisabled }}
+                        >
+                          <Form
+                            {...layout}
+                            form={form}
+                            onFieldsChange={() => {
+                              if (!fullName || !cardNumber || !expiry || !cvv) {
+                                setButtonDisabled(true);
+                              } else if (
+                                form
+                                  .getFieldsError()
+                                  .some((field) => field.errors.length > 0)
+                              ) {
+                                setButtonDisabled(true);
+                              } else {
+                                setButtonDisabled(false);
+                              }
+                            }}
+                          >
+                            <Form.Item
+                              name="fullName"
+                              label="Full Name"
+                              rules={[
+                                {
+                                  required: true,
+                                  pattern: "^[A-Za-z]",
+                                  message:
+                                    "FullName Should be 5-16 characters and shouldn't include any special characters or numbers!",
+                                },
+                                {
+                                  whitespace: true,
+                                },
+                                { min: 5 },
+                              ]}
+                              hasFeedback
+                            >
+                              <Input
+                                type="text"
+                                value={fullName}
+                                onChange={(event) => {
+                                  setFullName(event.target.value);
+                                }}
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              name="cardNumber"
+                              label="Card Number"
+                              rules={[
+                                {
+                                  required: true,
+                                  pattern: "^[0-9]",
+                                  message:
+                                    "Card Number Should be 16 characters and should include only Numbers",
+                                },
+                                {
+                                  whitespace: true,
+                                },
+                                { min: 16 },
+                                { max: 16 },
+                              ]}
+                              hasFeedback
+                            >
+                              <Input
+                                type="text"
+                                value={cardNumber}
+                                onChange={formatAndSetCcNumber}
+                                onBlur={handleFocus}
+                                focused={focused.toString()}
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              name="expiry"
+                              label="Expiry Date"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please select expiry date",
+                                },
+                                {
+                                  whitespace: true,
+                                },
+                              ]}
+                              hasFeedback
+                            >
+                              <Input
+                                type="month"
+                                pattern="\d\d/\d\d"
+                                value={expiry}
+                                onChange={(event) =>
+                                  setExpiry(event.target.value)
+                                }
+                                onBlur={handleFocus}
+                                focused={focused.toString()}
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              name="cvv"
+                              label="CVV"
+                              rules={[
+                                {
+                                  required: true,
+                                  pattern: "^[0-9]",
+                                  message: "CVV should only be 3 numbers",
+                                },
+                                {
+                                  whitespace: true,
+                                },
+                                {
+                                  min: 3,
+                                },
+                                {
+                                  max: 3,
+                                },
+                              ]}
+                              hasFeedback
+                            >
+                              <Input
+                                type="number"
+                                value={cvv}
+                                onChange={(event) => setCVV(event.target.value)}
+                                onBlur={handleFocus}
+                                focused={focused.toString()}
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              name="type"
+                              label="Card Type"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please enter the Card Type",
+                                },
+                                {
+                                  whitespace: true,
+                                },
+                              ]}
+                            >
+                              <Select
+                                name="type"
+                                onChange={(value) => {
+                                  setModalData({
+                                    ...modaldata,
+                                    type: value,
+                                  });
+                                }}
+                              >
+                                <Select.Option value="Visa" selected>
+                                  Visa
+                                </Select.Option>
+                                <Select.Option value="MasterCard">
+                                  MasterCard
+                                </Select.Option>
+                              </Select>
+                            </Form.Item>
+                          </Form>
+                        </Modal>
+                        {/* <Button type="primary" onClick={() => {emailnoti("Payment Successfull");} }>ADD NEW CARD</Button> */}
                       </Col>
                     </Row>
                   </>
                 }
               >
                 <Row gutter={[24, 0]}>
-                  <Col span={24} md={12}>
+                  {/* <Col span={24} md={12}>
                     <Card className="payment-method-card">
                       <img src={mastercard} alt="mastercard" />
                       <h6 className="card-number">**** **** **** 7362</h6>
@@ -406,14 +709,75 @@ function Billing() {
                         {pencil}
                       </Button>
                     </Card>
-                  </Col>
+                  </Col> */}
                   <Col span={24} md={12}>
                     <Card className="payment-method-card">
                       <img src={visa} alt="visa" />
-                      <h6 className="card-number">**** **** **** 3288</h6>
-                      <Button type="link" className="ant-edit-link">
+                      <h6 className="card-number">
+                        **** **** **** {lastDigits}
+                      </h6>
+                      <Button
+                        type="link"
+                        className="ant-edit-link"
+                        onClick={showModal2}
+                      >
                         {pencil}
                       </Button>
+                      <Modal
+                        title="Enter Last 4 Digits of Card"
+                        visible={isModalVisible2}
+                        onCancel={handleCancel}
+                        onOk={addLastDigithandler}
+                        destroyOnClose={true}
+                        okButtonProps={{ disabled: buttonDisabled }}
+                      >
+                        <Form
+                          {...layout}
+                          form={form}
+                          onFieldsChange={() => {
+                            if (!lastDigits) {
+                              setButtonDisabled(true);
+                            } else if (
+                              form
+                                .getFieldsError()
+                                .some((field) => field.errors.length > 0)
+                            ) {
+                              setButtonDisabled(true);
+                            } else {
+                              setButtonDisabled(false);
+                            }
+                          }}
+                        >
+                          <Form.Item
+                            name="number"
+                            label="4 Digits"
+                            rules={[
+                              {
+                                required: true,
+                                pattern: "^[0-9]",
+                                message:
+                                  "Should Only include the last 4 digits of the Card",
+                              },
+                              {
+                                whitespace: true,
+                              },
+                              { min: 3 },
+                              { max: 3 },
+                            ]}
+                            hasFeedback
+                          >
+                            <Input
+                              type="number"
+                              value={lastDigits}
+                              onChange={(event) =>
+                                setLastDigits(event.target.value)
+                              }
+                              // onBlur={handleFocus}
+                              // focused={focused.toString()}
+                            />
+                          </Form.Item>
+                        </Form>
+                      </Modal>
                     </Card>
                   </Col>
                 </Row>
@@ -438,7 +802,7 @@ function Billing() {
               dataSource={data}
               renderItem={(item) => (
                 <List.Item
-                  actions={[<Button type="link">{download} PDF</Button>]}
+                // actions={[<Button type="link">{download} PDF</Button>]}
                 >
                   <List.Item.Meta
                     title={item.title}
@@ -453,7 +817,7 @@ function Billing() {
       </Row>
       <Row gutter={[24, 0]}>
         <Col span={24} md={16} className="mb-24">
-          <Card
+          {/* <Card
             className="header-solid h-full"
             bordered={false}
             title={[<h6 className="font-semibold m-0">Billing Information</h6>]}
@@ -489,7 +853,7 @@ function Billing() {
                 </Col>
               ))}
             </Row>
-          </Card>
+          </Card> */}
         </Col>
         <Col span={24} md={8} className="mb-24">
           <Card

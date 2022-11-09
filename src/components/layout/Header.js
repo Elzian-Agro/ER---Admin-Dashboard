@@ -1,5 +1,7 @@
 import { useState, useEffect ,useContext} from "react";
-import {LoginContext} from "../helper/Context"
+import email from '../../services/emailnotification';
+//import {LoginContext} from "../helper/Context"
+
 
 import {
   Row,
@@ -22,6 +24,7 @@ import { useCookies } from "react-cookie";
 import styled from "styled-components";
 import service from "./../../services/data-service";
 import avtar from "../../assets/images/team-2.jpg";
+import {LoginContext} from"../helper/Context";
 
 const ButtonContainer = styled.div`
   .ant-btn-primary {
@@ -251,31 +254,69 @@ function Header({
   const [sidenavType, setSidenavType] = useState("transparent");
   const [profileData, setProfileData] = useState({});
 
-  const {setIsLoggedIn,setUser}= useContext(LoginContext);
+ // const {setIsLoggedIn,setUser}= useContext(LoginContext);
 
   const { getProfile } = service();
+  const {setDetails,getProfileNotification} = email();
 
+  const emailNotificationIcon =(e)=>{
+    if (e === true) {
+      const data2 = {
+        values  :1,
+      };
+      console.log("button value is TRUE")
+      setDetails(data2);
+      
+    } else {
+      const data2 = {
+        values  :0,
+      };
+      console.log("button value is FALSE")
+      setDetails(data2);
+    }
+    
+  }
+  
+  async function emailNotificationProfile (){
+  
+      const value = await getProfileNotification();
+      if (value === 1) {
+        setcheck(true)
+      } else {
+        setcheck(false)
+      }  
+  }
+  
   useEffect(() => window.scrollTo(0, 0), []);
 
   useEffect(() => {
     async function fetchData() {
       const { userName, email, profImage } = await getProfile();
       setProfileData({ userName, email, profImage });
-      if(userName){
-        setIsLoggedIn(true)
-        setUser(userName)
-      }else{
-        setIsLoggedIn(false)
-      }
+      // if(userName){
+      //   setIsLoggedIn(true)
+      //   setUser(userName)
+      // }else{
+      //   setIsLoggedIn(false)
+      // }
     }
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
 
   const showDrawer = () => setVisible(true);
   const hideDrawer = () => setVisible(false);
   const handleProfileVisible = (flag) => setProfileVisible(flag);
-  const signout = () => removeCookie("token");
+  const {setIsLoggedIn,setUser}= useContext(LoginContext);
+  const signout = () => {
+    removeCookie("token")
+    setIsLoggedIn(false)
+    setUser("")
+    localStorage.removeItem("token")
+    localStorage.removeItem("refreshToken")
+  }
+  
 
   const profileMenu = (
     <List
@@ -315,10 +356,18 @@ function Header({
       </List.Item>
     </List>
   );
-
+    
+  const [check , setcheck] =useState();  
+  const checkedd=(e)=>{
+    if (e === true) {
+      setcheck(true);
+    } else {
+      setcheck(false);
+    }
+  }
   return (
     <>
-      <div className="setting-drwer" onClick={showDrawer}>
+      <div className="setting-drwer" onClick={showDrawer} >
         {setting}
       </div>
       <Row gutter={[24, 0]}>
@@ -353,7 +402,10 @@ function Header({
               </a>
             </Dropdown>
           </Badge>
-          <Button type="link" onClick={showDrawer}>
+          <Button type="link" onClick={event =>{
+            emailNotificationProfile();
+            showDrawer();
+          }} >
             {logsetting}
           </Button>
           <Button
@@ -445,6 +497,11 @@ function Header({
                   <Title level={5}>Navbar Fixed </Title>
                   <Switch onChange={(e) => handleFixedNavbar(e)} />
                 </div>
+                <div className="">
+                  <Title level={5}>Email Notification</Title>
+                  <Switch onChange={(e) => emailNotificationIcon(e)} onClick={(e)=>checkedd(e)} checked={check} />
+                  
+                </div>
               </div>
             </div>
           </Drawer>
@@ -479,7 +536,9 @@ function Header({
           </Button>
         </Col>
       </Row>
+      
     </>
+    
   );
 }
 
