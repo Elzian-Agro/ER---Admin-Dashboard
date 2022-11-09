@@ -16,7 +16,6 @@ const Trees = () => {
   // const [landOwnerName, setLandOwnerName] = useState();
   // const [AuditorName, setAuditorName] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   const {
     getPlantedTrees,
@@ -114,7 +113,7 @@ const Trees = () => {
       );
     }
     fetchData();
-    // eetPlantedTreesslint-disable-next-time react-hook/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // useEffect(() => {

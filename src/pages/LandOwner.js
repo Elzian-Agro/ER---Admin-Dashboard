@@ -400,6 +400,7 @@ function LandOwner() {
     showStageData();
     getData();
     showTreeData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const stageList = stageData.map((item, index) =>
