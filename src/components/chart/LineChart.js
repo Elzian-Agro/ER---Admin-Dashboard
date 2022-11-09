@@ -31,6 +31,7 @@ function LineChart() {
       setcompletedLand(comSum);
     }
     getAlllandsum();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   const printRef = React.useRef();
