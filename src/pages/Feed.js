@@ -41,7 +41,7 @@ function Feed() {
   const [updateTag, setUpdateTag] = useState("");
   const [insertMessage, setInsertMessage] = useState("");
   const [insertTag, setInsertTag] = useState("");
-  const [focused, setFocused] = useState(true);
+  // const [focused, setFocused] = useState(true);
   const [imagePath, setImagePath] = useState();
   const [form] = Form.useForm();
   const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -73,9 +73,9 @@ function Feed() {
     setIsUpdateModalVisible(false);
   };
 
-  const handleFocus = (e) => {
-    setFocused(true);
-  };
+  // const handleFocus = (e) => {
+  //   setFocused(true);
+  // };
 
   const openNotificationWithIcon = (type, message, title) => {
     if (type === "success") {
@@ -232,7 +232,7 @@ function Feed() {
                       type="text"
                       value={insertMessage}
                       onChange={(event) => setInsertMessage(event.target.value)}
-                      onBlur={handleFocus}
+                      
                     />
                   </Form.Item>
                   <Form.Item
@@ -406,7 +406,7 @@ function Feed() {
                 >
                   <Input
                     name="updateDescription"
-                    onBlur={handleFocus}
+                    // onBlur={handleFocus}
                     onChange={(event) =>
                       setUpdateDescription(event.target.value)
                     }
