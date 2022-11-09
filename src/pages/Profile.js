@@ -19,7 +19,7 @@ import {
   Descriptions,
   Avatar,
   Upload,
-  message,
+  // message,
   Modal,
   Form,
   Input,
@@ -33,16 +33,17 @@ import {
 } from "@ant-design/icons";
 
 import BgProfile from "../assets/images/pexels-richa-sharma-4217311.jpg";
-import profilavatar from "../assets/images/face-1.jpg";
+// import profilavatar from "../assets/images/face-1.jpg";
 import project1 from "../assets/images/qr-code.png";
 import project2 from "../assets/images/qr-code.png";
 import project3 from "../assets/images/qr-code.png";
 import DataService from "../services/data-service";
 
 function Profile() {
-  const [imageURL, setImageURL] = useState(false);
-  const [setLoading] = useState(false);
-  const [data, setdata] = useState({});
+  // const [imageURL, setImageURL] = useState(false);
+  const [imageURL] = useState(false);
+  // const [setLoading] = useState(false);
+  // const [data, setdata] = useState({});
 
   const [userName, setUserName] = useState("");
   const [userType, setUserType] = useState("");
@@ -66,7 +67,7 @@ function Profile() {
   const [updateImagePath, setUpdateImagePath] = useState();
   const [checkTempupdateImagePath, setCheckTempUpdateImagePath] = useState();
   const [buttonDisabled, setButtonDisabled] = useState(true);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  // const [isModalVisible, setIsModalVisible] = useState(false);
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
 
   const [form] = Form.useForm();
@@ -87,7 +88,7 @@ function Profile() {
       setLocation(res.location);
       setProfImage(res.profImage);
       setProfileInfo(res.profileInfo);
-      setdata(res);
+      // setdata(res);
     }
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -126,25 +127,25 @@ function Profile() {
 
   // console.log(imageURL);
 
-  const pencil = [
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      key={0}
-    >
-      <path
-        d="M13.5858 3.58579C14.3668 2.80474 15.6332 2.80474 16.4142 3.58579C17.1953 4.36683 17.1953 5.63316 16.4142 6.41421L15.6213 7.20711L12.7929 4.37868L13.5858 3.58579Z"
-        className="fill-gray-7"
-      ></path>
-      <path
-        d="M11.3787 5.79289L3 14.1716V17H5.82842L14.2071 8.62132L11.3787 5.79289Z"
-        className="fill-gray-7"
-      ></path>
-    </svg>,
-  ];
+  // const pencil = [
+  //   <svg
+  //     width="20"
+  //     height="20"
+  //     viewBox="0 0 20 20"
+  //     fill="none"
+  //     xmlns="http://www.w3.org/2000/svg"
+  //     key={0}
+  //   >
+  //     <path
+  //       d="M13.5858 3.58579C14.3668 2.80474 15.6332 2.80474 16.4142 3.58579C17.1953 4.36683 17.1953 5.63316 16.4142 6.41421L15.6213 7.20711L12.7929 4.37868L13.5858 3.58579Z"
+  //       className="fill-gray-7"
+  //     ></path>
+  //     <path
+  //       d="M11.3787 5.79289L3 14.1716V17H5.82842L14.2071 8.62132L11.3787 5.79289Z"
+  //       className="fill-gray-7"
+  //     ></path>
+  //   </svg>,
+  // ];
 
   const uploadButton = (
     <div className="ant-upload-text font-semibold text-dark">
@@ -204,13 +205,13 @@ function Profile() {
     }
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
+  // const handleOk = () => {
+  //   setIsModalVisible(false);
+  // };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  // const handleCancel = () => {
+  //   setIsModalVisible(false);
+  // };
 
   const showUpdateModal = () => {
     setIsUpdateModalVisible(true);
@@ -219,26 +220,26 @@ function Profile() {
   const handleUpdateCancel = () => {
     setIsUpdateModalVisible(false);
   };
-  const layout = {
-    labelCol: {
-      span: 6,
-    },
-    wrapperCol: {
-      span: 16,
-    },
-  };
+  // const layout = {
+  //   labelCol: {
+  //     span: 6,
+  //   },
+  //   wrapperCol: {
+  //     span: 16,
+  //   },
+  // };
 
-  const validateMessages = {
-    required: '$"label" is required!',
-    types: {
-      email: '$"label" is not a valid email!',
-      number: '$"label" is not a valid number!',
-    },
-  };
+  // const validateMessages = {
+  //   required: '$"label" is required!',
+  //   types: {
+  //     email: '$"label" is not a valid email!',
+  //     number: '$"label" is not a valid number!',
+  //   },
+  // };
 
-  const onFinish = (values) => {
-    console.log(values);
-  };
+  // const onFinish = (values) => {
+  //   console.log(values);
+  // };
 
 
 
@@ -529,7 +530,7 @@ function Profile() {
           >
             <p className="text-dark">{profileInfo}</p>
             <hr className="my-25" />
-            <Descriptions title={userName}>
+            <Descriptions title={userType}>
               <Descriptions.Item label="Full Name" span={3}>
                 {fullName}
               </Descriptions.Item>
