@@ -544,14 +544,29 @@ function Profile() {
                 {location}
               </Descriptions.Item>
               <Descriptions.Item label="Social" span={3}>
-                <a href="{twitterLink}" className="mx-5 px-5">
-                  {<TwitterOutlined />}
+              <a
+                  href={twitterLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mx-5 px-5"
+                >
+                  <TwitterOutlined />
                 </a>
-                <a href="{facebookLink}" className="mx-5 px-5">
-                  {<FacebookOutlined style={{ color: "#344e86" }} />}
+                <a
+                  href={facebookLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mx-5 px-5"
+                >
+                  <FacebookOutlined style={{ color: "#344e86" }} />
                 </a>
-                <a href="{instragramLink}" className="mx-5 px-5">
-                  {<InstagramOutlined style={{ color: "#e1306c" }} />}
+                <a
+                  href={instragramLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mx-5 px-5"
+                >
+                  <InstagramOutlined style={{ color: "#e1306c" }} />
                 </a>
               </Descriptions.Item>
             </Descriptions>
