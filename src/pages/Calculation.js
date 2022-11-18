@@ -129,7 +129,7 @@ function Calculation() {
                 },
               }}
               position={[item?.latitude, item?.longitude]} 
-              icon={(isExpired) ? (markerIconGold) :  (item?.investment) ? (markerIconSilver) : (markerIconGreen)}>
+              icon={(isExpired) ? (markerIconGold) :  (item?.investment) ? (markerIconGreen) : (markerIconSilver)}>
               <Popup>
                   <h1>{item.treeSpecies}</h1>
                   <h1>{item.treeID}</h1>

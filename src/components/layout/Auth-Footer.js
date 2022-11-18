@@ -15,10 +15,10 @@ export default function AuthFooter() {
     <Footer>
       <Menu mode="horizontal">
         <Menu.Item key={1}>
-          <a href="https://www.restore.earth">Company</a>
+          <a href="https://lets.restore.earth/">Company</a>
         </Menu.Item>
         <Menu.Item key={2}>
-          <a href="https://www.restore.earth">About Us</a>
+          <a href="https://lets.restore.earth/LifeForce.html">About Us</a>
         </Menu.Item>
       </Menu>
       <Menu mode="horizontal" className="menu-nav-social">
