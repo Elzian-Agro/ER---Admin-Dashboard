@@ -28,6 +28,7 @@ export default function DataService() {
   const http = axios.create({
     baseURL:
       "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
+      //"http://localhost:4000",
     headers: {
       "Content-type": "application/json",
       "x-auth-token": accessTokenMemoryTmp,
@@ -52,7 +53,7 @@ export default function DataService() {
     },
     async (err) => {
       const originalConfig = err.config;
-      if (err) {
+      if (err.response.status===401) {
         // access token expired
         if (err && !originalConfig._retry) {
           // handle infinite loop
@@ -77,14 +78,11 @@ export default function DataService() {
   );
   async function getPlantedTrees() {
     const data = await http.get("/trees").then((res) => res.data.Result);
-    console.log(data);
     return data;
   }
 
   async function updatePlantedTree(Id) {
-    const data = await http.put("/trees/updateTree/" + Id).then((res) => res);
-    console.log(data);
-    // return data;
+    await http.put("/trees/updateTree/" + Id).then((res) => res);
   }
 
   async function deletePlantedTree(Id) {
@@ -94,14 +92,11 @@ export default function DataService() {
         ? data.data.message
         : "Oops! something went wrong when deleting Tree"
     );
-    // return data;
   }
 
   async function getAuditorById(id) {
     if (!id) return;
-    const data = await http.get("/users/" + id).then((res) => res.data.Result);
-    console.log(data);
-    //  return data
+    await http.get("/users/" + id).then((res) => res.data.Result);
   }
 
   async function getLandOwnerById(id) {
@@ -109,7 +104,6 @@ export default function DataService() {
     const data = await http
       .get("/landOwners/" + id)
       .then((res) => res.data.Result);
-    console.log(data);
     return data[0].landOwnerName;
   }
 
@@ -122,7 +116,6 @@ export default function DataService() {
 
   //update Profile========================================
   async function updateAdminDetails(admin) {
-    console.log(admin);
     const data = await http
       .put("/admin/updateProfile", admin)
       .then((res) => res);
