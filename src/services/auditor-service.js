@@ -28,6 +28,7 @@ export default function AuditorService() {
   const http = axios.create({
     baseURL:
       "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
+      //"http://localhost:4000",
     headers: {
       "Content-type": "application/json",
       "x-auth-token":accessTokenMemoryTmp
@@ -52,7 +53,7 @@ export default function AuditorService() {
     },
     async (err) => {
       const originalConfig = err.config;
-      if (err) {
+      if (err.response.status===401) {
         // access token expired
         if (err && !originalConfig._retry) {
           // handle infinite loop
