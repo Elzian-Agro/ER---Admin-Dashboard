@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "antd/dist/antd.css";
 import "../assets/styles/main.css";
+import { QRCode } from 'react-qrcode-logo';
 
 
 import {
@@ -95,6 +96,7 @@ const useStyles = makeStyles({
 function LandOwner() {
   const printRef = React.useRef();
   const printRef2 = React.useRef();
+  const qrPrintRef = React.useRef();
   const classes = useStyles();
   const [data, setdata] = useState([]);
   const [tableData, setTableData] = useState([]);
@@ -180,6 +182,27 @@ function LandOwner() {
     if (typeof link.download === 'string') {
       link.href = data;
       link.download = (`${modaldata.landOwnerName} ID.jpg`);
+
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      window.open(data);
+    }
+  };
+
+  //QR Code download
+  const handleQRDownload = async () => {
+    const element = qrPrintRef.current;
+    const canvas = await html2canvas(element);
+
+    const data = canvas.toDataURL('image/jpg');
+    const link = document.createElement('a');
+
+    if (typeof link.download === 'string') {
+      link.href = data;
+      link.download = (`${modaldata.landOwnerName}.jpg`);
 
 
       document.body.appendChild(link);
@@ -556,30 +579,30 @@ function LandOwner() {
   // const downloadFile = (props) => {
   //   window.location.href = props
   // }
-  const download = (e) => {
-    console.log(e.target.href);
-    console.log(modaldata.landOwnerName);
-    fetch(modaldata.qrImage, {
-      method: "GET",
-      headers: {},
-    })
-      .then((response) => {
-        response.arrayBuffer().then(function (buffer) {
-          const url = window.URL.createObjectURL(new Blob([buffer]));
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute(
-            "download",
-            `${modaldata.landOwnerName} QRCode.png`
-          ); //or any other extension
-          document.body.appendChild(link);
-          link.click();
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const download = (e) => {
+  //   console.log(e.target.href);
+  //   console.log(modaldata.landOwnerName);
+  //   fetch(modaldata.qrImage, {
+  //     method: "GET",
+  //     headers: {},
+  //   })
+  //     .then((response) => {
+  //       response.arrayBuffer().then(function (buffer) {
+  //         const url = window.URL.createObjectURL(new Blob([buffer]));
+  //         const link = document.createElement("a");
+  //         link.href = url;
+  //         link.setAttribute(
+  //           "download",
+  //           `${modaldata.landOwnerName} QRCode.png`
+  //         ); //or any other extension
+  //         document.body.appendChild(link);
+  //         link.click();
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   return (
     <>
@@ -759,7 +782,10 @@ function LandOwner() {
                 width: "260px",
               }}
             >
-              <Image width={200} src={modaldata.qrImage} />
+              {/* <Image width={200} src={modaldata.qrImage} logoImage={elzianLogo} /> */}
+              <div ref={qrPrintRef}>
+                <QRCode value={modaldata.qrImage} qrStyle='squares' size={200} logoImage={elzianLogo} logoWidth={30} logoHeight={30} preview={true} removeQrCodeBehindLogo={true} />
+              </div>
             </Col>
             <Col>
               <Row
@@ -783,7 +809,10 @@ function LandOwner() {
                   marginLeft: "0px",
                 }}
               >
-                <Button key="back" type="primary" onClick={(e) => download(e)}>
+                {/* <Button key="back" type="primary" onClick={(e) => download(e)}>
+                  Download
+                </Button> */}
+                <Button key="back" type="primary" onClick={handleQRDownload}>
                   Download
                 </Button>
                 <Button
@@ -825,15 +854,13 @@ function LandOwner() {
                       >
                         <div ref={printRef}>
                           <br />
-                          <div style={{ textAlign: "center", verticalAlign: "middle" }}>
-                            <img
-                              align="left"
-                              width="50px"
+                          <div className="contractHeader">
+                            <img className="imgLeft"
                               src={logo}
                               alt="ER Logo" />
-                            <span>LandOwner Contract</span>
-                            <img align="right"
-                              width="50px"
+                            <span><b>LandOwner Contract</b></span>
+                            <img
+                              className="imgRight"
                               src={signinbg}
                               alt="Life Force Logo" />
                           </div>
@@ -863,7 +890,7 @@ function LandOwner() {
                           <div>
                             <Row>
                               <Col span={8}>
-                                ExistingBioDiversity :
+                                Existing Bio Diversity :
                               </Col>
                               <Col span={8}>
                                 <b>{stageList}</b>
@@ -920,33 +947,36 @@ function LandOwner() {
                     <div className="container">
                       <div className="padding">
                         <div className="font">
+                          <div>
+                            <div className="regNo">
+                              {modaldata.registerNumber}</div>
+                          </div>
                           <div className="top">
-                            <Image width={200} src={modaldata.profImage} />
+                            <Image width={200} src={modaldata.profImage} preview={false} />
                           </div>
                           <div className="bottom">
                             <p>{modaldata.landOwnerFullname}</p>
-                            <p className="idNumber"><b>{modaldata.registerNumber}</b></p>
-                            <p className="idNumber"><b>Address:</b>&nbsp;{modaldata.landAddress}</p>
-                            <p className="idNumber"><b>Email:</b>&nbsp;{modaldata.email}</p>
-                            <p className="idNumber"><b>Contact No:</b>&nbsp;{modaldata.contactNumber}</p>
-                            <p className="idNumber"><b>Country:</b>&nbsp;{modaldata.country}</p>
+                            <p className="idNumber"><b>Address:</b>&nbsp;&nbsp;{modaldata.landAddress}</p>
+                            <p className="idNumber"><b>Email:</b>&nbsp;&nbsp;{modaldata.email}</p>
+                            <p className="idNumber"><b>Contact No:</b>&nbsp;&nbsp;{modaldata.contactNumber}</p>
+                            <p className="idNumber"><b>Country:</b>&nbsp;&nbsp;{modaldata.country}</p>
                             <br></br>
                           </div>
                         </div>
                       </div>
                       <div className="back">
-                        <div style={{ marginTop: "10px" }}>
-                          <img src={logo} width="40px" alt="LifeForce Logo"></img>
-                          <img src={signinbg} width="40px" align="right" alt="ER Logo"></img>
+                        <div className="topBar">
+                          <img className="imgLeft" src={logo} width="40px" alt="LifeForce Logo"></img>
+                          <img className="imgRight" src={signinbg} alt="ER Logo"></img>
                         </div>
                         <h1 className="Details"><b>QR Code</b></h1>
-                        {/* <hr className="hr"></hr> */}
                         <div className="details-info">
                           <div className="qr">
-                            <Image src={modaldata.qrImage} alt="QR Code" />
+                            {/* <Image src={modaldata.qrImage} alt="QR Code" /> */}
+                            <QRCode value={modaldata.qrImage} qrStyle='squares' size={150} logoImage={elzianLogo} logoWidth={30} logoHeight={30} preview={true} removeQrCodeBehindLogo={true} />
                           </div>
                           <div className="footer">
-                            <Image src={elzianLogo} alt="Elzian Agro Logo"></Image>
+                            <Image preview={false} src={elzianLogo} alt="Elzian Agro Logo"></Image>
                             <p style={{ fontSize: "8px" }}>© Earth Restoration Pvt.Ltd Designed by ELZIAN AGRO</p>
                           </div>
                         </div>
