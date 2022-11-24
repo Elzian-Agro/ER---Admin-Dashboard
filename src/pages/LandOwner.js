@@ -113,9 +113,12 @@ function LandOwner() {
   const [updateLandAddress, setUpdateLandAddress] = useState("");
   const [updateLongitude, setUpdateLongitude] = useState("");
   const [updateLatitude, setUpdateLatitude] = useState("");
+  const [updatelandAddressLink, setUpdatelandAddressLink] = useState("");
+  const [updatelandDetails, setUpdatelandDetails] = useState("");
   const [updateBankAccountNumber, setUpdateBankAccountNumber] = useState("");
   const [updateBankName, setUpdateBankName] = useState("");
   const [updateBankBranch, setUpdateBankBranch] = useState("");
+  const [updateBankSwiftCode, setUpdateBankSwiftCode] = useState("");
   // const [searchLandOwner, setSearchLandOwner] = useState("");
   const [deleteFeed, setDeleteFeed] = useState(false);
   const [isContractModalVisible, setIsContractModalVisible] = useState(false);
@@ -346,8 +349,6 @@ function LandOwner() {
 
   const getData = async () => {
     const res = await getLandOwners();
-    console.log(res);
-    console.log("get data ");
     setdata(
       res.map((row) => ({
         key: row.landOwnerID,
@@ -364,9 +365,12 @@ function LandOwner() {
         landOwnerFullname: row.landOwnerFullname,
         longitude: row.longitude,
         latitude: row.latitude,
+        landAddressLink: row.landAddressLink,
+        landDetails:row.landDetails,
         bankAccountNumber: row.bankAccountNumber,
         bankName: row.bankName,
         bankBranch: row.bankBranch,
+        bankSwiftCode:row.bankSwiftCode,
         existingBiodiversity: row.existingBiodiversity
       }))
     );
@@ -386,9 +390,12 @@ function LandOwner() {
         landOwnerFullname: row.landOwnerFullname,
         longitude: row.longitude,
         latitude: row.latitude,
+        landAddressLink: row.landAddressLink,
+        landDetails:row.landDetails,
         bankAccountNumber: row.bankAccountNumber,
         bankName: row.bankName,
         bankBranch: row.bankBranch,
+        bankSwiftCode:row.bankSwiftCode,
         existingBiodiversity: row.existingBiodiversity
       }))
     );
@@ -453,7 +460,6 @@ function LandOwner() {
     try {
       await approveLandOwnerById(selectedId_);
       console.log(`${selectedId} landOwners approved`);
-      getData();
       setApprove();
     } catch (error) {
       console.log(error);
@@ -463,13 +469,13 @@ function LandOwner() {
   const setApprove = async () => {
     const res = await getLandOwnerById(selectedId);
     setmodaldata(res.data.Result[0]);
+    getData();
   };
 
   const unApproveLandOwner = async (selectedId_) => {
     try {
       await unApproveLandOwnerById(selectedId_);
       console.log(`${selectedId} landOwners Unapproved`);
-      getData();
       setApprove();
     } catch (error) {
       console.log(error);
@@ -540,9 +546,12 @@ function LandOwner() {
       landAddress: updateLandAddress,
       longitude: updateLongitude,
       latitude: updateLatitude,
+      landAddressLink:updatelandAddressLink,
+      landDetails:updatelandDetails,
       bankAccountNumber: updateBankAccountNumber,
       bankName: updateBankName,
       bankBranch: updateBankBranch,
+      bankSwiftCode:updateBankSwiftCode
     };
 
     try {
@@ -693,6 +702,9 @@ function LandOwner() {
               setUpdateBankBranch(modaldata.bankBranch);
               setUpdateLongitude(modaldata.longitude);
               setUpdateLatitude(modaldata.latitude);
+              setUpdatelandAddressLink(modaldata.landAddressLink);
+              setUpdatelandDetails(modaldata.landDetails);
+              setUpdateBankSwiftCode(modaldata.bankSwiftCode);
 
               form.setFieldsValue({
                 updateLandOwnerName: modaldata.landOwnerName,
@@ -1018,7 +1030,6 @@ function LandOwner() {
             type="primary"
             onClick={() => {
               handleUpdateClick();
-              getData();
             }}
           >
             Save
