@@ -21,7 +21,7 @@ function Footer() {
             <ul>
               <li className="nav-item">
                 <a
-                  href="https://lets.restore.earth/"
+                  href="https://restore.earth/index.html"
                   className="nav-link text-muted"
                 >
                   Earth Restoration
