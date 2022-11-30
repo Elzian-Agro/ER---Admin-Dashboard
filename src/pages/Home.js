@@ -346,16 +346,14 @@ function Home() {
                 >
                   <div className="h-full col-content p-20">
                     <div className="ant-muse">
-                      <Text>Built by developers</Text>
-                      <Title level={5}>Muse Dashboard for Ant Design</Title>
+                      {/* <Text>Built by developers</Text> */}
+                      <Title level={5}>Built by ELZIAN AGRO developers</Title>
                       <Paragraph className="lastweek mb-36">
-                        Live in each season as it passes; breathe the air, drink
-                        the drink, taste the fruit, and resign yourself to the
-                        influence of the earth.
+                      The act of investing in BioCurrency would immediately begin to replace the Oxygen and Clean Water consumed by our industrial lifestyles.
                       </Paragraph>
                     </div>
                     <div className="card-footer">
-                      <a className="icon-move-right" href="#pablo">
+                      <a className="icon-move-right" href="https://restore.earth/LifeForce.html">
                         Read More
                         {<RightOutlined />}
                       </a>
@@ -389,8 +387,8 @@ function Home() {
                   </p>
                 </div>
                 <div className="card-footer">
-                  <a className="icon-move-right" href="#pablo">
-                    Read More
+                  <a className="icon-move-right" href="https://restore.earth/Local_community.html">
+                  Read More
                     <RightOutlined />
                   </a>
                 </div>
