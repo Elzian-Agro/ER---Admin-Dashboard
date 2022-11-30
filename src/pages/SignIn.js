@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Layout,
@@ -24,16 +25,27 @@ const { Title } = Typography;
 const { Content } = Layout;
 
 export default function SignIn() {
+
+  const [signInError, setSignInError ] = useState("");
+
   const { AuthSignin } = AuthService();
   // when validation success
   const onFinish = (values) => {
-    AuthSignin(values);
+    AuthSignin(values).then((data)=>{
+      // console.log("sign",data && data.code);
+      setSignInError(data && data.code);
+    
+    });
+  
   };
 
   // when validation unsuccess
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+    
   };
+
+
   return (
     <>
       <Layout className="layout-default layout-signin">
@@ -49,6 +61,7 @@ export default function SignIn() {
               <Title className="font-regular text-muted" level={5}>
                 Enter your email and password to sign in
               </Title>
+              
               <Form
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
@@ -59,26 +72,44 @@ export default function SignIn() {
                   className="username"
                   label="Email"
                   name="email"
-                  rules={[
+                  rules=
+                  {[
+
                     {
                       required: true,
                       message: "Please input your email!",
                     },
+
                   ]}
                 >
                   <Input placeholder="Email" />
                 </Form.Item>
+              
 
                 <Form.Item
                   className="username"
                   label="Password"
                   name="password"
-                  rules={[
+                  rules=
+                  {[
                     {
                       required: true,
                       message: "Please input your password!",
                     },
+
+                    
+                    {
+                      validator: async(_, values) => {
+                        if (signInError === "ERR_BAD_REQUEST") {
+                         setSignInError("");
+                       throw new Error('The passwords that you entered do not match!');
+
+                    }
+                        }
+                      },
+                    
                   ]}
+                  // hasFeedback
                 >
                   <Input type="password" placeholder="Password" />
                 </Form.Item>
@@ -101,6 +132,7 @@ export default function SignIn() {
                     type="primary"
                     htmlType="submit"
                     style={{ width: "100%", backgroundColor: "green" }}
+                    
                   >
                     SIGN IN
                   </Button>
