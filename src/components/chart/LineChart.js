@@ -22,10 +22,10 @@ function LineChart() {
       const resLog = await getLandOwnerSum();
 
       let actSum = resLog.data.Result.map((data) => data.activeLandOwners);
-      console.log(actSum,"actSum");
+      // console.log(actSum,"actSum");
 
       let comSum = resLog.data.Result.map((data) => data.completedLandOwners);
-      console.log(comSum,"comSum");
+      // console.log(comSum,"comSum");
 
       setActiveLand(actSum);
       setcompletedLand(comSum);
