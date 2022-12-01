@@ -21,9 +21,9 @@ const http = axios.create({
   // signup function
   async function AuthSignup(data) {
     // destructure the data Object
-    const { Name, email, password } = data;
+    const { Name, email, password,walletID } = data;
     return http
-      .post("/admin/addUser", { userName: Name, email, password })
+      .post("/admin/addUser", { userName: Name, email, password,walletID })
       .then((res) => console.log(res.data.message))
       .catch((err) => console.log(err));
   }

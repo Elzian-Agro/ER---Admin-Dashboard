@@ -74,6 +74,14 @@ export default function SignUp() {
               >
                 <Input type="password" placeholder="Password" />
               </Form.Item>
+              <Form.Item
+                name="walletID"
+                rules={[
+                  { required: true, message: "Please input your Wallet ID!" },
+                ]}
+              >
+                <Input placeholder="Wallet ID" />
+              </Form.Item>
 
               <Form.Item name="remember" valuePropName="checked">
                 <Checkbox>
