@@ -53,8 +53,16 @@ export default function SignUp() {
               <Form.Item
                 name="Name"
                 rules={[
-                  { required: true, message: "Please input your username!" },
+                  {
+                    required: true,
+                    message: "Please input your username!"
+                  },
+                  {
+                    whitespace: true
+                  },
+                  { min: 5 },
                 ]}
+                hasFeedback
               >
                 <Input placeholder="Name" />
               </Form.Item>
@@ -69,8 +77,14 @@ export default function SignUp() {
               <Form.Item
                 name="password"
                 rules={[
-                  { required: true, message: "Please input your password!" },
+                  {
+                    required: true,
+                    message: "Please input your password!"
+                  },
+                  { whitespace: true },
+                  { min: 8 }
                 ]}
+                hasFeedback
               >
                 <Input type="password" placeholder="Password" />
               </Form.Item>
@@ -78,7 +92,11 @@ export default function SignUp() {
                 name="walletID"
                 rules={[
                   { required: true, message: "Please input your Wallet ID!" },
+                  { whitespace: true },
+                  { min: 42 },
+                  { max: 42 },
                 ]}
+                hasFeedback
               >
                 <Input placeholder="Wallet ID" />
               </Form.Item>
