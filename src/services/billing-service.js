@@ -10,8 +10,8 @@ export default function BillingService() {
   let accessTokenMemoryTmp = accessTokenMemory;
   const http = axios.create({
     baseURL:
-      "http://localhost:4000",
-    // "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
+      // "http://localhost:4000",
+    "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
 
     headers: {
       "Content-type": "application/json",
@@ -23,7 +23,7 @@ export default function BillingService() {
   async function addBillingData(formData) {
     const data = await http
       .post(
-        "http://localhost:4000/billing/add",
+        "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000/billing/add",
         formData
       )
       .then((res) => res);

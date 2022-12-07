@@ -15,7 +15,7 @@ function EChart() {
     const getMonthlyUsersd  = async () =>{
       const resLog = await getMonthlyUsers();
       let tempData = resLog.data.Result.map((data) =>data.activeInvestors); 
-      console.log(tempData,"tempdata");
+      // console.log(tempData,"tempdata");
   
       setIntvesData(tempData);
     }

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Layout, Button, Typography, Card, Form, Input, Checkbox } from "antd";
+import { Layout, Button, Typography, Card, Form, Input, Checkbox, notification } from "antd";
 
 import AuthHeader from "../components/layout/Auth-Header";
 import AuthFooter from "../components/layout/Auth-Footer";
@@ -13,14 +13,34 @@ const { Content } = Layout;
 export default function SignUp() {
   const { AuthSignup } = AuthService();
 
+  const openNotificationWithIcon = (type, message, title) => {
+    if (type === "success") {
+      notification[type]({
+        message: title,
+        description: message,
+      });
+    } else {
+      notification[type]({
+        message: title,
+        description: message,
+      });
+    }
+  };
+
   // when validation is success
   const onFinish = (values) => {
     AuthSignup(values);
+    openNotificationWithIcon("success", "User Registered Successfully");
   };
 
   // when validation is unsuccess
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+    openNotificationWithIcon(
+      "error",
+      "Something Went Wrong Please Check",
+      "Error"
+    );
   };
 
   return (
@@ -53,8 +73,16 @@ export default function SignUp() {
               <Form.Item
                 name="Name"
                 rules={[
-                  { required: true, message: "Please input your username!" },
+                  {
+                    required: true,
+                    message: "Please input your username!"
+                  },
+                  {
+                    whitespace: true
+                  },
+                  { min: 5 },
                 ]}
+                hasFeedback
               >
                 <Input placeholder="Name" />
               </Form.Item>
@@ -69,10 +97,28 @@ export default function SignUp() {
               <Form.Item
                 name="password"
                 rules={[
-                  { required: true, message: "Please input your password!" },
+                  {
+                    required: true,
+                    message: "Please input your password!"
+                  },
+                  { whitespace: true },
+                  { min: 8 }
                 ]}
+                hasFeedback
               >
                 <Input type="password" placeholder="Password" />
+              </Form.Item>
+              <Form.Item
+                name="walletID"
+                rules={[
+                  { required: true, message: "Please input your Wallet ID!" },
+                  { whitespace: true },
+                  { min: 42 },
+                  { max: 42 },
+                ]}
+                hasFeedback
+              >
+                <Input placeholder="Wallet ID" />
               </Form.Item>
 
               <Form.Item name="remember" valuePropName="checked">

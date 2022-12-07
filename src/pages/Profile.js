@@ -34,9 +34,9 @@ import {
 
 import BgProfile from "../assets/images/pexels-richa-sharma-4217311.jpg";
 // import profilavatar from "../assets/images/face-1.jpg";
-import project1 from "../assets/images/qr-code.png";
-import project2 from "../assets/images/qr-code.png";
-import project3 from "../assets/images/qr-code.png";
+import project1 from "../assets/images/EveningTree.png";
+import project2 from "../assets/images/DaveStarbelly.png";
+import project3 from "../assets/images/Valinor.png";
 import DataService from "../services/data-service";
 
 function Profile() {
@@ -158,23 +158,23 @@ function Profile() {
     {
       img: project1,
       titlesub: "Project #1",
-      title: "Modern",
-      disciption:
-        "As Uber works through a huge amount of internal management turmoil.",
+      title: "Evening Tree",
+      description:
+        "Tree in red color evening",
     },
     {
       img: project2,
       titlesub: "Project #2",
-      title: "Scandinavian",
-      disciption:
-        "Music is something that every person has his or her own specific opinion about.",
+      title: "Dave Starbelly",
+      description:
+        "Friendly OpenSea Creature that enjoys long swims in the ocean.",
     },
     {
       img: project3,
       titlesub: "Project #3",
-      title: "Minimalist",
-      disciption:
-        "Different people have different taste, and various types of music, Zimbali Resort",
+      title: "Two trees of Valinor",
+      description:
+        "Two trees of valinor, lord of the rings.",
     },
   ];
 
@@ -593,11 +593,11 @@ function Profile() {
                 cover={<img alt="example" src={p.img} />}
               >
                 <div className="card-tag">{p.titlesub}</div>
-                <h5>{p.titile}</h5>
-                <p>{p.disciption}</p>
+                <h5>{p.title}</h5>
+                <p>{p.description}</p>
                 <Row gutter={[6, 0]} className="card-footer">
                   <Col span={12}>
-                    <Button type="button">VIEW PROJECT</Button>
+                    {/* <Button type="button">VIEW PROJECT</Button> */}
                   </Col>
                 </Row>
               </Card>

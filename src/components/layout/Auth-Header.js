@@ -51,7 +51,7 @@ export default function AuthHeader({ signupBg }) {
         <img
           style={signupBg ? { padding: 10 } : {}}
           src={ERLogo}
-          width={signupBg ? "270px" : "70px"}
+          width={signupBg ? "150px" : "70px"}
           alt="ER logo"
         />
       </div>
@@ -76,7 +76,7 @@ export default function AuthHeader({ signupBg }) {
           <img
             src={LifeForceLogo}
             style={signupBg ? { padding: 10 } : {}}
-            width="280px"
+            width="150px"
             alt="lifeforce logo"
           />
         ) : (
