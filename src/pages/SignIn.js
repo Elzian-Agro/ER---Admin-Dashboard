@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Layout,
@@ -27,7 +27,7 @@ const { Content } = Layout;
 
 export default function SignIn() {
 
-  const [signInError, setSignInError ] = useState("");
+  // const [signInError, setSignInError ] = useState("");
 
   const { AuthSignin } = AuthService();
 
@@ -47,12 +47,13 @@ export default function SignIn() {
 
   // when validation success
   const onFinish = (values) => {
-    AuthSignin(values).then((data)=>{
+    AuthSignin(values);
+    // .then((data)=>{
       // console.log("sign",data && data.code);
-      setSignInError(data && data.code);
+      // setSignInError(data && data.code);
       // openNotificationWithIcon("success", "User Registered Successfully");
     
-    });
+    // });
   
   };
 
