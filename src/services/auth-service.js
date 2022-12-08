@@ -69,10 +69,11 @@ const http = axios.create({
       })
       .catch((err) => {console.log(err); 
         // message.error("pleace check your credentials",3);
+        
         openNotificationWithIcon(
           "error",
-          // "pleace check your credentials",
-          "The passwords that you entered do not match!"
+          "pleace check your credentials",
+          // "The passwords that you entered do not match!"
         );
         return err;
        
