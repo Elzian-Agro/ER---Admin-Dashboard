@@ -22,6 +22,7 @@ import service from "./../services/tree-species-service";
 import MapChart1 from '../components/chart/MapChart1';
 import MapChart2 from '../components/chart/MapChart2';
 import { useCallback } from "react";
+import { Card } from "@mui/material";
 
 const useStyles = makeStyles({
   mainHeading: {
@@ -442,10 +443,28 @@ function TreeSpecies() {
           </Col>
         </Row>
         </div>
+        <Card
+        style={{
+          marginBottom: "40px",
+          // textAlign: "center",
+          marginLeft: "10px",
+          marginRight: "10px",
+          borderRadius: "15px",
+          
+        }}>
         <div style={{marginBottom:'40px'}}>
-        <Row gutter={[16, 16]}>
-          <Col md={12} xs={24}>
+        <Row gutter={[16, 16]}
+        style={{
+          marginBottom: "40px",
+          fontSize: "17px",
+          marginLeft: "35px",
+          marginRight: "10px",
+          marginTop: "30px"
+        }}>
+          <Col md={12} xs={24}
+          >
             <Space direction="vertical">
+             
               <div>
                 <b>Plant ID</b> : {modelData.plant_id}
               </div>
@@ -539,6 +558,7 @@ function TreeSpecies() {
           </Col>
         </Row>
         </div>
+        </Card>
       </Modal>
 
       <Box

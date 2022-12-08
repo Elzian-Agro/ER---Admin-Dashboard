@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Layout,
@@ -9,6 +9,7 @@ import {
   Form,
   Input,
   Switch,
+  // notification,
 } from "antd";
 
 import AuthHeader from "../components/layout/Auth-Header";
@@ -26,22 +27,47 @@ const { Content } = Layout;
 
 export default function SignIn() {
 
-  const [signInError, setSignInError ] = useState("");
+  // const [signInError, setSignInError ] = useState("");
 
   const { AuthSignin } = AuthService();
+
+  // const openNotificationWithIcon = (type, message, title) => {
+  //   if (type === "success") {
+  //     notification[type]({
+  //       message: title,
+  //       description: message,
+  //     });
+  //   } else {
+  //     notification[type]({
+  //       message: title,
+  //       description: message,
+  //     });
+  //   }
+  // };
+
   // when validation success
   const onFinish = (values) => {
-    AuthSignin(values).then((data)=>{
+    AuthSignin(values);
+    // .then((data)=>{
       // console.log("sign",data && data.code);
-      setSignInError(data && data.code);
+      // setSignInError(data && data.code);
+      // openNotificationWithIcon("success", "User Registered Successfully");
     
-    });
+    // });
   
   };
+
+
+
 
   // when validation unsuccess
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+    // openNotificationWithIcon(
+    //   "error",
+    //   "Something Went Wrong Please Check",
+    //   "Error"
+    // );
     
   };
 
@@ -98,15 +124,15 @@ export default function SignIn() {
                     },
 
                     
-                    {
-                      validator: async(_, values) => {
-                        if (signInError === "ERR_BAD_REQUEST") {
-                         setSignInError("");
-                       throw new Error('The passwords that you entered do not match!');
+                    // {
+                    //   validator: async(_, values) => {
+                    //     if (signInError === "ERR_BAD_REQUEST") {
+                    //      setSignInError("");
+                    //    throw new Error('The passwords that you entered do not match!');
 
-                    }
-                        }
-                      },
+                    // }
+                    //     }
+                    //   },
                     
                   ]}
                   // hasFeedback

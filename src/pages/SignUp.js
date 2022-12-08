@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Layout, Button, Typography, Card, Form, Input, Checkbox } from "antd";
+import { Layout, Button, Typography, Card, Form, Input, Checkbox, notification } from "antd";
 
 import AuthHeader from "../components/layout/Auth-Header";
 import AuthFooter from "../components/layout/Auth-Footer";
@@ -13,14 +13,34 @@ const { Content } = Layout;
 export default function SignUp() {
   const { AuthSignup } = AuthService();
 
+  const openNotificationWithIcon = (type, message, title) => {
+    if (type === "success") {
+      notification[type]({
+        message: title,
+        description: message,
+      });
+    } else {
+      notification[type]({
+        message: title,
+        description: message,
+      });
+    }
+  };
+
   // when validation is success
   const onFinish = (values) => {
     AuthSignup(values);
+    openNotificationWithIcon("success", "User Registered Successfully");
   };
 
   // when validation is unsuccess
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+    openNotificationWithIcon(
+      "error",
+      "Something Went Wrong Please Check",
+      "Error"
+    );
   };
 
   return (
