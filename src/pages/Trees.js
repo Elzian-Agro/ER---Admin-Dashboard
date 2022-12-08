@@ -29,7 +29,7 @@ const Trees = () => {
 
   const columns = [
     {
-      title: "UNIT TREE NUMBER",
+      title: "Unit Tree Number",
       key: "unit tree no",
       dataIndex: "unit tree no",
       render: (index, record) => (
@@ -39,7 +39,7 @@ const Trees = () => {
       ),
     },
     {
-      title: "TREE SPECIE",
+      title: "Tree Specie",
       key: "tree specie",
       dataIndex: "tree specie",
       render: (index, record) => (
@@ -49,7 +49,7 @@ const Trees = () => {
       ),
     },
     {
-      title: "LANDOWNER REGISTRATION NUMBER",
+      title: "Landowner Registration Number",
       key: "landowner reistration no",
       dataIndex: "landowner reistration no",
       render: (index, record) => (
@@ -59,7 +59,7 @@ const Trees = () => {
       ),
     },
     {
-      title: "DATE OF PLANTING",
+      title: "Date Of Planting",
       key: "date of planting",
       dataIndex: "date of planting",
       render: (index, record) => (
@@ -69,7 +69,7 @@ const Trees = () => {
       ),
     },
     {
-      title: "AUDITOR ID",
+      title: "Auditor ID",
       key: "auditor id",
       dataIndex: "auditor id",
       render: (index, record) => (
