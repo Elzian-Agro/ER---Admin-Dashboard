@@ -75,7 +75,7 @@ function Home() {
 
       const res3 = await getLandownersState();
       setlandownersStatus(res3);
-      console.log(res3);
+      // console.log(res3);
     }
     ShowDashboardCounts()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -111,25 +111,25 @@ function Home() {
   ];
   const count = [
     {
-      today: `Number of Investors :${invester}
+      today: `Number of Investors : ${invester}
       `,
       icon: profile,
       bnb: "bnb2",
     },
     {
-      today: `Number of LandOwners :${landowners} 
+      today: `Number of LandOwners : ${landowners} 
       `,
       icon: profile,
       bnb: "bnb2",
     },
     {
-      today: `Number of Auditors :${auditors} 
+      today: `Number of Auditors : ${auditors} 
       `,
       icon: profile,
       bnb: "redtext",
     },
     {
-      today: `Number of Field Agents :${fieldEgent} 
+      today: `Number of Field Agents : ${fieldEgent} 
       `,
       icon: profile,
       bnb: "bnb2",
@@ -181,7 +181,7 @@ function Home() {
     },
     onChange(info) {
       if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
+        // console.log(info.file, info.fileList);
       }
       if (info.file.status === "done") {
         message.success(`${info.file.name} file uploaded successfully`);
