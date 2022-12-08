@@ -24,11 +24,11 @@ export default function AuthFooter() {
       <Menu mode="horizontal" className="menu-nav-social">
         <Menu.Item key={3}>
           {/* <Link to="#">{<FacebookOutlined />}</Link> */}
-          <a href="">{<FacebookOutlined />}</a>
+          <a href="#abc">{<FacebookOutlined />}</a>
         </Menu.Item>
         <Menu.Item key={4}>
           {/* <Link to="#">{<InstagramOutlined />}</Link> */}
-          <a href="">{<InstagramOutlined />}</a>
+          <a href="#abc">{<InstagramOutlined />}</a>
         </Menu.Item>
         <Menu.Item key={5}>
           {/* <Link to="https://www.linkedin.com/company/elzianagro/">{<LinkedinOutlined />}</Link>> */}
@@ -48,7 +48,7 @@ export default function AuthFooter() {
         </Menu.Item> */}
         <Menu.Item key={7}>
           {/* <Link to="#">{<TwitterOutlined />}</Link> */}
-          <a href="">{<TwitterOutlined />}</a>
+          <a href="#abc">{<TwitterOutlined />}</a>
         </Menu.Item>
       </Menu>
       <div className="copyright">
