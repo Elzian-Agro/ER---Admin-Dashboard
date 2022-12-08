@@ -17,7 +17,7 @@ import {
   Switch,
 } from "antd";
 
-import { UserOutlined } from "@ant-design/icons";
+// import { UserOutlined } from "@ant-design/icons";
 
 import { NavLink, Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
@@ -331,7 +331,8 @@ function Header({
             style={{
               backgroundColor: "#d0d0d0",
             }}
-            icon={<UserOutlined />}
+            // icon={<UserOutlined />}
+            src={profileData.profImage}
             size={64}
           />
         </Col>
