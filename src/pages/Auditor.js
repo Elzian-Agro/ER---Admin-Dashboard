@@ -47,7 +47,7 @@ const Auditor = () => {
 
   const columns = [
     {
-      title: "AUDITOR NAME",
+      title: "Auditor Name",
       dataIndex: "name",
       key: "name",
       width: "22%",
@@ -70,7 +70,7 @@ const Auditor = () => {
     },
 
     {
-      title: "CONTACT NUMBER",
+      title: "Contact Number",
       key: "contact",
       dataIndex: "contact",
       render: (index, record) => (
@@ -89,7 +89,7 @@ const Auditor = () => {
       ),
     },
     {
-      title: "ADDRESS",
+      title: "Address",
       key: "address",
       dataIndex: "address",
       render: (index, record) => (
@@ -101,7 +101,7 @@ const Auditor = () => {
       ),
     },
     {
-      title: "USER TYPE",
+      title: "User Type",
       key: "type",
       dataIndex: "type",
       render: (index, record) => (
