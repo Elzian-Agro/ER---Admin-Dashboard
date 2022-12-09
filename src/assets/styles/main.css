@@ -494,6 +494,8 @@ h3,
 h4 {
   font-weight: 700;
   color: #141414;
+  text-align: center;
+  font-size: 25px;
 }
 
 .ant-list-item-meta-title > a {
@@ -1804,18 +1806,49 @@ body {
   display: none;
 }
 .sign-up-header {
-  height: 550px;
-  margin-top: -62.8px;
-  padding-top: 137.8px;
+  height: auto;
+  margin-top: -130px;
+  padding-top: 230px;
   border-radius: 12px;
-  box-shadow: 0 20px 27px rgb(0 0 0 / 5%);
-  background-size: cover;
-  background-position: 50%;
+  box-shadow: 0 50px 50px rgb(0 0 0 / 5%);
   text-align: center;
-  background: url("../images/bg-signup.jpg") no-repeat center top;
+  background: url("../images/bg-signup.jpg") no-repeat;
 }
+
+.transparentForm{
+  text-align: left;
+  margin: auto;
+  padding: 15px;
+  width: 450px;
+  height: auto;
+  display: center;
+  border-radius: 30px;
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.4);
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+}
+
 .header-col.header-brand {
   white-space: nowrap;
+}
+
+.registerButton{
+  width: 100%;
+  background-color: #3a761f;
+  border: 1px solid #3a761f;
+}
+
+.registerButton:hover{
+  opacity: 1;
+  background-color: #418424;
+  border: 1px solid #418424;
+  color: white;
+}
+.registerButton:disabled,
+registerButton[disabled]{
+  border: 1px solid #898989;
+  background-color: #898989;
+  /* color: #3a761f; */
 }
 
 .header-col.header-brand h5 {
@@ -1830,9 +1863,9 @@ body {
   font-weight: 600;
 }
 
-.header-col.header-nav ul li {
-  /* color: #fff !important; */
-}
+/* .header-col.header-nav ul li {
+  color: #fff !important;
+} */
 
 .header-col.header-nav ul li img {
   margin-top: -2px;
@@ -1849,9 +1882,9 @@ body {
   max-width: 480px;
   margin: auto;
 }
-.sign-up-header * {
-  /* color: #fff; */
-}
+/* .sign-up-header * {
+  color: #fff;
+} */
 .sign-up-header .content h1 {
   font-size: 48px;
   /* color: #fff; */

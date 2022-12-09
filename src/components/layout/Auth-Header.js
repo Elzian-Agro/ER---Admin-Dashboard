@@ -3,8 +3,9 @@ import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
 
 // logo
-import ERLogo from "../../assets/logos/ER LOGO.png";
+// import ERLogo from "../../assets/logos/ER LOGO.png";
 import LifeForceLogo from "../../assets/logos/LifeForce.png";
+import ERLogoNew from "../../assets/logos/ER LOGO1.png";
 
 const signup = [
   <svg
@@ -50,7 +51,7 @@ export default function AuthHeader({ signupBg }) {
       <div className="header-col header-brand">
         <img
           style={signupBg ? { padding: 10 } : {}}
-          src={ERLogo}
+          src={ERLogoNew}
           width={signupBg ? "150px" : "70px"}
           alt="ER logo"
         />
