@@ -156,6 +156,7 @@ function LandOwner() {
   const styles = {
     preventInlineText: {
       whiteSpace: "pre-line",
+      cursor: 'pointer',
     },
   };
 

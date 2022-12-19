@@ -1806,13 +1806,13 @@ body {
   display: none;
 }
 .sign-up-header {
-  height: auto;
-  margin-top: -130px;
-  padding-top: 230px;
+  height: 810px;
+  margin-top: -160px;
+  padding-top: 220px;
   border-radius: 12px;
   box-shadow: 0 50px 50px rgb(0 0 0 / 5%);
   text-align: center;
-  background: url("../images/bg-signup.jpg") no-repeat;
+  background: url("../images/bg-signup.jpg");
 }
 
 .transparentForm{
@@ -3534,3 +3534,18 @@ section.ant-layout.ant-layout-has-sider.layout-dashboard.layout-profile
   text-align: center;
   vertical-align: middle;
 }
+
+.hoverOnRow{
+  cursor: pointer;
+}
+
+.hoverOnRow:hover{
+  opacity: 1;
+  background-color: #f9f9f9
+  ;
+  border: 1px solid #f9f9f9
+  ;
+}
+ .hoverCursor{
+  cursor: pointer;
+ }

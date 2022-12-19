@@ -89,7 +89,7 @@ export default function SignUp() {
                     { required: true, message: "Please input your email!" },
                   ]}
                 >
-                  <Input placeholder="email" />
+                  <Input placeholder="Email" />
                 </Form.Item>
                 <Form.Item
                   name="password"

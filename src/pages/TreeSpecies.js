@@ -30,10 +30,6 @@ const useStyles = makeStyles({
     fontSize: 18,
   },
 
-  tableHeading: {
-    fontWeight: "bold",
-  },
-
   tableContainer: {
     boxShadow: "0 2px 6px rgb(0 0 0 / 0.25)",
   },
@@ -585,11 +581,12 @@ function TreeSpecies() {
         <Table sx={{ minWidth: 450 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell className={classes.tableHeading}>Plant Name</TableCell>
-              <TableCell className={classes.tableHeading}>Common Names</TableCell>
-              <TableCell className={classes.tableHeading}>Botanical Name</TableCell>
-              <TableCell className={classes.tableHeading}>Origin Of Species</TableCell>
-              <TableCell className={classes.tableHeading}>Fruit Type</TableCell>
+              <TableCell><b>Plant Name</b></TableCell>
+              <TableCell><b>Common Names</b></TableCell>
+              <TableCell><b>Botanical Name</b></TableCell>
+              <TableCell><b>Origin Of Species</b></TableCell>
+              <TableCell><b>Fruit Type</b></TableCell>
+              <TableCell align="center"><b>Actions</b></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -605,8 +602,7 @@ function TreeSpecies() {
               }
               return null
             }).map((row) => (
-              <TableRow
-             
+              <TableRow className="hoverOnRow"
                 key={row.plant_id}
                 id={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

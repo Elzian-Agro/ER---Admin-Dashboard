@@ -34,17 +34,17 @@ const Trees = () => {
       dataIndex: "unit tree no",
       render: (index, record) => (
         <>
-          <Title level={5}>{record.lifeForceUnitTreeNo}</Title>
+          <Title className="hoverCursor" level={5}>{record.lifeForceUnitTreeNo}</Title>
         </>
       ),
     },
     {
-      title: "Tree Specie",
-      key: "tree specie",
-      dataIndex: "tree specie",
+      title: "Tree Species",
+      key: "tree species",
+      dataIndex: "tree species",
       render: (index, record) => (
         <>
-          <Title level={5}>{record.treeSpecies}</Title>
+          <Title className="hoverCursor" level={5}>{record.treeSpecies}</Title>
         </>
       ),
     },
@@ -54,7 +54,7 @@ const Trees = () => {
       dataIndex: "landowner reistration no",
       render: (index, record) => (
         <>
-          <Title level={5}>{record.landOwnerRegisterNo}</Title>
+          <Title className="hoverCursor" level={5}>{record.landOwnerRegisterNo}</Title>
         </>
       ),
     },
@@ -64,7 +64,7 @@ const Trees = () => {
       dataIndex: "date of planting",
       render: (index, record) => (
         <>
-          <Title level={5}>{record.dateofPlanting}</Title>
+          <Title className="hoverCursor" level={5}>{record.dateofPlanting}</Title>
         </>
       ),
     },
@@ -74,7 +74,7 @@ const Trees = () => {
       dataIndex: "auditor id",
       render: (index, record) => (
         <>
-          <Title level={5}>{record.creatorID}</Title>
+          <Title className="hoverCursor" level={5}>{record.creatorID}</Title>
         </>
       ),
     },
