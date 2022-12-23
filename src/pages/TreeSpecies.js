@@ -388,11 +388,15 @@ function TreeSpecies() {
   return (
     <div>
       <Modal
-        title="Tree Species Details"
+      // eslint-disable-next-line no-useless-concat
+        title={"Tree Species"+(" ")+ "("+ modelData.commonNames+ ")"}
         visible={isModalVisibleModel}
         onCancel={handleCancelModel}
         destroyOnClose={true}
         width={1000}
+        style={{
+          textAlign:"center"
+        }}
         footer={[
           <Button key="back" onClick={handleCancelModel}>
             Cancel

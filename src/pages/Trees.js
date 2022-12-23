@@ -6,7 +6,6 @@ import { Modal, Button, Card, Typography } from "antd";
 
 import service from "./../services/data-service";
 import Map from "../components/map";
-//import userType from "../components/userType";
 
 const { Title } = Typography;
 
@@ -184,11 +183,15 @@ const Trees = () => {
 
       {/* Tree detail Modal  */}
       <Modal
-        title="Tree Details"
+        // eslint-disable-next-line no-useless-concat
+        title={"Tree Details" + (" ") + "(" +treeSpecies+ ")"}
         visible={isModalVisible}
         onCancel={handleCancel}
         destroyOnClose
         width={1000}
+        style={{
+          textAlign: "center"
+        }}
         footer={[
           // <Button
           //   key="delete"
