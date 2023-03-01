@@ -663,6 +663,77 @@ function Profile() {
         </div>
       </Card>
 
+
+      <Card
+      bordered={false}
+        className="header-solid mb-24"
+        title={
+          <>
+            <h6 className="font-semibold">
+              OpenSea Links
+            </h6>
+          </>
+        }
+      >
+
+      <div>
+              <a 
+              href={twitterLink} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{
+                marginTop: "30px",
+                fontSize: "20px",
+                textAlign: "left",
+                marginLeft: "50px",
+                fontFamily: "Cursive",
+                marginRight: "50px",
+              }}
+              
+              >
+                <a href="https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/1004" target=" ">Oak Tree</a>
+              </a>
+
+              <a
+                href={facebookLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                marginTop: "30px",
+                fontSize: "20px",
+                textAlign: "left",
+                marginLeft: "50px",
+                fontFamily: "Cursive",
+                marginRight: "50px",
+              }}
+              >
+                <a href="https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/1005" target=" ">Coconut Tree</a>
+
+              </a>
+
+
+              <a
+                href={instragramLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                marginTop: "30px",
+                fontSize: "20px",
+                textAlign: "left",
+                marginLeft: "50px",
+                fontFamily: "Cursive",
+                marginRight: "50px",
+              }}
+              >
+                <a href="https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/1007" target=" ">Oak Tree 2</a>
+              </a>
+            </div>
+
+      
+
+
+      </Card>
+
       <Card
         bordered={false}
         className="header-solid mb-24"
@@ -678,9 +749,15 @@ function Profile() {
           {project.map((p, index) => (
             <Col span={24} md={12} xl={6} key={index}>
               <Card
+               hoverable
                 bordered={false}
                 className="card-project"
-                cover={<img alt="example" src={p.img} />}
+                cover={
+                  <a href="https://Google.com">
+                  <img alt="example" src={p.img} />
+                  </a>
+              }
+                
               >
                 <div className="card-tag">{p.titlesub}</div>
                 <h5>{p.title}</h5>
