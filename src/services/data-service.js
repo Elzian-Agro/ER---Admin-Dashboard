@@ -27,8 +27,8 @@ export default function DataService() {
   let accessTokenMemoryTmp = accessTokenMemory;
   const http = axios.create({
     baseURL:
-      "http://ec2-13-250-22-64.ap-southeast-1.compute.amazonaws.com:4000",
-      //"http://localhost:4000",
+    process.env.REACT_APP_BASE_URL,
+      
     headers: {
       "Content-type": "application/json",
       "x-auth-token": accessTokenMemoryTmp,

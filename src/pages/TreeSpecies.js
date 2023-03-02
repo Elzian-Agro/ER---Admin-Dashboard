@@ -22,15 +22,12 @@ import service from "./../services/tree-species-service";
 import MapChart1 from '../components/chart/MapChart1';
 import MapChart2 from '../components/chart/MapChart2';
 import { useCallback } from "react";
+import { Card } from "@mui/material";
 
 const useStyles = makeStyles({
   mainHeading: {
     fontWeight: "bold",
     fontSize: 18,
-  },
-
-  tableHeading: {
-    fontWeight: "bold",
   },
 
   tableContainer: {
@@ -391,11 +388,15 @@ function TreeSpecies() {
   return (
     <div>
       <Modal
-        title="Tree Species Details"
+      // eslint-disable-next-line no-useless-concat
+        title={"Tree Species"+(" ")+ "("+ modelData.commonNames+ ")"}
         visible={isModalVisibleModel}
         onCancel={handleCancelModel}
         destroyOnClose={true}
         width={1000}
+        style={{
+          textAlign:"center"
+        }}
         footer={[
           <Button key="back" onClick={handleCancelModel}>
             Cancel
@@ -442,10 +443,28 @@ function TreeSpecies() {
           </Col>
         </Row>
         </div>
+        <Card
+        style={{
+          marginBottom: "40px",
+          // textAlign: "center",
+          marginLeft: "10px",
+          marginRight: "10px",
+          borderRadius: "15px",
+          
+        }}>
         <div style={{marginBottom:'40px'}}>
-        <Row gutter={[16, 16]}>
-          <Col md={12} xs={24}>
+        <Row gutter={[16, 16]}
+        style={{
+          marginBottom: "40px",
+          fontSize: "17px",
+          marginLeft: "35px",
+          marginRight: "10px",
+          marginTop: "30px"
+        }}>
+          <Col md={12} xs={24}
+          >
             <Space direction="vertical">
+             
               <div>
                 <b>Plant ID</b> : {modelData.plant_id}
               </div>
@@ -539,6 +558,7 @@ function TreeSpecies() {
           </Col>
         </Row>
         </div>
+        </Card>
       </Modal>
 
       <Box
@@ -565,11 +585,12 @@ function TreeSpecies() {
         <Table sx={{ minWidth: 450 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell className={classes.tableHeading}>Plant Name</TableCell>
-              <TableCell className={classes.tableHeading}>Common Names</TableCell>
-              <TableCell className={classes.tableHeading}>Botanical Name</TableCell>
-              <TableCell className={classes.tableHeading}>Origin Of Species</TableCell>
-              <TableCell className={classes.tableHeading}>Fruit Type</TableCell>
+              <TableCell><b>Plant Name</b></TableCell>
+              <TableCell><b>Common Names</b></TableCell>
+              <TableCell><b>Botanical Name</b></TableCell>
+              <TableCell><b>Origin Of Species</b></TableCell>
+              <TableCell><b>Fruit Type</b></TableCell>
+              <TableCell align="center"><b>Actions</b></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -585,8 +606,7 @@ function TreeSpecies() {
               }
               return null
             }).map((row) => (
-              <TableRow
-             
+              <TableRow className="hoverOnRow"
                 key={row.plant_id}
                 id={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

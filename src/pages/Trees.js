@@ -6,7 +6,6 @@ import { Modal, Button, Card, Typography } from "antd";
 
 import service from "./../services/data-service";
 import Map from "../components/map";
-//import userType from "../components/userType";
 
 const { Title } = Typography;
 
@@ -29,52 +28,52 @@ const Trees = () => {
 
   const columns = [
     {
-      title: "UNIT TREE NUMBER",
+      title: "Unit Tree Number",
       key: "unit tree no",
       dataIndex: "unit tree no",
       render: (index, record) => (
         <>
-          <Title level={5}>{record.lifeForceUnitTreeNo}</Title>
+          <Title className="hoverCursor" level={5}>{record.lifeForceUnitTreeNo}</Title>
         </>
       ),
     },
     {
-      title: "TREE SPECIE",
-      key: "tree specie",
-      dataIndex: "tree specie",
+      title: "Tree Species",
+      key: "tree species",
+      dataIndex: "tree species",
       render: (index, record) => (
         <>
-          <Title level={5}>{record.treeSpecies}</Title>
+          <Title className="hoverCursor" level={5}>{record.treeSpecies}</Title>
         </>
       ),
     },
     {
-      title: "LANDOWNER REGISTRATION NUMBER",
+      title: "Landowner Registration Number",
       key: "landowner reistration no",
       dataIndex: "landowner reistration no",
       render: (index, record) => (
         <>
-          <Title level={5}>{record.landOwnerRegisterNo}</Title>
+          <Title className="hoverCursor" level={5}>{record.landOwnerRegisterNo}</Title>
         </>
       ),
     },
     {
-      title: "DATE OF PLANTING",
+      title: "Date Of Planting",
       key: "date of planting",
       dataIndex: "date of planting",
       render: (index, record) => (
         <>
-          <Title level={5}>{record.dateofPlanting}</Title>
+          <Title className="hoverCursor" level={5}>{record.dateofPlanting}</Title>
         </>
       ),
     },
     {
-      title: "AUDITOR ID",
+      title: "Auditor ID",
       key: "auditor id",
       dataIndex: "auditor id",
       render: (index, record) => (
         <>
-          <Title level={5}>{record.creatorID}</Title>
+          <Title className="hoverCursor" level={5}>{record.creatorID}</Title>
         </>
       ),
     },
@@ -184,11 +183,15 @@ const Trees = () => {
 
       {/* Tree detail Modal  */}
       <Modal
-        title="Tree Details"
+        // eslint-disable-next-line no-useless-concat
+        title={"Tree Details" + (" ") + "(" +treeSpecies+ ")"}
         visible={isModalVisible}
         onCancel={handleCancel}
         destroyOnClose
         width={1000}
+        style={{
+          textAlign: "center"
+        }}
         footer={[
           // <Button
           //   key="delete"

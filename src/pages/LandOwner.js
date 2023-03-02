@@ -156,6 +156,7 @@ function LandOwner() {
   const styles = {
     preventInlineText: {
       whiteSpace: "pre-line",
+      cursor: 'pointer',
     },
   };
 
@@ -666,11 +667,12 @@ function LandOwner() {
         </Row>
       </div>
       <Modal
+        
         title="Land Owner"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
-        width={530}
+        width={600}
         destroyOnClose
         footer={[
           <Button
@@ -746,16 +748,41 @@ function LandOwner() {
             Cancel
           </Button>,
         ]}
-      >
-        <div style={{ marginBottom: "40px" }}>
+        >
+        <div style={{borderRadius:'10px',padding:'10px'}}>
+        <div style={{ marginBottom: "100px" }}>
           <Row gutter={[16, 16]}>
-            <Col style={{ textAlign: "center" }}>
-              <Image width={200} src={modaldata.profImage} />
+            <Col>
+              {/* <Image width={100} src={modaldata.profImage} /> */}
+              <Avatar.Group>
+              <div style={{height:'40px',width:'40px',marginRight:'200px',marginBottom:'100px',marginLeft:"20px",marginTop:"20px"}}>
+              <Avatar
+               className="shape-avatar"
+               shape="circle"
+                size={200}
+                src={modaldata.profImage}
+              ></Avatar>
+              </div>
+            
+              <div className="avatar-info">
+               <Title style={styles.preventInlineText} level={5}></Title>
+                <p style={styles.preventInlineText} ></p>
+              </div>
+              </Avatar.Group>
             </Col>
-            <Col
+            <Col>
+              <div style={{fontSize:'40px' , fontWeight: 'bold',fontFamily:'Cursive',marginTop:'30px',marginLeft:'20px',width:"233px" }}>
+                <b></b>  {modaldata.landOwnerName}
+              </div>
+            </Col>
+          </Row>
+        </div>
+        <div>
+          <Row>
+          <Col
               md={12}
               xs={24}
-              style={{ fontSize: "14px", textAlign: "left", width: "270px" }}
+              style={{  marginTop: "10px",fontSize: "16px", textAlign: "left", width: "270px",marginLeft:'10px',fontFamily:'Cursive',marginRight:"20px" }}
             >
               <div>
                 <b>Register Number</b> : {modaldata.registerNumber}
@@ -782,23 +809,32 @@ function LandOwner() {
                 <b>Bank Account Number</b> : {modaldata.bankAccountNumber}
               </div>
             </Col>
-          </Row>
-        </div>
-        <div style={{ marginBottom: "40px" }}>
-          <Row gutter={[22, 22]}>
             <Col
               style={{
                 marginTop: "0px",
                 fontSize: "14px",
                 textAlign: "left",
-                width: "260px",
+                width: "230px",
               }}
             >
               {/* <Image width={200} src={modaldata.qrImage} logoImage={elzianLogo} /> */}
               <div ref={qrPrintRef}>
                 <QRCode value={modaldata.qrImage} qrStyle='squares' size={200} logoImage={elzianLogo} logoWidth={30} logoHeight={30} preview={true} removeQrCodeBehindLogo={true} />
               </div>
+              <Row>
+              <Button style={{marginLeft:'65px'}} key="back"  onClick={handleQRDownload}>
+                  Download
+              </Button>
+          </Row>
             </Col>
+            
+          </Row>
+          
+          
+        </div>
+        <div style={{ marginBottom: "0px",marginLeft:"10px" }}>
+          <Row gutter={[22, 22]}>
+            
             <Col>
               <Row
                 style={{
@@ -809,26 +845,23 @@ function LandOwner() {
                   marginLeft: "0px",
                 }}
               >
-                <div>
-                  <b>{modaldata.landOwnerName} QR CODE</b>
-                </div>
+                
               </Row>
               <Row
                 style={{
-                  marginBottom: "40px",
+                  marginBottom: "20px",
                   fontSize: "16px",
                   textAlign: "center",
-                  marginLeft: "0px",
+                  marginLeft:"30px"
+                  
                 }}
-              >
+                >
                 {/* <Button key="back" type="primary" onClick={(e) => download(e)}>
                   Download
                 </Button> */}
-                <Button key="back" type="primary" onClick={handleQRDownload}>
-                  Download
-                </Button>
+                
                 <Button
-                  type="link"
+                  style={{marginTop:"10px",marginRight:"100px",marginLeft:"35px"}}
                   className="ant-edit-link"
                   onClick={() => {
                     showContract();
@@ -838,6 +871,7 @@ function LandOwner() {
                 >
                   View Contract
                 </Button>
+                
                 <Modal
                   width="800px"
                   title="LandOwner Contract Details"
@@ -852,7 +886,7 @@ function LandOwner() {
                       Download
                     </Button>,
                   ]}
-                >
+                 >
                   <div style={{ marginBottom: "40px", marginLeft: "60px", marginRight: "60px" }}>
                     <Row gutter={[16, 16]}>
                       <Col
@@ -933,8 +967,7 @@ function LandOwner() {
                     </Row>
                   </div>
                 </Modal>
-                <Button
-                  type="link"
+                <Button style={{marginTop:'10px',marginLeft:"20px"}}
                   className="ant-edit-link"
                   onClick={showIdCard}
                 >
@@ -1000,7 +1033,10 @@ function LandOwner() {
             </Col>
           </Row>
         </div >
+        </div>
       </Modal >
+
+
       <Modal
         title="Update Land Owner"
         visible={isUpdateModalVisible}

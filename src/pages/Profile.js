@@ -16,7 +16,6 @@ import {
   Col,
   Card,
   Button,
-  Descriptions,
   Avatar,
   Upload,
   // message,
@@ -26,9 +25,6 @@ import {
 } from "antd";
 
 import {
-  FacebookOutlined,
-  TwitterOutlined,
-  InstagramOutlined,
   VerticalAlignTopOutlined,
 } from "@ant-design/icons";
 
@@ -38,6 +34,11 @@ import project1 from "../assets/images/EveningTree.png";
 import project2 from "../assets/images/DaveStarbelly.png";
 import project3 from "../assets/images/Valinor.png";
 import DataService from "../services/data-service";
+import { MdEmail, MdFacebook, MdLocationOn, MdPhone } from "react-icons/md";
+import { MdAdminPanelSettings } from "react-icons/md";
+import TwitterIcon from '@mui/icons-material/Twitter';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 function Profile() {
   // const [imageURL, setImageURL] = useState(false);
@@ -248,29 +249,168 @@ function Profile() {
       <div
         className="profile-nav-bg"
         style={{ backgroundImage: "url(" + BgProfile + ")" }}
-      ></div>
-
+      >
+        {" "}
+      </div>
       <Card
         className="card-profile-head"
-        bodyStyle={{ display: "none" }}
-        title={
-          <Row justify="space-between" align="middle" gutter={[24, 0]}>
-            <Col span={24} md={12} className="col-info">
-              <Avatar.Group>
-                <Avatar size={74} shape="square" src={profImage} />
-
-                <div className="avatar-info">
-                  <h4 className="font-semibold m-0">{fullName}</h4>
-                  <p>{userName}</p>
-                </div>
-              </Avatar.Group>
+        bordered={false}
+        // title={<h6 className="font-semibold m-0">Profile Information</h6>}
+        // extra={<Button type="link">{pencil}</Button>}
+        bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
+      >
+        {/* <Avatar size={170} shape="circle" src={profImage}
+          style={{marginTop:"20px", marginLeft:"30px"}}/> */}
+        <div style={{ borderRadius: "10px", padding: "10px" }}>
+          <Row gutter={[16, 16]}>
+            <Col>
+              <div
+                style={{
+                  marginLeft: "50px",
+                  marginTop: "40px",
+                  marginRight: "10px",
+                }}
+              >
+                <Avatar
+                  shape="circle"
+                  style={{ borderTopLeftRadius: 1 }}
+                  size={240}
+                  src={profImage}
+                ></Avatar>
+              </div>
             </Col>
+            <Col md={12} xs={24}>
+              <div
+                style={{
+                  fontSize: "35px",
+                  textAlign: "justify",
+                  fontWeight: "bold",
+                  fontFamily: "Cursive",
+                  marginTop: "20px",
+                  marginLeft: "20px",
+                }}
+              >
+                {fullName}
+              </div>
+              <div
+                style={{
+                  fontSize: "20px",
+                  fontFamily: "Cursive",
+                  marginTop: "5px",
+                  marginLeft: "20px",
+                  textAlign: "justify",
+                }}
+              >
+                <b></b>
+                <MdAdminPanelSettings /> {userType}
+              </div>
+              <div
+                style={{
+                  fontSize: "20px",
+                  fontFamily: "Cursive",
+                  marginTop: "20px",
+                  marginLeft: "20px",
+                  textAlign: "justify",
+                }}
+              >
+                <b></b> {profileInfo}
+              </div>
+            </Col>
+          </Row>
+        </div>
+        <div>
+          <Row>
+            <Col
+              style={{
+                marginTop: "30px",
+                fontSize: "20px",
+                textAlign: "left",
+                marginLeft: "50px",
+                fontFamily: "Cursive",
+                marginRight: "50px",
+              }}
+            >
+              <div>
+                <AccountCircleIcon /> : {userName}
+              </div>
+            </Col>
+            <Col
+              style={{
+                marginTop: "30px",
+                fontSize: "20px",
+                marginLeft: "50px",
+                textAlign: "left",
+                fontFamily: "Cursive",
+                marginRight: "50px",
+              }}
+            >
+              <div>
+                <MdPhone /> : {mobile}
+              </div>
+            </Col>
+            <Col
+              style={{
+                marginTop: "30px",
+                fontSize: "20px",
+                marginLeft: "50px",
+                marginRight: "50px",
+                textAlign: "left",
+                fontFamily: "Cursive",
+              }}
+            >
+              <div>
+                <MdEmail /> : {email}
+              </div>
+            </Col>
+            <Col
+              style={{
+                marginTop: "30px",
+                fontSize: "20px",
+                marginLeft: "50px",
+                textAlign: "left",
+                fontFamily: "Cursive",
+              }}
+            >
+              <div>
+                <MdLocationOn /> : {location}
+              </div>
+            </Col>
+          </Row>
+          <Row
+            style={{
+              marginTop: "35px",
+              marginLeft: "50px",
+              marginBottom: "10px",
+            }}
+          >
+            <div>
+              <a href={twitterLink} target="_blank" rel="noopener noreferrer">
+                <TwitterIcon />
+              </a>
+              <a
+                href={facebookLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ marginTop: "25px", marginLeft: "50px" }}
+              >
+                <MdFacebook size={26} style={{ color: "#344e86" }} />
+              </a>
+              <a
+                href={instragramLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ marginTop: "25px", marginLeft: "50px" }}
+              >
+                <InstagramIcon style={{ color: "#e1306c" }} />
+              </a>
+            </div>
+
             <Col
               span={24}
               md={12}
               style={{
                 display: "flex",
-                alignItems: "center",
+
                 justifyContent: "flex-end",
               }}
             >
@@ -283,8 +423,8 @@ function Profile() {
                   setupdateLocation(location);
                   setupdateFacebookLink(facebookLink);
                   setupdateTwitterLink(twitterLink);
-                  setupdateInstagramLink(instragramLink)
-                  setupdateProfileinfo(profileInfo)
+                  setupdateInstagramLink(instragramLink);
+                  setupdateProfileinfo(profileInfo);
                   setUpdateImagePath(profImage);
                   setCheckTempUpdateImagePath(profImage);
 
@@ -316,24 +456,26 @@ function Profile() {
                   autoComplete="off"
                   form={form}
                   onFieldsChange={() => {
-                    if (!updateFullname ||
+                    if (
+                      !updateFullname ||
                       !updateMobile ||
-                      !updateLocation||
-                      !updateProfileinfo||
-                      !updateTwitterLink||
-                      !updateInstagramLink||
+                      !updateLocation ||
+                      !updateProfileinfo ||
+                      !updateTwitterLink ||
+                      !updateInstagramLink ||
                       !updateFacebookLink
-
                     ) {
                       setButtonDisabled(true);
-                    }
-                    else if (form.getFieldsError().some((field) => field.errors.length > 0)) {
-                      setButtonDisabled(true)
+                    } else if (
+                      form
+                        .getFieldsError()
+                        .some((field) => field.errors.length > 0)
+                    ) {
+                      setButtonDisabled(true);
                     } else {
-                      setButtonDisabled(false)
+                      setButtonDisabled(false);
                     }
-                  }
-                  }
+                  }}
                 >
                   <Form.Item
                     name="updateFullname"
@@ -408,12 +550,10 @@ function Profile() {
                     <Input
                       type="file"
                       accept="image/*"
-                      onChange={(event) =>
-                        {setUpdateImagePath(event.target.files[0])
-                        setButtonDisabled(false)
-                        }
-                        
-                      }
+                      onChange={(event) => {
+                        setUpdateImagePath(event.target.files[0]);
+                        setButtonDisabled(false);
+                      }}
                     />
                     <br />
 
@@ -439,6 +579,7 @@ function Profile() {
                         whitespace: true,
                       },
                       { min: 5 },
+                      { max: 250 },
                     ]}
                     hasFeedback
                   >
@@ -471,18 +612,20 @@ function Profile() {
                       }
                     />
                   </Form.Item>
-                  <Form.Item name="updateFacebookLink" label="Facebook Link"
-                   rules={[
-                    {
-                      required: true,
-                      message: "Please enter Facebook Link",
-                    },
-                    {
-                      whitespace: true,
-                    },
-                    { min: 5 },
-                  ]}
-                  hasFeedback
+                  <Form.Item
+                    name="updateFacebookLink"
+                    label="Facebook Link"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter Facebook Link",
+                      },
+                      {
+                        whitespace: true,
+                      },
+                      { min: 5 },
+                    ]}
+                    hasFeedback
                   >
                     <Input
                       name="updateFacebookLink"
@@ -491,19 +634,20 @@ function Profile() {
                       }
                     />
                   </Form.Item>
-                  <Form.Item name="updateInstagramLink" label="Instragram Link"
-                  rules={[
-                    {
-                      
-                      required: true,
-                      message: "Please enter Instragram Link",
-                    },
-                    {
-                      whitespace: true,
-                    },
-                    { min: 5 },
-                  ]}
-                  hasFeedback
+                  <Form.Item
+                    name="updateInstagramLink"
+                    label="Instragram Link"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter Instragram Link",
+                      },
+                      {
+                        whitespace: true,
+                      },
+                      { min: 5 },
+                    ]}
+                    hasFeedback
                   >
                     <Input
                       name="updateInstagramLink"
@@ -516,63 +660,80 @@ function Profile() {
               </Modal>
             </Col>
           </Row>
-        }
-      ></Card>
+        </div>
+      </Card>
 
-      <Row gutter={[24, 0]}>
-        <Col span={12} offset={6} className="mb-24">
-          <Card
-            bordered={false}
-            title={<h6 className="font-semibold m-0">Profile Information</h6>}
-            className="header-solid h-full card-profile-information"
-            // extra={<Button type="link">{pencil}</Button>}
-            bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
-          >
-            <p className="text-dark">{profileInfo}</p>
-            <hr className="my-25" />
-            <Descriptions title={userType}>
-              <Descriptions.Item label="Full Name" span={3}>
-                {fullName}
-              </Descriptions.Item>
-              <Descriptions.Item label="Mobile" span={3}>
-                {mobile}
-              </Descriptions.Item>
-              <Descriptions.Item label="Email" span={3}>
-                {email}
-              </Descriptions.Item>
-              <Descriptions.Item label="Location" span={3}>
-                {location}
-              </Descriptions.Item>
-              <Descriptions.Item label="Social" span={3}>
+
+      <Card
+      bordered={false}
+        className="header-solid mb-24"
+        title={
+          <>
+            <h6 className="font-semibold">
+              OpenSea Links
+            </h6>
+          </>
+        }
+      >
+
+      <div>
+              <a 
+              href={twitterLink} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{
+                marginTop: "30px",
+                fontSize: "20px",
+                textAlign: "left",
+                marginLeft: "50px",
+                fontFamily: "Cursive",
+                marginRight: "50px",
+              }}
+              
+              >
+                <a href="https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/1004" target=" ">Oak Tree</a>
+              </a>
+
               <a
-                  href={twitterLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mx-5 px-5"
-                >
-                  <TwitterOutlined />
-                </a>
-                <a
-                  href={facebookLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mx-5 px-5"
-                >
-                  <FacebookOutlined style={{ color: "#344e86" }} />
-                </a>
-                <a
-                  href={instragramLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mx-5 px-5"
-                >
-                  <InstagramOutlined style={{ color: "#e1306c" }} />
-                </a>
-              </Descriptions.Item>
-            </Descriptions>
-          </Card>
-        </Col>
-      </Row>
+                href={facebookLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                marginTop: "30px",
+                fontSize: "20px",
+                textAlign: "left",
+                marginLeft: "50px",
+                fontFamily: "Cursive",
+                marginRight: "50px",
+              }}
+              >
+                <a href="https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/1005" target=" ">Coconut Tree</a>
+
+              </a>
+
+
+              <a
+                href={instragramLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                marginTop: "30px",
+                fontSize: "20px",
+                textAlign: "left",
+                marginLeft: "50px",
+                fontFamily: "Cursive",
+                marginRight: "50px",
+              }}
+              >
+                <a href="https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/1007" target=" ">Oak Tree 2</a>
+              </a>
+            </div>
+
+      
+
+
+      </Card>
+
       <Card
         bordered={false}
         className="header-solid mb-24"
@@ -588,9 +749,15 @@ function Profile() {
           {project.map((p, index) => (
             <Col span={24} md={12} xl={6} key={index}>
               <Card
+               hoverable
                 bordered={false}
                 className="card-project"
-                cover={<img alt="example" src={p.img} />}
+                cover={
+                  <a href="https://Google.com">
+                  <img alt="example" src={p.img} />
+                  </a>
+              }
+                
               >
                 <div className="card-tag">{p.titlesub}</div>
                 <h5>{p.title}</h5>

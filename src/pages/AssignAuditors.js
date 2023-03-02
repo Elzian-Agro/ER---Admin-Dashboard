@@ -100,7 +100,7 @@ const AssignAuditors = () => {
       responsive: ["xs"]
     },
     {
-      title: "LAND OWNER NAME",
+      title: "Land Owner Name",
       dataIndex: "name",
       key: "name",
       width: "15%",
@@ -127,7 +127,7 @@ const AssignAuditors = () => {
     },
 
     {
-      title: "CONTACT NUMBER",
+      title: "Contact Number",
       key: "contact",
       dataIndex: "contact",
       width: "15%",
@@ -140,7 +140,7 @@ const AssignAuditors = () => {
       responsive: ["sm"]
     },
     {
-      title: "LAND ADDRESS",
+      title: "Land Address",
       key: "address",
       dataIndex: "address",
       width: "15%",
@@ -152,7 +152,7 @@ const AssignAuditors = () => {
       hidden: match,
     },
     {
-      title: "ASSIGNED AUDITOR",
+      title: "Assinged Auditors",
       key: "aname",
       dataIndex: "aname",
       width: "15%",
@@ -173,7 +173,7 @@ const AssignAuditors = () => {
       responsive: ["sm"]
     },
     {
-      title: 'ASSIGN AUDITOR',
+      title: 'Assign Auditor',
       dataIndex: 'id',
       key: 'id',
       width: "15%",
