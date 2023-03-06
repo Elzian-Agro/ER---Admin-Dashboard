@@ -3,7 +3,6 @@ import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
 
 // logo
-// import ERLogo from "../../assets/logos/ER LOGO.png";
 import LifeForceLogo from "../../assets/logos/LifeForce.png";
 import ERLogoNew from "../../assets/logos/ER LOGO1.png";
 
@@ -56,6 +55,9 @@ export default function AuthHeader({ signupBg }) {
           alt="ER logo"
         />
       </div>
+
+
+
       <div className="header-col header-nav">
         <Menu mode="horizontal" defaultSelectedKeys={["1"]}>
           <Menu.Item key="1">
@@ -64,6 +66,9 @@ export default function AuthHeader({ signupBg }) {
               <span> Sign Up</span>
             </Link>
           </Menu.Item>
+
+
+
           <Menu.Item key="2">
             <Link to="/sign-in">
               {signin}
@@ -72,6 +77,9 @@ export default function AuthHeader({ signupBg }) {
           </Menu.Item>
         </Menu>
       </div>
+
+
+      
       <div className="header-col header-brand">
         {signupBg ? (
           <img

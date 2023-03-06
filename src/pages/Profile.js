@@ -95,58 +95,6 @@ function Profile() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ignored]);
 
-  // const getBase64 = (img, callback) => {
-  //   const reader = new FileReader();
-  //   reader.addEventListener("load", () => callback(reader.result));
-  //   reader.readAsDataURL(img);
-  // };
-
-  // const beforeUpload = (file) => {
-  //   const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  //   if (!isJpgOrPng) {
-  //     message.error("You can only upload JPG/PNG file!");
-  //   }
-  //   const isLt2M = file.size / 1024 / 1024 < 2;
-  //   if (!isLt2M) {
-  //     message.error("Image must smaller than 2MB!");
-  //   }
-  //   return isJpgOrPng && isLt2M;
-  // };
-
-  // const handleChange = (info) => {
-  //   if (info.file.status === "uploading") {
-  //     setLoading(false);
-  //     return;
-  //   }
-  //   if (info.file.status === "done") {
-  //     getBase64(info.file.originFileObj, (imageUrl) => {
-  //       setLoading(false);
-  //       setImageURL(false);
-  //     });
-  //   }
-  // };
-
-  // console.log(imageURL);
-
-  // const pencil = [
-  //   <svg
-  //     width="20"
-  //     height="20"
-  //     viewBox="0 0 20 20"
-  //     fill="none"
-  //     xmlns="http://www.w3.org/2000/svg"
-  //     key={0}
-  //   >
-  //     <path
-  //       d="M13.5858 3.58579C14.3668 2.80474 15.6332 2.80474 16.4142 3.58579C17.1953 4.36683 17.1953 5.63316 16.4142 6.41421L15.6213 7.20711L12.7929 4.37868L13.5858 3.58579Z"
-  //       className="fill-gray-7"
-  //     ></path>
-  //     <path
-  //       d="M11.3787 5.79289L3 14.1716V17H5.82842L14.2071 8.62132L11.3787 5.79289Z"
-  //       className="fill-gray-7"
-  //     ></path>
-  //   </svg>,
-  // ];
 
   const uploadButton = (
     <div className="ant-upload-text font-semibold text-dark">
@@ -206,13 +154,6 @@ function Profile() {
     }
   };
 
-  // const handleOk = () => {
-  //   setIsModalVisible(false);
-  // };
-
-  // const handleCancel = () => {
-  //   setIsModalVisible(false);
-  // };
 
   const showUpdateModal = () => {
     setIsUpdateModalVisible(true);
@@ -221,27 +162,7 @@ function Profile() {
   const handleUpdateCancel = () => {
     setIsUpdateModalVisible(false);
   };
-  // const layout = {
-  //   labelCol: {
-  //     span: 6,
-  //   },
-  //   wrapperCol: {
-  //     span: 16,
-  //   },
-  // };
-
-  // const validateMessages = {
-  //   required: '$"label" is required!',
-  //   types: {
-  //     email: '$"label" is not a valid email!',
-  //     number: '$"label" is not a valid number!',
-  //   },
-  // };
-
-  // const onFinish = (values) => {
-  //   console.log(values);
-  // };
-
+ 
 
 
   return (

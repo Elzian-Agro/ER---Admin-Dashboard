@@ -122,7 +122,7 @@ function Billing() {
     // };
   }, []);
 
-  //Adding Card Information.........................................
+  //Adding Card Information
 
   const addCardHandler = async (event) => {
     const CardData = {

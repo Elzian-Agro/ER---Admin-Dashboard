@@ -18,7 +18,7 @@ export default function BillingService() {
     },
   });
 
-  //Add Billing ========================================
+  //Add Billing 
   async function addBillingData(formData) {
     const data = await http
       .post(

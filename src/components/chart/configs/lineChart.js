@@ -14,11 +14,6 @@ const lineChart = {
         show: true,
       },
 
-      // markers: {
-      //     size: 2
-      //   },
-    
-  
       dataLabels: {
         enabled: false,
       },

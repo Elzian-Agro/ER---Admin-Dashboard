@@ -23,7 +23,7 @@ const openNotificationWithIcon = (type, message, title) => {
 
 export default function DataService() {
  const{getLocalRefreshToken}=Tokenservice()
-  //const [cookies, setCookie] = useCookies(["token"]); 
+  
   const {accessTokenMemory,setAccessTokenMemory}= useContext(LoginContext);
   let accessTokenMemoryTmp=accessTokenMemory;
 
@@ -57,7 +57,7 @@ export default function DataService() {
     async (err) => {
       const originalConfig = err.config;
       if (err.response.status===401) {
-      // console.log(err.response.status)
+    
         // access token expired
         if (err && !originalConfig._retry) {
           // handle infinite loop
@@ -66,9 +66,9 @@ export default function DataService() {
             const rs = await http.post("/admin/getNewAccessToken", {
               refreshToken: getLocalRefreshToken(),
             });
-            //console.log("response", rs);
+        
             const { accessToken } = rs.data;
-           // console.log("NewAccessToken", accessToken);
+        
            accessTokenMemoryTmp=accessToken;
             setAccessTokenMemory(accessTokenMemoryTmp)
            // updateNewAccessToken(accessToken);

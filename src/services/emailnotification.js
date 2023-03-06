@@ -90,21 +90,7 @@ export default function Emailnoti() {
   const AdminMail = await getAdmin();
 
   for (let index = 0; index < AdminMail.length; index++) {
-    //const element = AdminMail[index];
-    
-
-       // console.log("email Sent to" +" "+ element.email)
-    //     var templateParams = {
-    //       to_name: element.email,
-    //       from_name: "Elzian Agro",
-    //       message : props,
-    //  };
-      //  emailjs.send('service_wfb9w2h','template_aez5yxb',templateParams, 'DMhiQgPxi2zys5qiw')
-      //      .then((result) => {
-      //          console.log(result.text + element.email);
-      //      }, (error) => {
-      //          console.log(error.text);
-      //      });   
+      
   }
   
 }; 
@@ -118,33 +104,10 @@ export default function Emailnoti() {
   //const {email} = await getProfile();
   const AllAdminEmails = await getAllAdmins();
 
-  //console.log("email Sent to"+" "+email)
-    //     var templateParams = {
-    //       to_name: email,
-    //       from_name: "Elzian Agro",
-    //       message : props,
-    //  };
-      //  emailjs.send('service_wfb9w2h', 'template_aez5yxb',templateParams, 'DMhiQgPxi2zys5qiw')
-      //      .then((result) => {
-      //          console.log(result.text + email);
-      //      }, (error) => {
-      //          console.log(error.text);
-      //      });
+
 
     for (let index = 0; index < AllAdminEmails.length; index++) {
-      //const element = AllAdminEmails[index];
-      //console.log("email Sent to " +" "+ element.email)
-  //     var templateParams = {
-  //       to_name: element.email,
-  //       from_name: "Elzian Agro",
-  //       message : props,
-  //  };
-    //  emailjs.send('service_wfb9w2h', 'template_aez5yxb',templateParams, 'DMhiQgPxi2zys5qiw')
-    //      .then((result) => {
-    //          console.log(result.text + element.email);
-    //      }, (error) => {
-    //          console.log(error.text);
-    //      });
+ 
     }
 
   }

@@ -31,44 +31,15 @@ export default function SignIn() {
 
   const { AuthSignin } = AuthService();
 
-  // const openNotificationWithIcon = (type, message, title) => {
-  //   if (type === "success") {
-  //     notification[type]({
-  //       message: title,
-  //       description: message,
-  //     });
-  //   } else {
-  //     notification[type]({
-  //       message: title,
-  //       description: message,
-  //     });
-  //   }
-  // };
 
   // when validation success
   const onFinish = (values) => {
     AuthSignin(values);
-    // .then((data)=>{
-      // console.log("sign",data && data.code);
-      // setSignInError(data && data.code);
-      // openNotificationWithIcon("success", "User Registered Successfully");
-    
-    // });
-  
   };
-
-
-
 
   // when validation unsuccess
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-    // openNotificationWithIcon(
-    //   "error",
-    //   "Something Went Wrong Please Check",
-    //   "Error"
-    // );
-    
+     
   };
 
 
@@ -122,17 +93,6 @@ export default function SignIn() {
                       required: true,
                       message: "Please input your password!",
                     },
-
-                    
-                    // {
-                    //   validator: async(_, values) => {
-                    //     if (signInError === "ERR_BAD_REQUEST") {
-                    //      setSignInError("");
-                    //    throw new Error('The passwords that you entered do not match!');
-
-                    // }
-                    //     }
-                    //   },
                     
                   ]}
                   // hasFeedback

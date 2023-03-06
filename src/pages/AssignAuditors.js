@@ -38,6 +38,12 @@ const styles={
   }
 }
 
+/*
+  This Function is created for display AssignAuditor data
+  Usage: web application
+*/
+
+
 const AssignAuditors = () => {
 
   const { Option } = Select;
@@ -260,6 +266,9 @@ const AssignAuditors = () => {
     }
     
   };
+
+
+
   // assign auditor
   const updateAssignAuditorId = async (auditorId, id) => {
   
@@ -275,6 +284,8 @@ const AssignAuditors = () => {
       }
     } else {openNotificationWithIcon('warning',"Please select a auditor !","Warning")}
   }
+
+
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [setLoading] = useState(false);

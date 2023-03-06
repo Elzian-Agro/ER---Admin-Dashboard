@@ -7,10 +7,8 @@ const eChart = {
       toolbar: {
         show: false,
       },
-      // type: 'bar',
-      // height: 350,
+    
       stacked: false,
-     
       zoom: {
         enabled: false,
       }
@@ -32,8 +30,6 @@ const eChart = {
       colors: ["transparent"],
     },
 
-   
-    
     grid: {
       show: true,
       borderColor: "#ccc",
@@ -55,8 +51,6 @@ const eChart = {
         "Oct",
         "Nov",
         "Dec",
-      
-        
       ],
       labels: {
         show: true,
@@ -78,8 +72,7 @@ const eChart = {
             "#fff",
             "#fff",
             "#fff",
-            "#fff",
-            
+            "#fff", 
           ],
         },
       },

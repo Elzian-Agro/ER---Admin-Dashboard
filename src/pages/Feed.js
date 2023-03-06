@@ -30,6 +30,13 @@ const useStyles = makeStyles({
     width: "80px",
   },
 });
+
+
+
+/*
+  This Function is created for display Feed data
+  Usage: web application
+*/
 function Feed() {
   const [data, setData] = useState([]);
   const classes = useStyles();
@@ -135,7 +142,7 @@ function Feed() {
     formData.append("message", insertMessage);
     formData.append("tags", insertTag);
     formData.append("published", "Yes");
-    // console.log(formData)
+
     try {
       await addFeedData(formData);
       GetAllFeeds();
@@ -149,6 +156,8 @@ function Feed() {
       );
     }
   };
+
+
 
   //Update Feed
   const UpdateFeedHandler = async () => {

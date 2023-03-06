@@ -45,6 +45,12 @@ const Auditor = () => {
   const [contactNumber, setContactNumber] = useState([]);
   const [address, setAdress] = useState([]);
 
+
+
+/*
+  This Function is created for display Auditor data
+  Usage: web application
+*/
   const columns = [
     {
       title: "Auditor Name",

@@ -49,9 +49,9 @@ export default function FeedService() {
             const rs = await http.post("/admin/getNewAccessToken", {
               refreshToken: getLocalRefreshToken(),
             });
-            //console.log("response", rs);
+          
             const { accessToken } = rs.data;
-            //console.log("NewAccessToken", accessToken);
+           
             accessTokenMemoryTmp=accessToken;
             setAccessTokenMemory(accessTokenMemoryTmp)
             //updateNewAccessToken(accessToken);
@@ -70,12 +70,6 @@ export default function FeedService() {
     console.log(data);
   }
 
-  //Get all feeds 
-
-  // async function getFeedData() {
-  //   const data = await http.get("/feeds/").then((res) => res);
-  //   return data;
-  // }
 
   const getFeedData = useCallback (async function getFeedData() {
     const data = await http.get("/feeds").then((res) => res.data.Result);

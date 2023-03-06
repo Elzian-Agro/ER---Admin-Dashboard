@@ -164,6 +164,8 @@ function LandOwner() {
   const current = new Date();
   const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
 
+
+
   //Contract PDF download Function
   const handleDownloadPdf = async () => {
     const element = printRef.current;
@@ -174,6 +176,8 @@ function LandOwner() {
     pdf.addImage(data, 100, 0);
     pdf.save(`${modaldata.landOwnerName} Contract.pdf`);
   };
+
+
 
   // ID image download function
   const handleDownloadID = async () => {
@@ -196,6 +200,8 @@ function LandOwner() {
     }
   };
 
+
+
   //QR Code download
   const handleQRDownload = async () => {
     const element = qrPrintRef.current;
@@ -217,6 +223,8 @@ function LandOwner() {
     }
   };
 
+
+  //lanOwners Table
   const columns = [
     {
       title: "RegNo/Name/Contact",

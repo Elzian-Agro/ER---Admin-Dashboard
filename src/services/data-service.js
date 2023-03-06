@@ -114,7 +114,7 @@ export default function DataService() {
     return data[0];
   }
 
-  //update Profile========================================
+  //update Profile
   async function updateAdminDetails(admin) {
     const data = await http
       .put("/admin/updateProfile", admin)

@@ -16,6 +16,7 @@ function Footer() {
             </a>
           </div>
         </Col>
+        
         <Col xs={24} md={12} lg={12}>
           <div className="footer-menu">
             <ul>

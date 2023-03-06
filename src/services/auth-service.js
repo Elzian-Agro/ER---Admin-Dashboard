@@ -1,6 +1,5 @@
 import {useContext} from 'react';
 import axios from "axios";
-//import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 import {LoginContext} from "../components/helper/Context"
 import jwt_decode from "jwt-decode";
@@ -9,7 +8,7 @@ import {notification} from 'antd'
 export default function AuthService() {
   const {setIsLoggedIn,setUser,setAccessTokenMemory}= useContext(LoginContext);
   const history= useHistory();
-  //const [, setCookie] = useCookies(['token']);
+
 
   const openNotificationWithIcon = (type, message, title) => {
     if (type === "success") {
@@ -68,12 +67,9 @@ const http = axios.create({
         history.push("/");
       })
       .catch((err) => {console.log(err); 
-        // message.error("pleace check your credentials",3);
-        
         openNotificationWithIcon(
           "error",
           "pleace check your credentials",
-          // "The passwords that you entered do not match!"
         );
         return err;
        

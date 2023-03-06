@@ -62,9 +62,7 @@ export default function AuditorService() {
             const rs = await http.post("/admin/getNewAccessToken", {
               refreshToken: getLocalRefreshToken(),
             });
-           // console.log("response", rs);
             const { accessToken } = rs.data;
-           // console.log("NewAccessToken", accessToken);
            accessTokenMemoryTmp=accessToken;
             setAccessTokenMemory(accessTokenMemoryTmp)
            // updateNewAccessToken(accessToken);
