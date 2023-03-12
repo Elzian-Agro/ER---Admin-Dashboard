@@ -1,8 +1,6 @@
 import { useState, useEffect ,useContext} from "react";
 import email from '../../services/emailnotification';
 //import {LoginContext} from "../helper/Context"
-
-
 import {
   Row,
   Col,
@@ -16,9 +14,7 @@ import {
   Typography,
   Switch,
 } from "antd";
-
 // import { UserOutlined } from "@ant-design/icons";
-
 import { NavLink, Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import styled from "styled-components";
@@ -26,6 +22,9 @@ import service from "./../../services/data-service";
 import avtar from "../../assets/images/team-2.jpg";
 import {LoginContext} from"../helper/Context";
 
+
+
+//This part is related to the Web site header
 const ButtonContainer = styled.div`
   .ant-btn-primary {
     background-color: #1890ff;
@@ -264,14 +263,12 @@ function Header({
       const data2 = {
         values  :1,
       };
-      console.log("button value is TRUE")
       setDetails(data2);
       
     } else {
       const data2 = {
         values  :0,
       };
-      console.log("button value is FALSE")
       setDetails(data2);
     }
     

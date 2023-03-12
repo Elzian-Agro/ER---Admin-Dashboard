@@ -10,6 +10,8 @@ import { FaTree } from 'react-icons/fa';
 
 const { Footer } = Layout;
 
+
+//This part is related to the Web site authentication page footer
 export default function AuthFooter() {
   return (
     <Footer>

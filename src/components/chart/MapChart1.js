@@ -3,6 +3,11 @@ import { Typography } from "antd";
 import mapChart1 from "./configs/mapChart1";
 import { useEffect, useState } from "react";
 
+/*
+  This Function is created for display Tree species chart
+  Usage: web application
+  User: Admin
+*/
 function MapChart1(props) {
   const { Title } = Typography;
   const [data, setData] = useState([0,0,0,0,0])

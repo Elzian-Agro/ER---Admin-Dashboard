@@ -25,6 +25,8 @@ export default function AuditorService() {
   const {accessTokenMemory,setAccessTokenMemory}= useContext(LoginContext);
   let accessTokenMemoryTmp=accessTokenMemory;
 
+
+//Base URL Configuration
   const http = axios.create({
     baseURL:
     process.env.REACT_APP_BASE_URL,
@@ -34,6 +36,7 @@ export default function AuditorService() {
       "x-auth-token":accessTokenMemoryTmp
     },
   });
+
   http.interceptors.request.use(
     (config) => {
       const token = accessTokenMemoryTmp
@@ -76,18 +79,23 @@ export default function AuditorService() {
       return Promise.reject(err);
     }
   );
+
+
+  //Get Auditors Details
   async function getAuditors() {
     const data = await http.get("/users").then((res) => res.data.Result);
     return data;
   }
 
+
+  //Get Data From Calculation page
   async function getDataForCalculation() {
     const data = await http.get("/auditings/getAuditCalculation").then((res) => res.data.Result);
     return data;
   }
   
 
-
+//Update Auditors Details
   async function updateAuditors(user) {
     const data = await http
       .put("/users/updateAll/" + user.id, user)
@@ -101,6 +109,8 @@ export default function AuditorService() {
       }
   }
 
+
+  //Delete Auditors Details
   async function deleteAuditors(Id) {
     const data = await http
       .put("/users/deleteUser/" + Id, {})

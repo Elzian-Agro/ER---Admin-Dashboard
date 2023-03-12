@@ -103,6 +103,8 @@ function Profile() {
     </div>
   );
 
+
+  //QR code section
   const project = [
     {
       img: project1,
@@ -649,10 +651,6 @@ function Profile() {
                 <a href="https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/1007" target=" ">Oak Tree 2</a>
               </a>
             </div>
-
-      
-
-
       </Card>
 
       <Card

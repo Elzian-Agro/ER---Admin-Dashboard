@@ -356,6 +356,8 @@ function LandOwner() {
     },
   ];
 
+
+//map the data
   const getData = async () => {
     const res = await getLandOwners();
     setdata(

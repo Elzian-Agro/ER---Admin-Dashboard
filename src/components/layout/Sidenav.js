@@ -5,6 +5,7 @@ import logo from "../../assets/images/earth-restoration-logo.png";
 import {LoginContext} from "../helper/Context";
 
 
+//This part is related to the Web site Side-navigation 
 function Sidenav({ color }) {
   const { pathname } = useLocation();
   const page = pathname.replace("/", "");

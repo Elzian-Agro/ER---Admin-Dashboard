@@ -24,6 +24,9 @@ export default function DataService() {
   const { getLocalRefreshToken } = Tokenservice();
 
   const { accessTokenMemory, setAccessTokenMemory } = useContext(LoginContext);
+  
+  
+  //Base URL Configuration
   let accessTokenMemoryTmp = accessTokenMemory;
   const http = axios.create({
     baseURL:
@@ -76,15 +79,21 @@ export default function DataService() {
       return Promise.reject(err);
     }
   );
+
+  //Get Planted Trees
   async function getPlantedTrees() {
     const data = await http.get("/trees").then((res) => res.data.Result);
     return data;
   }
 
+
+  //Update Planted Tree
   async function updatePlantedTree(Id) {
     await http.put("/trees/updateTree/" + Id).then((res) => res);
   }
 
+
+  //Delete Planted Tree
   async function deletePlantedTree(Id) {
     const data = await http.put("/trees/deleteTree/" + Id).then((res) => res);
     console.log(
@@ -94,11 +103,15 @@ export default function DataService() {
     );
   }
 
+
+  //Get Auditors According to the ID
   async function getAuditorById(id) {
     if (!id) return;
     await http.get("/users/" + id).then((res) => res.data.Result);
   }
 
+
+  //Get Land owners According to the ID
   async function getLandOwnerById(id) {
     if (!id) return;
     const data = await http
@@ -107,6 +120,8 @@ export default function DataService() {
     return data[0].landOwnerName;
   }
 
+
+  //Get Profile data
   async function getProfile() {
     const data = await http
       .get("/admin/getProfile")

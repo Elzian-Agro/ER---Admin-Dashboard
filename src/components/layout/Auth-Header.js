@@ -2,10 +2,12 @@ import React from "react";
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
 
-// logo
+// Display the logos
 import LifeForceLogo from "../../assets/logos/LifeForce.png";
 import ERLogoNew from "../../assets/logos/ER LOGO1.png";
 
+
+//This part is related to the Web site authentication page header
 const signup = [
   <svg
     data-v-4ebdc598=""

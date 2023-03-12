@@ -38,12 +38,12 @@ const styles={
   }
 }
 
+
+
 /*
   This Function is created for display AssignAuditor data
   Usage: web application
 */
-
-
 const AssignAuditors = () => {
 
   const { Option } = Select;
@@ -105,6 +105,12 @@ const AssignAuditors = () => {
       ),
       responsive: ["xs"]
     },
+
+
+    /*
+      This is Assign Auditors table 
+      Usage:- Web application     
+    */ 
     {
       title: "Land Owner Name",
       dataIndex: "name",
@@ -207,6 +213,9 @@ const AssignAuditors = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
+
+  // map the data
   const getData = async () => {
     const res = await getLandOwnersGapCreateLastAuditorDate();
     setdata(
@@ -372,6 +381,12 @@ const AssignAuditors = () => {
 
         ]}
       >
+        
+
+        {/* 
+            This part display pop-up window
+            Usage:- web apllication
+        */}
         <Row gutter={[20, 20]}>
           <Col offset={3} md={25} xs={24}>
             <Space direction="vertical">

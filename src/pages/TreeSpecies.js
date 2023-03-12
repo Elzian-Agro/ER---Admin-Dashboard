@@ -56,6 +56,8 @@ const useStyles = makeStyles({
 
 });
 
+
+//Tree species data columns
 function TreeSpecies() {
   const classes = useStyles();
   const [data, setData] = useState([]);
@@ -213,10 +215,9 @@ function TreeSpecies() {
     },
   };
 
+
+  // store the states in the form data
   const handleAddFormSubmit = async () => {
-
-    //   // store the states in the form data
-
     const formData = new FormData();
     formData.append("plantName", plantName);
     formData.append("commonNames", commonNames);

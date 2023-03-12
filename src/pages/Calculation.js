@@ -140,7 +140,9 @@ function Calculation() {
       })
   };
 
-  //map geo-search============================================
+
+
+  //map geo-search
   function LeafletgeoSearch() {
     const map = useMap();
     useEffect(() => {
@@ -233,6 +235,8 @@ const handleCancel2 = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
+//disply invest button
   const displayButton = (invested) => {
     if (invested === true) {
       return [
@@ -278,6 +282,8 @@ const handleCancel2 = () => {
 
   const classes = useStyles();
   
+
+
 
   function DisplayPosition({ map }) {
     const [searchTreeId, setsearchTreeId] = useState();

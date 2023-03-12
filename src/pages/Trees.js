@@ -26,6 +26,8 @@ const Trees = () => {
 
   //const { admin } = userType();
 
+
+  //Tree table
   const columns = [
     {
       title: "Unit Tree Number",
@@ -78,6 +80,8 @@ const Trees = () => {
       ),
     },
   ];
+
+
 
   useEffect(() => {
     async function fetchData() {
@@ -181,7 +185,10 @@ const Trees = () => {
         </Row>
       </Content>
 
-      {/* Tree detail Modal  */}
+
+  {/* 
+    Tree data modal 
+  */}
       <Modal
         // eslint-disable-next-line no-useless-concat
         title={"Tree Details" + (" ") + "(" +treeSpecies+ ")"}

@@ -1,6 +1,7 @@
 import { Layout, Row, Col } from "antd";
 import { FaTree } from 'react-icons/fa';
 
+//This part is related to the Web site inside pages footer
 function Footer() {
   const { Footer: AntFooter } = Layout;
 

@@ -26,6 +26,8 @@ export default function DataService() {
   const { getLocalRefreshToken } = Tokenservice();
   //const [cookies] = useCookies(["token"]);
 
+
+  //Base URL Configuration
   const http = axios.create({
     baseURL:
     process.env.REACT_APP_BASE_URL,
@@ -35,6 +37,7 @@ export default function DataService() {
       "x-auth-token": accessTokenMemoryTmp,
     },
   });
+
   http.interceptors.request.use(
     (config) => {
       const token = accessTokenMemoryTmp;
@@ -79,11 +82,16 @@ export default function DataService() {
       return Promise.reject(err);
     }
   );
+
+
+  //Get Land Owners Data
   async function getLandOwners() {
     const data = await http.get("/landOwners").then((res) => res.data.Result);
     return data;
   }
 
+
+  //Get Land Owners Data According to the ID
   async function getLandOwnerById(id) {
     const data = await http
       .get("/landOwners/getSelectLandowner/" + id)
@@ -121,6 +129,8 @@ export default function DataService() {
     }
   }
 
+
+  //Delete Land Owners Data According to the ID
   async function deleteLandOwnerById(Id) {
     const data = await http
       .put("/landOwners/deleteLandowner/" + Id)
@@ -133,6 +143,8 @@ export default function DataService() {
     }
   }
 
+
+  //Update Land Owners Data According to the ID
   async function updateLandOwnerById(Id, landData) {
     const data = await http
       .put("/landOwners/updateLandowner/" + Id, landData)
@@ -145,6 +157,8 @@ export default function DataService() {
     }
   }
 
+
+  //Add new Land owners
   async function addNewLandOwner(landData) {
     const data = await http
       .post("/landOwners/add", landData)
@@ -157,6 +171,8 @@ export default function DataService() {
     }
   }
 
+
+  //Give The Land owner Approvel
   async function approveLandOwnerById(Id) {
     const data = await http
       .put("/landOwners/approveLandowner/" + Id)
@@ -170,6 +186,8 @@ export default function DataService() {
     // return data;
   }
 
+
+  //Give The Land owner unApprove
   async function unApproveLandOwnerById(Id) {
     const data = await http
       .put("/landOwners/unApproveLandowner/" + Id)

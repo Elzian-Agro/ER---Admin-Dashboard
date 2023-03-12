@@ -11,6 +11,9 @@ export default function FeedService() {
   // const [cookies] = useCookies(["token"]);
   const {accessTokenMemory,setAccessTokenMemory}= useContext(LoginContext);
   let accessTokenMemoryTmp=accessTokenMemory;
+
+
+  //Base URL Configuration
   const http = axios.create({
     baseURL:
     process.env.REACT_APP_BASE_URL,
@@ -65,25 +68,28 @@ export default function FeedService() {
       return Promise.reject(err);
     }
   );
+
+
+  //Add Feed Data
   async function addFeedData(formData) {
     const data = await http.post("/feeds/add/", formData).then((res) => res);
     console.log(data);
   }
 
-
+  //Get Feed Data
   const getFeedData = useCallback (async function getFeedData() {
     const data = await http.get("/feeds").then((res) => res.data.Result);
     return data;
     // eslint-disable-next-line
   } ,[])
 
-  
+  //Delete Feed Data
   async function deleteFeedbyId(id) {
     const data=await http.delete(`/feeds/deleteFeed/${id}`).then((res) => res);
     return data;
 
   }
-
+  //Update Feed Data
   async function updateFeedById(Id, formData) {
     const data = await http.put(`/feeds/updateFeed/${Id}`, formData).then((res) => res);
     console.log(data);

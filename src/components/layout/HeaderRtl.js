@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-
 import {
   Row,
   Col,
@@ -14,15 +13,16 @@ import {
   Typography,
   Switch,
 } from "antd";
-
 import {
   SearchOutlined,
 } from "@ant-design/icons";
-
 import { NavLink, Link } from "react-router-dom";
 import styled from "styled-components";
 import avtar from "../assets/images/team-2.jpg";
 
+
+
+//This part is related to the Web site header
 const ButtonContainer = styled.div`
   .ant-btn-primary {
     background-color: #1890ff;
