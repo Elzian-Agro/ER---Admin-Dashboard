@@ -7,8 +7,9 @@ export default function AuditorService() {
   const{getLocalRefreshToken}=Tokenservice()
   const {accessTokenMemory,setAccessTokenMemory}= useContext(LoginContext);
 
+  
+  //Base URL Configuration
   let accessTokenMemoryTmp=accessTokenMemory;
-
   const http = axios.create({
     baseURL:
     process.env.REACT_APP_BASE_URL,
@@ -61,15 +62,22 @@ export default function AuditorService() {
     }
   );
 
+
+  //Calculate between Create Last Audit Date
   async function getLandOwnersGapCreateLastAuditorDate() {
     const data = await http.get("/landOwners/getLandOwners/getLandOwnersGapCreateLastAuditorDate").then((res) => res);
     return data;
   }
 
+
+  //Get Users Details
   async function getusers() {
     const data = await http.get("/users/").then((res) => res);
     return data;
   }
+
+
+  //Update Assign Auditor
   async function assigningAuditors(id,auditorId) {
     const data = await http.put(`/landowners/updateAssignAuditorId/${id}`,{assignAuditorID: auditorId}).then((res) => res);
     return data;

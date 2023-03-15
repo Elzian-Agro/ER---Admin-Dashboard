@@ -12,7 +12,7 @@ import memberService from "../../services/getmembers";
 
 
 function EChart() {
-  const [intvesData, setIntvesData] = useState(null);
+  const [InvestorsData, setInvestorsData] = useState(null);
 
   const {
     getMonthlyUsers
@@ -23,7 +23,7 @@ function EChart() {
       const resLog = await getMonthlyUsers();
       let tempData = resLog.data.Result.map((data) =>data.activeInvestors); 
   
-      setIntvesData(tempData);
+      setInvestorsData(tempData);
     }
     getMonthlyUsersd();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -33,7 +33,7 @@ function EChart() {
   let series=[
     {
       name: "Monthly Investors",
-      data:(intvesData && intvesData) || [],
+      data:(InvestorsData && InvestorsData) || [],
       color: "#fff",
     },
   ]

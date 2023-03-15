@@ -22,6 +22,8 @@ function LineChart() {
     getLandOwnerSum,
   } = memberService();
 
+
+  //fetch the data
   useEffect(() => {
     const getAllLandsum = async () =>{
       const resLog = await getLandOwnerSum();
@@ -40,7 +42,7 @@ function LineChart() {
 /*
   This Function is created for download line chart pdf
   Usage: web application
-  User: Admin or Investor
+  User: Admin
 */
   const printRef = React.useRef();
   const handleDownloadPdf = async () => {

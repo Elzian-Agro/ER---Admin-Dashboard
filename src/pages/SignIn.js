@@ -9,7 +9,6 @@ import {
   Form,
   Input,
   Switch,
-  // notification,
 } from "antd";
 
 import AuthHeader from "../components/layout/Auth-Header";
@@ -27,10 +26,7 @@ const { Content } = Layout;
 
 export default function SignIn() {
 
-  // const [signInError, setSignInError ] = useState("");
-
   const { AuthSignin } = AuthService();
-
 
   // when validation success
   const onFinish = (values) => {

@@ -59,6 +59,8 @@ const formProps = {
     }
   },
 };
+
+
 // table code start
 const columns = [
   {
@@ -84,6 +86,8 @@ const columns = [
     dataIndex: "employed",
   },
 ];
+
+
 
 const data = [
   {
@@ -342,6 +346,9 @@ const data = [
     ),
   },
 ];
+
+
+
 // project table start
 const project = [
   {

@@ -159,6 +159,9 @@ const Auditor = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
+
+  //map the data
   const setAllData = (res) => {
     setdata(
       res.map((row) => ({
