@@ -349,7 +349,7 @@ function TreeSpecies() {
     let year1=modelData?.photosyntheticBiomassYear1?modelData.photosyntheticBiomassYear1:0;
     let year2=modelData?.photosyntheticBiomassYear2?modelData.photosyntheticBiomassYear2:0;
     let year3=modelData?.photosyntheticBiomassYear3?modelData.photosyntheticBiomassYear3:0;
-    let year4=modelData?.photosyntheticBiomassYear3?modelData.photosyntheticBiomassYear3:0;
+    let year4=modelData?.photosyntheticBiomassYear4?modelData.photosyntheticBiomassYear4:0;
 
     let data=[0,year1,year2,year3,year4];
     return data;
@@ -358,7 +358,7 @@ function TreeSpecies() {
     let year1 = modelData?.photosyntheticBiomassYear1 ? modelData.photosyntheticBiomassYear1 : 0;
     let year2 = modelData?.photosyntheticBiomassYear2 ? modelData.photosyntheticBiomassYear2 : 0;
     let year3 = modelData?.photosyntheticBiomassYear3 ? modelData.photosyntheticBiomassYear3 : 0;
-    let year4 = modelData?.photosyntheticBiomassYear3 ? modelData.photosyntheticBiomassYear3 : 0;
+    let year4 = modelData?.photosyntheticBiomassYear4 ? modelData.photosyntheticBiomassYear4 : 0;
 
     let o2ProductionYear2 = (year1 * 0.4) / 1.429;
     let o2ProductionYear1 = (year2 * 0.4) / 1.429;
@@ -373,7 +373,7 @@ function TreeSpecies() {
     let year1 = modelData?.photosyntheticBiomassYear1 ? modelData.photosyntheticBiomassYear1 : 0;
     let year2 = modelData?.photosyntheticBiomassYear2 ? modelData.photosyntheticBiomassYear2 : 0;
     let year3 = modelData?.photosyntheticBiomassYear3 ? modelData.photosyntheticBiomassYear3 : 0;
-    let year4 = modelData?.photosyntheticBiomassYear3 ? modelData.photosyntheticBiomassYear3 : 0;
+    let year4 = modelData?.photosyntheticBiomassYear4 ? modelData.photosyntheticBiomassYear4 : 0;
 
     let h2oProductionYear1 = (year1 * 100) / 1000;
     let h2oProductionYear2 = (year2 * 100) / 1000;
