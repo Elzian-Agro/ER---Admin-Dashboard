@@ -347,19 +347,19 @@ function TreeSpecies() {
   };
 
   const getPhotosynthesisBiomassChartData=()=>{
-    let year1=modelData?.photosyntheticBiomassYear1?modelData.photosyntheticBiomassYear1:0;
-    let year2=modelData?.photosyntheticBiomassYear2?modelData.photosyntheticBiomassYear2:0;
-    let year3=modelData?.photosyntheticBiomassYear3?modelData.photosyntheticBiomassYear3:0;
-    let year4=modelData?.photosyntheticBiomassYear4?modelData.photosyntheticBiomassYear4:0;
+    let year1=modelData?.photosyntheticBiomassYear1?modelData.photosyntheticBiomassYear1:36.51;
+    let year2=modelData?.photosyntheticBiomassYear2?modelData.photosyntheticBiomassYear2:84.91;
+    let year3=modelData?.photosyntheticBiomassYear3?modelData.photosyntheticBiomassYear3:494;
+    let year4=modelData?.photosyntheticBiomassYear4?modelData.photosyntheticBiomassYear4:1245.5;
 
     let data=[0,year1,year2,year3,year4];
     return data;
   }
   const CalculateAverageO2production = () => {
-    let year1 = modelData?.photosyntheticBiomassYear1 ? modelData.photosyntheticBiomassYear1 : 0;
-    let year2 = modelData?.photosyntheticBiomassYear2 ? modelData.photosyntheticBiomassYear2 : 0;
-    let year3 = modelData?.photosyntheticBiomassYear3 ? modelData.photosyntheticBiomassYear3 : 0;
-    let year4 = modelData?.photosyntheticBiomassYear4 ? modelData.photosyntheticBiomassYear4 : 0;
+    let year1 = modelData?.photosyntheticBiomassYear1 ? modelData.photosyntheticBiomassYear1 : 36.51;
+    let year2 = modelData?.photosyntheticBiomassYear2 ? modelData.photosyntheticBiomassYear2 : 84.91;
+    let year3 = modelData?.photosyntheticBiomassYear3 ? modelData.photosyntheticBiomassYear3 : 194;
+    let year4 = modelData?.photosyntheticBiomassYear4 ? modelData.photosyntheticBiomassYear4 : 394;
 
     let o2ProductionYear2 = (year1 * 0.4) / 1.429;
     let o2ProductionYear1 = (year2 * 0.4) / 1.429;
@@ -371,10 +371,10 @@ function TreeSpecies() {
   }
 
   const CalculateAverageH2Oproduction = () => {
-    let year1 = modelData?.photosyntheticBiomassYear1 ? modelData.photosyntheticBiomassYear1 : 0;
-    let year2 = modelData?.photosyntheticBiomassYear2 ? modelData.photosyntheticBiomassYear2 : 0;
-    let year3 = modelData?.photosyntheticBiomassYear3 ? modelData.photosyntheticBiomassYear3 : 0;
-    let year4 = modelData?.photosyntheticBiomassYear4 ? modelData.photosyntheticBiomassYear4 : 0;
+    let year1 = modelData?.photosyntheticBiomassYear1 ? modelData.photosyntheticBiomassYear1 : 36;
+    let year2 = modelData?.photosyntheticBiomassYear2 ? modelData.photosyntheticBiomassYear2 : 83;
+    let year3 = modelData?.photosyntheticBiomassYear3 ? modelData.photosyntheticBiomassYear3 : 100;
+    let year4 = modelData?.photosyntheticBiomassYear4 ? modelData.photosyntheticBiomassYear4 : 200;
 
     let h2oProductionYear1 = (year1 * 100) / 1000;
     let h2oProductionYear2 = (year2 * 100) / 1000;
@@ -464,7 +464,8 @@ function TreeSpecies() {
         }}>
           <Col md={12} xs={24}
           >
-            <Space direction="vertical">
+            
+            <Space direction="vertical" align="start" justify="start" style={{fontSize: "0.9em"}}>
              
               <div>
                 <b>Plant ID</b> : {modelData.plant_id}
@@ -476,16 +477,16 @@ function TreeSpecies() {
                 <b>Common Name(s)</b> : {modelData.commonNames}
               </div>
               <div>
-                <b>Botanical Name	</b> : {modelData.botanicalName}
+                <b>Botanical Name</b> : {modelData.botanicalName}
               </div>
               <div>
                 <b>Origin of species</b> : {modelData.originofSpecies}
               </div>
               <div>
-                <b>AF notation / physiognomy	</b> : {modelData.afNotationPhysiognomy}
+                <b>AF notation / physiognomy</b> : {modelData.afNotationPhysiognomy}
               </div>
               <div>
-                <b>Plant reference # on ER Plant DATABASE	</b> : {modelData.plantReference_onERPlantDatabase}
+                <b>Plant reference # on ER Plant DATABASE</b> : {modelData.plantReference_onERPlantDatabase}
               </div>
               <div>
                 <b>weightPerLeaf</b> : {modelData.weightPerLeaf}
@@ -514,7 +515,7 @@ function TreeSpecies() {
             </Space>
           </Col>
           <Col md={12} xs={24}>
-            <Space direction="vertical">
+          <Space direction="vertical" align="start" justify="start" style={{fontSize: "0.9em"}}>
               <div>
                 <b>Crown type	</b> : {modelData.crownType}
               </div>
@@ -538,10 +539,10 @@ function TreeSpecies() {
                 <b>Human uses	</b> : {modelData.humanUses}
               </div>
               <div>
-                <b>Economic Importance	</b> : {modelData.economicImportance}
+                <b>Economic Importance </b> : {modelData.economicImportance}
               </div>
               <div>
-                <b>Distribution	</b> : {modelData.distribution}
+                <b>Distribution	</b> :  {modelData.distribution}
               </div>
               <div>
                 <b>Light preferences	</b> : {modelData.lightPreferences}
