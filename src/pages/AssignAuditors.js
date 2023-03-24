@@ -260,8 +260,9 @@ const AssignAuditors = () => {
     );
   };
 
-  const openNotificationWithIcon = (type,message,title) => {
 
+  //notification
+  const openNotificationWithIcon = (type,message,title) => {
     if(type==="success"){
       notification[type]({
         message: title,
@@ -275,7 +276,6 @@ const AssignAuditors = () => {
     }
     
   };
-
 
 
   // assign auditor
@@ -318,6 +318,11 @@ const AssignAuditors = () => {
     setIsModalVisible(false);
   };
 
+
+  /*
+    create search box
+    Usage: Web Application
+  */
   const handleonChange = (e) => {
     const searchKey = e.target.value.toLowerCase();
 
@@ -325,9 +330,9 @@ const AssignAuditors = () => {
       setdata(tableData);
     } else {
       const filteredData = tableData.filter(item => {
-        return (item.landOwnerFullname.toLowerCase().includes(searchKey) ||
-          item.registerNumber.toLowerCase().includes(searchKey) ||
-          item.email.toLowerCase().includes(searchKey)
+        const lanFullname = item.landOwnerFullname ? item.landOwnerFullname.toLowerCase() : '';
+        return (
+          lanFullname.includes(searchKey)
         );
       })
       setdata(filteredData);
@@ -349,7 +354,7 @@ const AssignAuditors = () => {
                 <>
                   <Input
                     className={classes.headerSearch}
-                    placeholder="Search here..."
+                    placeholder="Search Assign Auditor..."
                     prefix={<SearchOutlined />}
                     onChange={handleonChange}
                   />
