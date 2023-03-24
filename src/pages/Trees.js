@@ -1,20 +1,43 @@
 import React, { useState, useEffect } from "react";
 import { Content } from "antd/lib/layout/layout";
-import { Table, Row, Col, Space } from "antd";
+import moment from 'moment';
 import "antd/dist/antd.css";
-import { Modal, Button, Card, Typography } from "antd";
+import {
+  Modal,
+  Button,
+  Card,
+  Input,
+  Typography,
+  Table,
+  Row,
+  Col,
+  Space
+} from "antd";
 
 import service from "./../services/data-service";
 import Map from "../components/map";
+import { SearchOutlined } from "@ant-design/icons";
+import { makeStyles } from "@mui/styles";
 
 const { Title } = Typography;
+const  useStyles = makeStyles({
+  headerSearch: {
+    width: "220px",
+    borderRadius: "7px",
+    marginRight: "10px",
+    marginLeft: "10px",
+  },
+});
 
 const Trees = () => {
+  const classes = useStyles();
   const [data, setdata] = useState([]);
   const [modaldata, setmodaldata] = useState({});
   // const [landOwnerName, setLandOwnerName] = useState();
   // const [AuditorName, setAuditorName] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [tableData, setTableData] = useState([]);
+  //const [sortedInfo, setSortedInfo] = useState({});
 
   const {
     getPlantedTrees,
@@ -25,7 +48,6 @@ const Trees = () => {
   } = service();
 
   //const { admin } = userType();
-
 
   //Tree table
   const columns = [
@@ -114,10 +136,41 @@ const Trees = () => {
           })
         )
       );
+      setTableData(
+        res.map(
+          ({
+            treeID,
+            creatorID,
+            landOwnerID,
+            landOwnerRegisterNo,
+            lifeForceUnitTreeNo,
+            treeSpecies,
+            dateofPlanting,
+            createdAt,
+            longitude,
+            latitude,
+          }) => ({
+            key: treeID,
+            treeID,
+            creatorID,
+            landOwnerID,
+            landOwnerRegisterNo,
+            lifeForceUnitTreeNo,
+            treeSpecies,
+            dateofPlanting,
+            createdAt,
+            longitude,
+            latitude,
+          })
+        )
+      );
+    
     }
+    
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   // useEffect(() => {
   //   async function fetchData() {
@@ -158,6 +211,31 @@ const Trees = () => {
 
 
   //if (!admin) return null;
+
+  /* 
+    Create search box
+    Usage: Web Application
+  */
+  const handleonChange = (e) => {
+    const searchKey = e.target.value.toLowerCase();
+    if (searchKey === "") {
+      setdata(tableData);
+    } else {
+      const filteredData = tableData.filter((item) => {
+        const unitTree = item.lifeForceUnitTreeNo ? item.lifeForceUnitTreeNo.toLowerCase() : '';
+        const landOwnerRegiNo = item.landOwnerRegisterNo ? item.landOwnerRegisterNo.toLowerCase() : '';
+        const treesSpecies = item.treeSpecies ? item.treeSpecies.toLowerCase() : '';
+        return (
+          unitTree.includes(searchKey) ||
+          landOwnerRegiNo.includes(searchKey) ||
+          treesSpecies.includes(searchKey)
+        );
+      });
+      setdata(filteredData);
+    }
+  };
+
+
   return (
     <>
       <Content>
@@ -167,9 +245,19 @@ const Trees = () => {
               bordered={false}
               className="criclebox tablespace mb-24"
               title="Trees"
+              extra={
+                <>
+                  <Input
+                    className={classes.headerSearch}
+                    placeholder="Search Planted Trees..."
+                    prefix={<SearchOutlined />}
+                    onChange={handleonChange}
+                  />
+                </>
+              }
             >
               <Table
-                dataSource={data}
+                dataSource={data.sort((a,b) =>moment(a.dateofPlanting) - moment(b.dateofPlanting))} pagination={{pageSize: 9}}
                 columns={columns}
                 onRow={(record) => {
                   return {
@@ -185,9 +273,8 @@ const Trees = () => {
         </Row>
       </Content>
 
-
-  {/* 
-    Tree data modal 
+    {/*  
+      Tree data modal 
   */}
       <Modal
         // eslint-disable-next-line no-useless-concat
