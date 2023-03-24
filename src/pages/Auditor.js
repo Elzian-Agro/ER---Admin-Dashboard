@@ -254,7 +254,6 @@ const Auditor = () => {
           item.address.toLowerCase().includes(searchKey)
         );
       });
-      console.log(filteredData);
       setdata(filteredData);
     }
   };
@@ -272,7 +271,7 @@ const Auditor = () => {
                 <>
                   <Input
                     className={classes.headerSearch}
-                    placeholder="Search here..."
+                    placeholder="Search Auditor..."
                     prefix={<SearchOutlined />}
                     onChange={handleonChange}
                   />
