@@ -578,9 +578,7 @@ function TreeSpecies() {
           className={classes.headerSearch}
           onChange={(event) => { setSearchTreeSpecies(event.target.value) }}
         />
-        <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
-          New
-        </Button>
+        <Button type="primary" onClick={showModal} icon={<PlusOutlined/>}>ADD</Button>
 
       </Box>
       <TableContainer component={Paper}>
