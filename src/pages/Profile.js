@@ -108,24 +108,27 @@ function Profile() {
   const project = [
     {
       img: project1,
-      titlesub: "Project #1",
-      title: "Evening Tree",
+      //titlesub: "Project #1",
+      title: "Oka Tree",
       description:
         "Tree in red color evening",
+        link:"https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/100"
     },
     {
       img: project2,
-      titlesub: "Project #2",
-      title: "Dave Starbelly",
+      //titlesub: "Project #2",
+      title: "Coconut Tree",
       description:
         "Friendly OpenSea Creature that enjoys long swims in the ocean.",
+        link:"https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/1005"
     },
     {
       img: project3,
-      titlesub: "Project #3",
-      title: "Two trees of Valinor",
+      //titlesub: "Project #3",
+      title: "Oka Tree two",
       description:
         "Two trees of valinor, lord of the rings.",
+        link:"https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/1007"
     },
   ];
 
@@ -208,7 +211,7 @@ function Profile() {
                   fontSize: "35px",
                   textAlign: "justify",
                   fontWeight: "bold",
-                  fontFamily: "Cursive",
+                 // fontFamily: "Cursive",
                   marginTop: "20px",
                   marginLeft: "20px",
                 }}
@@ -218,19 +221,22 @@ function Profile() {
               <div
                 style={{
                   fontSize: "20px",
-                  fontFamily: "Cursive",
+                  //fontFamily: "Cursive",
                   marginTop: "5px",
                   marginLeft: "20px",
                   textAlign: "justify",
+                  fontWeight: "bold"
                 }}
               >
                 <b></b>
                 <MdAdminPanelSettings /> {userType}
               </div>
               <div
+         
                 style={{
                   fontSize: "20px",
-                  fontFamily: "Cursive",
+                  fontWeight: "bold",
+                  //fontFamily: "Cursive",
                   marginTop: "20px",
                   marginLeft: "20px",
                   textAlign: "justify",
@@ -249,7 +255,8 @@ function Profile() {
                 fontSize: "20px",
                 textAlign: "left",
                 marginLeft: "50px",
-                fontFamily: "Cursive",
+                fontWeight: "bold",
+               // fontFamily: "Cursive",
                 marginRight: "50px",
               }}
             >
@@ -260,10 +267,11 @@ function Profile() {
             <Col
               style={{
                 marginTop: "30px",
+                fontWeight: "bold",
                 fontSize: "20px",
                 marginLeft: "50px",
                 textAlign: "left",
-                fontFamily: "Cursive",
+               // fontFamily: "Cursive",
                 marginRight: "50px",
               }}
             >
@@ -278,7 +286,8 @@ function Profile() {
                 marginLeft: "50px",
                 marginRight: "50px",
                 textAlign: "left",
-                fontFamily: "Cursive",
+                fontWeight: "bold"
+               // fontFamily: "Cursive",
               }}
             >
               <div>
@@ -291,7 +300,8 @@ function Profile() {
                 fontSize: "20px",
                 marginLeft: "50px",
                 textAlign: "left",
-                fontFamily: "Cursive",
+                fontWeight: "bold"
+               // fontFamily: "Cursive",
               }}
             >
               <div>
@@ -333,7 +343,7 @@ function Profile() {
               md={12}
               style={{
                 display: "flex",
-
+                 color: "white",
                 justifyContent: "flex-end",
               }}
             >
@@ -363,6 +373,7 @@ function Profile() {
                   });
                 }}
               >
+                
                 Update Profile
               </Button>
               <Modal
@@ -587,7 +598,7 @@ function Profile() {
       </Card>
 
 
-      <Card
+      {/* <Card
       bordered={false}
         className="header-solid mb-24"
         title={
@@ -651,7 +662,7 @@ function Profile() {
                 <a href="https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/1007" target=" ">Oak Tree 2</a>
               </a>
             </div>
-      </Card>
+      </Card> */}
 
       <Card
         bordered={false}
@@ -672,11 +683,10 @@ function Profile() {
                 bordered={false}
                 className="card-project"
                 cover={
-                  <a href="https://Google.com">
+                  <a href={p.link} target="_blank" rel="noopener noreferrer">
                   <img alt="example" src={p.img} />
-                  </a>
+                </a>
               }
-                
               >
                 <div className="card-tag">{p.titlesub}</div>
                 <h5>{p.title}</h5>
@@ -687,6 +697,7 @@ function Profile() {
                   </Col>
                 </Row>
               </Card>
+              
             </Col>
           ))}
           <Col span={24} md={12} xl={6}>
