@@ -179,7 +179,7 @@ function Calculation() {
       const arr = periNew.split(",").map((element) => {
         return Number(element);
       });
-      console.log("map",arr);
+      
       
       if (arr.length >= 6) {
         const perChunk = 2;
