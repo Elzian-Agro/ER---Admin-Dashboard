@@ -10,6 +10,7 @@
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 import { useState, useEffect } from "react";
+import { SearchOutlined } from "@ant-design/icons";
 import { useCallback } from "react";
 import Grid from "@mui/material/Grid";
 import { PlusOutlined } from "@ant-design/icons";
@@ -17,6 +18,8 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
 import { Card, Button, Modal, Form, Input, notification } from "antd";
+import Box from '@mui/material/Box';
+
 import { makeStyles } from "@mui/styles";
 // import axios from "axios";
 //import { useCookies } from "react-cookie";
@@ -55,6 +58,9 @@ function Feed() {
   const [buttonDisabled2, setButtonDisabled2] = useState(true);
   const [updateImagePath, setUpdsteImagePath] = useState();
   const [checkTempupdateImagePath, setCheckTempUpdateImagePath] = useState();
+
+  const [filterVal, setFilterVal] = useState("");
+  const [searchrVal, setSearchrVal] = useState([]);
 
   //const cookies = useCookies(["token"]);
 
@@ -110,6 +116,7 @@ function Feed() {
   const GetAllFeeds = useCallback(async () => {
     const res = await getFeedData();
     setData(res);
+    setSearchrVal(res);
   }, [getFeedData]);
   useEffect(() => {
     GetAllFeeds();
@@ -182,21 +189,35 @@ function Feed() {
     }
   };
 
+ // create saerch box
+  const handelFilter=(e)=>{
+    if(e.target.value === ''){
+      setData(searchrVal)
+    }else{
+     const filterResult = searchrVal.filter(item => item.tags.toLowerCase().includes(e.target.value.toLowerCase()))
+     setData(filterResult)
+    }
+    setFilterVal(e.target.value)
+  }
+
+
   return (
     <>
       <Grid container direction="column" spacing={4}>
         <Grid item>
-          <Grid item container justifyContent="flex-end">
-            <Grid item>
-              <Button
-                type="primary"
-                className="ant-full-box"
-                icon={<PlusOutlined />}
-                onClick={showModal}
-                style={{ color: "white" }}
-              >
-                Add Feed
-              </Button>
+        <Grid container justifyContent="space-between" alignItems="center">
+             <Grid item>
+                </Grid>
+                  <Grid item>
+                    <Box display="flex" alignItems="center">
+                      <Input
+                          placeholder="Search Feed..."
+                          style={{ borderRadius: '5px' }}
+                          prefix={<SearchOutlined />}
+                          value={filterVal}
+                          onInput={(e)=>handelFilter(e)}/>
+                        <Button type="primary" onClick={showModal} icon={<PlusOutlined/>} style={{ marginLeft: '10px' }}>Add Feed</Button>
+                    </Box>
 
               <Modal
                 title="Add New Feed"
@@ -207,7 +228,7 @@ function Feed() {
                 }}
                 destroyOnClose={true}
                 okButtonProps={{ disabled: buttonDisabled }}
-              >
+               >
                 <Form
                   {...layout}
                   form={form}
