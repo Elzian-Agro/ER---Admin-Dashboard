@@ -174,29 +174,34 @@ function Calculation() {
     let land = lands.filter((l) => l?.perimeter !== null);
     return land?.map((land) => {
       let peri = land?.perimeter;
-
+  
       const periNew = createString(peri);
       const arr = periNew.split(",").map((element) => {
         return Number(element);
       });
-
-      const perChunk = 2;
-
-      const result = arr.reduce((resultArray, item, index) => {
-        const chunkIndex = Math.floor(index / perChunk);
-        if (!resultArray[chunkIndex]) {
-          resultArray[chunkIndex] = [];
-        }
-        resultArray[chunkIndex].push(item);
-        return resultArray;
-      }, []);
-      result.map((row) => [row[1], row[0]]);
-
-
-      const greenOptions = { color: "green", opacity: "0.2" };
-      return <Polygon pathOptions={greenOptions} positions={result} />;
+      console.log("map",arr);
+      
+      if (arr.length >= 6) {
+        const perChunk = 2;
+  
+        const result = arr.reduce((resultArray, item, index) => {
+          const chunkIndex = Math.floor(index / perChunk);
+          if (!resultArray[chunkIndex]) {
+            resultArray[chunkIndex] = [];
+          }
+          resultArray[chunkIndex].push(item);
+          return resultArray;
+        }, []);
+        
+        result.map((row) => [row[1], row[0]]);
+        const greenOptions = { color: "green", opacity: "0.2" };
+        return <Polygon pathOptions={greenOptions} positions={result} />;
+      } else {
+        return null;
+      }
     });
   };
+  
 const handleCancel2 = () => {
   setTreeIdEroor(false);
   };
