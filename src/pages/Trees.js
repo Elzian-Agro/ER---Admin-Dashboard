@@ -308,7 +308,7 @@ const Trees = () => {
           <Col md={12} xs={24}>
           <Space direction="vertical">
 
-              {/* add image */}
+              {/* add image to display*/}
               <div key={10}>
                 <Image
                   width={100}
