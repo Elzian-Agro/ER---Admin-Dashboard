@@ -111,6 +111,7 @@ const Trees = () => {
             treeID,
             creatorID,
             landOwnerID,
+            landOwnerName,
             landOwnerRegisterNo,
             lifeForceUnitTreeNo,
             treeSpecies,
@@ -124,6 +125,7 @@ const Trees = () => {
             treeID,
             creatorID,
             landOwnerID,
+            landOwnerName,
             landOwnerRegisterNo,
             lifeForceUnitTreeNo,
             treeSpecies,
@@ -184,6 +186,7 @@ const Trees = () => {
     treeID,
     creatorID,
     landOwnerID,
+    landOwnerName,
     landOwnerRegisterNo,
     lifeForceUnitTreeNo,
     treeSpecies,
@@ -315,34 +318,41 @@ const Trees = () => {
                   src={imageUrl}
                 />
               </div>
+              <div key={5}>
+                landOwner Name : &nbsp;&nbsp;<b>{landOwnerName}</b>
+              </div>
+
+              <div key={3}>
+                landOwner Register No : &nbsp;&nbsp;<b>{landOwnerRegisterNo}</b>
+              </div>
+
+              <div key={4}>
+                landOwner ID : &nbsp;&nbsp;<b>{landOwnerID}</b>
+              </div>
 
               <div key={0}>
                 Tree ID : &nbsp;&nbsp;<b>{treeID}</b>
               </div>
+
               <div key={1}>
                 Tree species : &nbsp;&nbsp;<b>{treeSpecies}</b>
               </div>
+
               <div key={2}>
                 LifeForce Unit Tree No : &nbsp;&nbsp;
                 <b>{lifeForceUnitTreeNo}</b>
               </div>
-              <div key={3}>
-                landOwner Register No : &nbsp;&nbsp;<b>{landOwnerRegisterNo}</b>
-              </div>
-              <div key={4}>
-                landOwner ID : &nbsp;&nbsp;<b>{landOwnerID}</b>
-              </div>
-              {/* <div key={5}>
-                landOwner Name : &nbsp;&nbsp;<b>{landOwnerName}</b>
-              </div> */}
-
+            
               <div key={6}>
                 Auditor ID : &nbsp;&nbsp;<b>{creatorID}</b>
               </div>
+
               {/* <div key={7}>Auditor ID : &nbsp;&nbsp;<b>{getAuditorById(creatorID)}</b></div> */}
+
               <div key={8}>
                 Date of planting : &nbsp;&nbsp;<b>{dateofPlanting}</b>
               </div>
+
               <div key={9}>
                 created At : &nbsp;&nbsp;<b>{createdAt}</b>
               </div>
