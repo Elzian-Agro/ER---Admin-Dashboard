@@ -11,7 +11,8 @@ import {
   Table,
   Row,
   Col,
-  Space
+  Space,
+  Image,
 } from "antd";
 
 import service from "./../services/data-service";
@@ -33,21 +34,19 @@ const Trees = () => {
   const classes = useStyles();
   const [data, setdata] = useState([]);
   const [modaldata, setmodaldata] = useState({});
-  // const [landOwnerName, setLandOwnerName] = useState();
-  // const [AuditorName, setAuditorName] = useState();
+  //const [AuditorName, setAuditorName] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [tableData, setTableData] = useState([]);
   //const [sortedInfo, setSortedInfo] = useState({});
 
   const {
     getPlantedTrees,
-    //deletePlantedTree,
+    // deletePlantedTree,
     // updatePlantedTree,
     // getLandOwnerById,
     // getAuditorById,
   } = service();
 
-  //const { admin } = userType();
 
   //Tree table
   const columns = [
@@ -103,8 +102,6 @@ const Trees = () => {
     },
   ];
 
-
-
   useEffect(() => {
     async function fetchData() {
       const res = await getPlantedTrees();
@@ -121,6 +118,7 @@ const Trees = () => {
             createdAt,
             longitude,
             latitude,
+            imageUrl,
           }) => ({
             key: treeID,
             treeID,
@@ -133,6 +131,7 @@ const Trees = () => {
             createdAt,
             longitude,
             latitude,
+            imageUrl,
           })
         )
       );
@@ -166,12 +165,10 @@ const Trees = () => {
       );
     
     }
-    
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-
+  
   // useEffect(() => {
   //   async function fetchData() {
   //     const landOwner = await getLandOwnerById(modaldata.landOwnerID || null);
@@ -181,6 +178,7 @@ const Trees = () => {
   //   }
   //   fetchData();
   // }, [getLandOwnerById, modaldata.landOwnerID]);
+  
 
   const {
     treeID,
@@ -193,7 +191,9 @@ const Trees = () => {
     createdAt,
     longitude,
     latitude,
+    imageUrl,
   } = modaldata;
+ 
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -211,6 +211,7 @@ const Trees = () => {
 
 
   //if (!admin) return null;
+
 
   /* 
     Create search box
@@ -303,8 +304,18 @@ const Trees = () => {
           <Col md={12} xs={24}>
             <Map lat={latitude} lon={longitude} />
           </Col>
+
           <Col md={12} xs={24}>
-            <Space direction="vertical">
+          <Space direction="vertical">
+
+              {/* add image */}
+              <div key={10}>
+                <Image
+                  width={100}
+                  src={imageUrl}
+                />
+              </div>
+
               <div key={0}>
                 Tree ID : &nbsp;&nbsp;<b>{treeID}</b>
               </div>
@@ -321,7 +332,10 @@ const Trees = () => {
               <div key={4}>
                 landOwner ID : &nbsp;&nbsp;<b>{landOwnerID}</b>
               </div>
-              {/* <div key={5}>landOwner Name : &nbsp;&nbsp;<b>{landOwnerName}</b></div> */}
+              {/* <div key={5}>
+                landOwner Name : &nbsp;&nbsp;<b>{landOwnerName}</b>
+              </div> */}
+
               <div key={6}>
                 Auditor ID : &nbsp;&nbsp;<b>{creatorID}</b>
               </div>
