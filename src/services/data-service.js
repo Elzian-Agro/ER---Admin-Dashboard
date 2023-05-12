@@ -24,14 +24,14 @@ export default function DataService() {
   const { getLocalRefreshToken } = Tokenservice();
 
   const { accessTokenMemory, setAccessTokenMemory } = useContext(LoginContext);
-  
-  
+
+
   //Base URL Configuration
   let accessTokenMemoryTmp = accessTokenMemory;
   const http = axios.create({
     baseURL:
-    process.env.REACT_APP_BASE_URL,
-      
+      process.env.REACT_APP_BASE_URL,
+
     headers: {
       "Content-type": "application/json",
       "x-auth-token": accessTokenMemoryTmp,
@@ -56,7 +56,7 @@ export default function DataService() {
     },
     async (err) => {
       const originalConfig = err.config;
-      if (err.response.status===401) {
+      if (err.response.status === 401) {
         // access token expired
         if (err && !originalConfig._retry) {
           // handle infinite loop
@@ -83,9 +83,46 @@ export default function DataService() {
   //Get Planted Trees
   async function getPlantedTrees() {
     const data = await http.get("/trees").then((res) => res.data.Result);
+    console.log()
     return data;
   }
 
+  // //Get Planted Trees
+  // async function getNewRegistrations() {
+  //   const data = await http.get("/admin/displayNotification").then((res) => res.data.Result);
+  //   console.log("hi handsome")
+  //   console.log(data)
+  //   return data;
+  // }
+
+  // async function getNewRegistrations() {
+  //   const data = await http.get("/admin/displayNotification").then((res) => res.data.Result);
+  //   console.log("hiiiiiii");
+  //   console.log(data); // Print the users array in the console
+  //   return data[0];
+
+  // }
+
+  // async function getNewRegistrations() {
+  //   const data = await http.get("/admin/displayNotification").then((res) => res.data.Result);
+  //   console.log("hiiiiiii");
+  //   console.log(data);
+  // }
+
+  async function getNewRegistrations() {
+    const data = await http.get("/admin/displayNotification").then((res) => res.data.users);
+    console.log("hiiiiiii");
+    console.log(data); // Print the data object in the console
+    return data;
+  }
+
+  /* to get the newly registered auditors*/
+  async function getNewAuditorRegistrations() {
+    const data = await http.get("/auditings/getNewAuditorRegistrations").then((res) => res.data.Result);
+    console.log("facebook");
+    console.log(data); // Print the data object in the console
+    return data;
+  }
 
   //Update Planted Tree
   async function updatePlantedTree(Id) {
@@ -151,5 +188,7 @@ export default function DataService() {
     getAuditorById,
     getProfile,
     updateAdminDetails,
+    getNewRegistrations,
+    getNewAuditorRegistrations
   };
 }

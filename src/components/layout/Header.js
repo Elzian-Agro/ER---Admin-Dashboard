@@ -1,4 +1,4 @@
-import { useState, useEffect ,useContext} from "react";
+import { useState, useEffect, useContext } from "react";
 import email from '../../services/emailnotification';
 //import {LoginContext} from "../helper/Context"
 import {
@@ -20,7 +20,7 @@ import { useCookies } from "react-cookie";
 import styled from "styled-components";
 import service from "./../../services/data-service";
 import avtar from "../../assets/images/team-2.jpg";
-import {LoginContext} from"../helper/Context";
+import { LoginContext } from "../helper/Context";
 
 
 
@@ -132,43 +132,57 @@ const clockicon = [
   </svg>,
 ];
 
-const data = [
-  {
-    title: "New message from Sophie",
-    description: <>{clockicon} 2 days ago</>,
+// useEffect(() => {
+//   async function getAllNewwRegistrations() {
+//     const res = await getNewRegistrations();
+//     console.log(res)
+//     }
+//   getAllNewwRegistrations();
 
-    avatar: avtar,
-  },
-  {
-    title: "New album by Travis Scott",
-    description: <>{clockicon} 2 days ago</>,
 
-    avatar: <Avatar shape="square">{wifi}</Avatar>,
-  },
-  {
-    title: "Payment completed",
-    description: <>{clockicon} 2 days ago</>,
-    avatar: <Avatar shape="square">{credit}</Avatar>,
-  },
-];
+// }, []);
 
-const menu = (
-  <List
-    min-width="100%"
-    className="header-notifications-dropdown "
-    itemLayout="horizontal"
-    dataSource={data}
-    renderItem={(item) => (
-      <List.Item>
-        <List.Item.Meta
-          avatar={<Avatar shape="square" src={item.avatar} />}
-          title={item.title}
-          description={item.description}
-        />
-      </List.Item>
-    )}
-  />
-);
+
+
+// const data = [
+//   {
+//     title: "New message from Sophie",
+//     description: <>{clockicon} 2 days ago</>,
+
+//     avatar: avtar,
+//   },
+//   {
+//     title: "New album by Travis Scott",
+//     description: <>{clockicon} 2 days ago</>,
+
+//     avatar: <Avatar shape="square">{wifi}</Avatar>,
+//   },
+//   {
+//     title: "Payment completed",
+//     description: <>{clockicon} 2 days ago</>,
+//     avatar: <Avatar shape="square">{credit}</Avatar>,
+//   },
+// ];
+
+//const { userName, email, profImage } = await getNewRegistrations();
+
+// const menu = (
+//   <List
+//     min-width="100%"
+//     className="header-notifications-dropdown "
+//     itemLayout="horizontal"
+//     dataSource={data}
+//     renderItem={(item) => (
+//       <List.Item>
+//         <List.Item.Meta
+//           avatar={<Avatar shape="square" src={item.avatar} />}
+//           title={item.title}
+//           description={item.description}
+//         />
+//       </List.Item>
+//     )}
+//   />
+// );
 
 const logsetting = [
   <svg
@@ -253,59 +267,173 @@ function Header({
   const [sidenavType, setSidenavType] = useState("transparent");
   const [profileData, setProfileData] = useState({});
 
- // const {setIsLoggedIn,setUser}= useContext(LoginContext);
+  // const {setIsLoggedIn,setUser}= useContext(LoginContext);
 
-  const { getProfile } = service();
-  const {setDetails,getProfileNotification} = email();
+  const { getProfile, getNewRegistrations, getNewAuditorRegistrations } = service();
 
-  const emailNotificationIcon =(e)=>{
+  const { setDetails, getProfileNotification } = email();
+
+  const emailNotificationIcon = (e) => {
     if (e === true) {
       const data2 = {
-        values  :1,
+        values: 1,
       };
       setDetails(data2);
-      
+
     } else {
       const data2 = {
-        values  :0,
+        values: 0,
       };
       setDetails(data2);
     }
-    
+
   }
-  
-  async function emailNotificationProfile (){
-  
-      const value = await getProfileNotification();
-      if (value === 1) {
-        setcheck(true)
-      } else {
-        setcheck(false)
-      }  
+
+
+  async function emailNotificationProfile() {
+
+    const value = await getProfileNotification();
+    if (value === 1) {
+      setcheck(true)
+    } else {
+      setcheck(false)
+    }
   }
-  
+
+
+
   useEffect(() => window.scrollTo(0, 0), []);
+
+  // useEffect(() => {
+  //   async function getAllNewwRegistrations() {
+  //     const res = await getNewRegistrations();
+  //     console.log("header",res)
+  //     }
+  //   getAllNewwRegistrations();
+
+
+  // }, []);
+
+  // //getNewRegistrations is created for displaying notifications for newly registered investors for a given period of time
+  // const [response, setResponse] = useState([]);
+
+  //   useEffect(() => {
+  //     async function getAllNewwRegistrations() {
+  //       const res = await getNewRegistrations();
+  //       setResponse(res);
+  //     }
+  //     getAllNewwRegistrations();
+  //   }, []);
+
+  //   console.log("byeee", response);
+
+  //getNewRegistrations is created for displaying notifications for newly registered investors for a given period of time
+  const [response, setResponse] = useState([]);
+
+  useEffect(() => {
+    async function getAllNewAuditorRegistrations() {
+      const res = await getNewAuditorRegistrations();
+      setResponse(res);
+    }
+    getAllNewAuditorRegistrations();
+  }, []);
+
+  console.log("byeee", response);
+
+  // const data = [
+  //   {
+  //     title: "New message from Sophie",
+  //     description: <>{clockicon} 2 days ago</>,
+
+  //     avatar: avtar,
+  //   },
+  //   {
+  //     title: "New album by Travis Scott",
+  //     description: <>{clockicon} 2 days ago</>,
+
+  //     avatar: <Avatar shape="square">{wifi}</Avatar>,
+  //   },
+  //   {
+  //     title: "Payment completed",
+  //     description: <>{clockicon} 2 days ago</>,
+  //     avatar: <Avatar shape="square">{credit}</Avatar>,
+  //   },
+  // ];
+
+  // const data = response.map((item) => {
+  //   return {
+  //     //name: item.userName,
+  //     title: `${item.userName} registered as an ${item.userType}`,
+
+  //     description: `on ${item.createdAt.substring(0, 10)}`,
+
+  //     avatar: avtar
+  //   };
+  // });
+
+  // const data = response.map((item) => {
+
+  //   return {
+
+
+  //     title: `${item.userName} registered through ${item.email} as a ${item.userType}`,
+
+  //     description: `on ${item.createdAt.substring(0, 10)}`,
+
+  //     avatar: avtar
+  //   };
+  // });
+
+  const data = response.length === 0 ? [
+    {
+      title: "You have no new notifications!!!"
+    }
+  ] : response.map((item) => {
+    return {
+      title: `${item.userName} registered through ${item.email} as a ${item.userType}`,
+      description: `on ${item.createdAt.substring(0, 10)}`,
+      avatar: avtar
+    };
+  });
+
+
+  const menu = (
+    <List
+      min-width="100%"
+      className="header-notifications-dropdown "
+      itemLayout="horizontal"
+      dataSource={data}
+      renderItem={(item) => (
+        <List.Item>
+          <List.Item.Meta
+            avatar={<Avatar shape="square" src={item.avatar} />}
+            title={item.title}
+
+            description={item.description}
+          />
+        </List.Item>
+      )}
+    />
+  );
+
+
+
 
   useEffect(() => {
     async function fetchData() {
       const { userName, email, profImage } = await getProfile();
       setProfileData({ userName, email, profImage });
-      // if(userName){
-      //   setIsLoggedIn(true)
-      //   setUser(userName)
-      // }else{
-      //   setIsLoggedIn(false)
-      // }
+
     }
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, []);
-  
+
 
   const showDrawer = () => setVisible(true);
   const hideDrawer = () => setVisible(false);
   const handleProfileVisible = (flag) => setProfileVisible(flag);
-  const {setIsLoggedIn,setUser}= useContext(LoginContext);
+  const { setIsLoggedIn, setUser } = useContext(LoginContext);
   const signout = () => {
     removeCookie("token")
     setIsLoggedIn(false)
@@ -313,7 +441,7 @@ function Header({
     localStorage.removeItem("token")
     localStorage.removeItem("refreshToken")
   }
-  
+
 
   const profileMenu = (
     <List
@@ -354,9 +482,9 @@ function Header({
       </List.Item>
     </List>
   );
-    
-  const [check , setcheck] =useState();  
-  const checkedd=(e)=>{
+
+  const [check, setcheck] = useState();
+  const checkedd = (e) => {
     if (e === true) {
       setcheck(true);
     } else {
@@ -389,7 +517,7 @@ function Header({
         </Col>
 
         <Col span={24} md={18} className="header-control">
-          <Badge size="small" count={4}>
+          <Badge size="small" count={response.length}>
             <Dropdown overlay={menu} trigger={["click"]}>
               <a
                 href="#pablo"
@@ -400,7 +528,7 @@ function Header({
               </a>
             </Dropdown>
           </Badge>
-          <Button type="link" onClick={event =>{
+          <Button type="link" onClick={event => {
             emailNotificationProfile();
             showDrawer();
           }} >
@@ -413,6 +541,7 @@ function Header({
           >
             {toggler}
           </Button>
+
           <Drawer
             className="settings-drawer"
             mask={true}
@@ -491,14 +620,19 @@ function Header({
                     </Button>
                   </ButtonContainer>
                 </div>
+
                 <div className="fixed-nav mb-2">
                   <Title level={5}>Navbar Fixed </Title>
-                  <Switch onChange={(e) => handleFixedNavbar(e)} />
+                  {/* <Switch onChange={(e) => handleFixedNavbar()} /> */}
+                  <Switch onChange={(e) => handleFixedNavbar(onPress)} />
                 </div>
+
+
+
                 <div className="">
                   <Title level={5}>Email Notification</Title>
-                  <Switch onChange={(e) => emailNotificationIcon(e)} onClick={(e)=>checkedd(e)} checked={check} />
-                  
+                  <Switch onChange={(e) => emailNotificationIcon(e)} onClick={(e) => checkedd(e)} checked={check} />
+
                 </div>
               </div>
             </div>
@@ -534,9 +668,9 @@ function Header({
           </Button>
         </Col>
       </Row>
-      
+
     </>
-    
+
   );
 }
 
