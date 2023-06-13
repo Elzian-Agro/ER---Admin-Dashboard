@@ -25,7 +25,7 @@ function Calculation() {
   const [auditedTrees, setAuditedTrees] = useState([]);
   const [treeID, setTreeID] = useState([]);
   const [plants, setPlants] = useState([]);
-  const [calData, setCalData] = useState([]);
+  // const [calData, setCalData] = useState([]);
   const [lands, setLands] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [TreeIdEroor, setTreeIdEroor] = useState(false);
@@ -55,7 +55,7 @@ function Calculation() {
   });
 
   const [map, setMap] = useState(null);
-  const { getPlantedTrees, getTreeAuditingByID, getAuditedTreesOnLifeForceBlockView } = service();
+  const { getPlantedTrees, getAuditedTreesOnLifeForceBlockView } = service();
   const { getLandOwners } = LandService();
   const { getID } = AuthService();
 
@@ -190,11 +190,11 @@ function Calculation() {
       const res = await getPlantedTrees();
       setPlants(res);
       console.log("getPlantedTrees", res);
-
     }
-    getAllPlants();
 
-  }, []);
+    getAllPlants();
+  }, [getPlantedTrees]); // Add getPlantedTrees to the dependency array
+
 
 
 
@@ -239,16 +239,16 @@ function Calculation() {
 
       for (let i = 0; i < auditedTrees.length; i++) {
         const item = auditedTrees[i];
-        if (item.servicingYear == 1) {
+        if (item.servicingYear === 1) {
           setPhotosyntheticBiomassYear1(item.photoBiomass);
         }
-        else if (item.servicingYear == 2) {
+        else if (item.servicingYear === 2) {
           setPhotosyntheticBiomassYear2(item.photoBiomass);
-        } else if (item.servicingYear == 3) {
+        } else if (item.servicingYear === 3) {
 
           setPhotosyntheticBiomassYear3(item.photoBiomass);
 
-        } else if (item.servicingYear == 4) {
+        } else if (item.servicingYear === 4) {
 
           setPhotosyntheticBiomassYear4(item.photoBiomass);
         }
@@ -275,7 +275,7 @@ function Calculation() {
     }
     getAllLands();
 
-  }, []);
+  }, [getLandOwners]);
 
   const renderPlants = (plants) => {
     let plant = plants.filter(v => v?.longitude !== null);
@@ -400,18 +400,18 @@ function Calculation() {
   };
 
 
-  //retrieve all the details for audited trees for displaying o2, h2o, photobiomass grpahs
-  useEffect(() => {
-    async function getDC() {
-      const res = await getTreeAuditingByID();
-      setCalData(res);
-      console.log("data from the getTreeAuditingByID", res);
+  // //retrieve all the details for audited trees for displaying o2, h2o, photobiomass grpahs
+  // useEffect(() => {
+  //   async function getDC() {
+  //     const res = await getTreeAuditingByID();
+  //     setCalData(res);
+  //     console.log("data from the getTreeAuditingByID", res);
 
 
-    }
-    getDC();
+  //   }
+  //   getDC();
 
-  }, []);
+  // }, [getTreeAuditingByID]);
 
 
 
@@ -620,7 +620,7 @@ function Calculation() {
             <Col md={12} xs={24}>
               <Card bordered={false} className="criclebox h-full">
 
-                {!(auditedTrees.length == 0) && <MapChart1 data={getPhotosynthesisBiomassChartData} />}
+                {!(auditedTrees.length === 0) && <MapChart1 data={getPhotosynthesisBiomassChartData} />}
                 {/* <MapChart1 data={getPhotosynthesisBiomassChartData} /> */}
 
 
@@ -629,7 +629,7 @@ function Calculation() {
 
             <Col md={12} xs={24}>
               <Card bordered={false} className="criclebox h-full">
-                {!(auditedTrees.length == 0) && <MapChart2 data1={CalculateAverageH2Oproduction} data2={CalculateAverageO2production} />}
+                {!(auditedTrees.length === 0) && <MapChart2 data1={CalculateAverageH2Oproduction} data2={CalculateAverageO2production} />}
 
               </Card>
             </Col>
