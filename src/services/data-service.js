@@ -80,34 +80,37 @@ export default function DataService() {
     }
   );
 
-  //Get Planted Trees
+
+  //retrieve all audited trees from audintings table and trees table on treeID for displaying o2, h2o and photobiomass graphs in the Calculaitons.js
+  async function getTreeAuditingByID(id) {
+    const data = await http.get(`/trees/getTreeAuditingByID/${id}`).then((res) => res.data.Result);
+    console.log("getTreeAuditingByID in services")
+    console.log("getTreeAuditingByID in services", data)
+    return data;
+
+  }
+
+
+  //retrieve all planted trees for lifeforce block view
   async function getPlantedTrees() {
     const data = await http.get("/trees").then((res) => res.data.Result);
-    console.log()
+    console.log(data)
     return data;
   }
 
-  // //Get Planted Trees
-  // async function getNewRegistrations() {
-  //   const data = await http.get("/admin/displayNotification").then((res) => res.data.Result);
-  //   console.log("hi handsome")
+  // //retrieve all audietd trees for lifeforce block view(landownes+trees+auditings)
+  // async function getAuditedTreesOnLifeForceBlockView() {
+  //   const data = await http.get("/trees/getAuditedTreesOnLifeForceBlockView").then((res) => res.data.Result);
   //   console.log(data)
   //   return data;
   // }
 
-  // async function getNewRegistrations() {
-  //   const data = await http.get("/admin/displayNotification").then((res) => res.data.Result);
-  //   console.log("hiiiiiii");
-  //   console.log(data); // Print the users array in the console
-  //   return data[0];
+  async function getAuditedTreesOnLifeForceBlockView(Id) {
+    const data = await http.get(`/trees/getAuditedTreesOnLifeForceBlockView/${Id}`).then((res) => res);
 
-  // }
+    return data;
 
-  // async function getNewRegistrations() {
-  //   const data = await http.get("/admin/displayNotification").then((res) => res.data.Result);
-  //   console.log("hiiiiiii");
-  //   console.log(data);
-  // }
+  }
 
   async function getNewRegistrations() {
     const data = await http.get("/admin/displayNotification").then((res) => res.data.users);
@@ -119,8 +122,7 @@ export default function DataService() {
   /* to get the newly registered auditors*/
   async function getNewAuditorRegistrations() {
     const data = await http.get("/auditings/getNewAuditorRegistrations").then((res) => res.data.Result);
-    console.log("facebook");
-    console.log(data); // Print the data object in the console
+
     return data;
   }
 
@@ -189,6 +191,8 @@ export default function DataService() {
     getProfile,
     updateAdminDetails,
     getNewRegistrations,
-    getNewAuditorRegistrations
+    getNewAuditorRegistrations,
+    getTreeAuditingByID,
+    getAuditedTreesOnLifeForceBlockView
   };
 }
