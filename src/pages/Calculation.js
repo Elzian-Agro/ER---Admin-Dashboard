@@ -64,7 +64,6 @@ function Calculation() {
   }
 
   const getPhotosynthesisBiomassChartData = () => {
-
     let year1 = photosyntheticBiomassYear1 ? photosyntheticBiomassYear1 : null;
     let year2 = photosyntheticBiomassYear2 ? photosyntheticBiomassYear2 : null;
     let year3 = photosyntheticBiomassYear3 ? photosyntheticBiomassYear3 : null;
@@ -91,14 +90,12 @@ function Calculation() {
       setO2ProductionYear2(null)
     } else {
       setO2ProductionYear2((photosyntheticBiomassYear2 * 0.4) / 1.429)
-
     }
 
     if (photosyntheticBiomassYear3 == null) {
       setO2ProductionYear3(null)
     } else {
       setO2ProductionYear3((photosyntheticBiomassYear3 * 0.4) / 1.429)
-
     }
 
 
@@ -119,6 +116,14 @@ function Calculation() {
     return o2Production;
   }
 
+  const reset = () => {
+    setPhotosyntheticBiomassYear1(null);
+    setPhotosyntheticBiomassYear2(null);
+    setPhotosyntheticBiomassYear3(null);
+    setPhotosyntheticBiomassYear4(null);
+  }
+
+
   const CalculateAverageH2Oproduction = () => {
     // let year1 = photosyntheticBiomassYear1 ? photosyntheticBiomassYear1 : null;
     // let year2 = photosyntheticBiomassYear2 ? photosyntheticBiomassYear2 : null;
@@ -131,6 +136,8 @@ function Calculation() {
     // let h2oProductionYear2 = (year2 * 100) / 1000;
     // let h2oProductionYear3 = (year3 * 100) / 1000;
     // let h2oProductionYear4 = (year4 * 100) / 1000;
+
+
 
     if (photosyntheticBiomassYear1 == null) {
       setH2oProductionYear1(null)
@@ -166,23 +173,55 @@ function Calculation() {
     return h2oProduction;
   }
 
-  const showModal = (item, invested) => {
+  const getAuditedTreesOnLifeForceBlockViewNewFunction = async (Id) => {
+    reset()
+    const res = await getAuditedTreesOnLifeForceBlockView(Id);
+    console.log("HIIII", res.data.Result)
+    setAuditedTrees(res.data.Result)
+    console.log(auditedTrees)
+    if (auditedTrees.length > 0) {
 
+      for (let i = 0; i < auditedTrees.length; i++) {
+        const item = auditedTrees[i];
+
+        if (item.servicingYear === 1) {
+          setPhotosyntheticBiomassYear1(item.photoBiomass);
+        }
+        else if (item.servicingYear === 2) {
+          setPhotosyntheticBiomassYear2(item.photoBiomass);
+        } else if (item.servicingYear === 3) {
+
+          setPhotosyntheticBiomassYear3(item.photoBiomass);
+
+        } else if (item.servicingYear === 4) {
+
+          setPhotosyntheticBiomassYear4(item.photoBiomass);
+        }
+
+      }
+    }
+    else {
+      setPhotosyntheticBiomassYear1(null);
+      setPhotosyntheticBiomassYear2(null);
+      setPhotosyntheticBiomassYear3(null);
+      setPhotosyntheticBiomassYear4(null);
+
+    }
+  }
+
+
+
+  const showModal = (item, invested) => {
     setInvested(invested);
     setItem(item);
     setTreeID(item.treeID);
-
     setTimeout(() => {
       setIsModalVisible(true);
     }, 200);
 
     console.log("viewed tree:", item);
     console.log("Invested:", invested);
-
-
   };
-
-
 
   //setPlants
   useEffect(() => {
@@ -191,7 +230,6 @@ function Calculation() {
       setPlants(res);
       console.log("getPlantedTrees", res);
     }
-
     getAllPlants();
   }, [getPlantedTrees]); // Add getPlantedTrees to the dependency array
 
@@ -230,41 +268,7 @@ function Calculation() {
   //   getAllPlants();
   // }, []);
 
-
-
-  const getAuditedTreesOnLifeForceBlockViewNewFunction = async (Id) => {
-    const res = await getAuditedTreesOnLifeForceBlockView(Id);
-    setAuditedTrees(res.data.Result)
-    if (auditedTrees.length > 0) {
-
-      for (let i = 0; i < auditedTrees.length; i++) {
-        const item = auditedTrees[i];
-        if (item.servicingYear === 1) {
-          setPhotosyntheticBiomassYear1(item.photoBiomass);
-        }
-        else if (item.servicingYear === 2) {
-          setPhotosyntheticBiomassYear2(item.photoBiomass);
-        } else if (item.servicingYear === 3) {
-
-          setPhotosyntheticBiomassYear3(item.photoBiomass);
-
-        } else if (item.servicingYear === 4) {
-
-          setPhotosyntheticBiomassYear4(item.photoBiomass);
-        }
-      }
-
-
-
-    }
-    else {
-      setPhotosyntheticBiomassYear1();
-      setPhotosyntheticBiomassYear2();
-      setPhotosyntheticBiomassYear3();
-      setPhotosyntheticBiomassYear4();
-    }
-  }
-  getAuditedTreesOnLifeForceBlockViewNewFunction(treeID)
+  // getAuditedTreesOnLifeForceBlockViewNewFunction(treeID)
 
   //setLands
   useEffect(() => {
@@ -293,22 +297,24 @@ function Calculation() {
             mouseover: (event) => event.target.openPopup(),
             mouseout: (event) => event.target.closePopup(),
             click: (e) => {
+              getAuditedTreesOnLifeForceBlockViewNewFunction(treeID)
               showModal(item, invested, isExpired);
+
             },
+
           }}
           position={[item?.latitude, item?.longitude]}
           icon={(isExpired) ? (markerIconGold) : (item?.investment) ? (markerIconGreen) : (markerIconSilver)}>
           <Popup>
             <h1>{item.treeSpecies}</h1>
             <h1>{item.treeID}</h1>
+
           </Popup>
         </Marker>
 
       )
     })
   };
-
-
 
   //map geo-search
   function LeafletgeoSearch() {
@@ -406,16 +412,10 @@ function Calculation() {
   //     const res = await getTreeAuditingByID();
   //     setCalData(res);
   //     console.log("data from the getTreeAuditingByID", res);
-
-
   //   }
   //   getDC();
 
   // }, [getTreeAuditingByID]);
-
-
-
-
 
   //disply invest button
   const displayButton = (invested) => {
@@ -464,13 +464,8 @@ function Calculation() {
           }
         })
         .catch((err) => console.log(err.message));
-
-
     }
-
-
   };
-
 
   const useStyles = makeStyles({
     headerSearch: {
@@ -583,6 +578,8 @@ function Calculation() {
         {renderLand(lands)}
 
         <Modal
+
+
           title={[<b>{item?.treeSpecies} </b>, <br />, "( ", item?.treeID, " )"]}
           visible={isModalVisible}
           onCancel={handleCancel}
