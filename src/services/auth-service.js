@@ -1,13 +1,13 @@
-import {useContext} from 'react';
+import { useContext } from 'react';
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import {LoginContext} from "../components/helper/Context"
+import { LoginContext } from "../components/helper/Context"
 import jwt_decode from "jwt-decode";
-import {notification} from 'antd'
+import { notification } from 'antd'
 
 export default function AuthService() {
-  const {setIsLoggedIn,setUser,setAccessTokenMemory}= useContext(LoginContext);
-  const history= useHistory();
+  const { setIsLoggedIn, setUser, setAccessTokenMemory } = useContext(LoginContext);
+  const history = useHistory();
 
 
   const openNotificationWithIcon = (type, message, title) => {
@@ -25,58 +25,115 @@ export default function AuthService() {
   };
 
 
-//Base URL Configuration
-const http = axios.create({
-  baseURL: 
-  process.env.REACT_APP_BASE_URL,
-  
-  headers: {
-    "Content-type": "application/json",
-  }});
+  //Base URL Configuration
+  const http = axios.create({
+    baseURL:
+      process.env.REACT_APP_BASE_URL,
+
+    headers: {
+      "Content-type": "application/json",
+    }
+  });
 
   // signup function
   async function AuthSignup(data) {
     // destructure the data Object
-    const { Name, email, password,walletID } = data;
+    const { Name, email, password, walletID } = data;
     return http
-      .post("/admin/addUser", { userName: Name, email, password,walletID })
+      .post("/admin/addUser", { userName: Name, email, password, walletID })
       .then((res) => console.log(res.data.message))
       .catch((err) => console.log(err));
   }
 
   // signin function
+  // async function AuthSignin(data) {
+  //   // set jwt token as a cookie if signedin
+  //   const { email, password } = data;
+  //     return http
+  //     .post("/admin/login", { email, password })
+  //     .then((res) => {
+  //       setUser("");
+  //       setIsLoggedIn(false)
+  //       //setCookie("token", res.data.token);
+  //       let decoded = jwt_decode(res.data.token);
+  //       const {isAdmin,_id}=decoded;
+
+  //       if(isAdmin===1){setUser("Admin")}
+  //       else{setUser("Investor")}
+
+  //       if(_id){setIsLoggedIn(true)}
+  //       else{setIsLoggedIn(false)}
+
+  //       setAccessTokenMemory(res.data.token)
+  //       //localStorage.setItem("token", res.data.token)
+  //       localStorage.setItem("refreshToken", res.data.refreshToken)
+  //       history.push("/");
+  //     })
+  //     .catch((err) => {console.log(err); 
+  //       openNotificationWithIcon(
+  //         "error",
+  //         "pleace check your credentials",
+  //       );
+  //       return err;
+
+  //     });
+  // }
+
   async function AuthSignin(data) {
     // set jwt token as a cookie if signedin
     const { email, password } = data;
-      return http
+    console.log(email);
+    console.log(password);
+
+    return http
       .post("/admin/login", { email, password })
       .then((res) => {
         setUser("");
-        setIsLoggedIn(false)
+        setIsLoggedIn(false);
         //setCookie("token", res.data.token);
         let decoded = jwt_decode(res.data.token);
-        const {isAdmin,_id}=decoded;
-        
-        if(isAdmin===1){setUser("Admin")}
-        else{setUser("Investor")}
+        const { isAdmin, _id } = decoded;
 
-        if(_id){setIsLoggedIn(true)}
-        else{setIsLoggedIn(false)}
+        if (isAdmin === 1) {
+          setUser("Admin");
+        } else {
+          setUser("Investor");
+        }
 
-        setAccessTokenMemory(res.data.token)
-        //localStorage.setItem("token", res.data.token)
-        localStorage.setItem("refreshToken", res.data.refreshToken)
+        if (_id) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+
+        setAccessTokenMemory(res.data.token);
+        localStorage.setItem("token", res.data.token)
+        localStorage.setItem("refreshToken", res.data.refreshToken);
         history.push("/");
       })
-      .catch((err) => {console.log(err); 
-        openNotificationWithIcon(
-          "error",
-          "pleace check your credentials",
-        );
+      .catch((err) => {
+        console.log(err);
+        openNotificationWithIcon("error", "pleace check your credentials");
         return err;
-       
       });
   }
 
-  return { AuthSignin, AuthSignup };
+  function getID() {
+    const token = localStorage.getItem('token');
+    let decoded = jwt_decode(token);
+    //const { isAdmin, _id } = decoded;
+    const { _id } = decoded;
+    return _id
+  }
+
+  function getIsAdmin() {
+    const token = localStorage.getItem('token');
+    let decoded = jwt_decode(token);
+    const { isAdmin} = decoded;
+    console.log("logged in user type", isAdmin)
+    return isAdmin
+  }
+
+
+  return { AuthSignin, AuthSignup, getID, getIsAdmin };
 }

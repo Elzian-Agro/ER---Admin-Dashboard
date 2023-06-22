@@ -19,12 +19,15 @@ import { NavLink, Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import styled from "styled-components";
 import service from "./../../services/data-service";
+import AuthService from "./../../services/auth-service";
 import avtar from "../../assets/images/team-2.jpg";
 import { LoginContext } from "../helper/Context";
 
-
+//import Sidenav from "./Sidenav";
 
 //This part is related to the Web site header
+
+
 const ButtonContainer = styled.div`
   .ant-btn-primary {
     background-color: #1890ff;
@@ -270,6 +273,7 @@ function Header({
   // const {setIsLoggedIn,setUser}= useContext(LoginContext);
 
   const { getProfile, getNewAuditorRegistrations } = service();
+  const { getIsAdmin } = AuthService();
 
   const { setDetails, getProfileNotification } = email();
 
@@ -289,6 +293,8 @@ function Header({
 
   }
 
+  const isAdmin = getIsAdmin();
+  console.log(isAdmin)
 
   async function emailNotificationProfile() {
 
@@ -338,16 +344,25 @@ function Header({
   //   getAllNewAuditorRegistrations();
   // }, []);
 
+  // useEffect(() => {
+  //   async function getAllNewAuditorRegistrations() {
+  //     const res = await getNewAuditorRegistrations();
+  //     setResponse(res);
+  //   }
+  //   getAllNewAuditorRegistrations();
+  // }, [getNewAuditorRegistrations]);
+
+
   useEffect(() => {
     async function getAllNewAuditorRegistrations() {
       const res = await getNewAuditorRegistrations();
       setResponse(res);
     }
     getAllNewAuditorRegistrations();
-  }, [getNewAuditorRegistrations]);
-  
+  }, []);
 
-  console.log("byeee", response);
+
+
 
   //template already in the template
   // const data = [
@@ -372,9 +387,9 @@ function Header({
 
 
 
-
   //display all the notifications new for not considering userType
   const data = response.length === 0 ? [
+
     {
       title: "You have no new notifications!!!"
     }
@@ -382,9 +397,11 @@ function Header({
     return {
       title: `${item.userName} registered through ${item.email} as a ${item.userType}`,
       description: `on ${item.createdAt.substring(0, 10)}`,
-      avatar: avtar
+      avatar: `${item.imageUri}`
+      
     };
   });
+
 
   //display count of notifications per 'fieldagent' and 'auditor'
   // const data = [];
@@ -454,15 +471,21 @@ function Header({
 
   // }, []);
 
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const { userName, email, profImage } = await getProfile();
+  //     setProfileData({ userName, email, profImage });
+  //   }
+  //   fetchData();
+  // }, [getProfile]);
+
   useEffect(() => {
     async function fetchData() {
       const { userName, email, profImage } = await getProfile();
       setProfileData({ userName, email, profImage });
     }
     fetchData();
-  }, [getProfile]);
-  
-
+  }, []);
 
   const showDrawer = () => setVisible(true);
   const hideDrawer = () => setVisible(false);
@@ -551,7 +574,7 @@ function Header({
         </Col>
 
         <Col span={24} md={18} className="header-control">
-          <Badge size="small" count={response.length}>
+          {/* <Badge size="small" count={response.length}>
             <Dropdown overlay={menu} trigger={["click"]}>
               <a
                 href="#pablo"
@@ -561,7 +584,22 @@ function Header({
                 {bell}
               </a>
             </Dropdown>
-          </Badge>
+          </Badge> */}
+
+          {isAdmin === 1 && (
+            <Badge size="small" count={response.length}>
+              <Dropdown overlay={menu} trigger={["click"]}>
+                <a
+                  href="#pablo"
+                  className="ant-dropdown-link"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  {bell}
+                </a>
+              </Dropdown>
+            </Badge>
+          )}
+
 
           <Button type="link" onClick={event => {
             emailNotificationProfile();
@@ -569,7 +607,7 @@ function Header({
           }} >
             {logsetting}
           </Button>
-          
+
           <Button
             type="link"
             className="sidebar-toggler"
@@ -657,11 +695,21 @@ function Header({
                   </ButtonContainer>
                 </div>
 
+
+
+
+
                 <div className="fixed-nav mb-2">
                   <Title level={5}>Navbar Fixed </Title>
-                  {/* <Switch onChange={(e) => handleFixedNavbar()} /> */}
-                  <Switch onChange={(e) => handleFixedNavbar(onPress)} />
+                  <Switch onChange={(e) => handleFixedNavbar()} />
+
                 </div>
+
+                {/* <div className="fixed-nav mb-2">
+                  <Title level={5}>Navbar Fixed </Title>
+                  
+                  <Switch onChange={(e) => handleFixedNavbar(onPress)} />
+                </div> */}
 
 
                 <div className="">
