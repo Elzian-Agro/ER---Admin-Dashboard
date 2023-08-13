@@ -11,8 +11,14 @@ import { FaTree } from 'react-icons/fa';
 const { Footer } = Layout;
 
 
+
 //This part is related to the Web site authentication page footer
 export default function AuthFooter() {
+
+  const currentYear = new Date().getFullYear();
+  console.log("year", currentYear)
+
+
   return (
     <Footer>
       <Menu mode="horizontal">
@@ -42,10 +48,10 @@ export default function AuthFooter() {
 
 
         <Menu.Item key={5}>
-          {/* <Link to="https://www.linkedin.com/company/elzianagro/">{<LinkedinOutlined />}</Link>> */}
+
           <a href="https://www.linkedin.com/company/earth-restoration/">{<LinkedinOutlined />}</a>
         </Menu.Item>
-    
+
 
 
         <Menu.Item key={7}>
@@ -55,14 +61,17 @@ export default function AuthFooter() {
       </Menu>
 
 
-      
+
       <div className="copyright">
-        © 2022, developed by &nbsp;
-        <FaTree style={{color:'green'}}/>
+        © {currentYear}, developed by&nbsp;
+        <FaTree style={{ color: 'green' }} />
         <a href="https://agro.elzian.com/" className="font-weight-bold">
           ELZIAN AGRO
         </a>
       </div>
+
+
+
     </Footer>
   );
 }
