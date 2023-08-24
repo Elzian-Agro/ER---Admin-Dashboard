@@ -1,4 +1,4 @@
-// import { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Layout,
@@ -16,28 +16,49 @@ import AuthFooter from "../components/layout/Auth-Footer";
 import AuthService from "../services/auth-service";
 import signinbg from "../assets/logos/LifeForce.png";
 
-function onChange(checked) {
-  console.log(`switch to ${checked}`);
-}
 
-const signupBg = false;
-const { Title } = Typography;
-const { Content } = Layout;
 
 export default function SignIn() {
 
+  function onChange(checked) {
+    setChecked(checked);
+    console.log(`switch to ${checked}`);
+    console.log("remember me!!!!!")
+    console.log("email", email)
+    console.log("password", password)
+
+  }
+
+  const signupBg = false;
+  const { Title } = Typography;
+  const { Content } = Layout;
+
   const { AuthSignin } = AuthService();
+  const [form] = Form.useForm();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [checked, setChecked] = useState(false);
 
   // when validation success
   const onFinish = (values) => {
+    const { email, password } = values;
+    setEmail(email);
+    setPassword(password);
     AuthSignin(values);
+    if (checked === true) {
+      localStorage.setItem("email", email);
+      // localStorage.setItem("password", password);
+    }
+    else {
+      localStorage.setItem("email");
+      // localStorage.setItem("password", null);
+    }
   };
 
   // when validation unsuccess
   const onFinishFailed = (errorInfo) => {
-     
+    console.log("onFinishFailed")
   };
-
 
   return (
     <>
@@ -54,13 +75,15 @@ export default function SignIn() {
               <Title className="font-regular text-muted" level={5}>
                 Enter your email and password to sign in
               </Title>
-              
+
               <Form
+                form={form}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 layout="vertical"
                 className="row-col"
               >
+
                 <Form.Item
                   className="username"
                   label="Email"
@@ -77,7 +100,7 @@ export default function SignIn() {
                 >
                   <Input placeholder="Email" />
                 </Form.Item>
-              
+
 
                 <Form.Item
                   className="username"
@@ -89,9 +112,9 @@ export default function SignIn() {
                       required: true,
                       message: "Please input your password!",
                     },
-                    
+
                   ]}
-                  // hasFeedback
+                // hasFeedback
                 >
                   <Input type="password" placeholder="Password" />
                 </Form.Item>
@@ -102,7 +125,8 @@ export default function SignIn() {
                   valuePropName="checked"
                 >
                   <Switch
-                    defaultChecked
+                    // defaultChecked
+
                     onChange={onChange}
                     style={{ backgroundColor: "green" }}
                   />
@@ -114,7 +138,7 @@ export default function SignIn() {
                     type="primary"
                     htmlType="submit"
                     style={{ width: "100%", backgroundColor: "green" }}
-                    
+
                   >
                     SIGN IN
                   </Button>

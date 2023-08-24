@@ -17,20 +17,17 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogActions from "@mui/material/DialogActions";
 import AuthService from "./../services/auth-service";
-import axios from "axios";
-import { url } from "../slices/api";
-
 
 function Calculation() {
   const [auditedTrees, setAuditedTrees] = useState([]);
   const [treeID, setTreeID] = useState([]);
   const [plants, setPlants] = useState([]);
-  // const [calData, setCalData] = useState([]);
   const [lands, setLands] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [TreeIdEroor, setTreeIdEroor] = useState(false);
   const [item, setItem] = useState();
   const [invested, setInvested] = useState(false);
+
   const [photosyntheticBiomassYear1, setPhotosyntheticBiomassYear1] = useState([]);
   const [photosyntheticBiomassYear2, setPhotosyntheticBiomassYear2] = useState([]);
   const [photosyntheticBiomassYear3, setPhotosyntheticBiomassYear3] = useState([]);
@@ -55,9 +52,35 @@ function Calculation() {
   });
 
   const [map, setMap] = useState(null);
-  const { getPlantedTrees, getAuditedTreesOnLifeForceBlockView } = service();
+  const { getPlantedTrees, getAuditedTreesOnLifeForceBlockView, updateInvestorID, updateInvestmentValue } = service();
   const { getLandOwners } = LandService();
   const { getID } = AuthService();
+
+  //after investing updating investorID 
+  async function updateInvestorIDForTree(treeID, investorID) {
+    try {
+      const formData = {
+        investorID: investorID
+      };
+      const updatedData = await updateInvestorID(treeID, formData);
+      console.log('InvestorID updated successfully:', updatedData);
+    } catch (error) {
+      console.error('Failed to update InvestorID:', error);
+    }
+  }
+  
+  async function updateInvestmentForTree(treeID, investmentValue) {
+    try {
+      const formData = {
+        investment: investmentValue, // Make sure the property name matches the expected parameter in updateInvestmentValue()
+      };
+      const updatedData = await updateInvestmentValue(treeID, formData);
+      console.log('investment value updated successfully to 1', updatedData);
+    } catch (error) {
+      console.error('Failed to update investmentValue:', error);
+    }
+  }
+
 
   const getTreeDetails = async (item) => {
     console.log("getTreeDetails from Calculation.js", item)
@@ -74,10 +97,7 @@ function Calculation() {
   }
 
   const CalculateAverageO2production = () => {
-    // let year1 = photosyntheticBiomassYear1 ? photosyntheticBiomassYear1 : null;
-    // let year2 = photosyntheticBiomassYear2 ? photosyntheticBiomassYear2 : null;
-    // let year3 = photosyntheticBiomassYear3 ? photosyntheticBiomassYear3 : null;
-    // let year4 = photosyntheticBiomassYear4 ? photosyntheticBiomassYear4 : null;
+    
 
     if (photosyntheticBiomassYear1 == null) {
       setO2ProductionYear1(null)
@@ -106,10 +126,7 @@ function Calculation() {
 
     }
 
-    // let o2ProductionYear1 = (year1 * 0.4) / 1.429;
-    // let o2ProductionYear2 = (year2 * 0.4) / 1.429;
-    // let o2ProductionYear3 = (year3 * 0.4) / 1.429;
-    // let o2ProductionYear4 = (year4 * 0.4) / 1.429;
+    
 
     let o2Production = [0, o2ProductionYear1, o2ProductionYear2, o2ProductionYear3, o2ProductionYear4];
 
@@ -125,19 +142,7 @@ function Calculation() {
 
 
   const CalculateAverageH2Oproduction = () => {
-    // let year1 = photosyntheticBiomassYear1 ? photosyntheticBiomassYear1 : null;
-    // let year2 = photosyntheticBiomassYear2 ? photosyntheticBiomassYear2 : null;
-    // let year3 = photosyntheticBiomassYear3 ? photosyntheticBiomassYear3 : null;
-    // let year4 = photosyntheticBiomassYear4 ? photosyntheticBiomassYear4 : null;
-
-
-
-    // let h2oProductionYear1 = (year1 * 100) / 1000;
-    // let h2oProductionYear2 = (year2 * 100) / 1000;
-    // let h2oProductionYear3 = (year3 * 100) / 1000;
-    // let h2oProductionYear4 = (year4 * 100) / 1000;
-
-
+    
 
     if (photosyntheticBiomassYear1 == null) {
       setH2oProductionYear1(null)
@@ -211,75 +216,52 @@ function Calculation() {
 
 
 
+
   const showModal = (item, invested) => {
-    setInvested(invested);
+
+    setInvested(item.investment);
     setItem(item);
-    setTreeID(item.treeID);
+    setTreeID(item.treeID)
+
     setTimeout(() => {
       setIsModalVisible(true);
     }, 200);
 
     console.log("viewed tree:", item);
     console.log("Invested:", invested);
+    console.log("viewed tree treeID:", treeID);
+    console.log("investor ID :", item.investorID);
+    getAuditedTreesOnLifeForceBlockViewNewFunction(item.treeID)
   };
 
   //setPlants
   useEffect(() => {
+    
     async function getAllPlants() {
       const res = await getPlantedTrees();
       setPlants(res);
       console.log("getPlantedTrees", res);
     }
     getAllPlants();
-  }, [getPlantedTrees]); // Add getPlantedTrees to the dependency array
-
-
-
-
-  // useEffect(() => {
-  //   async function getAllPlants() {
-  //     const res = await getAuditedTreesOnLifeForceBlockView();
-  //     setPlants(res);
-
-  //     for (let i = 0; i < res.length; i++) {
-  //       const item = res[i];
-  //       console.log("for loop", item.servicingYear, item.photoBiomass);
-
-  //       if (item.servicingYear == 1) {
-  //         console.log("hello from servicingYear 1");
-  //         setPhotosyntheticBiomassYear1(item.photoBiomass);
-  //         console.log(photosyntheticBiomassYear1);
-  //       }
-  //       else if (item.servicingYear == 2) {
-  //         console.log("hello from servicingYear 2");
-  //         setPhotosyntheticBiomassYear2(item.photoBiomass);
-  //         console.log(photosyntheticBiomassYear2);
-  //       } else if (item.servicingYear == 3) {
-  //         console.log("hello from servicingYear 3");
-  //         setPhotosyntheticBiomassYear3(item.photoBiomass);
-  //         console.log(photosyntheticBiomassYear3);
-  //       } else if (item.servicingYear == 4) {
-  //         console.log("hello from servicingYear 4");
-  //         setPhotosyntheticBiomassYear4(item.photoBiomass);
-  //         console.log(photosyntheticBiomassYear4);
-  //       }
-  //     }
-  //   }
-  //   getAllPlants();
-  // }, []);
-
-  // getAuditedTreesOnLifeForceBlockViewNewFunction(treeID)
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
+  
+  
   //setLands
   useEffect(() => {
     async function getAllLands() {
       const res = await getLandOwners();
       setLands(res);
-      console.log("getAllLands", res)
+      console.log("getAllLands", res);
     }
+    
     getAllLands();
-
-  }, [getLandOwners]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
+  
+  //map geo-search
 
   const renderPlants = (plants) => {
     let plant = plants.filter(v => v?.longitude !== null);
@@ -289,7 +271,7 @@ function Calculation() {
       const diffTime = Math.abs(today - dateofPlanting);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       const isExpired = (diffDays > 1460) ? (true) : (false);
-      const invested = (item?.investment === 1) ? (true) : (false);
+      //const invested = (item?.investment === 1) ? (true) : (false);
       return (
 
         <Marker
@@ -297,26 +279,20 @@ function Calculation() {
             mouseover: (event) => event.target.openPopup(),
             mouseout: (event) => event.target.closePopup(),
             click: (e) => {
-              getAuditedTreesOnLifeForceBlockViewNewFunction(treeID)
               showModal(item, invested, isExpired);
-
             },
-
           }}
           position={[item?.latitude, item?.longitude]}
           icon={(isExpired) ? (markerIconGold) : (item?.investment) ? (markerIconGreen) : (markerIconSilver)}>
           <Popup>
             <h1>{item.treeSpecies}</h1>
             <h1>{item.treeID}</h1>
-
           </Popup>
         </Marker>
 
       )
     })
   };
-
-  //map geo-search
   function LeafletgeoSearch() {
     const map = useMap();
     useEffect(() => {
@@ -405,21 +381,9 @@ function Calculation() {
     setIsModalVisible(false);
   };
 
-
-  // //retrieve all the details for audited trees for displaying o2, h2o, photobiomass grpahs
-  // useEffect(() => {
-  //   async function getDC() {
-  //     const res = await getTreeAuditingByID();
-  //     setCalData(res);
-  //     console.log("data from the getTreeAuditingByID", res);
-  //   }
-  //   getDC();
-
-  // }, [getTreeAuditingByID]);
-
   //disply invest button
   const displayButton = (invested) => {
-    if (invested === true) {
+    if (invested === 1) {
       return [
         <Button key="delete" type="primary" disabled onClick={routeChange}>
           Invest
@@ -443,29 +407,27 @@ function Calculation() {
     }
   };
 
-
-  const routeChange = () => {
-    if (invested === false) {
-
-      getTreeDetails(item);
-      console.log(item);
-      const id = getID();
-      console.log(id)
-
-      axios
-        .post(`${url}/stripe/create-checkout-session`, {
-          item,
-          userId: id,
-
-        })
-        .then((response) => {
-          if (response.data.url) {
-            window.location.href = response.data.url;
-          }
-        })
-        .catch((err) => console.log(err.message));
+  const routeChange = async () => {
+    if (invested === 0) {
+      try {
+        getTreeDetails(item);
+        console.log("invested tree", item);
+        const id = getID();
+        console.log("investor id", id);
+        await updateInvestorIDForTree(treeID, id); // Add 'await' to ensure proper execution order
+        console.log("before investing", invested);
+      } catch (error) {
+        console.error('Failed to update investor ID:', error);
+        return;
+      }
     }
+
+    const updatedInvestmentValue = 1;
+    await updateInvestmentForTree(treeID, updatedInvestmentValue); // Add 'await' to ensure proper execution order
+    setInvested(updatedInvestmentValue);
+    console.log("after investing", invested);
   };
+
 
   const useStyles = makeStyles({
     headerSearch: {
@@ -477,16 +439,11 @@ function Calculation() {
   })
 
   const classes = useStyles();
-
-
-
-
   function DisplayPosition({ map }) {
     const [searchTreeId, setsearchTreeId] = useState();
 
     const SearchTree = (event) => {
       setsearchTreeId(event.target.value);
-
     }
 
     const checkTreeID = () => {

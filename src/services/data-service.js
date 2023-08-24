@@ -98,16 +98,16 @@ export default function DataService() {
     return data;
   }
 
-  // //retrieve all audietd trees for lifeforce block view(landownes+trees+auditings)
-  // async function getAuditedTreesOnLifeForceBlockView() {
-  //   const data = await http.get("/trees/getAuditedTreesOnLifeForceBlockView").then((res) => res.data.Result);
-  //   console.log(data)
-  //   return data;
-  // }
+  function getAuditedTreesOnLifeForceBlockView(Id) {
+    const data = http.get(`/trees/getAuditedTreesOnLifeForceBlockView/${Id}`).then((res) => res);
 
-  async function getAuditedTreesOnLifeForceBlockView(Id) {
-    const data = await http.get(`/trees/getAuditedTreesOnLifeForceBlockView/${Id}`).then((res) => res);
+    return data;
 
+  }
+
+  function getInvestemtValue(Id) {
+    const data = http.get(`/trees/getInvestemtValue/${Id}`).then((res) => res);
+    console.log("getInvestemtValue", data)
     return data;
 
   }
@@ -126,9 +126,35 @@ export default function DataService() {
     return data;
   }
 
+  /* to get the invested trees by an particular investor*/
+  function getInvestedTressByAnInvestor(Id) {
+    const data = http.get(`/trees/getInvestedTressByAnInvestor/${Id}`).then((res) => res);
+    return data;
+
+  }
+
   //Update Planted Tree
   async function updatePlantedTree(Id) {
     await http.put("/trees/updateTree/" + Id).then((res) => res);
+  }
+
+  //Update investorID when an investor is investing for a significant treeID
+  async function updateInvestorID(Id, formData) {
+    const data = await http.put(`/trees/updateInvestorID/${Id}`, formData).then((res) => res);
+    console.log(data);
+  }
+
+  //Update investorID while removing from the Cart
+  async function updateInvestorIDRemovingFromCart(Id, formData) {
+    const data = await http.put(`/trees/updateInvestorIDRemovingFromCart/${Id}`, formData).then((res) => res);
+    console.log(data);
+  }
+
+  //Update invesment when an investor is investing for a significant treeID
+  async function updateInvestmentValue(Id, formData) {
+    const data = await http.put(`/trees/updateInvestmentValue/${Id}`, formData).then((res) => res);
+    console.log(data);
+    
   }
 
 
@@ -193,6 +219,11 @@ export default function DataService() {
     getNewRegistrations,
     getNewAuditorRegistrations,
     getTreeAuditingByID,
-    getAuditedTreesOnLifeForceBlockView
+    getAuditedTreesOnLifeForceBlockView,
+    getInvestemtValue,
+    updateInvestorID,
+    getInvestedTressByAnInvestor,
+    updateInvestmentValue,
+    updateInvestorIDRemovingFromCart
   };
 }

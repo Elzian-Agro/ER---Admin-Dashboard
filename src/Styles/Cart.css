@@ -1,0 +1,139 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  
+  color: black;
+}
+
+article {
+  width: 60%;
+  margin: auto;
+}
+
+.cart_box img {
+  width: 50px;
+  height: 50px;
+}
+.cart_img {
+  display: flex;
+  width: 400px;
+}
+
+.cart_img p {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.cart_box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  border-bottom: 2px solid skyblue;
+  padding-bottom: 5px;
+}
+
+.cart_box div:nth-child(2) button {
+  padding: 5px 10px;
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.cart_box div:nth-child(3) button {
+  padding: 5px 10px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  border: none;
+  outline: none;
+  color: white;
+  background-color: skyblue;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.cart_box div:nth-child(3) button:hover {
+  background-color: darkseagreen;
+}
+.cart_box div:nth-child(3) span {
+  background-color: lightgreen;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+}
+
+.total span:nth-child(1) {
+  font-size: 2rem;
+  color: black;
+  font-weight: bold;
+  /* letter-spacing: 2px; */
+  font-family: Arial, Helvetica, sans-serif; /* Professional font */
+}
+
+.total span:nth-child(2) {
+  font-size: 2rem;
+  color: green;
+  font-weight: bold;
+}
+
+/* Basic button styles */
+button {
+  padding: 8px 16px;
+  background-color: #ff0000; /* Red background color */
+  color: #ffffff; /* White text color */
+  border: none; /* Remove default button border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Button hover effect */
+button:hover {
+  background-color: skyblue;
+  
+}
+
+/* Button active effect (when clicked) */
+button:active {
+  background-color: #cc0000; /* Even darker red background color when clicked */
+}
+
+/* Specific styles for the 'Check Now' button */
+.check_now_button {
+  margin-top: 10px; /* Add some space between the 'Total Price' and 'Check Now' button */
+  background-color: #009900; /* Green background color for 'Check Now' button */
+}
+
+/* Specific styles for the 'Remove' button */
+.remove_button {
+  margin-left: 10px; 
+}
+
+.item_info {
+  display: flex; /* Use flexbox to align items horizontally */
+  align-items: center; /* Align items vertically in the center */
+}
+
+.total-checkout-container {
+  display: flex; /* Use flexbox to arrange items horizontally */
+  justify-content: space-between; /* Spread items apart to the edges */
+  align-items: center; /* Align items vertically in the center */
+  /* font-family: Arial, Helvetica, sans-serif; */
+}
+
+.continue_shopping_button {
+  position: absolute; /* Position the button absolutely */
+  top: 10px; /* Distance from the top */
+  left: 10px; /* Distance from the left */
+  padding: 8px 16px;
+  background-color: #0077cc; /* Blue background color */
+  color: #ffffff; /* White text color */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
