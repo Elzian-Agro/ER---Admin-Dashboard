@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Home from "./pages/Home";
 import Tables from "./pages/Tables";
@@ -12,6 +12,7 @@ import Profile from "./pages/Profile";
 import Calculation from "./pages/Calculation";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
+import Cart from "./pages/Cart";
 import Main from "./components/layout/Main";
 import "antd/dist/antd.css";
 import "./assets/styles/main.css";
@@ -19,11 +20,54 @@ import "./assets/styles/responsive.css";
 import TreeSpecies from "./pages/TreeSpecies";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
 import { LoginContext } from "./components/helper/Context";
+import jwt_decode from "jwt-decode";
 
 function App() {
-  const [isLoggedin, setIsLoggedIn] = useState(false)
+  const [isLoggedin, setIsLoggedIn] = useState("")
   const [user, setUser] = useState("")
   const [accessTokenMemory, setAccessTokenMemory] = useState("");
+
+  useEffect(() => {
+    checkLoggedIn();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+
+  async function checkLoggedIn() {
+    const token = localStorage.getItem("token");
+    console.log("Token:", token);
+    if (token) {
+      try {
+        const decoded = jwt_decode(token);
+        const { isAdmin } = decoded;
+        console.log("isAdmin:", isAdmin);
+        if (isAdmin === 1) {
+          setUser("Admin");
+          console.log("setUser", user)
+        } else {
+          setUser("Investor");
+          console.log("setUser", user)
+        }
+        setIsLoggedIn(true);
+        console.log("setIsLoggedIn", isLoggedin)
+      } catch (err) {
+        console.log(err);
+        setUser("");
+        setIsLoggedIn(false);
+        console.log("catch", user, isLoggedin)
+      }
+    } else {
+      setUser("");
+      setIsLoggedIn(false);
+      console.log("else", user, isLoggedin)
+    }
+  }
+
+  useEffect(() => {
+    console.log("user:", user);
+    console.log("isLoggedin:", isLoggedin);
+  }, [user, isLoggedin]);
+
   return (
 
     <LoginContext.Provider
@@ -41,7 +85,6 @@ function App() {
           <Route path="/sign-in" exact component={SignIn} />
           <Main>
             <ProtectedRoute path="/dashboard" component={Home} auth={isLoggedin} />
-            {/* <Route exact path="/dashboard" component={Home} /> */}
             <ProtectedRoute path="/tables" component={Tables} auth={isLoggedin} />
             <ProtectedRoute path="/billing" component={Billing} auth={isLoggedin} />
             <ProtectedRoute path="/feed" component={Feed} auth={isLoggedin} />
@@ -52,7 +95,24 @@ function App() {
             <ProtectedRoute path="/profile" component={Profile} auth={isLoggedin} />
             <ProtectedRoute path="/blockView" component={Calculation} auth={isLoggedin} />
             <ProtectedRoute path="/treeSpecies" component={TreeSpecies} auth={isLoggedin} />
-            {user === 'Admin' ? <Redirect from="*" to="/dashboard" /> : user === 'Investor' ? <Redirect from="*" to="/billing" /> : <Redirect from="*" to="/sign-in" />}
+            <ProtectedRoute path="/cart" component={Cart} auth={isLoggedin} />
+
+            {/* <Route path="/dashboard" component={Home} />
+            <Route path="/tables" component={Tables} />
+            <Route path="/billing" component={Billing} />
+            <Route path="/checkout-success" component={CheckoutSuccess} />
+            <Route path="/feed" component={Feed} />
+            <Route path="/landOwner" component={LandOwner} />
+            <Route path="/trees" component={Trees} />
+            <Route path="/auditor" component={Auditor} />
+            <Route path="/assign-Auditors" component={AssignAuditors} />
+            <Route path="/profile" component={Profile} />
+            <Route path="/blockView" component={Calculation} />
+            <Route path="/treeSpecies" component={TreeSpecies} />
+            <Route path="/cart" component={Cart} /> */}
+
+            
+            {user === 'Admin' ? <Redirect to="/dashboard" /> : <Redirect to="/blockView" /> }
           </Main>
         </Switch>
       </div>

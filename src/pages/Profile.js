@@ -95,58 +95,6 @@ function Profile() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ignored]);
 
-  // const getBase64 = (img, callback) => {
-  //   const reader = new FileReader();
-  //   reader.addEventListener("load", () => callback(reader.result));
-  //   reader.readAsDataURL(img);
-  // };
-
-  // const beforeUpload = (file) => {
-  //   const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  //   if (!isJpgOrPng) {
-  //     message.error("You can only upload JPG/PNG file!");
-  //   }
-  //   const isLt2M = file.size / 1024 / 1024 < 2;
-  //   if (!isLt2M) {
-  //     message.error("Image must smaller than 2MB!");
-  //   }
-  //   return isJpgOrPng && isLt2M;
-  // };
-
-  // const handleChange = (info) => {
-  //   if (info.file.status === "uploading") {
-  //     setLoading(false);
-  //     return;
-  //   }
-  //   if (info.file.status === "done") {
-  //     getBase64(info.file.originFileObj, (imageUrl) => {
-  //       setLoading(false);
-  //       setImageURL(false);
-  //     });
-  //   }
-  // };
-
-  // console.log(imageURL);
-
-  // const pencil = [
-  //   <svg
-  //     width="20"
-  //     height="20"
-  //     viewBox="0 0 20 20"
-  //     fill="none"
-  //     xmlns="http://www.w3.org/2000/svg"
-  //     key={0}
-  //   >
-  //     <path
-  //       d="M13.5858 3.58579C14.3668 2.80474 15.6332 2.80474 16.4142 3.58579C17.1953 4.36683 17.1953 5.63316 16.4142 6.41421L15.6213 7.20711L12.7929 4.37868L13.5858 3.58579Z"
-  //       className="fill-gray-7"
-  //     ></path>
-  //     <path
-  //       d="M11.3787 5.79289L3 14.1716V17H5.82842L14.2071 8.62132L11.3787 5.79289Z"
-  //       className="fill-gray-7"
-  //     ></path>
-  //   </svg>,
-  // ];
 
   const uploadButton = (
     <div className="ant-upload-text font-semibold text-dark">
@@ -155,27 +103,32 @@ function Profile() {
     </div>
   );
 
+
+  //QR code section
   const project = [
     {
       img: project1,
-      titlesub: "Project #1",
-      title: "Evening Tree",
+      //titlesub: "Project #1",
+      title: "Oka Tree",
       description:
         "Tree in red color evening",
+        link:"https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/100"
     },
     {
       img: project2,
-      titlesub: "Project #2",
-      title: "Dave Starbelly",
+      //titlesub: "Project #2",
+      title: "Coconut Tree",
       description:
         "Friendly OpenSea Creature that enjoys long swims in the ocean.",
+        link:"https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/1005"
     },
     {
       img: project3,
-      titlesub: "Project #3",
-      title: "Two trees of Valinor",
+      //titlesub: "Project #3",
+      title: "Oka Tree two",
       description:
         "Two trees of valinor, lord of the rings.",
+        link:"https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/1007"
     },
   ];
 
@@ -206,13 +159,6 @@ function Profile() {
     }
   };
 
-  // const handleOk = () => {
-  //   setIsModalVisible(false);
-  // };
-
-  // const handleCancel = () => {
-  //   setIsModalVisible(false);
-  // };
 
   const showUpdateModal = () => {
     setIsUpdateModalVisible(true);
@@ -221,27 +167,7 @@ function Profile() {
   const handleUpdateCancel = () => {
     setIsUpdateModalVisible(false);
   };
-  // const layout = {
-  //   labelCol: {
-  //     span: 6,
-  //   },
-  //   wrapperCol: {
-  //     span: 16,
-  //   },
-  // };
-
-  // const validateMessages = {
-  //   required: '$"label" is required!',
-  //   types: {
-  //     email: '$"label" is not a valid email!',
-  //     number: '$"label" is not a valid number!',
-  //   },
-  // };
-
-  // const onFinish = (values) => {
-  //   console.log(values);
-  // };
-
+ 
 
 
   return (
@@ -285,7 +211,7 @@ function Profile() {
                   fontSize: "35px",
                   textAlign: "justify",
                   fontWeight: "bold",
-                  fontFamily: "Cursive",
+                 // fontFamily: "Cursive",
                   marginTop: "20px",
                   marginLeft: "20px",
                 }}
@@ -295,19 +221,22 @@ function Profile() {
               <div
                 style={{
                   fontSize: "20px",
-                  fontFamily: "Cursive",
+                  //fontFamily: "Cursive",
                   marginTop: "5px",
                   marginLeft: "20px",
                   textAlign: "justify",
+                  fontWeight: "bold"
                 }}
               >
                 <b></b>
                 <MdAdminPanelSettings /> {userType}
               </div>
               <div
+         
                 style={{
                   fontSize: "20px",
-                  fontFamily: "Cursive",
+                  fontWeight: "bold",
+                  //fontFamily: "Cursive",
                   marginTop: "20px",
                   marginLeft: "20px",
                   textAlign: "justify",
@@ -326,7 +255,8 @@ function Profile() {
                 fontSize: "20px",
                 textAlign: "left",
                 marginLeft: "50px",
-                fontFamily: "Cursive",
+                fontWeight: "bold",
+               // fontFamily: "Cursive",
                 marginRight: "50px",
               }}
             >
@@ -337,10 +267,11 @@ function Profile() {
             <Col
               style={{
                 marginTop: "30px",
+                fontWeight: "bold",
                 fontSize: "20px",
                 marginLeft: "50px",
                 textAlign: "left",
-                fontFamily: "Cursive",
+               // fontFamily: "Cursive",
                 marginRight: "50px",
               }}
             >
@@ -355,7 +286,8 @@ function Profile() {
                 marginLeft: "50px",
                 marginRight: "50px",
                 textAlign: "left",
-                fontFamily: "Cursive",
+                fontWeight: "bold"
+               // fontFamily: "Cursive",
               }}
             >
               <div>
@@ -368,7 +300,8 @@ function Profile() {
                 fontSize: "20px",
                 marginLeft: "50px",
                 textAlign: "left",
-                fontFamily: "Cursive",
+                fontWeight: "bold"
+               // fontFamily: "Cursive",
               }}
             >
               <div>
@@ -410,7 +343,7 @@ function Profile() {
               md={12}
               style={{
                 display: "flex",
-
+                 color: "white",
                 justifyContent: "flex-end",
               }}
             >
@@ -440,6 +373,7 @@ function Profile() {
                   });
                 }}
               >
+                
                 Update Profile
               </Button>
               <Modal
@@ -664,7 +598,7 @@ function Profile() {
       </Card>
 
 
-      <Card
+      {/* <Card
       bordered={false}
         className="header-solid mb-24"
         title={
@@ -728,11 +662,7 @@ function Profile() {
                 <a href="https://testnets.opensea.io/assets/mumbai/0x919c55A13DFfd2351c11068353DF303304b47900/1007" target=" ">Oak Tree 2</a>
               </a>
             </div>
-
-      
-
-
-      </Card>
+      </Card> */}
 
       <Card
         bordered={false}
@@ -753,11 +683,10 @@ function Profile() {
                 bordered={false}
                 className="card-project"
                 cover={
-                  <a href="https://Google.com">
+                  <a href={p.link} target="_blank" rel="noopener noreferrer">
                   <img alt="example" src={p.img} />
-                  </a>
+                </a>
               }
-                
               >
                 <div className="card-tag">{p.titlesub}</div>
                 <h5>{p.title}</h5>
@@ -768,6 +697,7 @@ function Profile() {
                   </Col>
                 </Row>
               </Card>
+              
             </Col>
           ))}
           <Col span={24} md={12} xl={6}>

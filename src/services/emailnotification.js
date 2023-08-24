@@ -16,6 +16,9 @@ export default function Emailnoti() {
 
   const {accessTokenMemory,setAccessTokenMemory}= useContext(LoginContext);
   let accessTokenMemoryTmp=accessTokenMemory;
+
+
+  //Base URL Configuration
   const http = axios.create({
     baseURL:
     process.env.REACT_APP_BASE_URL,
@@ -67,7 +70,13 @@ export default function Emailnoti() {
     }
   );
 
-   //This Method for email notification Button. when admin enable or disable email notification , it save in the database.
+
+
+   /*
+      This Method for email notification Button. 
+      when admin enable or disable email notification , 
+      it save in the database.
+   */
    async function setDetails(e) {
     const data2 = {
       values : e.values,
@@ -76,7 +85,12 @@ export default function Emailnoti() {
   }
 
 
-  //When the admin login to the system again, if he has previosly enabled email notification, to show it.
+
+  /*
+    When the admin login to the system again, 
+    if he has previosly enabled email notification, 
+    to show it.
+  */
   async function getProfileNotification() {
     const values = await http.get("/email/getProfileNotification").then((res) => res);
     return values.data.Result[0].emailNotification;
@@ -84,82 +98,46 @@ export default function Emailnoti() {
 
 
 
-
- //This method for Modification. when admin modify or add new tree in the tree species page, the system sent msg to those admins who have enable email notification. 
+  /*
+    This method for Modification. 
+    when admin modify or add new tree in the tree species page, the system sent msg to those admins who have enable email notification.
+  */ 
  async function Modify(props){
   const AdminMail = await getAdmin();
 
   for (let index = 0; index < AdminMail.length; index++) {
-    //const element = AdminMail[index];
-    
-
-       // console.log("email Sent to" +" "+ element.email)
-    //     var templateParams = {
-    //       to_name: element.email,
-    //       from_name: "Elzian Agro",
-    //       message : props,
-    //  };
-      //  emailjs.send('service_wfb9w2h','template_aez5yxb',templateParams, 'DMhiQgPxi2zys5qiw')
-      //      .then((result) => {
-      //          console.log(result.text + element.email);
-      //      }, (error) => {
-      //          console.log(error.text);
-      //      });   
+      
   }
   
 }; 
   
 
 
-
- // This method for Investor Payment . this method send msg to particuler Inverter and all Admins after invester payment successfull..
+   /*
+    This method for Investor Payment . 
+    this method send msg to particuler Inverter and all Admins after invester payment successfull.
+  */
   async function billing(props){
   console.log(props)
   //const {email} = await getProfile();
   const AllAdminEmails = await getAllAdmins();
-
-  //console.log("email Sent to"+" "+email)
-    //     var templateParams = {
-    //       to_name: email,
-    //       from_name: "Elzian Agro",
-    //       message : props,
-    //  };
-      //  emailjs.send('service_wfb9w2h', 'template_aez5yxb',templateParams, 'DMhiQgPxi2zys5qiw')
-      //      .then((result) => {
-      //          console.log(result.text + email);
-      //      }, (error) => {
-      //          console.log(error.text);
-      //      });
-
     for (let index = 0; index < AllAdminEmails.length; index++) {
-      //const element = AllAdminEmails[index];
-      //console.log("email Sent to " +" "+ element.email)
-  //     var templateParams = {
-  //       to_name: element.email,
-  //       from_name: "Elzian Agro",
-  //       message : props,
-  //  };
-    //  emailjs.send('service_wfb9w2h', 'template_aez5yxb',templateParams, 'DMhiQgPxi2zys5qiw')
-    //      .then((result) => {
-    //          console.log(result.text + element.email);
-    //      }, (error) => {
-    //          console.log(error.text);
-    //      });
     }
-
   }
 
  
+
   //To get admins, those who have enabled email notification.
   async function getAdmin() {
     const values = await http.get("/email/getAdmin").then((res) => res);
     return values.data.Result;
   }
 
+
+
   //To get all Admins in the database.
   async function getAllAdmins() {
     const values = await http.get("/email/getAllAdmins").then((res) => res);
-    //console.log(values.data.Result)
     return values.data.Result;
   }
 

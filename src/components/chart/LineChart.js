@@ -8,6 +8,11 @@ import lineChart from "./configs/lineChart";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 
+/*
+  This Function is created for display Landowners data
+  Usage: web application
+*/
+
 function LineChart() {
 
   const [activeLand, setActiveLand] = useState(null);
@@ -17,25 +22,29 @@ function LineChart() {
     getLandOwnerSum,
   } = memberService();
 
+
+  //fetch the data
   useEffect(() => {
-    const getAlllandsum = async () =>{
+    const getAllLandsum = async () =>{
       const resLog = await getLandOwnerSum();
 
       let actSum = resLog.data.Result.map((data) => data.activeLandOwners);
-      // console.log(actSum,"actSum");
 
       let comSum = resLog.data.Result.map((data) => data.completedLandOwners);
-      // console.log(comSum,"comSum");
-
       setActiveLand(actSum);
       setcompletedLand(comSum);
     }
-    getAlllandsum();
+    getAllLandsum();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
+
+/*
+  This Function is created for download line chart pdf
+  Usage: web application
+  User: Admin
+*/
   const printRef = React.useRef();
-  //download line chart
   const handleDownloadPdf = async () => {
     const element = printRef.current;
     const canvas = await html2canvas(element);
@@ -51,6 +60,7 @@ function LineChart() {
     pdf.save("Land Owner line chart.pdf");
     console.log("Download pdf")
   };
+
 
 
   const { Title } = Typography;
@@ -71,20 +81,11 @@ function LineChart() {
   return (
     <>
    <div ref={printRef}>
-    
 
-   
       <div className="linechart" >
-
         <div>
           <Title level={5}>Active Land Owners</Title>
         </div>
-        {/* <div className="sales">
-          <ul>
-            <li> {<MinusOutlined style={{color:"#2a9df4"}} />}  <Text style={{color:"#2a9df4"}}>Active Land Owner</Text></li>
-            <li> {<MinusOutlined style={{color:"#03c04A"}} />} <Text style={{color:"#03c04A"}}>Completed Land Owners</Text></li>
-          </ul>
-        </div> */}
       </div>
      
       <ReactApexChart
@@ -92,13 +93,11 @@ function LineChart() {
         options={lineChart.options}
         series={series}
         type="area"
-        height={300}
-     
-      />
-       
+        height={300}/>
     </div>
-   
-      {/* download button */}
+
+
+    
       <div> 
       <Button 
       type="dashed" 

@@ -164,6 +164,8 @@ function LandOwner() {
   const current = new Date();
   const date = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
 
+
+
   //Contract PDF download Function
   const handleDownloadPdf = async () => {
     const element = printRef.current;
@@ -174,6 +176,8 @@ function LandOwner() {
     pdf.addImage(data, 100, 0);
     pdf.save(`${modaldata.landOwnerName} Contract.pdf`);
   };
+
+
 
   // ID image download function
   const handleDownloadID = async () => {
@@ -196,6 +200,8 @@ function LandOwner() {
     }
   };
 
+
+
   //QR Code download
   const handleQRDownload = async () => {
     const element = qrPrintRef.current;
@@ -217,6 +223,8 @@ function LandOwner() {
     }
   };
 
+
+  //lanOwners Table
   const columns = [
     {
       title: "RegNo/Name/Contact",
@@ -348,6 +356,8 @@ function LandOwner() {
     },
   ];
 
+
+//map the data
   const getData = async () => {
     const res = await getLandOwners();
     setdata(
@@ -571,15 +581,13 @@ function LandOwner() {
     const searchKey = e.target.value.toLowerCase();
     if (searchKey === "") {
       setdata(tableData);
-      console.log(tableData);
     } else {
       const filteredData = tableData.filter((item) => {
+        const regNum = item.registerNumber ? item.registerNumber.toLowerCase() : '';
+        const landownerName = item.landOwnerName ? item.landOwnerName.toLowerCase() : '';
         return (
-          item.registerNumber.toLowerCase().includes(searchKey) ||
-          item.landOwnerName.toLowerCase().includes(searchKey) ||
-          item.contactNumber.toLowerCase().includes(searchKey) ||
-          item.email.toLowerCase().includes(searchKey) ||
-          item.landAddress.toLowerCase().includes(searchKey)
+          regNum.includes(searchKey) ||
+          landownerName.includes(searchKey)
         );
       });
       setdata(filteredData);
@@ -627,7 +635,7 @@ function LandOwner() {
                 <>
                   <Input
                     className={classes.headerSearch}
-                    placeholder="Search here..."
+                    placeholder="Search Land Owners..."
                     prefix={<SearchOutlined />}
                     onChange={handleonChange}
                   />
@@ -638,7 +646,7 @@ function LandOwner() {
                 <Table
                   scroll={{ y: 375 }}
                   className="table-responsive"
-                  dataSource={data}
+                  dataSource={data} 
                   columns={columns}
                   onRow={(record) => {
                     return {

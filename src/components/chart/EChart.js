@@ -4,8 +4,15 @@ import {Typography } from "antd";
 import eChart from "./configs/eChart";
 import memberService from "../../services/getmembers";
 
+
+/*
+  This Function is created for display Active Investors data
+  Usage: web application
+*/
+
+
 function EChart() {
-  const [intvesData, setIntvesData] = useState(null);
+  const [InvestorsData, setInvestorsData] = useState(null);
 
   const {
     getMonthlyUsers
@@ -15,9 +22,8 @@ function EChart() {
     const getMonthlyUsersd  = async () =>{
       const resLog = await getMonthlyUsers();
       let tempData = resLog.data.Result.map((data) =>data.activeInvestors); 
-      // console.log(tempData,"tempdata");
   
-      setIntvesData(tempData);
+      setInvestorsData(tempData);
     }
     getMonthlyUsersd();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -27,7 +33,7 @@ function EChart() {
   let series=[
     {
       name: "Monthly Investors",
-      data:(intvesData && intvesData) || [],
+      data:(InvestorsData && InvestorsData) || [],
       color: "#fff",
     },
   ]
@@ -71,29 +77,7 @@ function EChart() {
             type="bar"
             height={250}
           />
-      </div>
-      <div className="chart-vistior">
-        {/* <Title level={5}>Active Investors</Title> */}
-        {/* <Paragraph className="lastweek">
-          than last week <span className="bnb2">+30%</span>
-        </Paragraph> */}
-         {/* <Paragraph className="lastweek">
-          
-          We have created multiple options for you to put together and customise
-          into pixel perfect pages.
-        </Paragraph> */}
-        {/* <Row gutter>
-          {items.map((v, index) => (
-            <Col xs={6} xl={6} sm={6} md={6} key={index}>
-              <div className="chart-visitor-count">
-                <Title level={4}>{v.Title}</Title>
-                <span>{v.user}</span>
-              </div>
-            </Col>
-          ))}
-        </Row>  */}
-      </div>
-     
+      </div>     
     </>
   );
 }

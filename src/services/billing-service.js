@@ -6,6 +6,8 @@ import { LoginContext } from "../components/helper/Context";
 export default function BillingService() {
   // const { getLocalRefreshToken } = Tokenservice();
 
+
+  //Base URL Configuration
   const { accessTokenMemory} = useContext(LoginContext);
   let accessTokenMemoryTmp = accessTokenMemory;
   const http = axios.create({
@@ -18,7 +20,9 @@ export default function BillingService() {
     },
   });
 
-  //Add Billing ========================================
+
+
+  //Add Billing 
   async function addBillingData(formData) {
     const data = await http
       .post(
@@ -29,6 +33,8 @@ export default function BillingService() {
     console.log(data);
   }
 
+
+  //Add Last Digit
   async function addLastDigitData(formData) {
     const data = await http
       .post(

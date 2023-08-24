@@ -24,11 +24,14 @@ export default function DataService() {
   const { getLocalRefreshToken } = Tokenservice();
 
   const { accessTokenMemory, setAccessTokenMemory } = useContext(LoginContext);
+
+
+  //Base URL Configuration
   let accessTokenMemoryTmp = accessTokenMemory;
   const http = axios.create({
     baseURL:
-    process.env.REACT_APP_BASE_URL,
-      
+      process.env.REACT_APP_BASE_URL,
+
     headers: {
       "Content-type": "application/json",
       "x-auth-token": accessTokenMemoryTmp,
@@ -53,7 +56,7 @@ export default function DataService() {
     },
     async (err) => {
       const originalConfig = err.config;
-      if (err.response.status===401) {
+      if (err.response.status === 401) {
         // access token expired
         if (err && !originalConfig._retry) {
           // handle infinite loop
@@ -76,15 +79,86 @@ export default function DataService() {
       return Promise.reject(err);
     }
   );
+
+
+  //retrieve all audited trees from audintings table and trees table on treeID for displaying o2, h2o and photobiomass graphs in the Calculaitons.js
+  async function getTreeAuditingByID(id) {
+    const data = await http.get(`/trees/getTreeAuditingByID/${id}`).then((res) => res.data.Result);
+    console.log("getTreeAuditingByID in services")
+    console.log("getTreeAuditingByID in services", data)
+    return data;
+
+  }
+
+
+  //retrieve all planted trees for lifeforce block view
   async function getPlantedTrees() {
     const data = await http.get("/trees").then((res) => res.data.Result);
+    console.log(data)
     return data;
   }
 
+  function getAuditedTreesOnLifeForceBlockView(Id) {
+    const data = http.get(`/trees/getAuditedTreesOnLifeForceBlockView/${Id}`).then((res) => res);
+
+    return data;
+
+  }
+
+  function getInvestemtValue(Id) {
+    const data = http.get(`/trees/getInvestemtValue/${Id}`).then((res) => res);
+    console.log("getInvestemtValue", data)
+    return data;
+
+  }
+
+  async function getNewRegistrations() {
+    const data = await http.get("/admin/displayNotification").then((res) => res.data.users);
+    console.log("hiiiiiii");
+    console.log(data); // Print the data object in the console
+    return data;
+  }
+
+  /* to get the newly registered auditors*/
+  async function getNewAuditorRegistrations() {
+    const data = await http.get("/auditings/getNewAuditorRegistrations").then((res) => res.data.Result);
+
+    return data;
+  }
+
+  /* to get the invested trees by an particular investor*/
+  function getInvestedTressByAnInvestor(Id) {
+    const data = http.get(`/trees/getInvestedTressByAnInvestor/${Id}`).then((res) => res);
+    return data;
+
+  }
+
+  //Update Planted Tree
   async function updatePlantedTree(Id) {
     await http.put("/trees/updateTree/" + Id).then((res) => res);
   }
 
+  //Update investorID when an investor is investing for a significant treeID
+  async function updateInvestorID(Id, formData) {
+    const data = await http.put(`/trees/updateInvestorID/${Id}`, formData).then((res) => res);
+    console.log(data);
+  }
+
+  //Update investorID while removing from the Cart
+  async function updateInvestorIDRemovingFromCart(Id, formData) {
+    const data = await http.put(`/trees/updateInvestorIDRemovingFromCart/${Id}`, formData).then((res) => res);
+    console.log(data);
+  }
+
+  //Update invesment when an investor is investing for a significant treeID
+  async function updateInvestmentValue(Id, formData) {
+    const data = await http.put(`/trees/updateInvestmentValue/${Id}`, formData).then((res) => res);
+    console.log(data);
+    
+  }
+
+
+  //Delete Planted Tree
   async function deletePlantedTree(Id) {
     const data = await http.put("/trees/deleteTree/" + Id).then((res) => res);
     console.log(
@@ -94,11 +168,15 @@ export default function DataService() {
     );
   }
 
+
+  //Get Auditors According to the ID
   async function getAuditorById(id) {
     if (!id) return;
     await http.get("/users/" + id).then((res) => res.data.Result);
   }
 
+
+  //Get Land owners According to the ID
   async function getLandOwnerById(id) {
     if (!id) return;
     const data = await http
@@ -107,6 +185,8 @@ export default function DataService() {
     return data[0].landOwnerName;
   }
 
+
+  //Get Profile data
   async function getProfile() {
     const data = await http
       .get("/admin/getProfile")
@@ -114,7 +194,7 @@ export default function DataService() {
     return data[0];
   }
 
-  //update Profile========================================
+  //update Profile
   async function updateAdminDetails(admin) {
     const data = await http
       .put("/admin/updateProfile", admin)
@@ -136,5 +216,14 @@ export default function DataService() {
     getAuditorById,
     getProfile,
     updateAdminDetails,
+    getNewRegistrations,
+    getNewAuditorRegistrations,
+    getTreeAuditingByID,
+    getAuditedTreesOnLifeForceBlockView,
+    getInvestemtValue,
+    updateInvestorID,
+    getInvestedTressByAnInvestor,
+    updateInvestmentValue,
+    updateInvestorIDRemovingFromCart
   };
 }

@@ -3,7 +3,6 @@ import axios from "axios";
 import { notification } from "antd";
 import {useContext} from 'react'
 import {LoginContext} from "../components/helper/Context"
-
 import Tokenservice from "./token-service";
 import { useCallback } from "react";
 
@@ -23,10 +22,12 @@ const openNotificationWithIcon = (type, message, title) => {
 
 export default function DataService() {
  const{getLocalRefreshToken}=Tokenservice()
-  //const [cookies, setCookie] = useCookies(["token"]); 
+  
   const {accessTokenMemory,setAccessTokenMemory}= useContext(LoginContext);
   let accessTokenMemoryTmp=accessTokenMemory;
 
+
+  //Base URL Configuration
   const http = axios.create({
     baseURL: 
     process.env.REACT_APP_BASE_URL,
@@ -57,7 +58,7 @@ export default function DataService() {
     async (err) => {
       const originalConfig = err.config;
       if (err.response.status===401) {
-      // console.log(err.response.status)
+    
         // access token expired
         if (err && !originalConfig._retry) {
           // handle infinite loop
@@ -66,9 +67,9 @@ export default function DataService() {
             const rs = await http.post("/admin/getNewAccessToken", {
               refreshToken: getLocalRefreshToken(),
             });
-            //console.log("response", rs);
+        
             const { accessToken } = rs.data;
-           // console.log("NewAccessToken", accessToken);
+        
            accessTokenMemoryTmp=accessToken;
             setAccessTokenMemory(accessTokenMemoryTmp)
            // updateNewAccessToken(accessToken);
@@ -83,12 +84,16 @@ export default function DataService() {
     }
   );
 
+
+  //Get All Tree Species
   const getAllTreeSpecies = useCallback (async function getAllTreeSpecies() {
     const data = await http.get("/species").then((res) => res.data.Result);
     return data;
     // eslint-disable-next-line
   } ,[])
 
+
+  //Delete Tree Species using According to the ID
   async function deleteTreeSpeciesById(Id) {
     const data = await http
       .put("/species/deleteSpecies/" + Id)
@@ -99,11 +104,15 @@ export default function DataService() {
       openNotificationWithIcon("Error", "Error in Deleting", "Error");
     }
   }
+
+   //Get Tree Species using According to the ID
   async function getTreeSpeciesById(Id) {
     const data = await http.get(`/species/${Id}`).then((res) => res);
     return data;
   }
 
+
+   //Update Tree Species using According to the ID
   async function updateTreeSpeciesById(Id, treeData) {
     const data = await http
       .put("/species/updateSpecies/" + Id, treeData)
@@ -115,6 +124,8 @@ export default function DataService() {
     }
   }
 
+
+   //Add New Tree Species
   async function addNewTreeSpecies(treeData) {
     const data = await http.post("/species/add", treeData).then((res) => res);
     if (data.status === 200) {

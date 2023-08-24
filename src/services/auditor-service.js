@@ -1,39 +1,42 @@
 import axios from "axios";
-import {useContext} from 'react'
-import {LoginContext} from "../components/helper/Context"
+import { useContext } from 'react'
+import { LoginContext } from "../components/helper/Context"
 import { notification } from 'antd';
 import Tokenservice from "./token-service";
 
 
-const openNotificationWithIcon = (type,message,title) => {
+const openNotificationWithIcon = (type, message, title) => {
 
-  if(type==="success"){
+  if (type === "success") {
     notification[type]({
       message: title,
-      description:"Auditor Id : "+message,
+      description: "Auditor Id : " + message,
     });
-  }else{
+  } else {
     notification[type]({
       message: title,
-      description:message,
+      description: message,
     });
   }
-  
+
 };
 export default function AuditorService() {
-  const{getLocalRefreshToken}=Tokenservice()
-  const {accessTokenMemory,setAccessTokenMemory}= useContext(LoginContext);
-  let accessTokenMemoryTmp=accessTokenMemory;
+  const { getLocalRefreshToken } = Tokenservice()
+  const { accessTokenMemory, setAccessTokenMemory } = useContext(LoginContext);
+  let accessTokenMemoryTmp = accessTokenMemory;
 
+
+  //Base URL Configuration
   const http = axios.create({
     baseURL:
-    process.env.REACT_APP_BASE_URL,
-    
+      process.env.REACT_APP_BASE_URL,
+
     headers: {
       "Content-type": "application/json",
-      "x-auth-token":accessTokenMemoryTmp
+      "x-auth-token": accessTokenMemoryTmp
     },
   });
+
   http.interceptors.request.use(
     (config) => {
       const token = accessTokenMemoryTmp
@@ -53,7 +56,7 @@ export default function AuditorService() {
     },
     async (err) => {
       const originalConfig = err.config;
-      if (err.response.status===401) {
+      if (err.response.status === 401) {
         // access token expired
         if (err && !originalConfig._retry) {
           // handle infinite loop
@@ -62,12 +65,10 @@ export default function AuditorService() {
             const rs = await http.post("/admin/getNewAccessToken", {
               refreshToken: getLocalRefreshToken(),
             });
-           // console.log("response", rs);
             const { accessToken } = rs.data;
-           // console.log("NewAccessToken", accessToken);
-           accessTokenMemoryTmp=accessToken;
+            accessTokenMemoryTmp = accessToken;
             setAccessTokenMemory(accessTokenMemoryTmp)
-           // updateNewAccessToken(accessToken);
+            // updateNewAccessToken(accessToken);
             return http(originalConfig);
           } catch (_error) {
             return Promise.reject(_error);
@@ -78,47 +79,68 @@ export default function AuditorService() {
       return Promise.reject(err);
     }
   );
+
+
+  //Get Auditors Details
   async function getAuditors() {
     const data = await http.get("/users").then((res) => res.data.Result);
     return data;
   }
 
+
+  //Get Data From Calculation page
   async function getDataForCalculation() {
     const data = await http.get("/auditings/getAuditCalculation").then((res) => res.data.Result);
+console.log("getDataForCalculation in sevices", data)
     return data;
   }
-  
 
+  //get o2, h2o, photobiomass details for a treeID
+  async function getO2H2OPhotoBioMass(id) {
+    const data=await http.get(`/auditings/getOHOPhotoBioMass/${id}`).then((res) => res.data.Result);
+    console.log("getO2H2OPhotoBioMass in services")
+    console.log("getO2H2OPhotoBioMass in services", data)
+    return data;
 
+  }
+
+  // async function getO2H2OPhotoBioMass(Id) {
+  //   const data = await http.get(`/auditings/getOHOPhotoBioMass/${id}`).then((res) => res);
+  //   console.log("getO2H2OPhotoBioMass", data)
+  //   return data;
+  // }
+
+  //Update Auditors Details
   async function updateAuditors(user) {
     const data = await http
       .put("/users/updateAll/" + user.id, user)
       .then((res) => res);
-      console.log(data.status === 200)
-      if (data.status === 200) {
-        openNotificationWithIcon('success',"successfully Updated!","Success")
-      } else
-       {
-        openNotificationWithIcon('Error',"Error in Updating","Error")
-      }
+    console.log(data.status === 200)
+    if (data.status === 200) {
+      openNotificationWithIcon('success', "successfully Updated!", "Success")
+    } else {
+      openNotificationWithIcon('Error', "Error in Updating", "Error")
+    }
   }
 
+
+  //Delete Auditors Details
   async function deleteAuditors(Id) {
     const data = await http
       .put("/users/deleteUser/" + Id, {})
       .then((res) => res);
-      console.log(data.status === 200)
-      if (data.status === 200) {
-        openNotificationWithIcon('success',"successfully Deleted!","Success")
-      } else
-       {
-        openNotificationWithIcon('Error',"Error in Deleting","Error")
-      }
+    console.log(data.status === 200)
+    if (data.status === 200) {
+      openNotificationWithIcon('success', "successfully Deleted!", "Success")
+    } else {
+      openNotificationWithIcon('Error', "Error in Deleting", "Error")
+    }
   }
   return {
     getAuditors,
     updateAuditors,
     deleteAuditors,
     getDataForCalculation,
+    getO2H2OPhotoBioMass
   };
 }

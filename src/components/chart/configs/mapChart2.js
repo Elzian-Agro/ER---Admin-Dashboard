@@ -18,8 +18,13 @@ const mapChart2 = {
         enabled: false,
       },
       stroke: {
-        curve: "smooth",
-      },
+        show: true,
+        curve: 'straight',
+        lineCap: 'butt',
+        colors: undefined,
+        width: 2,
+        dashArray: 0,      
+    },
   
       yaxis: {
         labels: {

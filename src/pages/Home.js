@@ -39,6 +39,12 @@ import card from "../assets/images/LifeForce LOGO2022.jpeg";
 import memberService from './../services/getmembers';
 
 
+
+
+/*
+  This Function is created for Dashboard
+  Usage: web application
+*/
 function Home() {
   const [reverse, setReverse] = useState(false);
   // const [page,setPage] = useState(6);
@@ -66,16 +72,16 @@ function Home() {
     const ShowDashboardCounts = async () => {
       
       const res2 = await getlandowners();
-      // console.log(res2.data.Investor)
+      
       setinvester(res2.data.Investor);
       setlandowners(res2.data.landowners);
-      // console.log(landowners)
+    
       setauditors(res2.data.Auditor);
       setfieldEgent(res2.data.fieldAgent);
 
       const res3 = await getLandownersState();
       setlandownersStatus(res3);
-      // console.log(res3);
+  
     }
     ShowDashboardCounts()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -109,6 +115,9 @@ function Home() {
       ></path>
     </svg>,
   ];
+
+
+//Top bar data
   const count = [
     {
       today: `Number of Investors : ${invester}
@@ -134,15 +143,11 @@ function Home() {
       icon: profile,
       bnb: "bnb2",
     },
-    // {
-    //   today: "Today’s Users",
-    //   title: "3,200",
-    //   persent: "+20%",
-    //   icon: profile,
-    //   bnb: "bnb2",
-    // },
   ];
 
+
+
+  //orders History
   const timelineList = [
     {
       title: "$2,400 - Redesign store",
@@ -173,6 +178,8 @@ function Home() {
     },
   ];
 
+
+  //upload file function
   const uploadProps = {
     name: "file",
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
@@ -181,7 +188,7 @@ function Home() {
     },
     onChange(info) {
       if (info.file.status !== "uploading") {
-        // console.log(info.file, info.fileList);
+        
       }
       if (info.file.status === "done") {
         message.success(`${info.file.name} file uploaded successfully`);
@@ -191,6 +198,9 @@ function Home() {
     },
   };
 
+
+
+  //LandOwners Table
   const { Column} = Table;
   const orgData = landownersStatus.map((d, index ) => { 
     return {
@@ -254,19 +264,7 @@ function Home() {
               <div className="project-ant">
                 <div>
                   <Title level={5}>Land Owners</Title>
-                  {/* <Paragraph className="lastweek">
-                    done this month<span className="blue">40%</span>
-                  </Paragraph> */}
                 </div>
-                {/* <div className="ant-filtertabs">
-                  <div className="antd-pro-pages-dashboard-analysis-style-salesExtra">
-                    <Radio.Group onChange={onChange} defaultValue="a">
-                      <Radio.Button value="a">ALL</Radio.Button>
-                      <Radio.Button value="b">ONLINE</Radio.Button>
-                      <Radio.Button value="c">STORES</Radio.Button>
-                    </Radio.Group>
-                  </div>
-                </div> */}
               </div>
 
         <Table dataSource={orgData}
